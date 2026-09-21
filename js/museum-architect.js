@@ -464,9 +464,17 @@ export class MuseumArchitect {
       capMesh.position.y = 3.2;
       g.add(capMesh);
 
-      const light = new THREE.PointLight(0xfffaed, 1.5, 3.5);
-      light.position.set(0, 3.0, 0);
-      g.add(light);
+      // Baked emissive glow replaces per-pedestal PointLight
+      glassMesh.material = new THREE.MeshStandardMaterial({
+        color: 0xffffff,
+        transparent: true,
+        opacity: 0.15,
+        roughness: 0.1,
+        metalness: 0.05,
+        emissive: new THREE.Color(0xfffaed),
+        emissiveIntensity: 0.4,
+        depthWrite: false
+      });
 
       g.name = `Rotunda_Pedestal_${idx}`;
       parent.add(g);
@@ -1078,9 +1086,14 @@ export class MuseumArchitect {
       panel.position.y = -0.04;
       g.add(panel);
 
-      const pl = new THREE.PointLight(0xfff7ed, 2.0, 18);
-      pl.position.set(0, -0.6, 0);
-      g.add(pl);
+      // Emissive panel replaces per-coffer PointLight for performance
+      panel.material = new THREE.MeshStandardMaterial({
+        color: 0xfff7ed,
+        emissive: new THREE.Color(0xfff7ed),
+        emissiveIntensity: 0.8,
+        roughness: 0.9,
+        side: THREE.DoubleSide
+      });
 
       ceilGroup.add(g);
     };
@@ -1139,24 +1152,15 @@ export class MuseumArchitect {
     const ambient = new THREE.AmbientLight(0xfff7ed, 1.8);
     parent.add(ambient);
 
-    // 2. Hemisphere Light (Brilliantly illuminates ceiling from below and floor from above!)
-    const hemiLight = new THREE.HemisphereLight(0xfffaed, 0x334155, 1.4);
+    // 2. Hemisphere Light (boosted to compensate for removed per-exhibit lights)
+    const hemiLight = new THREE.HemisphereLight(0xfffaed, 0x334155, 2.0);
     hemiLight.position.set(0, 20, 0);
     parent.add(hemiLight);
 
-    // 3. Main Central Skylight / Sun Directional Light
-    const sunLight = new THREE.DirectionalLight(0xfffaed, 2.4);
+    // 3. Main Directional Light (shadow disabled for performance)
+    const sunLight = new THREE.DirectionalLight(0xfffaed, 2.8);
     sunLight.position.set(0, 30, 0);
-    sunLight.castShadow = true;
-    sunLight.shadow.mapSize.width = 2048;
-    sunLight.shadow.mapSize.height = 2048;
-    sunLight.shadow.camera.near = 0.5;
-    sunLight.shadow.camera.far = 50;
-    sunLight.shadow.camera.left = -40;
-    sunLight.shadow.camera.right = 40;
-    sunLight.shadow.camera.top = 40;
-    sunLight.shadow.camera.bottom = -40;
-    sunLight.shadow.bias = -0.0005;
+    sunLight.castShadow = false;
     parent.add(sunLight);
 
     // 4. Central Rotunda Chandelier Light
@@ -1164,12 +1168,10 @@ export class MuseumArchitect {
     centralChandelier.position.set(0, 7.5, 0);
     parent.add(centralChandelier);
 
-    // 5. North Wall Presidential Orders Spotlight
-    const northSpot = new THREE.SpotLight(0xfffaed, 4.8, 45, Math.PI / 5, 0.4, 1.2);
-    northSpot.position.set(0, 7.8, -30);
-    northSpot.target.position.set(0, 3.5, -44.5);
-    parent.add(northSpot);
-    parent.add(northSpot.target);
+    // 5. North Wall PointLight (replaces expensive SpotLight)
+    const northLight = new THREE.PointLight(0xfffaed, 3.5, 30);
+    northLight.position.set(0, 7.8, -37);
+    parent.add(northLight);
 
     // 6. Hall Accent Spotlights
     const createHallSpot = (color, x, y, z, tx, ty, tz) => {
@@ -1483,16 +1485,9 @@ export class MuseumArchitect {
     topRimR.position.set(glassW / 2, deckY + glassH + 0.015, 0);
     vitrineGroup.add(topRimR);
 
-    // 9. Warm Museum Spotlight Illumination inside the Showcase
-    const vitrineSpot = new THREE.SpotLight(0xfffaed, 3.2, 5.0, Math.PI / 3, 0.4, 1.2);
-    vitrineSpot.position.set(0, deckY + glassH + 0.6, 0);
-    vitrineSpot.target.position.set(0, deckY, 0);
-    vitrineGroup.add(vitrineSpot);
-    vitrineGroup.add(vitrineSpot.target);
-
-    // Subtle warm point light for sparkle
-    const vitrineGlow = new THREE.PointLight(0xffeedd, 1.2, 2.5);
-    vitrineGlow.position.set(0, deckY + 0.35, 0);
+    // 9. Single warm light for showcase (replaces SpotLight + PointLight combo)
+    const vitrineGlow = new THREE.PointLight(0xfffaed, 2.5, 5.0);
+    vitrineGlow.position.set(0, deckY + glassH + 0.3, 0);
     vitrineGroup.add(vitrineGlow);
 
     parent.add(vitrineGroup);
@@ -2103,16 +2098,15 @@ export class MuseumArchitect {
     ambientHCM.position.set(0, 7.5, 60);
     parent.add(ambientHCM);
 
-    // Track lights along the corridors
+    // Track lights — reduced from 10 to 5 with wider reach for performance
     const trackPositions = [
-      // West corridor
-      { x: -12, z: 48 }, { x: -12, z: 56 }, { x: -12, z: 64 }, { x: -12, z: 72 }, { x: -12, z: 78 },
-      // East corridor
-      { x: 12, z: 48 }, { x: 12, z: 56 }, { x: 12, z: 64 }, { x: 12, z: 72 }, { x: 12, z: 78 }
+      { x: -12, z: 52 }, { x: -12, z: 68 },
+      { x: 12, z: 52 }, { x: 12, z: 68 },
+      { x: 0, z: 75 }
     ];
 
     trackPositions.forEach(pos => {
-      const light = new THREE.PointLight(0xfff5e0, 1.2, 10);
+      const light = new THREE.PointLight(0xfff5e0, 1.8, 18);
       light.position.set(pos.x, 7.0, pos.z);
       parent.add(light);
 

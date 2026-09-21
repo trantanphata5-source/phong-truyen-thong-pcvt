@@ -292,10 +292,7 @@ export class HCMTimelineBuilder {
     plaqueMesh.position.set(0, -(photoH / 2 + 0.20), 0.04);
     group.add(plaqueMesh);
 
-    // 5. Small picture light
-    const picLight = new THREE.PointLight(0xfff5dd, 0.25, 2.5);
-    picLight.position.set(0, photoH / 2 + 0.1, 0.2);
-    group.add(picLight);
+    // Per-exhibit PointLight removed for performance — shared track lights illuminate the wall
 
     // Metadata for raycasting
     group.userData = {

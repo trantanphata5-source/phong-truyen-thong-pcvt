@@ -205,7 +205,6 @@ export class HCMExhibitBuilder {
     // 1. Heavy wooden frame (outer)
     const frameGeo = new THREE.BoxGeometry(fw + 0.28, fh + 0.28, 0.12);
     const frameMesh = new THREE.Mesh(frameGeo, this.matFrame);
-    frameMesh.castShadow = true;
     group.add(frameMesh);
 
     // 2. Gold beveled inner bezel
@@ -251,10 +250,14 @@ export class HCMExhibitBuilder {
     lampShade.position.set(0, fh / 2 + 0.28, 0.25);
     group.add(lampShade);
 
-    // Subtle downward warm gallery light onto the photo
-    const picLight = new THREE.PointLight(0xfff5dd, 0.8, 4.5);
-    picLight.position.set(0, fh / 2 + 0.20, 0.45);
-    group.add(picLight);
+    // Baked warm gallery glow — emissive lamp shade replaces per-exhibit PointLight
+    lampShade.material = new THREE.MeshStandardMaterial({
+      color: 0xc9a84c,
+      roughness: 0.3,
+      metalness: 0.7,
+      emissive: new THREE.Color(0xfff5dd),
+      emissiveIntensity: 0.6
+    });
     // 6. Brushed brass title plaque below the frame
     const plaqueCanvas = document.createElement('canvas');
     plaqueCanvas.width = 1200;

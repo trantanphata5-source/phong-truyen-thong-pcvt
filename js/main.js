@@ -36,9 +36,9 @@ class HeritageApp {
       powerPreference: 'high-performance'
     });
     this.renderer.setSize(window.innerWidth, window.innerHeight);
-    this.renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-    this.renderer.shadowMap.enabled = true;
-    this.renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+    this.renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.5));
+    // ShadowMap disabled — indoor museum with wall-mounted exhibits has no visible shadows
+    this.renderer.shadowMap.enabled = false;
     this.renderer.toneMapping = THREE.ACESFilmicToneMapping;
     this.renderer.toneMappingExposure = 1.15;
     this.renderer.outputColorSpace = THREE.SRGBColorSpace;
@@ -145,15 +145,21 @@ class HeritageApp {
     this.camera.aspect = window.innerWidth / window.innerHeight;
     this.camera.updateProjectionMatrix();
     this.renderer.setSize(window.innerWidth, window.innerHeight);
-    this.renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    this.renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.5));
   }
 
   onMouseMove(e) {
     this.mouse.x = (e.clientX / window.innerWidth) * 2 - 1;
     this.mouse.y = -(e.clientY / window.innerHeight) * 2 + 1;
 
-    // Raycast check
-    this.checkRaycast();
+    // Throttled raycast (max 15 fps instead of every mousemove)
+    if (!this._raycastPending) {
+      this._raycastPending = true;
+      requestAnimationFrame(() => {
+        this.checkRaycast();
+        this._raycastPending = false;
+      });
+    }
   }
 
   checkRaycast() {
