@@ -1,0 +1,505 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>Phòng Truyền Thống Số Hóa 3D - Công Ty Điện Lực Vũng Tàu (EVNHCMC)</title>
+  <meta name="description" content="Không gian ảo 3D trưng bày 205 Huân chương, Bằng khen và Cờ thi đua kỷ niệm 40 năm xây dựng và phát triển Công ty Điện lực Vũng Tàu (trực thuộc Tổng công ty Điện lực TP. Hồ Chí Minh - EVNHCMC)." />
+  
+  <link rel="icon" type="image/png" href="assets/logo.png" />
+  <!-- Google Fonts: Inter & Playfair Display (Full Vietnamese Diacritics Support) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Playfair+Display:ital,wght@0,600;0,700;0,800;0,900;1,600;1,700&display=swap" rel="stylesheet">
+  
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+  
+  <link rel="stylesheet" href="css/style.css" />
+
+  <script type="importmap">
+  {
+    "imports": {
+      "three": "https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js",
+      "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/"
+    }
+  }
+  </script>
+</head>
+<body class="loading-active">
+  <!-- 3D Canvas -->
+  <div id="canvas-container"></div>
+
+  <!-- Loading Screen -->
+  <div id="loading-screen" class="loading-screen">
+    <div class="loading-card">
+      <div class="loading-emblem">
+        <div class="emblem-ring ring-outer"></div>
+        <div class="emblem-ring ring-inner"></div>
+        <img src="assets/logo.png" alt="EVNHCMC Logo" class="loading-logo-img" />
+      </div>
+      <div class="loading-subtitle">TỔNG CÔNG TY ĐIỆN LỰC THÀNH PHỐ HỒ CHÍ MINH (EVNHCMC)</div>
+      <h1 class="loading-title">CÔNG TY ĐIỆN LỰC VŨNG TÀU</h1>
+      <h2 class="loading-room-name">PHÒNG TRUYỀN THỐNG SỐ HÓA 3D (1985 - 2025)</h2>
+      <p class="loading-desc">Không gian vinh danh 40 năm xây dựng và phát triển<br>Trưng bày đầy đủ 205 Bằng khen, Huân chương & Cờ thi đua các thời kỳ</p>
+      
+      <div class="loading-bar-wrap">
+        <div class="loading-bar" id="loading-bar"></div>
+      </div>
+      <div class="loading-status" id="loading-status">Đang tải kiến trúc phòng truyền thống 3D... (0%)</div>
+
+      <button id="btn-enter" class="btn-enter hidden">
+        <span>BƯỚC VÀO THAM QUAN</span>
+        <i data-lucide="compass"></i>
+      </button>
+      <div class="loading-tips">
+        <span><i data-lucide="mouse-pointer-click"></i> <b>Chạm sàn</b> để bước tới • <b>Kéo chuột</b> để xoay góc nhìn</span>
+        <span><i data-lucide="search"></i> <b>Nhấp vào hiện vật</b> để tiến lại gần chiêm ngưỡng</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Top Navigation Header -->
+  <header class="hud-header" id="hud-header">
+    <div class="header-left">
+      <div class="brand-badge">
+        <div class="logo-box">
+          <img src="assets/logo.png" alt="EVNHCMC Logo" class="brand-logo-img" />
+        </div>
+        <div class="brand-text">
+          <span class="brand-title">CÔNG TY ĐIỆN LỰC VŨNG TÀU</span>
+          <span class="brand-sub">TỔNG CÔNG TY ĐIỆN LỰC TP. HỒ CHÍ MINH (EVNHCMC)</span>
+        </div>
+      </div>
+
+      <button id="btn-pills-toggle" class="header-icon-btn" title="Hiện/Ẩn thanh điều hướng khu vực">
+        <i data-lucide="layout-grid"></i>
+      </button>
+    </div>
+
+
+
+    <div class="header-right">
+      <button id="btn-filter-toggle" class="header-icon-btn" title="Tìm kiếm & Danh mục (205 hiện vật)">
+        <i data-lucide="search"></i>
+        <span class="badge-count" id="filter-badge">205</span>
+      </button>
+      <button id="btn-minimap-toggle" class="header-icon-btn active" title="Bật/Tắt sơ đồ phòng">
+        <i data-lucide="map"></i>
+      </button>
+      <button id="btn-audio-toggle" class="header-icon-btn" title="Bật/Tắt âm thanh">
+        <i data-lucide="volume-2" id="icon-audio"></i>
+      </button>
+      <button id="btn-help-toggle" class="header-icon-btn" title="Hướng dẫn điều khiển">
+        <i data-lucide="help-circle"></i>
+      </button>
+      <button id="btn-fullscreen" class="header-icon-btn" title="Toàn màn hình">
+        <i data-lucide="maximize" id="icon-fullscreen"></i>
+      </button>
+    </div>
+  </header>
+
+  <!-- Collapsible Hall Navigation Pills Bar -->
+  <div class="pills-bar collapsed" id="pills-bar">
+    <nav class="hall-pills">
+      <button class="pill-btn active" data-hall="all">Toàn cảnh</button>
+      <button class="pill-btn" data-hall="hall_1">Khu 1: Nhà Nước &amp; EVN</button>
+      <button class="pill-btn" data-hall="hall_2">Khu 2: Tỉnh BR-VT</button>
+      <button class="pill-btn" data-hall="hall_3">Khu 3: Công Đoàn</button>
+      <button class="pill-btn pill-btn-red" id="btn-nav-hcm" data-hall="hcm" title="Không gian Văn hóa Hồ Chí Minh"><i data-lucide="star"></i> Văn Hóa HCM</button>
+      <button class="pill-btn pill-btn-gold" id="btn-nav-albums" title="Tủ Album Kỷ Niệm"><i data-lucide="book-open"></i> Album (107)</button>
+    </nav>
+  </div>
+  <!-- Minimap (Artsteps Floating Widget) -->
+  <div class="minimap-card" id="minimap-card">
+    <div class="minimap-title">
+      <span><i data-lucide="compass"></i> SƠ ĐỒ BẢO TÀNG</span>
+      <button id="btn-close-minimap" class="btn-tiny"><i data-lucide="x"></i></button>
+    </div>
+    <div class="minimap-viewport">
+      <svg id="minimap-svg" viewBox="-52 -52 104 140" class="minimap-svg">
+        <defs>
+          <marker id="arrow-head" markerWidth="6" markerHeight="4" refX="3" refY="2" orient="auto">
+            <polygon points="0,0 6,2 0,4" fill="rgba(59,130,246,0.8)" />
+          </marker>
+        </defs>
+
+        <!-- Background fill for entire museum -->
+        <rect x="-50" y="-50" width="100" height="135" rx="1" fill="rgba(255,255,255,0.03)" stroke="none" />
+
+        <!-- ====== HALL 1: North Wing (Nhà Nước & EVN) ====== -->
+        <g class="hall-zone" data-hall="hall_1" style="cursor:pointer;">
+          <!-- Room fill -->
+          <rect x="-29" y="-44" width="58" height="24" fill="rgba(255,255,255,0.06)" />
+          <!-- Walls (thin lines) -->
+          <line x1="-29" y1="-44" x2="29" y2="-44" stroke="rgba(255,255,255,0.5)" stroke-width="1.2" />
+          <line x1="-29" y1="-44" x2="-29" y2="-20" stroke="rgba(255,255,255,0.5)" stroke-width="1.2" />
+          <line x1="29" y1="-44" x2="29" y2="-20" stroke="rgba(255,255,255,0.5)" stroke-width="1.2" />
+          <!-- Top wall with entrance gap -->
+          <line x1="-29" y1="-20" x2="-6" y2="-20" stroke="rgba(255,255,255,0.5)" stroke-width="1.2" />
+          <line x1="6" y1="-20" x2="29" y2="-20" stroke="rgba(255,255,255,0.5)" stroke-width="1.2" />
+        </g>
+        <text x="0" y="-30" class="hall-label" font-size="3.6">KHU 1</text>
+
+        <!-- ====== HALL 2: West Wing (Tỉnh BR-VT) ====== -->
+        <g class="hall-zone" data-hall="hall_2" style="cursor:pointer;">
+          <rect x="-44" y="-17" width="28" height="40" fill="rgba(255,255,255,0.06)" />
+          <line x1="-44" y1="-17" x2="-16" y2="-17" stroke="rgba(255,255,255,0.5)" stroke-width="1.2" />
+          <line x1="-44" y1="-17" x2="-44" y2="23" stroke="rgba(255,255,255,0.5)" stroke-width="1.2" />
+          <line x1="-44" y1="23" x2="-16" y2="23" stroke="rgba(255,255,255,0.5)" stroke-width="1.2" />
+          <!-- East wall with doorway -->
+          <line x1="-16" y1="-17" x2="-16" y2="-3" stroke="rgba(255,255,255,0.5)" stroke-width="1.2" />
+          <line x1="-16" y1="7" x2="-16" y2="23" stroke="rgba(255,255,255,0.5)" stroke-width="1.2" />
+        </g>
+        <text x="-30" y="4" class="hall-label" font-size="3.2">KHU 2</text>
+
+        <!-- ====== HALL 3: East Wing (Công Đoàn) ====== -->
+        <g class="hall-zone" data-hall="hall_3" style="cursor:pointer;">
+          <rect x="16" y="-17" width="28" height="40" fill="rgba(255,255,255,0.06)" />
+          <line x1="16" y1="-17" x2="44" y2="-17" stroke="rgba(255,255,255,0.5)" stroke-width="1.2" />
+          <line x1="44" y1="-17" x2="44" y2="23" stroke="rgba(255,255,255,0.5)" stroke-width="1.2" />
+          <line x1="16" y1="23" x2="44" y2="23" stroke="rgba(255,255,255,0.5)" stroke-width="1.2" />
+          <!-- West wall with doorway -->
+          <line x1="16" y1="-17" x2="16" y2="-3" stroke="rgba(255,255,255,0.5)" stroke-width="1.2" />
+          <line x1="16" y1="7" x2="16" y2="23" stroke="rgba(255,255,255,0.5)" stroke-width="1.2" />
+        </g>
+        <text x="30" y="4" class="hall-label" font-size="3.2">KHU 3</text>
+
+        <!-- ====== ROTUNDA (Central Atrium) ====== -->
+        <g class="rotunda-zone" data-hall="rotunda" style="cursor:pointer;">
+          <circle cx="0" cy="3" r="8" fill="rgba(212,175,55,0.08)" stroke="rgba(212,175,55,0.3)" stroke-width="0.8" />
+        </g>
+        <text x="0" y="4.5" class="hall-label" font-size="2.8" fill="rgba(212,175,55,0.7)">ĐÀI HOA</text>
+
+        <!-- ====== HALL 4: South Wing (HCM Cultural Zone) ====== -->
+        <g class="hall-zone hcm-zone" data-hall="hcm" style="cursor:pointer;">
+          <rect x="-21" y="30" width="42" height="44" fill="rgba(107,21,32,0.15)" />
+          <!-- Walls -->
+          <line x1="-21" y1="74" x2="21" y2="74" stroke="#d4af37" stroke-width="1.2" />
+          <line x1="-21" y1="30" x2="-21" y2="74" stroke="#d4af37" stroke-width="1.2" />
+          <line x1="21" y1="30" x2="21" y2="74" stroke="#d4af37" stroke-width="1.2" />
+          <!-- North wall with entrance gap -->
+          <line x1="-21" y1="30" x2="-5" y2="30" stroke="#d4af37" stroke-width="1.2" />
+          <line x1="5" y1="30" x2="21" y2="30" stroke="#d4af37" stroke-width="1.2" />
+        </g>
+        <text x="0" y="54" class="hall-label" font-size="3" fill="#eab308">VĂN HÓA HCM</text>
+
+        <!-- ====== Corridor / Connection paths ====== -->
+        <line x1="-15" y1="23" x2="-15" y2="30" stroke="rgba(255,255,255,0.15)" stroke-width="0.5" stroke-dasharray="1,1" />
+        <line x1="15" y1="23" x2="15" y2="30" stroke="rgba(255,255,255,0.15)" stroke-width="0.5" stroke-dasharray="1,1" />
+
+        <!-- ====== PLAYER MARKER with direction cone ====== -->
+        <g id="player-marker">
+          <!-- Viewing direction cone (FOV triangle) -->
+          <polygon id="player-cone" points="0,12 -5,20 5,20" class="player-cone" />
+          <!-- Direction arrow line -->
+          <line id="player-dir-line" x1="0" y1="20" x2="0" y2="14" stroke="rgba(59,130,246,0.6)" stroke-width="0.7" />
+          <!-- Player dot -->
+          <circle cx="0" cy="20" r="2.8" class="player-dot" />
+          <!-- Inner glow dot -->
+          <circle cx="0" cy="20" r="1.2" fill="rgba(59,130,246,0.9)" />
+        </g>
+      </svg>
+    </div>
+  </div>
+
+  <!-- Artsteps Floating Exhibit Card (Slide-in right panel, ZERO lag) -->
+  <aside class="exhibit-card hidden" id="exhibit-card">
+    <button class="card-close-btn" id="btn-close-card" title="Đóng thông tin">
+      <i data-lucide="x"></i>
+    </button>
+
+    <div class="card-media">
+      <img id="card-img" src="" alt="Hiện vật" class="card-image" />
+      <button id="btn-open-lightbox" class="btn-zoom-overlay" title="Phóng to toàn màn hình">
+        <i data-lucide="maximize-2"></i> Phóng to
+      </button>
+    </div>
+
+    <div class="card-body">
+      <div class="card-tags">
+        <span class="card-tag type-tag" id="card-type-tag">Bằng khen</span>
+        <span class="card-tag year-tag" id="card-year-tag">2014</span>
+      </div>
+
+      <h3 class="card-title" id="card-title">Tên hiện vật</h3>
+
+      <div class="card-org-row">
+        <div class="org-icon" id="card-org-icon">🏛</div>
+        <div class="org-info">
+          <span class="org-sub">ĐƠN VỊ TRAO TẶNG</span>
+          <span class="org-title" id="card-org-name">Tên đơn vị</span>
+        </div>
+      </div>
+
+      <p class="card-desc" id="card-description">Mô tả ý nghĩa và mốc son lịch sử...</p>
+
+      <!-- Matching Pairs / Cohort (Cùng năm & cùng cơ quan) -->
+      <div class="card-cohort-box" id="card-cohort-box">
+        <span class="cohort-title"><i data-lucide="layers"></i> CÙNG NĂM & CÙNG BỘ</span>
+        <div class="cohort-items" id="card-cohort-items">
+          <!-- Populated dynamically -->
+        </div>
+      </div>
+
+      <div class="card-actions">
+        <a id="card-orig-link" href="#" target="_blank" class="card-btn secondary">
+          <i data-lucide="external-link"></i> Xem file gốc
+        </a>
+      </div>
+    </div>
+  </aside>
+
+  <!-- Artsteps Bottom Guided Tour Ribbon -->
+  <footer class="tour-ribbon" id="tour-ribbon">
+    <div class="tour-controls">
+      <button id="btn-tour-prev" class="tour-nav-btn" title="Hiện vật trước">
+        <i data-lucide="chevron-left"></i>
+      </button>
+      <button id="btn-tour-play" class="tour-play-btn" title="Tham quan tự động">
+        <i data-lucide="play" id="icon-tour-play"></i>
+      </button>
+      <button id="btn-tour-next" class="tour-nav-btn" title="Hiện vật tiếp theo">
+        <i data-lucide="chevron-right"></i>
+      </button>
+
+      <div class="tour-step-counter">
+        <span class="step-num" id="tour-step-text">1 / 205</span>
+        <span class="step-label">HIỆN VẬT</span>
+      </div>
+    </div>
+
+    <!-- Scrollable Carousel Strip of Exhibit Thumbnails -->
+    <div class="tour-carousel" id="tour-carousel">
+      <!-- Populated via JS with 205 mini cards -->
+    </div>
+  </footer>
+
+  <!-- Catalog & Filter Drawer (Left Side) -->
+  <aside class="catalog-drawer hidden" id="catalog-drawer">
+    <div class="drawer-header">
+      <div class="drawer-title">
+        <i data-lucide="sliders-horizontal"></i>
+        <span>DANH MỤC HIỆN VẬT (205)</span>
+      </div>
+      <button id="btn-close-drawer" class="btn-tiny"><i data-lucide="x"></i></button>
+    </div>
+
+    <div class="drawer-body">
+      <!-- Search Input -->
+      <div class="search-box">
+        <i data-lucide="search" class="search-icon"></i>
+        <input type="text" id="search-input" placeholder="Tìm kiếm theo năm, cơ quan, tên giải..." autocomplete="off" value="" />
+        <button id="btn-clear-search" class="clear-icon hidden"><i data-lucide="x"></i></button>
+      </div>
+
+      <!-- Quick Reset All Button -->
+      <button id="btn-reset-all" class="btn-reset-all">
+        <i data-lucide="rotate-ccw"></i> Xem tất cả 205 hiện vật
+      </button>
+
+      <!-- Cohort Pairs Only Toggle -->
+      <div class="pair-toggle-box">
+        <label class="pair-toggle-label">
+          <input type="checkbox" id="chk-pairs-only">
+          <span class="toggle-switch"></span>
+          <div class="toggle-text">
+            <strong>Bằng khen & Cờ cùng năm</strong>
+            <small>Chỉ hiện các năm đạt cả Cờ và Bằng khen</small>
+          </div>
+        </label>
+      </div>
+
+      <!-- Category Filter -->
+      <div class="filter-group">
+        <span class="group-label">PHÂN LOẠI</span>
+        <div class="chip-row">
+          <button class="chip active" data-category="all">Tất cả (205)</button>
+          <button class="chip" data-category="BẰNG KHEN">Bằng khen (129)</button>
+          <button class="chip" data-category="CỜ">Cờ thi đua (76)</button>
+        </div>
+      </div>
+
+      <!-- Authority Filter -->
+      <div class="filter-group">
+        <span class="group-label">CƠ QUAN TRAO TẶNG</span>
+        <div class="org-list">
+          <button class="org-item active" data-org="all">Tất cả đơn vị</button>
+          <button class="org-item" data-org="CTN">★ Chủ tịch Nước (Huân chương)</button>
+          <button class="org-item" data-org="TTCP">★ Thủ tướng Chính phủ</button>
+          <button class="org-item" data-org="EVN">⚡ Tập đoàn Điện lực VN (EVN)</button>
+          <button class="org-item" data-org="EVNSPC">⚡ Tổng công ty ĐL TP.HCM (EVNHCMC)</button>
+          <button class="org-item" data-org="UBND_BRVT">🏛 UBND tỉnh BR-VT</button>
+          <button class="org-item" data-org="UBND_TPVT">🏛 UBND TP. Vũng Tàu</button>
+          <button class="org-item" data-org="CD_EVN">🚩 Công đoàn Điện lực VN</button>
+          <button class="org-item" data-org="CD_EVNSPC">🚩 Công đoàn EVNHCMC</button>
+          <button class="org-item" data-org="LDLD_BRVT">🚩 LĐLĐ tỉnh BR-VT</button>
+        </div>
+      </div>
+
+      <!-- Results Count & List -->
+      <div class="filter-group">
+        <div class="results-header">
+          <span class="group-label">KẾT QUẢ TÌM KIẾM</span>
+          <span class="results-counter" id="results-count">205 hiện vật</span>
+        </div>
+        <div class="catalog-list" id="catalog-list">
+          <!-- Populated by JS -->
+        </div>
+      </div>
+    </div>
+  </aside>
+
+  <!-- Fullscreen Lightbox Modal (Crisp, High Performance, Zero Lag) -->
+  <div class="lightbox-modal hidden" id="lightbox-modal">
+    <button class="lightbox-close" id="btn-close-lightbox"><i data-lucide="x"></i></button>
+    <div class="lightbox-content">
+      <img id="lightbox-img" src="" alt="Phóng to hiện vật" class="lightbox-image" />
+      <div class="lightbox-caption" id="lightbox-caption">Tên hiện vật</div>
+    </div>
+  </div>
+
+  <!-- Realistic 3D Page Turn Album Modal (Ảnh Lưu Niệm & Tranh Tặng) -->
+  <div class="album-modal-overlay hidden" id="album-modal">
+    <div class="album-viewer-container">
+      <!-- Top Action Bar -->
+      <div class="album-header-bar">
+        <div class="album-title-group">
+          <div class="album-emblem-icon">📖</div>
+          <div class="album-heading-text">
+            <h2 id="album-title-text">ALBUM ẢNH TƯ LIỆU & LƯU NIỆM</h2>
+            <p id="album-subtitle-text">1985 - 2025 • 40 NĂM XÂY DỰNG & PHÁT TRIỂN</p>
+          </div>
+        </div>
+        <div class="album-top-actions">
+          <button class="btn-album-switch" id="btn-album-switch" title="Chuyển đổi giữa 2 Album">
+            <i data-lucide="book-open"></i>
+            <span>Chuyển sang: Tranh Tặng (49 Tranh)</span>
+          </button>
+          <button class="btn-album-put-down" id="btn-album-put-down" title="Đặt album xuống tủ kính và tiếp tục tham quan (Phím ESC)">
+            <i data-lucide="corner-down-left"></i>
+            <span>ĐẶT LẠI TỦ KÍNH</span>
+            <kbd class="key-badge">ESC</kbd>
+          </button>
+        </div>
+      </div>
+
+      <!-- Center 3D Book Stage -->
+      <div class="album-book-stage" id="album-book-stage" data-theme="souvenir_photos">
+        <!-- Navigation Arrow Left -->
+        <button class="album-nav-arrow arrow-left" id="btn-album-prev" title="Lật trang trước (Phím ←)">
+          <i data-lucide="chevron-left"></i>
+        </button>
+
+        <!-- Hardbound Book Leather Frame -->
+        <div class="album-book-wrapper">
+          <div class="album-book-cover" id="album-book-cover"></div>
+          <div class="album-book-spread" id="album-book-spread">
+            <!-- Left Page -->
+            <div class="album-page page-left" id="album-page-left">
+              <!-- Rendered by JS -->
+            </div>
+            <!-- Dynamic 3D Turning Leaf (Dual-sided page flipper) -->
+            <div class="album-flip-leaf hidden" id="album-flip-leaf">
+              <div class="flip-face flip-front" id="flip-face-front"></div>
+              <div class="flip-face flip-back" id="flip-face-back"></div>
+              <div class="flip-page-shadow" id="flip-page-shadow"></div>
+            </div>
+            <!-- Center Spine Shadow & Binding Crease -->
+            <div class="album-spine-shadow"></div>
+            <!-- Right Page -->
+            <div class="album-page page-right" id="album-page-right">
+              <!-- Rendered by JS -->
+            </div>
+          </div>
+        </div>
+
+        <!-- Navigation Arrow Right -->
+        <button class="album-nav-arrow arrow-right" id="btn-album-next" title="Lật trang tiếp theo (Phím → hoặc Space)">
+          <i data-lucide="chevron-right"></i>
+        </button>
+      </div>
+
+      <!-- Bottom Controller Toolbar -->
+      <div class="album-bottom-bar">
+        <!-- Period / Category Quick Filter Chips -->
+        <div class="album-period-chips" id="album-period-chips">
+          <!-- Populated by JS -->
+        </div>
+
+        <!-- Page Scrubber & Counter -->
+        <div class="album-scrubber-group">
+          <span class="album-page-indicator" id="album-page-indicator">Trang 1 - 2 / 59</span>
+          <input type="range" class="album-page-scrubber" id="album-page-scrubber" min="0" max="29" value="0" />
+        </div>
+
+        <div class="album-hint-text">
+          <i data-lucide="info"></i>
+          <span><b>Phím [← / →]</b>: Lật trang • <b>[ESC]</b>: Đặt album xuống • <b>Nhấp vào ảnh</b>: Phóng to chi tiết</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Fullscreen Photo Zoom Lightbox (Bấm vào mỗi ảnh sẽ mở to ra) -->
+  <div class="album-photo-modal hidden" id="album-photo-modal">
+    <div class="album-photo-card">
+      <button class="btn-close-photo-modal" id="btn-close-album-photo" title="Đóng (ESC)">
+        <i data-lucide="x"></i>
+      </button>
+      <div class="album-photo-img-wrap">
+        <img src="" alt="Ảnh tư liệu phóng to" class="album-photo-full-img" id="album-photo-img" />
+      </div>
+      <div class="album-photo-meta">
+        <span class="album-photo-badge" id="album-photo-year">NĂM 1997</span>
+        <h3 class="album-photo-full-title" id="album-photo-title">Tiêu đề ảnh phóng to</h3>
+        <p class="album-photo-full-desc" id="album-photo-desc">Mô tả tư liệu lịch sử</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Help / Guide Modal -->
+  <div class="help-modal hidden" id="help-modal">
+    <div class="help-card">
+      <div class="help-header">
+        <h3><i data-lucide="compass"></i> HƯỚNG DẪN THAM QUAN PHÒNG TRUYỀN THỐNG</h3>
+        <button id="btn-close-help" class="btn-tiny"><i data-lucide="x"></i></button>
+      </div>
+      <div class="help-content">
+        <div class="help-step">
+          <div class="step-icon"><i data-lucide="mouse-pointer-click"></i></div>
+          <div class="step-info">
+            <strong>Chạm Sàn Để Bước Tới (Point & Click to Walk)</strong>
+            <p>Nhấp chuột vào bất kỳ điểm nào trên mặt sàn bảo tàng để tự động bước tới vị trí đó.</p>
+          </div>
+        </div>
+        <div class="help-step">
+          <div class="step-icon"><i data-lucide="move"></i></div>
+          <div class="step-info">
+            <strong>Kéo Chuột Để Xoay Nhìn 360°</strong>
+            <p>Nhấn giữ chuột trái và kéo nhẹ để xoay tầm mắt mượt mà quanh không gian trưng bày.</p>
+          </div>
+        </div>
+        <div class="help-step">
+          <div class="step-icon"><i data-lucide="search"></i></div>
+          <div class="step-info">
+            <strong>Xem Bằng Khen & Cờ Thi Đua</strong>
+            <p>Nhấp trực tiếp vào bất kỳ khung tranh hoặc lá cờ nào để camera tự động tiến lại gần chiêm ngưỡng chi tiết.</p>
+          </div>
+        </div>
+        <div class="help-step">
+          <div class="step-icon"><i data-lucide="play"></i></div>
+          <div class="step-info">
+            <strong>Thanh Tham Quan Tự Động (Tour Ribbon)</strong>
+            <p>Sử dụng thanh ảnh bên dưới để bấm chuyển nhanh giữa các hiện vật hoặc bấm nút Play để tham quan tự động.</p>
+          </div>
+        </div>
+      </div>
+      <button id="btn-guide-ok" class="btn-guide-ok">BẮT ĐẦU KHÁM PHÁ</button>
+    </div>
+  </div>
+
+  <!-- App Entry -->
+  <script type="module" src="js/main.js?v=chuanhoa_v4"></script>
+</body>
+</html>

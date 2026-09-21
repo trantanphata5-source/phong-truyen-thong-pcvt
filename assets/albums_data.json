@@ -1,0 +1,2719 @@
+{
+  "albums": {
+    "souvenir_photos": {
+      "id": "souvenir_photos",
+      "title": "Album Ảnh Tư Liệu & Lưu Niệm",
+      "short_title": "Ảnh Lưu Niệm",
+      "subtitle": "1985 - 2025 • 40 Năm Xây Dựng & Phát Triển",
+      "cover_color": "#7f1d1d",
+      "cover_accent": "#facc15",
+      "total_items": 58,
+      "total_pages": 59,
+      "pages": [
+        {
+          "type": "intro",
+          "title": "TẬP ẢNH TƯ LIỆU & LƯU NIỆM",
+          "subtitle": "CÔNG TY ĐIỆN LỰC VŨNG TÀU (1985 - 2025)",
+          "desc": "Tuyển tập những khoảnh khắc lịch sử, hoạt động sản xuất kinh doanh, phong trào thi đua và các sự kiện ghi dấu hành trình 40 năm xây dựng và phát triển."
+        },
+        {
+          "type": "photo",
+          "item": {
+            "id": "souvenir_046",
+            "filename": "Tổng kết công tác năm 1985 - Côn Đảo.JPG",
+            "title": "Tổng kết công tác năm 1985 - Côn Đảo",
+            "year": 1985,
+            "aspect_ratio": 1.4685,
+            "width": 1200,
+            "height": 817,
+            "src": "assets/albums/souvenir_photos/photo_046.webp",
+            "original_filename": "Tổng kết công tác năm 1985 - Côn Đảo.JPG"
+          }
+        },
+        {
+          "type": "photo",
+          "item": {
+            "id": "souvenir_001",
+            "filename": "1997_Hội nghị làm việc ngày 18-9-1997.jpg",
+            "title": "Hội nghị làm việc ngày 18-9-1997",
+            "year": 1997,
+            "aspect_ratio": 1.7465,
+            "width": 1200,
+            "height": 687,
+            "src": "assets/albums/souvenir_photos/photo_001.webp",
+            "original_filename": "1997_Hội nghị làm việc ngày 18-9-1997.jpg"
+          }
+        },
+        {
+          "type": "photo",
+          "item": {
+            "id": "souvenir_002",
+            "filename": "1997_Hội thi ATVSV giỏi lần IV - Trao giải thưởng.jpg",
+            "title": "Hội thi ATVSV giỏi lần IV - Trao giải thưởng",
+            "year": 1997,
+            "aspect_ratio": 1.5287,
+            "width": 1200,
+            "height": 784,
+            "src": "assets/albums/souvenir_photos/photo_002.webp",
+            "original_filename": "1997_Hội thi ATVSV giỏi lần IV - Trao giải thưởng.jpg"
+          }
+        },
+        {
+          "type": "photo",
+          "item": {
+            "id": "souvenir_003",
+            "filename": "1997_Hội thi ATVSV giỏi lần IV - Đội Chi nhánh Điện Bà Rịa nhận hoa.jpg",
+            "title": "Hội thi ATVSV giỏi lần IV - Đội Chi nhánh Điện Bà Rịa nhận hoa",
+            "year": 1997,
+            "aspect_ratio": 1.5583,
+            "width": 1200,
+            "height": 770,
+            "src": "assets/albums/souvenir_photos/photo_003.webp",
+            "original_filename": "1997_Hội thi ATVSV giỏi lần IV - Đội Chi nhánh Điện Bà Rịa nhận hoa.jpg"
+          }
+        },
+        {
+          "type": "photo",
+          "item": {
+            "id": "souvenir_004",
+            "filename": "1998_Hội nghị tổng kết công tác SXKD - Báo cáo tại hội trường.jpg",
+            "title": "Hội nghị tổng kết công tác SXKD - Báo cáo tại hội trường",
+            "year": 1998,
+            "aspect_ratio": 1.3385,
+            "width": 1200,
+            "height": 896,
+            "src": "assets/albums/souvenir_photos/photo_004.webp",
+            "original_filename": "1998_Hội nghị tổng kết công tác SXKD - Báo cáo tại hội trường.jpg"
+          }
+        },
+        {
+          "type": "photo",
+          "item": {
+            "id": "souvenir_005",
+            "filename": "1998_Hội nghị tổng kết công tác SXKD - Khen thưởng cá nhân.jpg",
+            "title": "Hội nghị tổng kết công tác SXKD - Khen thưởng cá nhân",
+            "year": 1998,
+            "aspect_ratio": 1.4803,
+            "width": 1200,
+            "height": 810,
+            "src": "assets/albums/souvenir_photos/photo_005.webp",
+            "original_filename": "1998_Hội nghị tổng kết công tác SXKD - Khen thưởng cá nhân.jpg"
+          }
+        },
+        {
+          "type": "photo",
+          "item": {
+            "id": "souvenir_006",
+            "filename": "1998_Đại hội đại biểu Công đoàn Điện lực BR-VT - Ban Chấp hành ra mắt.JPG",
+            "title": "Đại hội đại biểu Công đoàn Điện lực BR-VT - Ban Chấp hành ra mắt",
+            "year": 1998,
+            "aspect_ratio": 1.5009,
+            "width": 1200,
+            "height": 799,
+            "src": "assets/albums/souvenir_photos/photo_006.webp",
+            "original_filename": "1998_Đại hội đại biểu Công đoàn Điện lực BR-VT - Ban Chấp hành ra mắt.JPG"
+          }
+        },
+        {
+          "type": "photo",
+          "item": {
+            "id": "souvenir_008",
+            "filename": "1999_Lễ kết nạp Đảng viên mới.jpg",
+            "title": "Lễ kết nạp Đảng viên mới",
+            "year": 1999,
+            "aspect_ratio": 1.3575,
+            "width": 1200,
+            "height": 883,
+            "src": "assets/albums/souvenir_photos/photo_008.webp",
+            "original_filename": "1999_Lễ kết nạp Đảng viên mới.jpg"
+          }
+        },
+        {
+          "type": "photo",
+          "item": {
+            "id": "souvenir_007",
+            "filename": "1999_Lễ kết nạp Đảng viên mới 1999 (1).JPG",
+            "title": "Lễ kết nạp Đảng viên mới 1999",
+            "year": 1999,
+            "aspect_ratio": 1.3444,
+            "width": 1200,
+            "height": 892,
+            "src": "assets/albums/souvenir_photos/photo_007.webp",
+            "original_filename": "1999_Lễ kết nạp Đảng viên mới 1999 (1).JPG"
+          }
+        },
+        {
+          "type": "photo",
+          "item": {
+            "id": "souvenir_032",
+            "filename": "Hội thi kiến thưc pháp luật kiến thức gia đình 2001 (2).jpg",
+            "title": "Hội thi kiến thưc pháp luật kiến thức gia đình 2001",
+            "year": 2001,
+            "aspect_ratio": 1.3323,
+            "width": 1200,
+            "height": 900,
+            "src": "assets/albums/souvenir_photos/photo_032.webp",
+            "original_filename": "Hội thi kiến thưc pháp luật kiến thức gia đình 2001 (2).jpg"
+          }
+        },
+        {
+          "type": "photo",
+          "item": {
+            "id": "souvenir_033",
+            "filename": "Hội thi kiến thưc pháp luật kiến thức gia đình 2001.jpg",
+            "title": "Hội thi kiến thưc pháp luật kiến thức gia đình 2001",
+            "year": 2001,
+            "aspect_ratio": 1.3356,
+            "width": 1200,
+            "height": 898,
+            "src": "assets/albums/souvenir_photos/photo_033.webp",
+            "original_filename": "Hội thi kiến thưc pháp luật kiến thức gia đình 2001.jpg"
+          }
+        },
+        {
+          "type": "photo",
+          "item": {
+            "id": "souvenir_034",
+            "filename": "Hội thi thợ giỏi thanh niên công nhân đường dây 2001.jpg",
+            "title": "Hội thi thợ giỏi thanh niên công nhân đường dây 2001",
+            "year": 2001,
+            "aspect_ratio": 1.347,
+            "width": 1200,
+            "height": 890,
+            "src": "assets/albums/souvenir_photos/photo_034.webp",
+            "original_filename": "Hội thi thợ giỏi thanh niên công nhân đường dây 2001.jpg"
+          }
+        },
+        {
+          "type": "photo",
+          "item": {
+            "id": "souvenir_009",
+            "filename": "2003_Hội nghị tổng kết công tác năm 2003 và triển khai kế hoạch năm 2004.jpg",
+            "title": "Hội nghị tổng kết công tác năm 2003 và triển khai kế hoạch năm 2004",
+            "year": 2003,
+            "aspect_ratio": 1.4975,
+            "width": 1200,
+            "height": 801,
+            "src": "assets/albums/souvenir_photos/photo_009.webp",
+            "original_filename": "2003_Hội nghị tổng kết công tác năm 2003 và triển khai kế hoạch năm 2004.jpg"
+          }
+        },
+        {
+          "type": "photo",
+          "item": {
+            "id": "souvenir_010",
+            "filename": "2004_Giải quần vợt Điện lực BR-VT lần 2 - Chào mừng ngày truyền thống ngành Điện.jpg",
+            "title": "Giải quần vợt Điện lực BR-VT lần 2 - Chào mừng ngày truyền thống ngành Điện",
+            "year": 2004,
+            "aspect_ratio": 1.474,
+            "width": 1200,
+            "height": 814,
+            "src": "assets/albums/souvenir_photos/photo_010.webp",
+            "original_filename": "2004_Giải quần vợt Điện lực BR-VT lần 2 - Chào mừng ngày truyền thống ngành Điện.jpg"
+          }
+        },
+        {
+          "type": "photo",
+          "item": {
+            "id": "souvenir_011",
+            "filename": "2004_Đại hội Chi bộ Khối Văn phòng lần I - Bỏ phiếu bầu cử (1).jpg",
+            "title": "Đại hội Chi bộ Khối Văn phòng lần I - Bỏ phiếu bầu cử",
+            "year": 2004,
+            "aspect_ratio": 1.6852,
+            "width": 1200,
+            "height": 712,
+            "src": "assets/albums/souvenir_photos/photo_011.webp",
+            "original_filename": "2004_Đại hội Chi bộ Khối Văn phòng lần I - Bỏ phiếu bầu cử (1).jpg"
+          }
+        },
+        {
+          "type": "photo",
+          "item": {
+            "id": "souvenir_012",
+            "filename": "2004_Đại hội Chi bộ Khối Văn phòng lần I - Bỏ phiếu bầu cử (2).jpg",
+            "title": "Đại hội Chi bộ Khối Văn phòng lần I - Bỏ phiếu bầu cử",
+            "year": 2004,
+            "aspect_ratio": 1.6009,
+            "width": 1200,
+            "height": 749,
+            "src": "assets/albums/souvenir_photos/photo_012.webp",
+            "original_filename": "2004_Đại hội Chi bộ Khối Văn phòng lần I - Bỏ phiếu bầu cử (2).jpg"
+          }
+        },
+        {
+          "type": "photo",
+          "item": {
+            "id": "souvenir_013",
+            "filename": "2004_Đại hội Chi bộ Khối Văn phòng lần I - Đoàn chủ tịch.jpg",
+            "title": "Đại hội Chi bộ Khối Văn phòng lần I - Đoàn chủ tịch",
+            "year": 2004,
+            "aspect_ratio": 1.5387,
+            "width": 1200,
+            "height": 779,
+            "src": "assets/albums/souvenir_photos/photo_013.webp",
+            "original_filename": "2004_Đại hội Chi bộ Khối Văn phòng lần I - Đoàn chủ tịch.jpg"
+          }
+        },
+        {
+          "type": "photo",
+          "item": {
+            "id": "souvenir_014",
+            "filename": "2005_Đại hội đại biểu Công đoàn Điện lực BR-VT - Ban Chấp hành ra mắt.jpg",
+            "title": "Đại hội đại biểu Công đoàn Điện lực BR-VT - Ban Chấp hành ra mắt",
+            "year": 2005,
+            "aspect_ratio": 1.5136,
+            "width": 1200,
+            "height": 792,
+            "src": "assets/albums/souvenir_photos/photo_014.webp",
+            "original_filename": "2005_Đại hội đại biểu Công đoàn Điện lực BR-VT - Ban Chấp hành ra mắt.jpg"
+          }
+        },
+        {
+          "type": "photo",
+          "item": {
+            "id": "souvenir_015",
+            "filename": "2005_Đại hội đại biểu Công đoàn Điện lực BR-VT - Đoàn chủ tịch.JPG",
+            "title": "Đại hội đại biểu Công đoàn Điện lực BR-VT - Đoàn chủ tịch",
+            "year": 2005,
+            "aspect_ratio": 1.4949,
+            "width": 1200,
+            "height": 802,
+            "src": "assets/albums/souvenir_photos/photo_015.webp",
+            "original_filename": "2005_Đại hội đại biểu Công đoàn Điện lực BR-VT - Đoàn chủ tịch.JPG"
+          }
+        },
+        {
+          "type": "photo",
+          "item": {
+            "id": "souvenir_016",
+            "filename": "2006_Hội nghị sơ kết công tác SXKD 6 tháng đầu năm - Báo cáo tại hội trường.jpg",
+            "title": "Hội nghị sơ kết công tác SXKD 6 tháng đầu năm - Báo cáo tại hội trường",
+            "year": 2006,
+            "aspect_ratio": 1.4976,
+            "width": 1200,
+            "height": 801,
+            "src": "assets/albums/souvenir_photos/photo_016.webp",
+            "original_filename": "2006_Hội nghị sơ kết công tác SXKD 6 tháng đầu năm - Báo cáo tại hội trường.jpg"
+          }
+        },
+        {
+          "type": "photo",
+          "item": {
+            "id": "souvenir_017",
+            "filename": "2006_Hội nghị sơ kết công tác SXKD 6 tháng đầu năm - Toàn cảnh hội nghị.jpg",
+            "title": "Hội nghị sơ kết công tác SXKD 6 tháng đầu năm - Toàn cảnh hội nghị",
+            "year": 2006,
+            "aspect_ratio": 1.4514,
+            "width": 1200,
+            "height": 826,
+            "src": "assets/albums/souvenir_photos/photo_017.webp",
+            "original_filename": "2006_Hội nghị sơ kết công tác SXKD 6 tháng đầu năm - Toàn cảnh hội nghị.jpg"
+          }
+        },
+        {
+          "type": "photo",
+          "item": {
+            "id": "souvenir_018",
+            "filename": "2007_Đại hội đại biểu Công đoàn Điện lực BR-VT - Phát biểu chỉ đạo.jpg",
+            "title": "Đại hội đại biểu Công đoàn Điện lực BR-VT - Phát biểu chỉ đạo",
+            "year": 2007,
+            "aspect_ratio": 1.5902,
+            "width": 1200,
+            "height": 754,
+            "src": "assets/albums/souvenir_photos/photo_018.webp",
+            "original_filename": "2007_Đại hội đại biểu Công đoàn Điện lực BR-VT - Phát biểu chỉ đạo.jpg"
+          }
+        },
+        {
+          "type": "photo",
+          "item": {
+            "id": "souvenir_019",
+            "filename": "2009_Chúc mừng Năm mới Xuân Kỷ Sửu Điện lực BR-VT.jpg",
+            "title": "Chúc mừng Năm mới Xuân Kỷ Sửu Điện lực BR-VT",
+            "year": 2009,
+            "aspect_ratio": 1.7113,
+            "width": 1200,
+            "height": 701,
+            "src": "assets/albums/souvenir_photos/photo_019.webp",
+            "original_filename": "2009_Chúc mừng Năm mới Xuân Kỷ Sửu Điện lực BR-VT.jpg"
+          }
+        },
+        {
+          "type": "photo",
+          "item": {
+            "id": "souvenir_020",
+            "filename": "2009_Hội thao CNVC Điện lực BR-VT lần thứ V - Các đội bóng chuyền.jpg",
+            "title": "Hội thao CNVC Điện lực BR-VT lần thứ V - Các đội bóng chuyền",
+            "year": 2009,
+            "aspect_ratio": 1.6556,
+            "width": 1200,
+            "height": 724,
+            "src": "assets/albums/souvenir_photos/photo_020.webp",
+            "original_filename": "2009_Hội thao CNVC Điện lực BR-VT lần thứ V - Các đội bóng chuyền.jpg"
+          }
+        },
+        {
+          "type": "photo",
+          "item": {
+            "id": "souvenir_021",
+            "filename": "2009_Đại hội đại biểu CNVC Điện lực BR-VT - Ký kết giao ước thi đua.jpg",
+            "title": "Đại hội đại biểu CNVC Điện lực BR-VT - Ký kết giao ước thi đua",
+            "year": 2009,
+            "aspect_ratio": 1.5667,
+            "width": 1200,
+            "height": 765,
+            "src": "assets/albums/souvenir_photos/photo_021.webp",
+            "original_filename": "2009_Đại hội đại biểu CNVC Điện lực BR-VT - Ký kết giao ước thi đua.jpg"
+          }
+        },
+        {
+          "type": "photo",
+          "item": {
+            "id": "souvenir_022",
+            "filename": "Chi nhánh ĐL TX Bà Rịa.jpg",
+            "title": "Chi nhánh ĐL TX Bà Rịa",
+            "year": null,
+            "aspect_ratio": 1.3411,
+            "width": 1200,
+            "height": 894,
+            "src": "assets/albums/souvenir_photos/photo_022.webp",
+            "original_filename": "Chi nhánh ĐL TX Bà Rịa.jpg"
+          }
+        },
+        {
+          "type": "photo",
+          "item": {
+            "id": "souvenir_023",
+            "filename": "Chào mừng Hội thao CNVC Điện lực BR-VT lần thứ V.jpg",
+            "title": "Chào mừng Hội thao CNVC Điện lực BR-VT lần thứ V",
+            "year": null,
+            "aspect_ratio": 1.4333,
+            "width": 1200,
+            "height": 837,
+            "src": "assets/albums/souvenir_photos/photo_023.webp",
+            "original_filename": "Chào mừng Hội thao CNVC Điện lực BR-VT lần thứ V.jpg"
+          }
+        },
+        {
+          "type": "photo",
+          "item": {
+            "id": "souvenir_024",
+            "filename": "Cán bộ điều hành trực bàn điện thoại.jpg",
+            "title": "Cán bộ điều hành trực bàn điện thoại",
+            "year": null,
+            "aspect_ratio": 1.463,
+            "width": 1200,
+            "height": 820,
+            "src": "assets/albums/souvenir_photos/photo_024.webp",
+            "original_filename": "Cán bộ điều hành trực bàn điện thoại.jpg"
+          }
+        },
+        {
+          "type": "photo",
+          "item": {
+            "id": "souvenir_025",
+            "filename": "Giám đốc Hồ Văn Cường.jpg",
+            "title": "Giám đốc Hồ Văn Cường",
+            "year": null,
+            "aspect_ratio": 1.3449,
+            "width": 1200,
+            "height": 892,
+            "src": "assets/albums/souvenir_photos/photo_025.webp",
+            "original_filename": "Giám đốc Hồ Văn Cường.jpg"
+          }
+        },
+        {
+          "type": "photo",
+          "item": {
+            "id": "souvenir_026",
+            "filename": "Giải bóng đá ĐL BRVT.jpg",
+            "title": "Giải bóng đá ĐL BRVT",
+            "year": null,
+            "aspect_ratio": 1.353,
+            "width": 1200,
+            "height": 886,
+            "src": "assets/albums/souvenir_photos/photo_026.webp",
+            "original_filename": "Giải bóng đá ĐL BRVT.jpg"
+          }
+        },
+        {
+          "type": "photo",
+          "item": {
+            "id": "souvenir_027",
+            "filename": "Họp Ban Giám đốc và cán bộ chủ chốt.JPG",
+            "title": "Họp Ban Giám đốc và cán bộ chủ chốt",
+            "year": null,
+            "aspect_ratio": 1.4925,
+            "width": 1200,
+            "height": 804,
+            "src": "assets/albums/souvenir_photos/photo_027.webp",
+            "original_filename": "Họp Ban Giám đốc và cán bộ chủ chốt.JPG"
+          }
+        },
+        {
+          "type": "photo",
+          "item": {
+            "id": "souvenir_029",
+            "filename": "Hội thao.JPG",
+            "title": "Hội thao",
+            "year": null,
+            "aspect_ratio": 1.3789,
+            "width": 1200,
+            "height": 870,
+            "src": "assets/albums/souvenir_photos/photo_029.webp",
+            "original_filename": "Hội thao.JPG"
+          }
+        },
+        {
+          "type": "photo",
+          "item": {
+            "id": "souvenir_028",
+            "filename": "Hội thao CNVC Điện lực BR-VT Thi kéo co.jpg",
+            "title": "Hội thao CNVC Điện lực BR-VT Thi kéo co",
+            "year": null,
+            "aspect_ratio": 1.4382,
+            "width": 1200,
+            "height": 834,
+            "src": "assets/albums/souvenir_photos/photo_028.webp",
+            "original_filename": "Hội thao CNVC Điện lực BR-VT Thi kéo co.jpg"
+          }
+        },
+        {
+          "type": "photo",
+          "item": {
+            "id": "souvenir_030",
+            "filename": "Hội thi ATVSV giỏi.JPG",
+            "title": "Hội thi ATVSV giỏi",
+            "year": null,
+            "aspect_ratio": 1.3675,
+            "width": 1200,
+            "height": 877,
+            "src": "assets/albums/souvenir_photos/photo_030.webp",
+            "original_filename": "Hội thi ATVSV giỏi.JPG"
+          }
+        },
+        {
+          "type": "photo",
+          "item": {
+            "id": "souvenir_031",
+            "filename": "Hội thi PCCC.jpg",
+            "title": "Hội thi PCCC",
+            "year": null,
+            "aspect_ratio": 1.3465,
+            "width": 1200,
+            "height": 891,
+            "src": "assets/albums/souvenir_photos/photo_031.webp",
+            "original_filename": "Hội thi PCCC.jpg"
+          }
+        },
+        {
+          "type": "photo",
+          "item": {
+            "id": "souvenir_035",
+            "filename": "KS Du lịch Điện lực.jpg",
+            "title": "KS Du lịch Điện lực",
+            "year": null,
+            "aspect_ratio": 1.3396,
+            "width": 1200,
+            "height": 895,
+            "src": "assets/albums/souvenir_photos/photo_035.webp",
+            "original_filename": "KS Du lịch Điện lực.jpg"
+          }
+        },
+        {
+          "type": "photo",
+          "item": {
+            "id": "souvenir_036",
+            "filename": "Lắp đặt công trình mới của Điện lực.jpg",
+            "title": "Lắp đặt công trình mới của Điện lực",
+            "year": null,
+            "aspect_ratio": 1.3482,
+            "width": 1200,
+            "height": 890,
+            "src": "assets/albums/souvenir_photos/photo_036.webp",
+            "original_filename": "Lắp đặt công trình mới của Điện lực.jpg"
+          }
+        },
+        {
+          "type": "photo",
+          "item": {
+            "id": "souvenir_037",
+            "filename": "Lễ kết nạp Đảng viên mới.jpg",
+            "title": "Lễ kết nạp Đảng viên mới",
+            "year": null,
+            "aspect_ratio": 1.562,
+            "width": 1200,
+            "height": 768,
+            "src": "assets/albums/souvenir_photos/photo_037.webp",
+            "original_filename": "Lễ kết nạp Đảng viên mới.jpg"
+          }
+        },
+        {
+          "type": "photo",
+          "item": {
+            "id": "souvenir_038",
+            "filename": "PGĐ Hồ Văn Quới.jpg",
+            "title": "PGĐ Hồ Văn Quới",
+            "year": null,
+            "aspect_ratio": 1.3359,
+            "width": 1200,
+            "height": 898,
+            "src": "assets/albums/souvenir_photos/photo_038.webp",
+            "original_filename": "PGĐ Hồ Văn Quới.jpg"
+          }
+        },
+        {
+          "type": "photo",
+          "item": {
+            "id": "souvenir_039",
+            "filename": "Phòng kinh doanh điện năng.jpg",
+            "title": "Phòng kinh doanh điện năng",
+            "year": null,
+            "aspect_ratio": 1.3453,
+            "width": 1200,
+            "height": 891,
+            "src": "assets/albums/souvenir_photos/photo_039.webp",
+            "original_filename": "Phòng kinh doanh điện năng.jpg"
+          }
+        },
+        {
+          "type": "photo",
+          "item": {
+            "id": "souvenir_040",
+            "filename": "Phòng vật tư.jpg",
+            "title": "Phòng vật tư",
+            "year": null,
+            "aspect_ratio": 1.3573,
+            "width": 1200,
+            "height": 884,
+            "src": "assets/albums/souvenir_photos/photo_040.webp",
+            "original_filename": "Phòng vật tư.jpg"
+          }
+        },
+        {
+          "type": "photo",
+          "item": {
+            "id": "souvenir_041",
+            "filename": "Phương tiện sẵn sàng lên đường làm nhiệm vụ (1).JPG",
+            "title": "Phương tiện sẵn sàng lên đường làm nhiệm vụ",
+            "year": null,
+            "aspect_ratio": 1.3271,
+            "width": 1200,
+            "height": 904,
+            "src": "assets/albums/souvenir_photos/photo_041.webp",
+            "original_filename": "Phương tiện sẵn sàng lên đường làm nhiệm vụ (1).JPG"
+          }
+        },
+        {
+          "type": "photo",
+          "item": {
+            "id": "souvenir_042",
+            "filename": "Phương tiện sẵn sàng lên đường làm nhiệm vụ.JPG",
+            "title": "Phương tiện sẵn sàng lên đường làm nhiệm vụ",
+            "year": null,
+            "aspect_ratio": 1.3943,
+            "width": 1200,
+            "height": 860,
+            "src": "assets/albums/souvenir_photos/photo_042.webp",
+            "original_filename": "Phương tiện sẵn sàng lên đường làm nhiệm vụ.JPG"
+          }
+        },
+        {
+          "type": "photo",
+          "item": {
+            "id": "souvenir_043",
+            "filename": "Trao cờ lưu niệm Hội thao CNVC Điện lực BR-VT.jpg",
+            "title": "Trao cờ lưu niệm Hội thao CNVC Điện lực BR-VT",
+            "year": null,
+            "aspect_ratio": 1.54,
+            "width": 1200,
+            "height": 779,
+            "src": "assets/albums/souvenir_photos/photo_043.webp",
+            "original_filename": "Trao cờ lưu niệm Hội thao CNVC Điện lực BR-VT.jpg"
+          }
+        },
+        {
+          "type": "photo",
+          "item": {
+            "id": "souvenir_044",
+            "filename": "Trao giỏ quà chúc mừng.jpg",
+            "title": "Trao giỏ quà chúc mừng",
+            "year": null,
+            "aspect_ratio": 1.465,
+            "width": 1200,
+            "height": 819,
+            "src": "assets/albums/souvenir_photos/photo_044.webp",
+            "original_filename": "Trao giỏ quà chúc mừng.jpg"
+          }
+        },
+        {
+          "type": "photo",
+          "item": {
+            "id": "souvenir_045",
+            "filename": "Trạm 35kV Hoà Bình.jpg",
+            "title": "Trạm 35kV Hoà Bình",
+            "year": null,
+            "aspect_ratio": 1.3306,
+            "width": 1200,
+            "height": 901,
+            "src": "assets/albums/souvenir_photos/photo_045.webp",
+            "original_filename": "Trạm 35kV Hoà Bình.jpg"
+          }
+        },
+        {
+          "type": "photo",
+          "item": {
+            "id": "souvenir_047",
+            "filename": "trạm 35kV xuyên mộc.jpg",
+            "title": "trạm 35kV xuyên mộc",
+            "year": null,
+            "aspect_ratio": 1.3507,
+            "width": 1200,
+            "height": 888,
+            "src": "assets/albums/souvenir_photos/photo_047.webp",
+            "original_filename": "trạm 35kV xuyên mộc.jpg"
+          }
+        },
+        {
+          "type": "photo",
+          "item": {
+            "id": "souvenir_048",
+            "filename": "trạm 35kV Đất Đỏ.jpg",
+            "title": "trạm 35kV Đất Đỏ",
+            "year": null,
+            "aspect_ratio": 1.3573,
+            "width": 1200,
+            "height": 884,
+            "src": "assets/albums/souvenir_photos/photo_048.webp",
+            "original_filename": "trạm 35kV Đất Đỏ.jpg"
+          }
+        },
+        {
+          "type": "photo",
+          "item": {
+            "id": "souvenir_049",
+            "filename": "Đoàn đại biểu Đại hội Đảng bộ Điện lực BR-VT.jpg",
+            "title": "Đoàn đại biểu Đại hội Đảng bộ Điện lực BR-VT",
+            "year": null,
+            "aspect_ratio": 1.6242,
+            "width": 1200,
+            "height": 738,
+            "src": "assets/albums/souvenir_photos/photo_049.webp",
+            "original_filename": "Đoàn đại biểu Đại hội Đảng bộ Điện lực BR-VT.jpg"
+          }
+        },
+        {
+          "type": "photo",
+          "item": {
+            "id": "souvenir_050",
+            "filename": "Đưa điện về vùng sâu huyện Long Đất.jpg",
+            "title": "Đưa điện về vùng sâu huyện Long Đất",
+            "year": null,
+            "aspect_ratio": 0.7431,
+            "width": 891,
+            "height": 1200,
+            "src": "assets/albums/souvenir_photos/photo_050.webp",
+            "original_filename": "Đưa điện về vùng sâu huyện Long Đất.jpg"
+          }
+        },
+        {
+          "type": "photo",
+          "item": {
+            "id": "souvenir_051",
+            "filename": "Đại biểu biểu quyết tại hội trường hội nghị.JPG",
+            "title": "Đại biểu biểu quyết tại hội trường hội nghị",
+            "year": null,
+            "aspect_ratio": 1.4842,
+            "width": 1200,
+            "height": 808,
+            "src": "assets/albums/souvenir_photos/photo_051.webp",
+            "original_filename": "Đại biểu biểu quyết tại hội trường hội nghị.JPG"
+          }
+        },
+        {
+          "type": "photo",
+          "item": {
+            "id": "souvenir_052",
+            "filename": "Đại biểu dự hội nghị trong hội trường.JPG",
+            "title": "Đại biểu dự hội nghị trong hội trường",
+            "year": null,
+            "aspect_ratio": 1.491,
+            "width": 1200,
+            "height": 804,
+            "src": "assets/albums/souvenir_photos/photo_052.webp",
+            "original_filename": "Đại biểu dự hội nghị trong hội trường.JPG"
+          }
+        },
+        {
+          "type": "photo",
+          "item": {
+            "id": "souvenir_053",
+            "filename": "Đại biểu khách mời dự hội nghị Điện lực Bà Rịa - Vũng Tàu.jpg",
+            "title": "Đại biểu khách mời dự hội nghị Điện lực Bà Rịa - Vũng Tàu",
+            "year": null,
+            "aspect_ratio": 1.4335,
+            "width": 1200,
+            "height": 837,
+            "src": "assets/albums/souvenir_photos/photo_053.webp",
+            "original_filename": "Đại biểu khách mời dự hội nghị Điện lực Bà Rịa - Vũng Tàu.jpg"
+          }
+        },
+        {
+          "type": "photo",
+          "item": {
+            "id": "souvenir_054",
+            "filename": "Đại hội Công đoàn Điện lực Bà Rịa - Vũng Tàu - Trao quyết định khen thưởng.JPG",
+            "title": "Đại hội Công đoàn Điện lực Bà Rịa - Vũng Tàu - Trao quyết định khen thưởng",
+            "year": null,
+            "aspect_ratio": 1.546,
+            "width": 1200,
+            "height": 776,
+            "src": "assets/albums/souvenir_photos/photo_054.webp",
+            "original_filename": "Đại hội Công đoàn Điện lực Bà Rịa - Vũng Tàu - Trao quyết định khen thưởng.JPG"
+          }
+        },
+        {
+          "type": "photo",
+          "item": {
+            "id": "souvenir_055",
+            "filename": "Đại hội công Đoàn Sở điện lực VTCD.JPG",
+            "title": "Đại hội công Đoàn Sở điện lực VTCD",
+            "year": null,
+            "aspect_ratio": 1.454,
+            "width": 1200,
+            "height": 825,
+            "src": "assets/albums/souvenir_photos/photo_055.webp",
+            "original_filename": "Đại hội công Đoàn Sở điện lực VTCD.JPG"
+          }
+        },
+        {
+          "type": "photo",
+          "item": {
+            "id": "souvenir_056",
+            "filename": "Đội quản lý cao thế (2).jpg",
+            "title": "Đội quản lý cao thế",
+            "year": null,
+            "aspect_ratio": 1.3396,
+            "width": 1200,
+            "height": 895,
+            "src": "assets/albums/souvenir_photos/photo_056.webp",
+            "original_filename": "Đội quản lý cao thế (2).jpg"
+          }
+        },
+        {
+          "type": "photo",
+          "item": {
+            "id": "souvenir_057",
+            "filename": "Đội quản lý cao thế.jpg",
+            "title": "Đội quản lý cao thế",
+            "year": null,
+            "aspect_ratio": 1.3359,
+            "width": 1200,
+            "height": 898,
+            "src": "assets/albums/souvenir_photos/photo_057.webp",
+            "original_filename": "Đội quản lý cao thế.jpg"
+          }
+        },
+        {
+          "type": "photo",
+          "item": {
+            "id": "souvenir_058",
+            "filename": "Đội tuần tra bảo vệ mạng lưới điện.JPG",
+            "title": "Đội tuần tra bảo vệ mạng lưới điện",
+            "year": null,
+            "aspect_ratio": 1.3322,
+            "width": 1200,
+            "height": 900,
+            "src": "assets/albums/souvenir_photos/photo_058.webp",
+            "original_filename": "Đội tuần tra bảo vệ mạng lưới điện.JPG"
+          }
+        }
+      ],
+      "items": [
+        {
+          "id": "souvenir_046",
+          "filename": "Tổng kết công tác năm 1985 - Côn Đảo.JPG",
+          "title": "Tổng kết công tác năm 1985 - Côn Đảo",
+          "year": 1985,
+          "aspect_ratio": 1.4685,
+          "width": 1200,
+          "height": 817,
+          "src": "assets/albums/souvenir_photos/photo_046.webp",
+          "original_filename": "Tổng kết công tác năm 1985 - Côn Đảo.JPG"
+        },
+        {
+          "id": "souvenir_001",
+          "filename": "1997_Hội nghị làm việc ngày 18-9-1997.jpg",
+          "title": "Hội nghị làm việc ngày 18-9-1997",
+          "year": 1997,
+          "aspect_ratio": 1.7465,
+          "width": 1200,
+          "height": 687,
+          "src": "assets/albums/souvenir_photos/photo_001.webp",
+          "original_filename": "1997_Hội nghị làm việc ngày 18-9-1997.jpg"
+        },
+        {
+          "id": "souvenir_002",
+          "filename": "1997_Hội thi ATVSV giỏi lần IV - Trao giải thưởng.jpg",
+          "title": "Hội thi ATVSV giỏi lần IV - Trao giải thưởng",
+          "year": 1997,
+          "aspect_ratio": 1.5287,
+          "width": 1200,
+          "height": 784,
+          "src": "assets/albums/souvenir_photos/photo_002.webp",
+          "original_filename": "1997_Hội thi ATVSV giỏi lần IV - Trao giải thưởng.jpg"
+        },
+        {
+          "id": "souvenir_003",
+          "filename": "1997_Hội thi ATVSV giỏi lần IV - Đội Chi nhánh Điện Bà Rịa nhận hoa.jpg",
+          "title": "Hội thi ATVSV giỏi lần IV - Đội Chi nhánh Điện Bà Rịa nhận hoa",
+          "year": 1997,
+          "aspect_ratio": 1.5583,
+          "width": 1200,
+          "height": 770,
+          "src": "assets/albums/souvenir_photos/photo_003.webp",
+          "original_filename": "1997_Hội thi ATVSV giỏi lần IV - Đội Chi nhánh Điện Bà Rịa nhận hoa.jpg"
+        },
+        {
+          "id": "souvenir_004",
+          "filename": "1998_Hội nghị tổng kết công tác SXKD - Báo cáo tại hội trường.jpg",
+          "title": "Hội nghị tổng kết công tác SXKD - Báo cáo tại hội trường",
+          "year": 1998,
+          "aspect_ratio": 1.3385,
+          "width": 1200,
+          "height": 896,
+          "src": "assets/albums/souvenir_photos/photo_004.webp",
+          "original_filename": "1998_Hội nghị tổng kết công tác SXKD - Báo cáo tại hội trường.jpg"
+        },
+        {
+          "id": "souvenir_005",
+          "filename": "1998_Hội nghị tổng kết công tác SXKD - Khen thưởng cá nhân.jpg",
+          "title": "Hội nghị tổng kết công tác SXKD - Khen thưởng cá nhân",
+          "year": 1998,
+          "aspect_ratio": 1.4803,
+          "width": 1200,
+          "height": 810,
+          "src": "assets/albums/souvenir_photos/photo_005.webp",
+          "original_filename": "1998_Hội nghị tổng kết công tác SXKD - Khen thưởng cá nhân.jpg"
+        },
+        {
+          "id": "souvenir_006",
+          "filename": "1998_Đại hội đại biểu Công đoàn Điện lực BR-VT - Ban Chấp hành ra mắt.JPG",
+          "title": "Đại hội đại biểu Công đoàn Điện lực BR-VT - Ban Chấp hành ra mắt",
+          "year": 1998,
+          "aspect_ratio": 1.5009,
+          "width": 1200,
+          "height": 799,
+          "src": "assets/albums/souvenir_photos/photo_006.webp",
+          "original_filename": "1998_Đại hội đại biểu Công đoàn Điện lực BR-VT - Ban Chấp hành ra mắt.JPG"
+        },
+        {
+          "id": "souvenir_008",
+          "filename": "1999_Lễ kết nạp Đảng viên mới.jpg",
+          "title": "Lễ kết nạp Đảng viên mới",
+          "year": 1999,
+          "aspect_ratio": 1.3575,
+          "width": 1200,
+          "height": 883,
+          "src": "assets/albums/souvenir_photos/photo_008.webp",
+          "original_filename": "1999_Lễ kết nạp Đảng viên mới.jpg"
+        },
+        {
+          "id": "souvenir_007",
+          "filename": "1999_Lễ kết nạp Đảng viên mới 1999 (1).JPG",
+          "title": "Lễ kết nạp Đảng viên mới 1999",
+          "year": 1999,
+          "aspect_ratio": 1.3444,
+          "width": 1200,
+          "height": 892,
+          "src": "assets/albums/souvenir_photos/photo_007.webp",
+          "original_filename": "1999_Lễ kết nạp Đảng viên mới 1999 (1).JPG"
+        },
+        {
+          "id": "souvenir_032",
+          "filename": "Hội thi kiến thưc pháp luật kiến thức gia đình 2001 (2).jpg",
+          "title": "Hội thi kiến thưc pháp luật kiến thức gia đình 2001",
+          "year": 2001,
+          "aspect_ratio": 1.3323,
+          "width": 1200,
+          "height": 900,
+          "src": "assets/albums/souvenir_photos/photo_032.webp",
+          "original_filename": "Hội thi kiến thưc pháp luật kiến thức gia đình 2001 (2).jpg"
+        },
+        {
+          "id": "souvenir_033",
+          "filename": "Hội thi kiến thưc pháp luật kiến thức gia đình 2001.jpg",
+          "title": "Hội thi kiến thưc pháp luật kiến thức gia đình 2001",
+          "year": 2001,
+          "aspect_ratio": 1.3356,
+          "width": 1200,
+          "height": 898,
+          "src": "assets/albums/souvenir_photos/photo_033.webp",
+          "original_filename": "Hội thi kiến thưc pháp luật kiến thức gia đình 2001.jpg"
+        },
+        {
+          "id": "souvenir_034",
+          "filename": "Hội thi thợ giỏi thanh niên công nhân đường dây 2001.jpg",
+          "title": "Hội thi thợ giỏi thanh niên công nhân đường dây 2001",
+          "year": 2001,
+          "aspect_ratio": 1.347,
+          "width": 1200,
+          "height": 890,
+          "src": "assets/albums/souvenir_photos/photo_034.webp",
+          "original_filename": "Hội thi thợ giỏi thanh niên công nhân đường dây 2001.jpg"
+        },
+        {
+          "id": "souvenir_009",
+          "filename": "2003_Hội nghị tổng kết công tác năm 2003 và triển khai kế hoạch năm 2004.jpg",
+          "title": "Hội nghị tổng kết công tác năm 2003 và triển khai kế hoạch năm 2004",
+          "year": 2003,
+          "aspect_ratio": 1.4975,
+          "width": 1200,
+          "height": 801,
+          "src": "assets/albums/souvenir_photos/photo_009.webp",
+          "original_filename": "2003_Hội nghị tổng kết công tác năm 2003 và triển khai kế hoạch năm 2004.jpg"
+        },
+        {
+          "id": "souvenir_010",
+          "filename": "2004_Giải quần vợt Điện lực BR-VT lần 2 - Chào mừng ngày truyền thống ngành Điện.jpg",
+          "title": "Giải quần vợt Điện lực BR-VT lần 2 - Chào mừng ngày truyền thống ngành Điện",
+          "year": 2004,
+          "aspect_ratio": 1.474,
+          "width": 1200,
+          "height": 814,
+          "src": "assets/albums/souvenir_photos/photo_010.webp",
+          "original_filename": "2004_Giải quần vợt Điện lực BR-VT lần 2 - Chào mừng ngày truyền thống ngành Điện.jpg"
+        },
+        {
+          "id": "souvenir_011",
+          "filename": "2004_Đại hội Chi bộ Khối Văn phòng lần I - Bỏ phiếu bầu cử (1).jpg",
+          "title": "Đại hội Chi bộ Khối Văn phòng lần I - Bỏ phiếu bầu cử",
+          "year": 2004,
+          "aspect_ratio": 1.6852,
+          "width": 1200,
+          "height": 712,
+          "src": "assets/albums/souvenir_photos/photo_011.webp",
+          "original_filename": "2004_Đại hội Chi bộ Khối Văn phòng lần I - Bỏ phiếu bầu cử (1).jpg"
+        },
+        {
+          "id": "souvenir_012",
+          "filename": "2004_Đại hội Chi bộ Khối Văn phòng lần I - Bỏ phiếu bầu cử (2).jpg",
+          "title": "Đại hội Chi bộ Khối Văn phòng lần I - Bỏ phiếu bầu cử",
+          "year": 2004,
+          "aspect_ratio": 1.6009,
+          "width": 1200,
+          "height": 749,
+          "src": "assets/albums/souvenir_photos/photo_012.webp",
+          "original_filename": "2004_Đại hội Chi bộ Khối Văn phòng lần I - Bỏ phiếu bầu cử (2).jpg"
+        },
+        {
+          "id": "souvenir_013",
+          "filename": "2004_Đại hội Chi bộ Khối Văn phòng lần I - Đoàn chủ tịch.jpg",
+          "title": "Đại hội Chi bộ Khối Văn phòng lần I - Đoàn chủ tịch",
+          "year": 2004,
+          "aspect_ratio": 1.5387,
+          "width": 1200,
+          "height": 779,
+          "src": "assets/albums/souvenir_photos/photo_013.webp",
+          "original_filename": "2004_Đại hội Chi bộ Khối Văn phòng lần I - Đoàn chủ tịch.jpg"
+        },
+        {
+          "id": "souvenir_014",
+          "filename": "2005_Đại hội đại biểu Công đoàn Điện lực BR-VT - Ban Chấp hành ra mắt.jpg",
+          "title": "Đại hội đại biểu Công đoàn Điện lực BR-VT - Ban Chấp hành ra mắt",
+          "year": 2005,
+          "aspect_ratio": 1.5136,
+          "width": 1200,
+          "height": 792,
+          "src": "assets/albums/souvenir_photos/photo_014.webp",
+          "original_filename": "2005_Đại hội đại biểu Công đoàn Điện lực BR-VT - Ban Chấp hành ra mắt.jpg"
+        },
+        {
+          "id": "souvenir_015",
+          "filename": "2005_Đại hội đại biểu Công đoàn Điện lực BR-VT - Đoàn chủ tịch.JPG",
+          "title": "Đại hội đại biểu Công đoàn Điện lực BR-VT - Đoàn chủ tịch",
+          "year": 2005,
+          "aspect_ratio": 1.4949,
+          "width": 1200,
+          "height": 802,
+          "src": "assets/albums/souvenir_photos/photo_015.webp",
+          "original_filename": "2005_Đại hội đại biểu Công đoàn Điện lực BR-VT - Đoàn chủ tịch.JPG"
+        },
+        {
+          "id": "souvenir_016",
+          "filename": "2006_Hội nghị sơ kết công tác SXKD 6 tháng đầu năm - Báo cáo tại hội trường.jpg",
+          "title": "Hội nghị sơ kết công tác SXKD 6 tháng đầu năm - Báo cáo tại hội trường",
+          "year": 2006,
+          "aspect_ratio": 1.4976,
+          "width": 1200,
+          "height": 801,
+          "src": "assets/albums/souvenir_photos/photo_016.webp",
+          "original_filename": "2006_Hội nghị sơ kết công tác SXKD 6 tháng đầu năm - Báo cáo tại hội trường.jpg"
+        },
+        {
+          "id": "souvenir_017",
+          "filename": "2006_Hội nghị sơ kết công tác SXKD 6 tháng đầu năm - Toàn cảnh hội nghị.jpg",
+          "title": "Hội nghị sơ kết công tác SXKD 6 tháng đầu năm - Toàn cảnh hội nghị",
+          "year": 2006,
+          "aspect_ratio": 1.4514,
+          "width": 1200,
+          "height": 826,
+          "src": "assets/albums/souvenir_photos/photo_017.webp",
+          "original_filename": "2006_Hội nghị sơ kết công tác SXKD 6 tháng đầu năm - Toàn cảnh hội nghị.jpg"
+        },
+        {
+          "id": "souvenir_018",
+          "filename": "2007_Đại hội đại biểu Công đoàn Điện lực BR-VT - Phát biểu chỉ đạo.jpg",
+          "title": "Đại hội đại biểu Công đoàn Điện lực BR-VT - Phát biểu chỉ đạo",
+          "year": 2007,
+          "aspect_ratio": 1.5902,
+          "width": 1200,
+          "height": 754,
+          "src": "assets/albums/souvenir_photos/photo_018.webp",
+          "original_filename": "2007_Đại hội đại biểu Công đoàn Điện lực BR-VT - Phát biểu chỉ đạo.jpg"
+        },
+        {
+          "id": "souvenir_019",
+          "filename": "2009_Chúc mừng Năm mới Xuân Kỷ Sửu Điện lực BR-VT.jpg",
+          "title": "Chúc mừng Năm mới Xuân Kỷ Sửu Điện lực BR-VT",
+          "year": 2009,
+          "aspect_ratio": 1.7113,
+          "width": 1200,
+          "height": 701,
+          "src": "assets/albums/souvenir_photos/photo_019.webp",
+          "original_filename": "2009_Chúc mừng Năm mới Xuân Kỷ Sửu Điện lực BR-VT.jpg"
+        },
+        {
+          "id": "souvenir_020",
+          "filename": "2009_Hội thao CNVC Điện lực BR-VT lần thứ V - Các đội bóng chuyền.jpg",
+          "title": "Hội thao CNVC Điện lực BR-VT lần thứ V - Các đội bóng chuyền",
+          "year": 2009,
+          "aspect_ratio": 1.6556,
+          "width": 1200,
+          "height": 724,
+          "src": "assets/albums/souvenir_photos/photo_020.webp",
+          "original_filename": "2009_Hội thao CNVC Điện lực BR-VT lần thứ V - Các đội bóng chuyền.jpg"
+        },
+        {
+          "id": "souvenir_021",
+          "filename": "2009_Đại hội đại biểu CNVC Điện lực BR-VT - Ký kết giao ước thi đua.jpg",
+          "title": "Đại hội đại biểu CNVC Điện lực BR-VT - Ký kết giao ước thi đua",
+          "year": 2009,
+          "aspect_ratio": 1.5667,
+          "width": 1200,
+          "height": 765,
+          "src": "assets/albums/souvenir_photos/photo_021.webp",
+          "original_filename": "2009_Đại hội đại biểu CNVC Điện lực BR-VT - Ký kết giao ước thi đua.jpg"
+        },
+        {
+          "id": "souvenir_022",
+          "filename": "Chi nhánh ĐL TX Bà Rịa.jpg",
+          "title": "Chi nhánh ĐL TX Bà Rịa",
+          "year": null,
+          "aspect_ratio": 1.3411,
+          "width": 1200,
+          "height": 894,
+          "src": "assets/albums/souvenir_photos/photo_022.webp",
+          "original_filename": "Chi nhánh ĐL TX Bà Rịa.jpg"
+        },
+        {
+          "id": "souvenir_023",
+          "filename": "Chào mừng Hội thao CNVC Điện lực BR-VT lần thứ V.jpg",
+          "title": "Chào mừng Hội thao CNVC Điện lực BR-VT lần thứ V",
+          "year": null,
+          "aspect_ratio": 1.4333,
+          "width": 1200,
+          "height": 837,
+          "src": "assets/albums/souvenir_photos/photo_023.webp",
+          "original_filename": "Chào mừng Hội thao CNVC Điện lực BR-VT lần thứ V.jpg"
+        },
+        {
+          "id": "souvenir_024",
+          "filename": "Cán bộ điều hành trực bàn điện thoại.jpg",
+          "title": "Cán bộ điều hành trực bàn điện thoại",
+          "year": null,
+          "aspect_ratio": 1.463,
+          "width": 1200,
+          "height": 820,
+          "src": "assets/albums/souvenir_photos/photo_024.webp",
+          "original_filename": "Cán bộ điều hành trực bàn điện thoại.jpg"
+        },
+        {
+          "id": "souvenir_025",
+          "filename": "Giám đốc Hồ Văn Cường.jpg",
+          "title": "Giám đốc Hồ Văn Cường",
+          "year": null,
+          "aspect_ratio": 1.3449,
+          "width": 1200,
+          "height": 892,
+          "src": "assets/albums/souvenir_photos/photo_025.webp",
+          "original_filename": "Giám đốc Hồ Văn Cường.jpg"
+        },
+        {
+          "id": "souvenir_026",
+          "filename": "Giải bóng đá ĐL BRVT.jpg",
+          "title": "Giải bóng đá ĐL BRVT",
+          "year": null,
+          "aspect_ratio": 1.353,
+          "width": 1200,
+          "height": 886,
+          "src": "assets/albums/souvenir_photos/photo_026.webp",
+          "original_filename": "Giải bóng đá ĐL BRVT.jpg"
+        },
+        {
+          "id": "souvenir_027",
+          "filename": "Họp Ban Giám đốc và cán bộ chủ chốt.JPG",
+          "title": "Họp Ban Giám đốc và cán bộ chủ chốt",
+          "year": null,
+          "aspect_ratio": 1.4925,
+          "width": 1200,
+          "height": 804,
+          "src": "assets/albums/souvenir_photos/photo_027.webp",
+          "original_filename": "Họp Ban Giám đốc và cán bộ chủ chốt.JPG"
+        },
+        {
+          "id": "souvenir_029",
+          "filename": "Hội thao.JPG",
+          "title": "Hội thao",
+          "year": null,
+          "aspect_ratio": 1.3789,
+          "width": 1200,
+          "height": 870,
+          "src": "assets/albums/souvenir_photos/photo_029.webp",
+          "original_filename": "Hội thao.JPG"
+        },
+        {
+          "id": "souvenir_028",
+          "filename": "Hội thao CNVC Điện lực BR-VT Thi kéo co.jpg",
+          "title": "Hội thao CNVC Điện lực BR-VT Thi kéo co",
+          "year": null,
+          "aspect_ratio": 1.4382,
+          "width": 1200,
+          "height": 834,
+          "src": "assets/albums/souvenir_photos/photo_028.webp",
+          "original_filename": "Hội thao CNVC Điện lực BR-VT Thi kéo co.jpg"
+        },
+        {
+          "id": "souvenir_030",
+          "filename": "Hội thi ATVSV giỏi.JPG",
+          "title": "Hội thi ATVSV giỏi",
+          "year": null,
+          "aspect_ratio": 1.3675,
+          "width": 1200,
+          "height": 877,
+          "src": "assets/albums/souvenir_photos/photo_030.webp",
+          "original_filename": "Hội thi ATVSV giỏi.JPG"
+        },
+        {
+          "id": "souvenir_031",
+          "filename": "Hội thi PCCC.jpg",
+          "title": "Hội thi PCCC",
+          "year": null,
+          "aspect_ratio": 1.3465,
+          "width": 1200,
+          "height": 891,
+          "src": "assets/albums/souvenir_photos/photo_031.webp",
+          "original_filename": "Hội thi PCCC.jpg"
+        },
+        {
+          "id": "souvenir_035",
+          "filename": "KS Du lịch Điện lực.jpg",
+          "title": "KS Du lịch Điện lực",
+          "year": null,
+          "aspect_ratio": 1.3396,
+          "width": 1200,
+          "height": 895,
+          "src": "assets/albums/souvenir_photos/photo_035.webp",
+          "original_filename": "KS Du lịch Điện lực.jpg"
+        },
+        {
+          "id": "souvenir_036",
+          "filename": "Lắp đặt công trình mới của Điện lực.jpg",
+          "title": "Lắp đặt công trình mới của Điện lực",
+          "year": null,
+          "aspect_ratio": 1.3482,
+          "width": 1200,
+          "height": 890,
+          "src": "assets/albums/souvenir_photos/photo_036.webp",
+          "original_filename": "Lắp đặt công trình mới của Điện lực.jpg"
+        },
+        {
+          "id": "souvenir_037",
+          "filename": "Lễ kết nạp Đảng viên mới.jpg",
+          "title": "Lễ kết nạp Đảng viên mới",
+          "year": null,
+          "aspect_ratio": 1.562,
+          "width": 1200,
+          "height": 768,
+          "src": "assets/albums/souvenir_photos/photo_037.webp",
+          "original_filename": "Lễ kết nạp Đảng viên mới.jpg"
+        },
+        {
+          "id": "souvenir_038",
+          "filename": "PGĐ Hồ Văn Quới.jpg",
+          "title": "PGĐ Hồ Văn Quới",
+          "year": null,
+          "aspect_ratio": 1.3359,
+          "width": 1200,
+          "height": 898,
+          "src": "assets/albums/souvenir_photos/photo_038.webp",
+          "original_filename": "PGĐ Hồ Văn Quới.jpg"
+        },
+        {
+          "id": "souvenir_039",
+          "filename": "Phòng kinh doanh điện năng.jpg",
+          "title": "Phòng kinh doanh điện năng",
+          "year": null,
+          "aspect_ratio": 1.3453,
+          "width": 1200,
+          "height": 891,
+          "src": "assets/albums/souvenir_photos/photo_039.webp",
+          "original_filename": "Phòng kinh doanh điện năng.jpg"
+        },
+        {
+          "id": "souvenir_040",
+          "filename": "Phòng vật tư.jpg",
+          "title": "Phòng vật tư",
+          "year": null,
+          "aspect_ratio": 1.3573,
+          "width": 1200,
+          "height": 884,
+          "src": "assets/albums/souvenir_photos/photo_040.webp",
+          "original_filename": "Phòng vật tư.jpg"
+        },
+        {
+          "id": "souvenir_041",
+          "filename": "Phương tiện sẵn sàng lên đường làm nhiệm vụ (1).JPG",
+          "title": "Phương tiện sẵn sàng lên đường làm nhiệm vụ",
+          "year": null,
+          "aspect_ratio": 1.3271,
+          "width": 1200,
+          "height": 904,
+          "src": "assets/albums/souvenir_photos/photo_041.webp",
+          "original_filename": "Phương tiện sẵn sàng lên đường làm nhiệm vụ (1).JPG"
+        },
+        {
+          "id": "souvenir_042",
+          "filename": "Phương tiện sẵn sàng lên đường làm nhiệm vụ.JPG",
+          "title": "Phương tiện sẵn sàng lên đường làm nhiệm vụ",
+          "year": null,
+          "aspect_ratio": 1.3943,
+          "width": 1200,
+          "height": 860,
+          "src": "assets/albums/souvenir_photos/photo_042.webp",
+          "original_filename": "Phương tiện sẵn sàng lên đường làm nhiệm vụ.JPG"
+        },
+        {
+          "id": "souvenir_043",
+          "filename": "Trao cờ lưu niệm Hội thao CNVC Điện lực BR-VT.jpg",
+          "title": "Trao cờ lưu niệm Hội thao CNVC Điện lực BR-VT",
+          "year": null,
+          "aspect_ratio": 1.54,
+          "width": 1200,
+          "height": 779,
+          "src": "assets/albums/souvenir_photos/photo_043.webp",
+          "original_filename": "Trao cờ lưu niệm Hội thao CNVC Điện lực BR-VT.jpg"
+        },
+        {
+          "id": "souvenir_044",
+          "filename": "Trao giỏ quà chúc mừng.jpg",
+          "title": "Trao giỏ quà chúc mừng",
+          "year": null,
+          "aspect_ratio": 1.465,
+          "width": 1200,
+          "height": 819,
+          "src": "assets/albums/souvenir_photos/photo_044.webp",
+          "original_filename": "Trao giỏ quà chúc mừng.jpg"
+        },
+        {
+          "id": "souvenir_045",
+          "filename": "Trạm 35kV Hoà Bình.jpg",
+          "title": "Trạm 35kV Hoà Bình",
+          "year": null,
+          "aspect_ratio": 1.3306,
+          "width": 1200,
+          "height": 901,
+          "src": "assets/albums/souvenir_photos/photo_045.webp",
+          "original_filename": "Trạm 35kV Hoà Bình.jpg"
+        },
+        {
+          "id": "souvenir_047",
+          "filename": "trạm 35kV xuyên mộc.jpg",
+          "title": "trạm 35kV xuyên mộc",
+          "year": null,
+          "aspect_ratio": 1.3507,
+          "width": 1200,
+          "height": 888,
+          "src": "assets/albums/souvenir_photos/photo_047.webp",
+          "original_filename": "trạm 35kV xuyên mộc.jpg"
+        },
+        {
+          "id": "souvenir_048",
+          "filename": "trạm 35kV Đất Đỏ.jpg",
+          "title": "trạm 35kV Đất Đỏ",
+          "year": null,
+          "aspect_ratio": 1.3573,
+          "width": 1200,
+          "height": 884,
+          "src": "assets/albums/souvenir_photos/photo_048.webp",
+          "original_filename": "trạm 35kV Đất Đỏ.jpg"
+        },
+        {
+          "id": "souvenir_049",
+          "filename": "Đoàn đại biểu Đại hội Đảng bộ Điện lực BR-VT.jpg",
+          "title": "Đoàn đại biểu Đại hội Đảng bộ Điện lực BR-VT",
+          "year": null,
+          "aspect_ratio": 1.6242,
+          "width": 1200,
+          "height": 738,
+          "src": "assets/albums/souvenir_photos/photo_049.webp",
+          "original_filename": "Đoàn đại biểu Đại hội Đảng bộ Điện lực BR-VT.jpg"
+        },
+        {
+          "id": "souvenir_050",
+          "filename": "Đưa điện về vùng sâu huyện Long Đất.jpg",
+          "title": "Đưa điện về vùng sâu huyện Long Đất",
+          "year": null,
+          "aspect_ratio": 0.7431,
+          "width": 891,
+          "height": 1200,
+          "src": "assets/albums/souvenir_photos/photo_050.webp",
+          "original_filename": "Đưa điện về vùng sâu huyện Long Đất.jpg"
+        },
+        {
+          "id": "souvenir_051",
+          "filename": "Đại biểu biểu quyết tại hội trường hội nghị.JPG",
+          "title": "Đại biểu biểu quyết tại hội trường hội nghị",
+          "year": null,
+          "aspect_ratio": 1.4842,
+          "width": 1200,
+          "height": 808,
+          "src": "assets/albums/souvenir_photos/photo_051.webp",
+          "original_filename": "Đại biểu biểu quyết tại hội trường hội nghị.JPG"
+        },
+        {
+          "id": "souvenir_052",
+          "filename": "Đại biểu dự hội nghị trong hội trường.JPG",
+          "title": "Đại biểu dự hội nghị trong hội trường",
+          "year": null,
+          "aspect_ratio": 1.491,
+          "width": 1200,
+          "height": 804,
+          "src": "assets/albums/souvenir_photos/photo_052.webp",
+          "original_filename": "Đại biểu dự hội nghị trong hội trường.JPG"
+        },
+        {
+          "id": "souvenir_053",
+          "filename": "Đại biểu khách mời dự hội nghị Điện lực Bà Rịa - Vũng Tàu.jpg",
+          "title": "Đại biểu khách mời dự hội nghị Điện lực Bà Rịa - Vũng Tàu",
+          "year": null,
+          "aspect_ratio": 1.4335,
+          "width": 1200,
+          "height": 837,
+          "src": "assets/albums/souvenir_photos/photo_053.webp",
+          "original_filename": "Đại biểu khách mời dự hội nghị Điện lực Bà Rịa - Vũng Tàu.jpg"
+        },
+        {
+          "id": "souvenir_054",
+          "filename": "Đại hội Công đoàn Điện lực Bà Rịa - Vũng Tàu - Trao quyết định khen thưởng.JPG",
+          "title": "Đại hội Công đoàn Điện lực Bà Rịa - Vũng Tàu - Trao quyết định khen thưởng",
+          "year": null,
+          "aspect_ratio": 1.546,
+          "width": 1200,
+          "height": 776,
+          "src": "assets/albums/souvenir_photos/photo_054.webp",
+          "original_filename": "Đại hội Công đoàn Điện lực Bà Rịa - Vũng Tàu - Trao quyết định khen thưởng.JPG"
+        },
+        {
+          "id": "souvenir_055",
+          "filename": "Đại hội công Đoàn Sở điện lực VTCD.JPG",
+          "title": "Đại hội công Đoàn Sở điện lực VTCD",
+          "year": null,
+          "aspect_ratio": 1.454,
+          "width": 1200,
+          "height": 825,
+          "src": "assets/albums/souvenir_photos/photo_055.webp",
+          "original_filename": "Đại hội công Đoàn Sở điện lực VTCD.JPG"
+        },
+        {
+          "id": "souvenir_056",
+          "filename": "Đội quản lý cao thế (2).jpg",
+          "title": "Đội quản lý cao thế",
+          "year": null,
+          "aspect_ratio": 1.3396,
+          "width": 1200,
+          "height": 895,
+          "src": "assets/albums/souvenir_photos/photo_056.webp",
+          "original_filename": "Đội quản lý cao thế (2).jpg"
+        },
+        {
+          "id": "souvenir_057",
+          "filename": "Đội quản lý cao thế.jpg",
+          "title": "Đội quản lý cao thế",
+          "year": null,
+          "aspect_ratio": 1.3359,
+          "width": 1200,
+          "height": 898,
+          "src": "assets/albums/souvenir_photos/photo_057.webp",
+          "original_filename": "Đội quản lý cao thế.jpg"
+        },
+        {
+          "id": "souvenir_058",
+          "filename": "Đội tuần tra bảo vệ mạng lưới điện.JPG",
+          "title": "Đội tuần tra bảo vệ mạng lưới điện",
+          "year": null,
+          "aspect_ratio": 1.3322,
+          "width": 1200,
+          "height": 900,
+          "src": "assets/albums/souvenir_photos/photo_058.webp",
+          "original_filename": "Đội tuần tra bảo vệ mạng lưới điện.JPG"
+        }
+      ]
+    },
+    "gift_paintings": {
+      "id": "gift_paintings",
+      "title": "Album Tranh Kỷ Niệm Các Đơn Vị Tặng",
+      "short_title": "Tranh Tặng",
+      "subtitle": "Bộ Sưu Tập Tác Phẩm Nghệ Thuật & Quà Tặng Lưu Niệm",
+      "cover_color": "#0f2b48",
+      "cover_accent": "#38bdf8",
+      "total_items": 49,
+      "total_pages": 50,
+      "pages": [
+        {
+          "type": "intro",
+          "title": "BỘ SƯU TẬP TRANH KỶ NIỆM & TRANH TẶNG",
+          "subtitle": "CÁC ĐƠN VỊ & ĐỐI TÁC TRAO TẶNG CÔNG TY ĐIỆN LỰC VŨNG TÀU",
+          "desc": "Tuyển tập các tác phẩm nghệ thuật, tranh ảnh lưu niệm và quà tặng vinh danh từ Tập đoàn Điện lực Việt Nam, Tổng công ty Điện lực TP.HCM và các đơn vị hữu nghị."
+        },
+        {
+          "type": "painting",
+          "item": {
+            "id": "painting_001",
+            "filename": "2014_Bình yên làng chài.JPG",
+            "title": "Bình yên làng chài",
+            "year": 2014,
+            "aspect_ratio": 1.4478,
+            "width": 1200,
+            "height": 828,
+            "src": "assets/albums/gift_paintings/painting_001.webp",
+            "original_filename": "2014_Bình yên làng chài.JPG"
+          }
+        },
+        {
+          "type": "painting",
+          "item": {
+            "id": "painting_002",
+            "filename": "2014_Băng rừng.jpg",
+            "title": "Băng rừng",
+            "year": 2014,
+            "aspect_ratio": 1.4463,
+            "width": 1200,
+            "height": 829,
+            "src": "assets/albums/gift_paintings/painting_002.webp",
+            "original_filename": "2014_Băng rừng.jpg"
+          }
+        },
+        {
+          "type": "painting",
+          "item": {
+            "id": "painting_004",
+            "filename": "2014_Bảo trì.JPG",
+            "title": "Bảo trì",
+            "year": 2014,
+            "aspect_ratio": 1.4994,
+            "width": 1200,
+            "height": 800,
+            "src": "assets/albums/gift_paintings/painting_004.webp",
+            "original_filename": "2014_Bảo trì.JPG"
+          }
+        },
+        {
+          "type": "painting",
+          "item": {
+            "id": "painting_003",
+            "filename": "2014_Bảo trì đường dây cao thế.JPG",
+            "title": "Bảo trì đường dây cao thế",
+            "year": 2014,
+            "aspect_ratio": 1.5377,
+            "width": 1200,
+            "height": 780,
+            "src": "assets/albums/gift_paintings/painting_003.webp",
+            "original_filename": "2014_Bảo trì đường dây cao thế.JPG"
+          }
+        },
+        {
+          "type": "painting",
+          "item": {
+            "id": "painting_005",
+            "filename": "2014_Chân dung người thợ.JPG",
+            "title": "Chân dung người thợ",
+            "year": 2014,
+            "aspect_ratio": 1.43,
+            "width": 1200,
+            "height": 839,
+            "src": "assets/albums/gift_paintings/painting_005.webp",
+            "original_filename": "2014_Chân dung người thợ.JPG"
+          }
+        },
+        {
+          "type": "painting",
+          "item": {
+            "id": "painting_006",
+            "filename": "2014_Chăm sóc.JPG",
+            "title": "Chăm sóc",
+            "year": 2014,
+            "aspect_ratio": 1.4413,
+            "width": 1200,
+            "height": 832,
+            "src": "assets/albums/gift_paintings/painting_006.webp",
+            "original_filename": "2014_Chăm sóc.JPG"
+          }
+        },
+        {
+          "type": "painting",
+          "item": {
+            "id": "painting_007",
+            "filename": "2014_Chỉnh trang đường điện.jpg",
+            "title": "Chỉnh trang đường điện",
+            "year": 2014,
+            "aspect_ratio": 1.4546,
+            "width": 1200,
+            "height": 824,
+            "src": "assets/albums/gift_paintings/painting_007.webp",
+            "original_filename": "2014_Chỉnh trang đường điện.jpg"
+          }
+        },
+        {
+          "type": "painting",
+          "item": {
+            "id": "painting_008",
+            "filename": "2014_Cung cấp điện cho khách hàng.JPG",
+            "title": "Cung cấp điện cho khách hàng",
+            "year": 2014,
+            "aspect_ratio": 0.7032,
+            "width": 843,
+            "height": 1200,
+            "src": "assets/albums/gift_paintings/painting_008.webp",
+            "original_filename": "2014_Cung cấp điện cho khách hàng.JPG"
+          }
+        },
+        {
+          "type": "painting",
+          "item": {
+            "id": "painting_009",
+            "filename": "2014_Cánh đồng hoa.jpg",
+            "title": "Cánh đồng hoa",
+            "year": 2014,
+            "aspect_ratio": 1.4126,
+            "width": 1200,
+            "height": 849,
+            "src": "assets/albums/gift_paintings/painting_009.webp",
+            "original_filename": "2014_Cánh đồng hoa.jpg"
+          }
+        },
+        {
+          "type": "painting",
+          "item": {
+            "id": "painting_010",
+            "filename": "2014_Công nghệ tưới điện tự động.JPG",
+            "title": "Công nghệ tưới điện tự động",
+            "year": 2014,
+            "aspect_ratio": 1.4309,
+            "width": 1200,
+            "height": 838,
+            "src": "assets/albums/gift_paintings/painting_010.webp",
+            "original_filename": "2014_Công nghệ tưới điện tự động.JPG"
+          }
+        },
+        {
+          "type": "painting",
+          "item": {
+            "id": "painting_011",
+            "filename": "2014_Công trình Thủy điện Cửa Đạt.JPG",
+            "title": "Công trình Thủy điện Cửa Đạt",
+            "year": 2014,
+            "aspect_ratio": 1.4215,
+            "width": 1200,
+            "height": 844,
+            "src": "assets/albums/gift_paintings/painting_011.webp",
+            "original_filename": "2014_Công trình Thủy điện Cửa Đạt.JPG"
+          }
+        },
+        {
+          "type": "painting",
+          "item": {
+            "id": "painting_012",
+            "filename": "2014_Công trường Thủy điện Sông Ba Hạ 2.JPG",
+            "title": "Công trường Thủy điện Sông Ba Hạ 2",
+            "year": 2014,
+            "aspect_ratio": 1.4434,
+            "width": 1200,
+            "height": 831,
+            "src": "assets/albums/gift_paintings/painting_012.webp",
+            "original_filename": "2014_Công trường Thủy điện Sông Ba Hạ 2.JPG"
+          }
+        },
+        {
+          "type": "painting",
+          "item": {
+            "id": "painting_013",
+            "filename": "2014_Hành trang.jpg",
+            "title": "Hành trang",
+            "year": 2014,
+            "aspect_ratio": 1.4403,
+            "width": 1200,
+            "height": 833,
+            "src": "assets/albums/gift_paintings/painting_013.webp",
+            "original_filename": "2014_Hành trang.jpg"
+          }
+        },
+        {
+          "type": "painting",
+          "item": {
+            "id": "painting_014",
+            "filename": "2014_Hạ thế điện nông thôn.JPG",
+            "title": "Hạ thế điện nông thôn",
+            "year": 2014,
+            "aspect_ratio": 1.4711,
+            "width": 1200,
+            "height": 815,
+            "src": "assets/albums/gift_paintings/painting_014.webp",
+            "original_filename": "2014_Hạ thế điện nông thôn.JPG"
+          }
+        },
+        {
+          "type": "painting",
+          "item": {
+            "id": "painting_015",
+            "filename": "2014_Hội An điểm hẹn.jpg",
+            "title": "Hội An điểm hẹn",
+            "year": 2014,
+            "aspect_ratio": 1.4661,
+            "width": 1200,
+            "height": 818,
+            "src": "assets/albums/gift_paintings/painting_015.webp",
+            "original_filename": "2014_Hội An điểm hẹn.jpg"
+          }
+        },
+        {
+          "type": "painting",
+          "item": {
+            "id": "painting_017",
+            "filename": "2014_Kiểm tra.JPG",
+            "title": "Kiểm tra",
+            "year": 2014,
+            "aspect_ratio": 1.4076,
+            "width": 1200,
+            "height": 852,
+            "src": "assets/albums/gift_paintings/painting_017.webp",
+            "original_filename": "2014_Kiểm tra.JPG"
+          }
+        },
+        {
+          "type": "painting",
+          "item": {
+            "id": "painting_016",
+            "filename": "2014_Kiểm tra định kỳ.JPG",
+            "title": "Kiểm tra định kỳ",
+            "year": 2014,
+            "aspect_ratio": 0.6968,
+            "width": 836,
+            "height": 1200,
+            "src": "assets/albums/gift_paintings/painting_016.webp",
+            "original_filename": "2014_Kiểm tra định kỳ.JPG"
+          }
+        },
+        {
+          "type": "painting",
+          "item": {
+            "id": "painting_018",
+            "filename": "2014_Kéo cáp điện ngầm vào bờ.JPG",
+            "title": "Kéo cáp điện ngầm vào bờ",
+            "year": 2014,
+            "aspect_ratio": 1.436,
+            "width": 1200,
+            "height": 835,
+            "src": "assets/albums/gift_paintings/painting_018.webp",
+            "original_filename": "2014_Kéo cáp điện ngầm vào bờ.JPG"
+          }
+        },
+        {
+          "type": "painting",
+          "item": {
+            "id": "painting_019",
+            "filename": "2014_Kéo dây.JPG",
+            "title": "Kéo dây",
+            "year": 2014,
+            "aspect_ratio": 1.4336,
+            "width": 1200,
+            "height": 837,
+            "src": "assets/albums/gift_paintings/painting_019.webp",
+            "original_filename": "2014_Kéo dây.JPG"
+          }
+        },
+        {
+          "type": "painting",
+          "item": {
+            "id": "painting_020",
+            "filename": "2014_Kết nối.JPG",
+            "title": "Kết nối",
+            "year": 2014,
+            "aspect_ratio": 1.4294,
+            "width": 1200,
+            "height": 839,
+            "src": "assets/albums/gift_paintings/painting_020.webp",
+            "original_filename": "2014_Kết nối.JPG"
+          }
+        },
+        {
+          "type": "painting",
+          "item": {
+            "id": "painting_021",
+            "filename": "2014_Lung linh Hạ Long.JPG",
+            "title": "Lung linh Hạ Long",
+            "year": 2014,
+            "aspect_ratio": 1.4282,
+            "width": 1200,
+            "height": 840,
+            "src": "assets/albums/gift_paintings/painting_021.webp",
+            "original_filename": "2014_Lung linh Hạ Long.JPG"
+          }
+        },
+        {
+          "type": "painting",
+          "item": {
+            "id": "painting_022",
+            "filename": "2014_Lưới điện.JPG",
+            "title": "Lưới điện",
+            "year": 2014,
+            "aspect_ratio": 1.4223,
+            "width": 1200,
+            "height": 843,
+            "src": "assets/albums/gift_paintings/painting_022.webp",
+            "original_filename": "2014_Lưới điện.JPG"
+          }
+        },
+        {
+          "type": "painting",
+          "item": {
+            "id": "painting_023",
+            "filename": "2014_Lớp vi tính Lũng Cú - Hà Giang.JPG",
+            "title": "Lớp vi tính Lũng Cú - Hà Giang",
+            "year": 2014,
+            "aspect_ratio": 1.4415,
+            "width": 1200,
+            "height": 832,
+            "src": "assets/albums/gift_paintings/painting_023.webp",
+            "original_filename": "2014_Lớp vi tính Lũng Cú - Hà Giang.JPG"
+          }
+        },
+        {
+          "type": "painting",
+          "item": {
+            "id": "painting_024",
+            "filename": "2014_Nhân con giống theo phương pháp mới.jpg",
+            "title": "Nhân con giống theo phương pháp mới",
+            "year": 2014,
+            "aspect_ratio": 1.2881,
+            "width": 1200,
+            "height": 931,
+            "src": "assets/albums/gift_paintings/painting_024.webp",
+            "original_filename": "2014_Nhân con giống theo phương pháp mới.jpg"
+          }
+        },
+        {
+          "type": "painting",
+          "item": {
+            "id": "painting_025",
+            "filename": "2014_Những người thợ Điện lực Năm Căn.JPG",
+            "title": "Những người thợ Điện lực Năm Căn",
+            "year": 2014,
+            "aspect_ratio": 1.4257,
+            "width": 1200,
+            "height": 841,
+            "src": "assets/albums/gift_paintings/painting_025.webp",
+            "original_filename": "2014_Những người thợ Điện lực Năm Căn.JPG"
+          }
+        },
+        {
+          "type": "painting",
+          "item": {
+            "id": "painting_026",
+            "filename": "2014_Phú Quý một góc nhìn.JPG",
+            "title": "Phú Quý một góc nhìn",
+            "year": 2014,
+            "aspect_ratio": 1.4253,
+            "width": 1200,
+            "height": 841,
+            "src": "assets/albums/gift_paintings/painting_026.webp",
+            "original_filename": "2014_Phú Quý một góc nhìn.JPG"
+          }
+        },
+        {
+          "type": "painting",
+          "item": {
+            "id": "painting_027",
+            "filename": "2014_Phố núi lên đèn.jpg",
+            "title": "Phố núi lên đèn",
+            "year": 2014,
+            "aspect_ratio": 1.4546,
+            "width": 1200,
+            "height": 824,
+            "src": "assets/albums/gift_paintings/painting_027.webp",
+            "original_filename": "2014_Phố núi lên đèn.jpg"
+          }
+        },
+        {
+          "type": "painting",
+          "item": {
+            "id": "painting_028",
+            "filename": "2014_Thắp sáng dòng điện mùa xuân.JPG",
+            "title": "Thắp sáng dòng điện mùa xuân",
+            "year": 2014,
+            "aspect_ratio": 1.4152,
+            "width": 1200,
+            "height": 847,
+            "src": "assets/albums/gift_paintings/painting_028.webp",
+            "original_filename": "2014_Thắp sáng dòng điện mùa xuân.JPG"
+          }
+        },
+        {
+          "type": "painting",
+          "item": {
+            "id": "painting_029",
+            "filename": "2014_Thủy điện Sơn La những khoảnh khắc đáng nhớ.JPG",
+            "title": "Thủy điện Sơn La những khoảnh khắc đáng nhớ",
+            "year": 2014,
+            "aspect_ratio": 1.4345,
+            "width": 1200,
+            "height": 836,
+            "src": "assets/albums/gift_paintings/painting_029.webp",
+            "original_filename": "2014_Thủy điện Sơn La những khoảnh khắc đáng nhớ.JPG"
+          }
+        },
+        {
+          "type": "painting",
+          "item": {
+            "id": "painting_030",
+            "filename": "2014_Thủy điện Sơn La trọn vẹn niềm tin.JPG",
+            "title": "Thủy điện Sơn La trọn vẹn niềm tin",
+            "year": 2014,
+            "aspect_ratio": 1.4236,
+            "width": 1200,
+            "height": 842,
+            "src": "assets/albums/gift_paintings/painting_030.webp",
+            "original_filename": "2014_Thủy điện Sơn La trọn vẹn niềm tin.JPG"
+          }
+        },
+        {
+          "type": "painting",
+          "item": {
+            "id": "painting_031",
+            "filename": "2014_Trên công trình Thủy điện Lai Châu 3.JPG",
+            "title": "Trên công trình Thủy điện Lai Châu 3",
+            "year": 2014,
+            "aspect_ratio": 1.4301,
+            "width": 1200,
+            "height": 839,
+            "src": "assets/albums/gift_paintings/painting_031.webp",
+            "original_filename": "2014_Trên công trình Thủy điện Lai Châu 3.JPG"
+          }
+        },
+        {
+          "type": "painting",
+          "item": {
+            "id": "painting_032",
+            "filename": "2014_Trăng Trường Sa.JPG",
+            "title": "Trăng Trường Sa",
+            "year": 2014,
+            "aspect_ratio": 1.4218,
+            "width": 1200,
+            "height": 843,
+            "src": "assets/albums/gift_paintings/painting_032.webp",
+            "original_filename": "2014_Trăng Trường Sa.JPG"
+          }
+        },
+        {
+          "type": "painting",
+          "item": {
+            "id": "painting_033",
+            "filename": "2014_Trước giờ xuất kích.JPG",
+            "title": "Trước giờ xuất kích",
+            "year": 2014,
+            "aspect_ratio": 1.461,
+            "width": 1200,
+            "height": 821,
+            "src": "assets/albums/gift_paintings/painting_033.webp",
+            "original_filename": "2014_Trước giờ xuất kích.JPG"
+          }
+        },
+        {
+          "type": "painting",
+          "item": {
+            "id": "painting_034",
+            "filename": "2014_Trạm điều khiển Thủy điện Hòa Bình.jpg",
+            "title": "Trạm điều khiển Thủy điện Hòa Bình",
+            "year": 2014,
+            "aspect_ratio": 1.5666,
+            "width": 1200,
+            "height": 765,
+            "src": "assets/albums/gift_paintings/painting_034.webp",
+            "original_filename": "2014_Trạm điều khiển Thủy điện Hòa Bình.jpg"
+          }
+        },
+        {
+          "type": "painting",
+          "item": {
+            "id": "painting_035",
+            "filename": "2014_Tuổi trẻ thủ đô hưởng ứng giờ Trái đất.jpg",
+            "title": "Tuổi trẻ thủ đô hưởng ứng giờ Trái đất",
+            "year": 2014,
+            "aspect_ratio": 1.4379,
+            "width": 1200,
+            "height": 834,
+            "src": "assets/albums/gift_paintings/painting_035.webp",
+            "original_filename": "2014_Tuổi trẻ thủ đô hưởng ứng giờ Trái đất.jpg"
+          }
+        },
+        {
+          "type": "painting",
+          "item": {
+            "id": "painting_036",
+            "filename": "2014_Tây Bắc đẹp giàu.jpg",
+            "title": "Tây Bắc đẹp giàu",
+            "year": 2014,
+            "aspect_ratio": 1.4693,
+            "width": 1200,
+            "height": 816,
+            "src": "assets/albums/gift_paintings/painting_036.webp",
+            "original_filename": "2014_Tây Bắc đẹp giàu.jpg"
+          }
+        },
+        {
+          "type": "painting",
+          "item": {
+            "id": "painting_037",
+            "filename": "2014_Tín hiệu mùa xuân.JPG",
+            "title": "Tín hiệu mùa xuân",
+            "year": 2014,
+            "aspect_ratio": 1.4439,
+            "width": 1200,
+            "height": 831,
+            "src": "assets/albums/gift_paintings/painting_037.webp",
+            "original_filename": "2014_Tín hiệu mùa xuân.JPG"
+          }
+        },
+        {
+          "type": "painting",
+          "item": {
+            "id": "painting_038",
+            "filename": "2014_Tầm cao.JPG",
+            "title": "Tầm cao",
+            "year": 2014,
+            "aspect_ratio": 0.6998,
+            "width": 839,
+            "height": 1200,
+            "src": "assets/albums/gift_paintings/painting_038.webp",
+            "original_filename": "2014_Tầm cao.JPG"
+          }
+        },
+        {
+          "type": "painting",
+          "item": {
+            "id": "painting_039",
+            "filename": "2014_Vui ngày hội lớn.jpg",
+            "title": "Vui ngày hội lớn",
+            "year": 2014,
+            "aspect_ratio": 1.5183,
+            "width": 1200,
+            "height": 790,
+            "src": "assets/albums/gift_paintings/painting_039.webp",
+            "original_filename": "2014_Vui ngày hội lớn.jpg"
+          }
+        },
+        {
+          "type": "painting",
+          "item": {
+            "id": "painting_040",
+            "filename": "2014_Vũ điệu trên cao.jpg",
+            "title": "Vũ điệu trên cao",
+            "year": 2014,
+            "aspect_ratio": 1.4603,
+            "width": 1200,
+            "height": 821,
+            "src": "assets/albums/gift_paintings/painting_040.webp",
+            "original_filename": "2014_Vũ điệu trên cao.jpg"
+          }
+        },
+        {
+          "type": "painting",
+          "item": {
+            "id": "painting_041",
+            "filename": "2014_Ánh sáng mùa xuân.jpg",
+            "title": "Ánh sáng mùa xuân",
+            "year": 2014,
+            "aspect_ratio": 1.4308,
+            "width": 1200,
+            "height": 838,
+            "src": "assets/albums/gift_paintings/painting_041.webp",
+            "original_filename": "2014_Ánh sáng mùa xuân.jpg"
+          }
+        },
+        {
+          "type": "painting",
+          "item": {
+            "id": "painting_042",
+            "filename": "2014_Ánh sáng về bản (1).jpg",
+            "title": "Ánh sáng về bản",
+            "year": 2014,
+            "aspect_ratio": 1.4607,
+            "width": 1200,
+            "height": 821,
+            "src": "assets/albums/gift_paintings/painting_042.webp",
+            "original_filename": "2014_Ánh sáng về bản (1).jpg"
+          }
+        },
+        {
+          "type": "painting",
+          "item": {
+            "id": "painting_043",
+            "filename": "2014_Ánh sáng về bản (2).JPG",
+            "title": "Ánh sáng về bản",
+            "year": 2014,
+            "aspect_ratio": 1.4068,
+            "width": 1200,
+            "height": 852,
+            "src": "assets/albums/gift_paintings/painting_043.webp",
+            "original_filename": "2014_Ánh sáng về bản (2).JPG"
+          }
+        },
+        {
+          "type": "painting",
+          "item": {
+            "id": "painting_044",
+            "filename": "2014_Điện khí hóa điện nông thôn.JPG",
+            "title": "Điện khí hóa điện nông thôn",
+            "year": 2014,
+            "aspect_ratio": 1.4148,
+            "width": 1200,
+            "height": 848,
+            "src": "assets/albums/gift_paintings/painting_044.webp",
+            "original_filename": "2014_Điện khí hóa điện nông thôn.JPG"
+          }
+        },
+        {
+          "type": "painting",
+          "item": {
+            "id": "painting_045",
+            "filename": "2014_Điện về bản Mông.JPG",
+            "title": "Điện về bản Mông",
+            "year": 2014,
+            "aspect_ratio": 1.428,
+            "width": 1200,
+            "height": 840,
+            "src": "assets/albums/gift_paintings/painting_045.webp",
+            "original_filename": "2014_Điện về bản Mông.JPG"
+          }
+        },
+        {
+          "type": "painting",
+          "item": {
+            "id": "painting_046",
+            "filename": "2014_Điện về miền xa.JPG",
+            "title": "Điện về miền xa",
+            "year": 2014,
+            "aspect_ratio": 1.4557,
+            "width": 1200,
+            "height": 824,
+            "src": "assets/albums/gift_paintings/painting_046.webp",
+            "original_filename": "2014_Điện về miền xa.JPG"
+          }
+        },
+        {
+          "type": "painting",
+          "item": {
+            "id": "painting_047",
+            "filename": "2014_Điện về nông thôn Hóc Môn.JPG",
+            "title": "Điện về nông thôn Hóc Môn",
+            "year": 2014,
+            "aspect_ratio": 1.4461,
+            "width": 1200,
+            "height": 829,
+            "src": "assets/albums/gift_paintings/painting_047.webp",
+            "original_filename": "2014_Điện về nông thôn Hóc Môn.JPG"
+          }
+        },
+        {
+          "type": "painting",
+          "item": {
+            "id": "painting_048",
+            "filename": "2014_Điện về vùng sâu.JPG",
+            "title": "Điện về vùng sâu",
+            "year": 2014,
+            "aspect_ratio": 1.4444,
+            "width": 1200,
+            "height": 830,
+            "src": "assets/albums/gift_paintings/painting_048.webp",
+            "original_filename": "2014_Điện về vùng sâu.JPG"
+          }
+        },
+        {
+          "type": "painting",
+          "item": {
+            "id": "painting_049",
+            "filename": "2014_Đường về Đất Mũi.JPG",
+            "title": "Đường về Đất Mũi",
+            "year": 2014,
+            "aspect_ratio": 1.4629,
+            "width": 1200,
+            "height": 820,
+            "src": "assets/albums/gift_paintings/painting_049.webp",
+            "original_filename": "2014_Đường về Đất Mũi.JPG"
+          }
+        }
+      ],
+      "items": [
+        {
+          "id": "painting_001",
+          "filename": "2014_Bình yên làng chài.JPG",
+          "title": "Bình yên làng chài",
+          "year": 2014,
+          "aspect_ratio": 1.4478,
+          "width": 1200,
+          "height": 828,
+          "src": "assets/albums/gift_paintings/painting_001.webp",
+          "original_filename": "2014_Bình yên làng chài.JPG"
+        },
+        {
+          "id": "painting_002",
+          "filename": "2014_Băng rừng.jpg",
+          "title": "Băng rừng",
+          "year": 2014,
+          "aspect_ratio": 1.4463,
+          "width": 1200,
+          "height": 829,
+          "src": "assets/albums/gift_paintings/painting_002.webp",
+          "original_filename": "2014_Băng rừng.jpg"
+        },
+        {
+          "id": "painting_004",
+          "filename": "2014_Bảo trì.JPG",
+          "title": "Bảo trì",
+          "year": 2014,
+          "aspect_ratio": 1.4994,
+          "width": 1200,
+          "height": 800,
+          "src": "assets/albums/gift_paintings/painting_004.webp",
+          "original_filename": "2014_Bảo trì.JPG"
+        },
+        {
+          "id": "painting_003",
+          "filename": "2014_Bảo trì đường dây cao thế.JPG",
+          "title": "Bảo trì đường dây cao thế",
+          "year": 2014,
+          "aspect_ratio": 1.5377,
+          "width": 1200,
+          "height": 780,
+          "src": "assets/albums/gift_paintings/painting_003.webp",
+          "original_filename": "2014_Bảo trì đường dây cao thế.JPG"
+        },
+        {
+          "id": "painting_005",
+          "filename": "2014_Chân dung người thợ.JPG",
+          "title": "Chân dung người thợ",
+          "year": 2014,
+          "aspect_ratio": 1.43,
+          "width": 1200,
+          "height": 839,
+          "src": "assets/albums/gift_paintings/painting_005.webp",
+          "original_filename": "2014_Chân dung người thợ.JPG"
+        },
+        {
+          "id": "painting_006",
+          "filename": "2014_Chăm sóc.JPG",
+          "title": "Chăm sóc",
+          "year": 2014,
+          "aspect_ratio": 1.4413,
+          "width": 1200,
+          "height": 832,
+          "src": "assets/albums/gift_paintings/painting_006.webp",
+          "original_filename": "2014_Chăm sóc.JPG"
+        },
+        {
+          "id": "painting_007",
+          "filename": "2014_Chỉnh trang đường điện.jpg",
+          "title": "Chỉnh trang đường điện",
+          "year": 2014,
+          "aspect_ratio": 1.4546,
+          "width": 1200,
+          "height": 824,
+          "src": "assets/albums/gift_paintings/painting_007.webp",
+          "original_filename": "2014_Chỉnh trang đường điện.jpg"
+        },
+        {
+          "id": "painting_008",
+          "filename": "2014_Cung cấp điện cho khách hàng.JPG",
+          "title": "Cung cấp điện cho khách hàng",
+          "year": 2014,
+          "aspect_ratio": 0.7032,
+          "width": 843,
+          "height": 1200,
+          "src": "assets/albums/gift_paintings/painting_008.webp",
+          "original_filename": "2014_Cung cấp điện cho khách hàng.JPG"
+        },
+        {
+          "id": "painting_009",
+          "filename": "2014_Cánh đồng hoa.jpg",
+          "title": "Cánh đồng hoa",
+          "year": 2014,
+          "aspect_ratio": 1.4126,
+          "width": 1200,
+          "height": 849,
+          "src": "assets/albums/gift_paintings/painting_009.webp",
+          "original_filename": "2014_Cánh đồng hoa.jpg"
+        },
+        {
+          "id": "painting_010",
+          "filename": "2014_Công nghệ tưới điện tự động.JPG",
+          "title": "Công nghệ tưới điện tự động",
+          "year": 2014,
+          "aspect_ratio": 1.4309,
+          "width": 1200,
+          "height": 838,
+          "src": "assets/albums/gift_paintings/painting_010.webp",
+          "original_filename": "2014_Công nghệ tưới điện tự động.JPG"
+        },
+        {
+          "id": "painting_011",
+          "filename": "2014_Công trình Thủy điện Cửa Đạt.JPG",
+          "title": "Công trình Thủy điện Cửa Đạt",
+          "year": 2014,
+          "aspect_ratio": 1.4215,
+          "width": 1200,
+          "height": 844,
+          "src": "assets/albums/gift_paintings/painting_011.webp",
+          "original_filename": "2014_Công trình Thủy điện Cửa Đạt.JPG"
+        },
+        {
+          "id": "painting_012",
+          "filename": "2014_Công trường Thủy điện Sông Ba Hạ 2.JPG",
+          "title": "Công trường Thủy điện Sông Ba Hạ 2",
+          "year": 2014,
+          "aspect_ratio": 1.4434,
+          "width": 1200,
+          "height": 831,
+          "src": "assets/albums/gift_paintings/painting_012.webp",
+          "original_filename": "2014_Công trường Thủy điện Sông Ba Hạ 2.JPG"
+        },
+        {
+          "id": "painting_013",
+          "filename": "2014_Hành trang.jpg",
+          "title": "Hành trang",
+          "year": 2014,
+          "aspect_ratio": 1.4403,
+          "width": 1200,
+          "height": 833,
+          "src": "assets/albums/gift_paintings/painting_013.webp",
+          "original_filename": "2014_Hành trang.jpg"
+        },
+        {
+          "id": "painting_014",
+          "filename": "2014_Hạ thế điện nông thôn.JPG",
+          "title": "Hạ thế điện nông thôn",
+          "year": 2014,
+          "aspect_ratio": 1.4711,
+          "width": 1200,
+          "height": 815,
+          "src": "assets/albums/gift_paintings/painting_014.webp",
+          "original_filename": "2014_Hạ thế điện nông thôn.JPG"
+        },
+        {
+          "id": "painting_015",
+          "filename": "2014_Hội An điểm hẹn.jpg",
+          "title": "Hội An điểm hẹn",
+          "year": 2014,
+          "aspect_ratio": 1.4661,
+          "width": 1200,
+          "height": 818,
+          "src": "assets/albums/gift_paintings/painting_015.webp",
+          "original_filename": "2014_Hội An điểm hẹn.jpg"
+        },
+        {
+          "id": "painting_017",
+          "filename": "2014_Kiểm tra.JPG",
+          "title": "Kiểm tra",
+          "year": 2014,
+          "aspect_ratio": 1.4076,
+          "width": 1200,
+          "height": 852,
+          "src": "assets/albums/gift_paintings/painting_017.webp",
+          "original_filename": "2014_Kiểm tra.JPG"
+        },
+        {
+          "id": "painting_016",
+          "filename": "2014_Kiểm tra định kỳ.JPG",
+          "title": "Kiểm tra định kỳ",
+          "year": 2014,
+          "aspect_ratio": 0.6968,
+          "width": 836,
+          "height": 1200,
+          "src": "assets/albums/gift_paintings/painting_016.webp",
+          "original_filename": "2014_Kiểm tra định kỳ.JPG"
+        },
+        {
+          "id": "painting_018",
+          "filename": "2014_Kéo cáp điện ngầm vào bờ.JPG",
+          "title": "Kéo cáp điện ngầm vào bờ",
+          "year": 2014,
+          "aspect_ratio": 1.436,
+          "width": 1200,
+          "height": 835,
+          "src": "assets/albums/gift_paintings/painting_018.webp",
+          "original_filename": "2014_Kéo cáp điện ngầm vào bờ.JPG"
+        },
+        {
+          "id": "painting_019",
+          "filename": "2014_Kéo dây.JPG",
+          "title": "Kéo dây",
+          "year": 2014,
+          "aspect_ratio": 1.4336,
+          "width": 1200,
+          "height": 837,
+          "src": "assets/albums/gift_paintings/painting_019.webp",
+          "original_filename": "2014_Kéo dây.JPG"
+        },
+        {
+          "id": "painting_020",
+          "filename": "2014_Kết nối.JPG",
+          "title": "Kết nối",
+          "year": 2014,
+          "aspect_ratio": 1.4294,
+          "width": 1200,
+          "height": 839,
+          "src": "assets/albums/gift_paintings/painting_020.webp",
+          "original_filename": "2014_Kết nối.JPG"
+        },
+        {
+          "id": "painting_021",
+          "filename": "2014_Lung linh Hạ Long.JPG",
+          "title": "Lung linh Hạ Long",
+          "year": 2014,
+          "aspect_ratio": 1.4282,
+          "width": 1200,
+          "height": 840,
+          "src": "assets/albums/gift_paintings/painting_021.webp",
+          "original_filename": "2014_Lung linh Hạ Long.JPG"
+        },
+        {
+          "id": "painting_022",
+          "filename": "2014_Lưới điện.JPG",
+          "title": "Lưới điện",
+          "year": 2014,
+          "aspect_ratio": 1.4223,
+          "width": 1200,
+          "height": 843,
+          "src": "assets/albums/gift_paintings/painting_022.webp",
+          "original_filename": "2014_Lưới điện.JPG"
+        },
+        {
+          "id": "painting_023",
+          "filename": "2014_Lớp vi tính Lũng Cú - Hà Giang.JPG",
+          "title": "Lớp vi tính Lũng Cú - Hà Giang",
+          "year": 2014,
+          "aspect_ratio": 1.4415,
+          "width": 1200,
+          "height": 832,
+          "src": "assets/albums/gift_paintings/painting_023.webp",
+          "original_filename": "2014_Lớp vi tính Lũng Cú - Hà Giang.JPG"
+        },
+        {
+          "id": "painting_024",
+          "filename": "2014_Nhân con giống theo phương pháp mới.jpg",
+          "title": "Nhân con giống theo phương pháp mới",
+          "year": 2014,
+          "aspect_ratio": 1.2881,
+          "width": 1200,
+          "height": 931,
+          "src": "assets/albums/gift_paintings/painting_024.webp",
+          "original_filename": "2014_Nhân con giống theo phương pháp mới.jpg"
+        },
+        {
+          "id": "painting_025",
+          "filename": "2014_Những người thợ Điện lực Năm Căn.JPG",
+          "title": "Những người thợ Điện lực Năm Căn",
+          "year": 2014,
+          "aspect_ratio": 1.4257,
+          "width": 1200,
+          "height": 841,
+          "src": "assets/albums/gift_paintings/painting_025.webp",
+          "original_filename": "2014_Những người thợ Điện lực Năm Căn.JPG"
+        },
+        {
+          "id": "painting_026",
+          "filename": "2014_Phú Quý một góc nhìn.JPG",
+          "title": "Phú Quý một góc nhìn",
+          "year": 2014,
+          "aspect_ratio": 1.4253,
+          "width": 1200,
+          "height": 841,
+          "src": "assets/albums/gift_paintings/painting_026.webp",
+          "original_filename": "2014_Phú Quý một góc nhìn.JPG"
+        },
+        {
+          "id": "painting_027",
+          "filename": "2014_Phố núi lên đèn.jpg",
+          "title": "Phố núi lên đèn",
+          "year": 2014,
+          "aspect_ratio": 1.4546,
+          "width": 1200,
+          "height": 824,
+          "src": "assets/albums/gift_paintings/painting_027.webp",
+          "original_filename": "2014_Phố núi lên đèn.jpg"
+        },
+        {
+          "id": "painting_028",
+          "filename": "2014_Thắp sáng dòng điện mùa xuân.JPG",
+          "title": "Thắp sáng dòng điện mùa xuân",
+          "year": 2014,
+          "aspect_ratio": 1.4152,
+          "width": 1200,
+          "height": 847,
+          "src": "assets/albums/gift_paintings/painting_028.webp",
+          "original_filename": "2014_Thắp sáng dòng điện mùa xuân.JPG"
+        },
+        {
+          "id": "painting_029",
+          "filename": "2014_Thủy điện Sơn La những khoảnh khắc đáng nhớ.JPG",
+          "title": "Thủy điện Sơn La những khoảnh khắc đáng nhớ",
+          "year": 2014,
+          "aspect_ratio": 1.4345,
+          "width": 1200,
+          "height": 836,
+          "src": "assets/albums/gift_paintings/painting_029.webp",
+          "original_filename": "2014_Thủy điện Sơn La những khoảnh khắc đáng nhớ.JPG"
+        },
+        {
+          "id": "painting_030",
+          "filename": "2014_Thủy điện Sơn La trọn vẹn niềm tin.JPG",
+          "title": "Thủy điện Sơn La trọn vẹn niềm tin",
+          "year": 2014,
+          "aspect_ratio": 1.4236,
+          "width": 1200,
+          "height": 842,
+          "src": "assets/albums/gift_paintings/painting_030.webp",
+          "original_filename": "2014_Thủy điện Sơn La trọn vẹn niềm tin.JPG"
+        },
+        {
+          "id": "painting_031",
+          "filename": "2014_Trên công trình Thủy điện Lai Châu 3.JPG",
+          "title": "Trên công trình Thủy điện Lai Châu 3",
+          "year": 2014,
+          "aspect_ratio": 1.4301,
+          "width": 1200,
+          "height": 839,
+          "src": "assets/albums/gift_paintings/painting_031.webp",
+          "original_filename": "2014_Trên công trình Thủy điện Lai Châu 3.JPG"
+        },
+        {
+          "id": "painting_032",
+          "filename": "2014_Trăng Trường Sa.JPG",
+          "title": "Trăng Trường Sa",
+          "year": 2014,
+          "aspect_ratio": 1.4218,
+          "width": 1200,
+          "height": 843,
+          "src": "assets/albums/gift_paintings/painting_032.webp",
+          "original_filename": "2014_Trăng Trường Sa.JPG"
+        },
+        {
+          "id": "painting_033",
+          "filename": "2014_Trước giờ xuất kích.JPG",
+          "title": "Trước giờ xuất kích",
+          "year": 2014,
+          "aspect_ratio": 1.461,
+          "width": 1200,
+          "height": 821,
+          "src": "assets/albums/gift_paintings/painting_033.webp",
+          "original_filename": "2014_Trước giờ xuất kích.JPG"
+        },
+        {
+          "id": "painting_034",
+          "filename": "2014_Trạm điều khiển Thủy điện Hòa Bình.jpg",
+          "title": "Trạm điều khiển Thủy điện Hòa Bình",
+          "year": 2014,
+          "aspect_ratio": 1.5666,
+          "width": 1200,
+          "height": 765,
+          "src": "assets/albums/gift_paintings/painting_034.webp",
+          "original_filename": "2014_Trạm điều khiển Thủy điện Hòa Bình.jpg"
+        },
+        {
+          "id": "painting_035",
+          "filename": "2014_Tuổi trẻ thủ đô hưởng ứng giờ Trái đất.jpg",
+          "title": "Tuổi trẻ thủ đô hưởng ứng giờ Trái đất",
+          "year": 2014,
+          "aspect_ratio": 1.4379,
+          "width": 1200,
+          "height": 834,
+          "src": "assets/albums/gift_paintings/painting_035.webp",
+          "original_filename": "2014_Tuổi trẻ thủ đô hưởng ứng giờ Trái đất.jpg"
+        },
+        {
+          "id": "painting_036",
+          "filename": "2014_Tây Bắc đẹp giàu.jpg",
+          "title": "Tây Bắc đẹp giàu",
+          "year": 2014,
+          "aspect_ratio": 1.4693,
+          "width": 1200,
+          "height": 816,
+          "src": "assets/albums/gift_paintings/painting_036.webp",
+          "original_filename": "2014_Tây Bắc đẹp giàu.jpg"
+        },
+        {
+          "id": "painting_037",
+          "filename": "2014_Tín hiệu mùa xuân.JPG",
+          "title": "Tín hiệu mùa xuân",
+          "year": 2014,
+          "aspect_ratio": 1.4439,
+          "width": 1200,
+          "height": 831,
+          "src": "assets/albums/gift_paintings/painting_037.webp",
+          "original_filename": "2014_Tín hiệu mùa xuân.JPG"
+        },
+        {
+          "id": "painting_038",
+          "filename": "2014_Tầm cao.JPG",
+          "title": "Tầm cao",
+          "year": 2014,
+          "aspect_ratio": 0.6998,
+          "width": 839,
+          "height": 1200,
+          "src": "assets/albums/gift_paintings/painting_038.webp",
+          "original_filename": "2014_Tầm cao.JPG"
+        },
+        {
+          "id": "painting_039",
+          "filename": "2014_Vui ngày hội lớn.jpg",
+          "title": "Vui ngày hội lớn",
+          "year": 2014,
+          "aspect_ratio": 1.5183,
+          "width": 1200,
+          "height": 790,
+          "src": "assets/albums/gift_paintings/painting_039.webp",
+          "original_filename": "2014_Vui ngày hội lớn.jpg"
+        },
+        {
+          "id": "painting_040",
+          "filename": "2014_Vũ điệu trên cao.jpg",
+          "title": "Vũ điệu trên cao",
+          "year": 2014,
+          "aspect_ratio": 1.4603,
+          "width": 1200,
+          "height": 821,
+          "src": "assets/albums/gift_paintings/painting_040.webp",
+          "original_filename": "2014_Vũ điệu trên cao.jpg"
+        },
+        {
+          "id": "painting_041",
+          "filename": "2014_Ánh sáng mùa xuân.jpg",
+          "title": "Ánh sáng mùa xuân",
+          "year": 2014,
+          "aspect_ratio": 1.4308,
+          "width": 1200,
+          "height": 838,
+          "src": "assets/albums/gift_paintings/painting_041.webp",
+          "original_filename": "2014_Ánh sáng mùa xuân.jpg"
+        },
+        {
+          "id": "painting_042",
+          "filename": "2014_Ánh sáng về bản (1).jpg",
+          "title": "Ánh sáng về bản",
+          "year": 2014,
+          "aspect_ratio": 1.4607,
+          "width": 1200,
+          "height": 821,
+          "src": "assets/albums/gift_paintings/painting_042.webp",
+          "original_filename": "2014_Ánh sáng về bản (1).jpg"
+        },
+        {
+          "id": "painting_043",
+          "filename": "2014_Ánh sáng về bản (2).JPG",
+          "title": "Ánh sáng về bản",
+          "year": 2014,
+          "aspect_ratio": 1.4068,
+          "width": 1200,
+          "height": 852,
+          "src": "assets/albums/gift_paintings/painting_043.webp",
+          "original_filename": "2014_Ánh sáng về bản (2).JPG"
+        },
+        {
+          "id": "painting_044",
+          "filename": "2014_Điện khí hóa điện nông thôn.JPG",
+          "title": "Điện khí hóa điện nông thôn",
+          "year": 2014,
+          "aspect_ratio": 1.4148,
+          "width": 1200,
+          "height": 848,
+          "src": "assets/albums/gift_paintings/painting_044.webp",
+          "original_filename": "2014_Điện khí hóa điện nông thôn.JPG"
+        },
+        {
+          "id": "painting_045",
+          "filename": "2014_Điện về bản Mông.JPG",
+          "title": "Điện về bản Mông",
+          "year": 2014,
+          "aspect_ratio": 1.428,
+          "width": 1200,
+          "height": 840,
+          "src": "assets/albums/gift_paintings/painting_045.webp",
+          "original_filename": "2014_Điện về bản Mông.JPG"
+        },
+        {
+          "id": "painting_046",
+          "filename": "2014_Điện về miền xa.JPG",
+          "title": "Điện về miền xa",
+          "year": 2014,
+          "aspect_ratio": 1.4557,
+          "width": 1200,
+          "height": 824,
+          "src": "assets/albums/gift_paintings/painting_046.webp",
+          "original_filename": "2014_Điện về miền xa.JPG"
+        },
+        {
+          "id": "painting_047",
+          "filename": "2014_Điện về nông thôn Hóc Môn.JPG",
+          "title": "Điện về nông thôn Hóc Môn",
+          "year": 2014,
+          "aspect_ratio": 1.4461,
+          "width": 1200,
+          "height": 829,
+          "src": "assets/albums/gift_paintings/painting_047.webp",
+          "original_filename": "2014_Điện về nông thôn Hóc Môn.JPG"
+        },
+        {
+          "id": "painting_048",
+          "filename": "2014_Điện về vùng sâu.JPG",
+          "title": "Điện về vùng sâu",
+          "year": 2014,
+          "aspect_ratio": 1.4444,
+          "width": 1200,
+          "height": 830,
+          "src": "assets/albums/gift_paintings/painting_048.webp",
+          "original_filename": "2014_Điện về vùng sâu.JPG"
+        },
+        {
+          "id": "painting_049",
+          "filename": "2014_Đường về Đất Mũi.JPG",
+          "title": "Đường về Đất Mũi",
+          "year": 2014,
+          "aspect_ratio": 1.4629,
+          "width": 1200,
+          "height": 820,
+          "src": "assets/albums/gift_paintings/painting_049.webp",
+          "original_filename": "2014_Đường về Đất Mũi.JPG"
+        }
+      ]
+    }
+  }
+}

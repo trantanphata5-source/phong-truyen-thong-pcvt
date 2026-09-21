@@ -1,0 +1,1006 @@
+{
+  "events": [
+    {
+      "id": 1,
+      "date": "19/05/1890",
+      "year": "1890",
+      "period": "Tuổi thơ",
+      "title": "Hồ Chí Minh chào đời",
+      "desc": "Nguyễn Sinh Cung sinh tại làng Hoàng Trù, xã Kim Liên, Nam Đàn, Nghệ An. Cha là Phó Bảng Nguyễn Sinh Sắc (đỗ 1901), mẹ là bà Hoàng Thị Loan.",
+      "img": "assets/hcm/timeline/tl_01_ho_chi_minh_chao_doi_1890.jpg",
+      "category": "Sinh ra & Gia đình",
+      "source": "Hồ Chí Minh Biên niên Tiểu sử tập 1",
+      "coordinates": {
+        "lat": 18.6717,
+        "lon": 105.5594
+      }
+    },
+    {
+      "id": 2,
+      "date": "10/02/1901",
+      "year": "1901",
+      "period": "Tuổi thơ",
+      "title": "Mẹ qua đời",
+      "desc": "Bà Hoàng Thị Loan qua đời khi Người mới 11 tuổi, sau khi sinh em trai út (mất sớm).",
+      "img": "assets/hcm/timeline/tl_02_me_qua_doi_1901.jpg",
+      "category": "Gia đình",
+      "source": "Bảo tàng Hồ Chí Minh",
+      "coordinates": {
+        "lat": 18.6717,
+        "lon": 105.5594
+      }
+    },
+    {
+      "id": 3,
+      "date": "01/09/1906",
+      "year": "1906",
+      "period": "Tuổi thơ",
+      "title": "Vào học Trường Quốc Học Huế",
+      "desc": "Nguyễn Tất Thành theo cha vào Huế, vào Trường Quốc Học — ngôi trường danh tiếng nhất Đông Dương.",
+      "img": "assets/hcm/timeline/quoc_hoc_hue_1906.png",
+      "category": "Học tập",
+      "source": "HCM Biên niên tập 1",
+      "coordinates": {
+        "lat": 16.4594,
+        "lon": 107.5836
+      }
+    },
+    {
+      "id": 4,
+      "date": "01/05/1908",
+      "year": "1908",
+      "period": "Tuổi thơ",
+      "title": "Tham gia phong trào chống thuế Trung Kỳ",
+      "desc": "Tham gia đưa đơn cho nông dân Thừa Thiên biểu tình chống sưu thuế, bị đuổi học.",
+      "img": "assets/hcm/timeline/tl_04_chong_thue_trung_ky_1908.jpg",
+      "category": "Hoạt động yêu nước",
+      "source": "Bảo tàng HCM",
+      "coordinates": {
+        "lat": 16.4594,
+        "lon": 107.5836
+      }
+    },
+    {
+      "id": 5,
+      "date": "01/09/1910",
+      "year": "1910",
+      "period": "Tuổi thơ",
+      "title": "Dạy học tại Trường Dục Thanh Phan Thiết",
+      "desc": "Nguyễn Tất Thành (20 tuổi) là giáo viên trẻ nhất, dạy chữ Quốc ngữ, chữ Hán và thể dục. Trường do sĩ phu yêu nước Hồ Tá Bang, Nguyễn Trọng Lội lập (1907).",
+      "img": "assets/hcm/timeline/truong_duc_thanh_1910.png",
+      "category": "Giáo dục",
+      "source": "baotanghochiminh.vn",
+      "coordinates": {
+        "lat": 10.9272,
+        "lon": 108.1017
+      }
+    },
+    {
+      "id": 7,
+      "date": "05/06/1911",
+      "year": "1911",
+      "period": "Tìm đường cứu nước",
+      "title": "Rời bến Nhà Rồng",
+      "desc": "Nguyễn Tất Thành lấy tên Văn Ba, xin làm phụ bếp tàu Amiral Latouche-Tréville (hãng Chargeurs Réunis). Tàu đi: Sài Gòn → Singapore → Colombo → Suez → Marseille (6/7/1911).",
+      "img": "assets/hcm/timeline/ben_nha_rong_1911.png",
+      "category": "Sự kiện lịch sử",
+      "source": "HCM Biên niên tập 1; baotanghochiminh.vn",
+      "coordinates": {
+        "lat": 10.7683,
+        "lon": 106.7067
+      }
+    },
+    {
+      "id": 6,
+      "date": "01/07/1911",
+      "year": "1911",
+      "period": "Tìm đường cứu nước",
+      "title": "Ghé qua các cảng châu Phi",
+      "desc": "Trên tàu Amiral Latouche-Tréville, Nguyễn Tất Thành ghé nhiều cảng ở Bắc Phi (Algeria, Tunisia). Chứng kiến cảnh sống của người dân thuộc địa — hình thành tư tưởng chống thực dân.",
+      "img": "assets/hcm/timeline/chau_phi_1911.png",
+      "category": "Hành trình quốc tế",
+      "source": "HCM Bien nien tap 1; Britannica",
+      "coordinates": {
+        "lat": 36.7538,
+        "lon": 3.0588
+      }
+    },
+    {
+      "id": 8,
+      "date": "06/07/1911",
+      "year": "1911",
+      "period": "Tìm đường cứu nước",
+      "title": "Đến Marseille - Pháp lần đầu",
+      "desc": "Lần đầu đặt chân lên đất Pháp. Nhận ra: người Pháp ở Pháp khác người Pháp ở thuộc địa — vấn đề là chế độ bóc lột.",
+      "img": "assets/hcm/timeline/marseille_1911.png",
+      "category": "Hành trình quốc tế",
+      "source": "HCM Biên niên tập 1",
+      "coordinates": {
+        "lat": 43.2951,
+        "lon": 5.3609
+      }
+    },
+    {
+      "id": 9,
+      "date": "15/12/1912",
+      "year": "1912",
+      "period": "Tìm đường cứu nước",
+      "title": "Ở Hoa Kỳ — Bức thư từ New York",
+      "desc": "Sống ở New York (Brooklyn). Viết thư ký tên 'Paul Tất Thành' gửi Khâm sứ Trung Kỳ (15/12/1912). Chứng kiến phân biệt chủng tộc, tìm hiểu Tuyên ngôn Độc lập Mỹ 1776.",
+      "img": "assets/hcm/timeline/new_york_1912.png",
+      "category": "Hành trình quốc tế",
+      "source": "Hồ sơ lưu trữ Pháp; baotanghochiminh.vn",
+      "coordinates": {
+        "lat": 40.6782,
+        "lon": -73.9442
+      }
+    },
+    {
+      "id": 10,
+      "date": "01/01/1913",
+      "year": "1913",
+      "period": "Tìm đường cứu nước",
+      "title": "Đến London - Anh Quốc",
+      "desc": "Làm phụ bếp tại khách sạn Carlton (Haymarket, London). Biển Blue Plaque lưu niệm tại New Zealand House. Tự học tiếng Anh.",
+      "img": "assets/hcm/timeline/london_carlton_1914.png",
+      "category": "Hành trình quốc tế",
+      "source": "cand.com.vn; ttdn.vn; Wikipedia",
+      "coordinates": {
+        "lat": 51.508,
+        "lon": -0.1316
+      }
+    },
+    {
+      "id": 11,
+      "date": "01/01/1917",
+      "year": "1917",
+      "period": "Tìm đường cứu nước",
+      "title": "Trở lại Paris - Hoạt động chính trị",
+      "desc": "Thuê phòng trọ ở Paris, làm nghề chỉnh sửa ảnh. Gia nhập Đảng Xã hội Pháp (Chi bộ số 13). Tiếp xúc Phan Châu Trinh, Phan Văn Trường.",
+      "img": "assets/hcm/timeline/paris_1917.png",
+      "category": "Hoạt động chính trị",
+      "source": "HCM Biên niên tập 1",
+      "coordinates": {
+        "lat": 48.8534,
+        "lon": 2.3488
+      }
+    },
+    {
+      "id": 12,
+      "date": "18/06/1919",
+      "year": "1919",
+      "period": "Tìm đường cứu nước",
+      "title": "Gửi Yêu sách của Nhân dân An Nam",
+      "desc": "Gửi bản 8 điểm yêu sách đến Hội nghị Versailles, lần đầu dùng bút danh Nguyễn Ái Quốc. Không được tiếp nhận nhưng gây tiếng vang lớn.",
+      "img": "assets/hcm/timeline/versailles_1919.png",
+      "category": "Sự kiện lịch sử",
+      "source": "baotanglichsu.vn; HCM Biên niên tập 1",
+      "coordinates": {
+        "lat": 48.8044,
+        "lon": 2.1232
+      }
+    },
+    {
+      "id": 13,
+      "date": "01/07/1920",
+      "year": "1920",
+      "period": "Tìm đường cứu nước",
+      "title": "Đọc Luận cương của Lênin",
+      "desc": "Đọc 'Sơ thảo lần thứ nhất những Luận cương về vấn đề dân tộc và thuộc địa' trên báo L'Humanité. Bước ngoặt tư tưởng: tìm thấy con đường cứu nước.",
+      "img": "assets/hcm/timeline/paris_luan_cuong_1920.png",
+      "category": "Sự kiện lịch sử",
+      "source": "HCM Toàn tập tập 12; hochiminhcity.gov.vn",
+      "coordinates": {
+        "lat": 48.8534,
+        "lon": 2.3488
+      }
+    },
+    {
+      "id": 14,
+      "date": "25/12/1920",
+      "year": "1920",
+      "period": "Tìm đường cứu nước",
+      "title": "Gia nhập Đảng Cộng sản Pháp tại Đại hội Tours",
+      "desc": "Bỏ phiếu gia nhập Quốc tế III. Trở thành người cộng sản Việt Nam đầu tiên, đảng viên sáng lập ĐCS Pháp.",
+      "img": "assets/hcm/timeline/dai_hoi_tours_1920.png",
+      "category": "Sự kiện lịch sử",
+      "source": "vietnamplus.vn; baotintuc.vn",
+      "coordinates": {
+        "lat": 47.3936,
+        "lon": 0.6892
+      }
+    },
+    {
+      "id": 15,
+      "date": "01/04/1922",
+      "year": "1922",
+      "period": "Hoạt động quốc tế",
+      "title": "Sáng lập báo Le Paria và Hội Liên hiệp Thuộc địa",
+      "desc": "Tờ báo tiếng nói các dân tộc thuộc địa, được bí mật chuyển về Việt Nam. Hội Liên hiệp Thuộc địa tập hợp người từ Bắc Phi, Tây Phi, Đông Dương.",
+      "img": "assets/hcm/timeline/le_paria_paris_1922.png",
+      "category": "Báo chí & Văn học",
+      "source": "HCM Biên niên tập 1; dangcongsan.vn",
+      "coordinates": {
+        "lat": 48.8534,
+        "lon": 2.3488
+      }
+    },
+    {
+      "id": 16,
+      "date": "01/06/1923",
+      "year": "1923",
+      "period": "Hoạt động quốc tế",
+      "title": "Đến Moskva - Liên Xô",
+      "desc": "Sang Moskva bí mật qua Berlin. Học tập và làm việc tại Quốc tế Cộng sản (Comintern).",
+      "img": "assets/hcm/timeline/moscow_1934.png",
+      "category": "Hoạt động quốc tế",
+      "source": "HCM Biên niên tập 2",
+      "coordinates": {
+        "lat": 55.7558,
+        "lon": 37.6173
+      }
+    },
+    {
+      "id": 17,
+      "date": "01/06/1924",
+      "year": "1924",
+      "period": "Hoạt động quốc tế",
+      "title": "Dự Đại hội V Quốc tế Cộng sản",
+      "desc": "Phát biểu về vấn đề thuộc địa, nhấn mạnh tầm quan trọng phong trào giải phóng châu Á.",
+      "img": "assets/hcm/timeline/tl_17_dai_hoi_v_quoc_te_cong_san_1924.jpg",
+      "category": "Hoạt động quốc tế",
+      "source": "HCM Biên niên tập 2",
+      "coordinates": {
+        "lat": 55.7558,
+        "lon": 37.6173
+      }
+    },
+    {
+      "id": 18,
+      "date": "11/11/1924",
+      "year": "1924",
+      "period": "Hoạt động quốc tế",
+      "title": "Đến Quảng Châu - Trung Quốc",
+      "desc": "Tham gia phái đoàn cố vấn Borodin (Liên Xô). Bắt đầu xây dựng lực lượng cách mạng VN.",
+      "img": "assets/hcm/timeline/quang_chau_1924.png",
+      "category": "Hoạt động quốc tế",
+      "source": "Bảo tàng HCM",
+      "coordinates": {
+        "lat": 23.1291,
+        "lon": 113.2644
+      }
+    },
+    {
+      "id": 19,
+      "date": "01/01/1925",
+      "year": "1925",
+      "period": "Hoạt động quốc tế",
+      "title": "Xuất bản Bản án chế độ thực dân Pháp",
+      "desc": "Tác phẩm 'Le Procès de la colonisation française' xuất bản tại Paris (Librairie du Travail). Tố cáo tội ác thực dân Pháp ở Đông Dương và các thuộc địa.",
+      "img": "assets/hcm/timeline/ban_an_thuc_dan_1925.png",
+      "category": "Báo chí & Văn học",
+      "source": "HCM Toan tap tap 2; nlv.gov.vn",
+      "coordinates": {
+        "lat": 48.8534,
+        "lon": 2.3488
+      }
+    },
+    {
+      "id": 20,
+      "date": "21/06/1925",
+      "year": "1925",
+      "period": "Hoạt động quốc tế",
+      "title": "Thành lập Hội VN Cách mạng Thanh niên",
+      "desc": "Tổ chức tiền thân ĐCS VN. Mở lớp huấn luyện cán bộ. Xuất bản báo Thanh niên (21/6/1925 → Ngày Báo chí CM VN).",
+      "img": "assets/hcm/timeline/tl_20_hoi_vn_cach_mang_thanh_nien_1925.jpg",
+      "category": "Tổ chức cách mạng",
+      "source": "HCM Toàn tập tập 2",
+      "coordinates": {
+        "lat": 23.1291,
+        "lon": 113.2644
+      }
+    },
+    {
+      "id": 21,
+      "date": "01/01/1927",
+      "year": "1927",
+      "period": "Hoạt động quốc tế",
+      "title": "Xuất bản Đường Kách Mệnh",
+      "desc": "Cuốn sách lý luận cách mạng đầu tiên. Trình bày: tại sao cần CM, ai là lực lượng, làm CM thế nào.",
+      "img": "assets/hcm/timeline/duong_kach_menh_1927.png",
+      "category": "Tư tưởng & Lý luận",
+      "source": "HCM Toàn tập tập 2",
+      "coordinates": {
+        "lat": 23.1291,
+        "lon": 113.2644
+      }
+    },
+    {
+      "id": 22,
+      "date": "01/07/1928",
+      "year": "1928",
+      "period": "Hoạt động quốc tế",
+      "title": "Hoạt động tại Xiêm (Thái Lan)",
+      "desc": "Lấy bí danh Thầu Chín, sống tại Udon Thani (Đông Bắc Thái Lan). Tổ chức phong trào Việt kiều, xây dựng mạng lưới cách mạng trong cộng đồng người Việt.",
+      "img": "assets/hcm/timeline/siam_1929.png",
+      "category": "Hoạt động quốc tế",
+      "source": "HCM Bien nien tap 2; hochiminh.vn",
+      "coordinates": {
+        "lat": 17.4156,
+        "lon": 102.7872
+      }
+    },
+    {
+      "id": 23,
+      "date": "03/02/1930",
+      "year": "1930",
+      "period": "Sáng lập Đảng",
+      "title": "Thành lập Đảng Cộng sản Việt Nam",
+      "desc": "Chủ trì hội nghị hợp nhất 3 tổ chức CS tại Cửu Long, Hồng Kông. Thông qua Chánh cương, Sách lược, Điều lệ.",
+      "img": "assets/hcm/timeline/thanh_lap_dang_1930.png",
+      "category": "Sự kiện lịch sử",
+      "source": "Văn kiện Đảng tập 2; NXB CTQG",
+      "coordinates": {
+        "lat": 22.3167,
+        "lon": 114.1833
+      }
+    },
+    {
+      "id": 24,
+      "date": "01/06/1931",
+      "year": "1931",
+      "period": "Sáng lập Đảng",
+      "title": "Bị bắt tại Hồng Kông",
+      "desc": "Mật thám Anh bắt theo yêu cầu Pháp. Luật sư Francis Henry Loseby bảo vệ pháp lý.",
+      "img": "assets/hcm/timeline/hong_kong_1931.png",
+      "category": "Tù đày & Gian khổ",
+      "source": "HCM Biên niên tập 2",
+      "coordinates": {
+        "lat": 22.2825,
+        "lon": 114.1542
+      }
+    },
+    {
+      "id": 25,
+      "date": "01/01/1933",
+      "year": "1933",
+      "period": "Sáng lập Đảng",
+      "title": "Thoát khỏi Hồng Kông",
+      "desc": "Được thả, bí mật rời Hồng Kông. Pháp tuyên án tử hình vắng mặt.",
+      "img": "assets/hcm/timeline/tl_25_thoat_khoi_hong_kong_1933.jpg",
+      "category": "Tù đày & Gian khổ",
+      "source": "HCM Biên niên tập 2",
+      "coordinates": {
+        "lat": 22.2825,
+        "lon": 114.1542
+      }
+    },
+    {
+      "id": 26,
+      "date": "01/01/1934",
+      "year": "1934",
+      "period": "Sáng lập Đảng",
+      "title": "Học tập tại Trường Quốc tế Lênin Moskva",
+      "desc": "Học lý luận Mác-Lênin tại Moskva trong 4 năm (1934-1938). Giai đoạn tích lũy lý luận.",
+      "img": "assets/hcm/timeline/moscow_1934.png",
+      "category": "Học tập",
+      "source": "HCM Biên niên tập 3",
+      "coordinates": {
+        "lat": 55.775,
+        "lon": 37.617
+      }
+    },
+    {
+      "id": 28,
+      "date": "28/01/1941",
+      "year": "1941",
+      "period": "Về nước",
+      "title": "Trở về Tổ quốc sau 30 năm",
+      "desc": "Vượt mốc biên giới 108 (Cao Bằng) trở về đất mẹ (mùng 2 Tết Tân Tỵ). Ở và làm việc tại hang Pác Bó.",
+      "img": "assets/hcm/timeline/pac_bo_1941.png",
+      "category": "Sự kiện lịch sử",
+      "source": "Bảo tàng HCM",
+      "coordinates": {
+        "lat": 22.978,
+        "lon": 106.054
+      }
+    },
+    {
+      "id": 27,
+      "date": "19/05/1941",
+      "year": "1941",
+      "period": "Về nước",
+      "title": "Thành lập Mặt trận Việt Minh",
+      "desc": "Hội nghị TW VIII tại Pác Bó (10-19/5/1941). Thành lập Mặt trận Việt Minh. Đặt giải phóng dân tộc lên hàng đầu.",
+      "img": "assets/hcm/timeline/viet_minh_1941.png",
+      "category": "Tổ chức cách mạng",
+      "source": "Văn kiện Đảng tập 7",
+      "coordinates": {
+        "lat": 22.978,
+        "lon": 106.054
+      }
+    },
+    {
+      "id": 29,
+      "date": "01/08/1942",
+      "year": "1942",
+      "period": "Sáng lập Đảng",
+      "title": "Bị Quốc Dân Đảng TQ bắt giam",
+      "desc": "Bị bắt tại Quảng Tây khi sang liên lạc Đồng Minh. Lần đầu dùng tên Hồ Chí Minh. Bị giải qua 18 nhà tù / 13 huyện / 13 tháng.",
+      "img": "assets/hcm/timeline/tl_29_bi_quoc_dan_dang_tq_bat_giam_1942.jpg",
+      "category": "Tù đày & Gian khổ",
+      "source": "HCM Biên niên tập 3",
+      "coordinates": {
+        "lat": 22.8,
+        "lon": 108.32
+      }
+    },
+    {
+      "id": 30,
+      "date": "01/08/1942",
+      "year": "1942",
+      "period": "Văn học",
+      "title": "Viết Nhật ký trong tù",
+      "desc": "133 bài thơ chữ Hán trong ngục — kiệt tác văn học thể hiện tinh thần bất khuất và tâm hồn nhân văn.",
+      "img": "assets/hcm/timeline/nhat_ky_trong_tu_1942.png",
+      "category": "Báo chí & Văn học",
+      "source": "HCM Toàn tập tập 3",
+      "coordinates": {
+        "lat": 22.8,
+        "lon": 108.32
+      }
+    },
+    {
+      "id": 31,
+      "date": "01/09/1943",
+      "year": "1943",
+      "period": "Sáng lập Đảng",
+      "title": "Được trả tự do",
+      "desc": "Sau 13 tháng giam, được thả do nhu cầu hợp tác chống Nhật.",
+      "img": "assets/hcm/timeline/tl_31_duoc_tra_tu_do_1943.jpg",
+      "category": "Tù đày & Gian khổ",
+      "source": "HCM Biên niên tập 3",
+      "coordinates": {
+        "lat": 22.8,
+        "lon": 108.32
+      }
+    },
+    {
+      "id": 32,
+      "date": "22/12/1944",
+      "year": "1944",
+      "period": "Về nước",
+      "title": "Thành lập Đội VN Tuyên truyền Giải phóng quân",
+      "desc": "34 chiến sĩ đầu tiên tại rừng Trần Hưng Đạo, Cao Bằng. Do Võ Nguyên Giáp chỉ huy. Tiền thân QĐNDVN.",
+      "img": "assets/hcm/timeline/giai_phong_quan_1944.png",
+      "category": "Sự kiện lịch sử",
+      "source": "Bảo tàng HCM",
+      "coordinates": {
+        "lat": 22.5667,
+        "lon": 106.0167
+      }
+    },
+    {
+      "id": 35,
+      "date": "09/03/1945",
+      "year": "1945",
+      "period": "Cách mạng Tháng Tám",
+      "title": "Nhật đảo chính Pháp",
+      "desc": "Nhật lật đổ Pháp trên toàn Đông Dương một đêm. Đảng ra chỉ thị chuyển sang chống Nhật (12/3/1945).",
+      "img": "assets/hcm/timeline/tl_35_nhat_dao_chinh_phap_1945.jpg",
+      "category": "Sự kiện lịch sử",
+      "source": "Văn kiện Đảng tập 7",
+      "coordinates": {
+        "lat": 21.0285,
+        "lon": 105.8542
+      }
+    },
+    {
+      "id": 36,
+      "date": "13/08/1945",
+      "year": "1945",
+      "period": "Cách mạng Tháng Tám",
+      "title": "Hội nghị Tân Trào - Tổng khởi nghĩa",
+      "desc": "Nhật đầu hàng Đồng Minh. Đảng họp tại Tân Trào, quyết định Tổng khởi nghĩa toàn quốc. Bầu Hồ Chí Minh làm Chủ tịch.",
+      "img": "assets/hcm/timeline/tan_trao_1945.png",
+      "category": "Sự kiện lịch sử",
+      "source": "Văn kiện Đảng tập 7",
+      "coordinates": {
+        "lat": 21.82,
+        "lon": 105.22
+      }
+    },
+    {
+      "id": 37,
+      "date": "19/08/1945",
+      "year": "1945",
+      "period": "Cách mạng Tháng Tám",
+      "title": "Hà Nội khởi nghĩa thành công",
+      "desc": "Hàng chục vạn nhân dân Hà Nội xuống đường. Chính quyền về tay nhân dân.",
+      "img": "assets/hcm/timeline/tl_37_ha_noi_khoi_nghia_1945.jpg",
+      "category": "Sự kiện lịch sử",
+      "source": "Bảo tàng Lịch sử QG",
+      "coordinates": {
+        "lat": 21.0285,
+        "lon": 105.8542
+      }
+    },
+    {
+      "id": 38,
+      "date": "25/08/1945",
+      "year": "1945",
+      "period": "Cách mạng Tháng Tám",
+      "title": "Vua Bảo Đại thoái vị",
+      "desc": "Trao ấn kiếm cho Việt Minh. Chế độ phong kiến nghìn năm cáo chung.",
+      "img": "assets/hcm/timeline/tl_38_vua_bao_dai_thoai_vi_1945.jpg",
+      "category": "Sự kiện lịch sử",
+      "source": "Bảo tàng Lịch sử QG",
+      "coordinates": {
+        "lat": 16.4776,
+        "lon": 107.573
+      }
+    },
+    {
+      "id": 33,
+      "date": "01/09/1945",
+      "year": "1945",
+      "period": "Cách mạng Tháng Tám",
+      "title": "Sài Gòn khởi nghĩa thành công",
+      "desc": "Nhân dân Sài Gòn - Chợ Lớn - Gia Định tổng khởi nghĩa giành chính quyền ngày 25/8/1945. Hoàn thành Cách mạng Tháng Tám trên toàn quốc.",
+      "img": "assets/hcm/timeline/tl_33_sai_gon_khoi_nghia_1945.jpg",
+      "category": "Sự kiện lịch sử",
+      "source": "Bao tang LSQG",
+      "coordinates": {
+        "lat": 10.7771,
+        "lon": 106.6954
+      }
+    },
+    {
+      "id": 34,
+      "date": "02/09/1945",
+      "year": "1945",
+      "period": "Cách mạng Tháng Tám",
+      "title": "Tuyên ngôn Độc lập - Khai sinh nước VNDCCH",
+      "desc": "Tại Quảng trường Ba Đình, HCM đọc Tuyên ngôn Độc lập trước hàng chục vạn đồng bào. Nước VNDCCH ra đời.",
+      "img": "assets/hcm/timeline/ba_dinh_1945_doc_lap.png",
+      "category": "Sự kiện lịch sử",
+      "source": "HCM Toàn tập tập 4",
+      "coordinates": {
+        "lat": 21.0367,
+        "lon": 105.8358
+      }
+    },
+    {
+      "id": 39,
+      "date": "06/01/1946",
+      "year": "1946",
+      "period": "Xây dựng nhà nước",
+      "title": "Tổng tuyển cử toàn quốc lần đầu tiên",
+      "desc": "Hơn 89% cử tri đi bỏ phiếu. HCM trúng cử 98.4% tại Hà Nội.",
+      "img": "assets/hcm/timeline/tong_tuyen_cu_1946.png",
+      "category": "Xây dựng nhà nước",
+      "source": "Bảo tàng HCM",
+      "coordinates": {
+        "lat": 21.0285,
+        "lon": 105.8542
+      }
+    },
+    {
+      "id": 40,
+      "date": "06/03/1946",
+      "year": "1946",
+      "period": "Xây dựng nhà nước",
+      "title": "Ký Hiệp định Sơ bộ với Pháp",
+      "desc": "Tạm hòa hoãn để chuẩn bị lực lượng. Sách lược linh hoạt trong thế yếu.",
+      "img": "assets/hcm/timeline/tl_40_hiep_dinh_so_bo_1946.jpg",
+      "category": "Ngoại giao",
+      "source": "HCM Biên niên tập 4",
+      "coordinates": {
+        "lat": 21.0285,
+        "lon": 105.8542
+      }
+    },
+    {
+      "id": 42,
+      "date": "31/05/1946",
+      "year": "1946",
+      "period": "Xây dựng nhà nước",
+      "title": "Thăm chính thức nước Pháp",
+      "desc": "HCM dẫn đầu phái đoàn VN sang Pháp đàm phán tại Hội nghị Fontainebleau (6/7-10/9/1946). Ký Tạm ước 14/9/1946 trước khi về nước.",
+      "img": "assets/hcm/timeline/tl_42_tham_chinh_thuc_nuoc_phap_1946.jpg",
+      "category": "Ngoại giao",
+      "source": "HCM Bien nien tap 4",
+      "coordinates": {
+        "lat": 48.8534,
+        "lon": 2.3488
+      }
+    },
+    {
+      "id": 41,
+      "date": "19/12/1946",
+      "year": "1946",
+      "period": "Kháng chiến chống Pháp",
+      "title": "Lời kêu gọi Toàn quốc kháng chiến",
+      "desc": "Pháp gửi tối hậu thư. HCM kêu gọi: Thà hy sinh tất cả chứ không chịu làm nô lệ.",
+      "img": "assets/hcm/timeline/khang_chien_1946.png",
+      "category": "Sự kiện lịch sử",
+      "source": "HCM Toàn tập tập 4",
+      "coordinates": {
+        "lat": 21.0285,
+        "lon": 105.8542
+      }
+    },
+    {
+      "id": 43,
+      "date": "01/10/1947",
+      "year": "1947",
+      "period": "Kháng chiến chống Pháp",
+      "title": "Chiến thắng Việt Bắc Thu Đông 1947",
+      "desc": "Pháp huy động 12.000 quân tấn công căn cứ địa. Quân dân Việt Bắc đánh bại, buộc Pháp rút lui.",
+      "img": "assets/hcm/timeline/tl_43_viet_bac_thu_dong_1947.jpg",
+      "category": "Chiến thắng quân sự",
+      "source": "Bảo tàng LSQG",
+      "coordinates": {
+        "lat": 22.15,
+        "lon": 105.85
+      }
+    },
+    {
+      "id": 44,
+      "date": "01/01/1950",
+      "year": "1950",
+      "period": "Kháng chiến chống Pháp",
+      "title": "Trung Quốc và Liên Xô công nhận VNDCCH",
+      "desc": "Phá vỡ thế cô lập quốc tế. HCM thăm Moskva (gặp Stalin) và Bắc Kinh (gặp Mao Trạch Đông).",
+      "img": "assets/hcm/timeline/tl_44_tq_va_lien_xo_cong_nhan_1950.jpg",
+      "category": "Ngoại giao",
+      "source": "HCM Biên niên tập 5",
+      "coordinates": {
+        "lat": 55.7558,
+        "lon": 37.6173
+      }
+    },
+    {
+      "id": 45,
+      "date": "16/09/1950",
+      "year": "1950",
+      "period": "Kháng chiến chống Pháp",
+      "title": "Chiến thắng Biên giới Thu Đông 1950",
+      "desc": "Loại 8.000 quân Pháp, giải phóng biên giới Việt-Trung. HCM trực tiếp ra mặt trận.",
+      "img": "assets/hcm/timeline/tl_45_bien_gioi_thu_dong_1950.jpg",
+      "category": "Chiến thắng quân sự",
+      "source": "Bảo tàng LSQG",
+      "coordinates": {
+        "lat": 21.85,
+        "lon": 106.75
+      }
+    },
+    {
+      "id": 46,
+      "date": "11/02/1951",
+      "year": "1951",
+      "period": "Kháng chiến chống Pháp",
+      "title": "Đại hội Đảng lần II",
+      "desc": "Đổi tên thành Đảng Lao động VN. HCM được bầu Chủ tịch Đảng.",
+      "img": "assets/hcm/timeline/tl_46_dai_hoi_dang_lan_ii_1951.jpg",
+      "category": "Tổ chức cách mạng",
+      "source": "Văn kiện Đảng tập 12",
+      "coordinates": {
+        "lat": 22.15,
+        "lon": 105.85
+      }
+    },
+    {
+      "id": 47,
+      "date": "19/12/1953",
+      "year": "1953",
+      "period": "Kháng chiến chống Pháp",
+      "title": "Quốc hội thông qua Luật Cải cách ruộng đất",
+      "desc": "Quốc hội khóa I thông qua Luật CCRĐ. Thực hiện khẩu hiệu 'Người cày có ruộng'. Sau đó, HCM nhận sai lầm và chỉ đạo sửa sai (1956).",
+      "img": "assets/hcm/timeline/cai_cach_ruong_dat_1953.png",
+      "category": "Xây dựng nhà nước",
+      "source": "Bao tang HCM",
+      "coordinates": {
+        "lat": 22.15,
+        "lon": 105.85
+      }
+    },
+    {
+      "id": 50,
+      "date": "13/03/1954",
+      "year": "1954",
+      "period": "Kháng chiến chống Pháp",
+      "title": "Chiến dịch Điện Biên Phủ mở màn",
+      "desc": "56 ngày đêm chiến đấu. Tướng Giáp chỉ huy theo phương châm đánh chắc tiến chắc.",
+      "img": "assets/hcm/timeline/dien_bien_phu_1954.png",
+      "category": "Sự kiện lịch sử",
+      "source": "Bảo tàng LSQG",
+      "coordinates": {
+        "lat": 21.386,
+        "lon": 103.023
+      }
+    },
+    {
+      "id": 48,
+      "date": "07/05/1954",
+      "year": "1954",
+      "period": "Kháng chiến chống Pháp",
+      "title": "Chiến thắng Điện Biên Phủ",
+      "desc": "17h30 ngày 7/5/1954: Tướng De Castries và 16.200 quân đầu hàng. Lừng lẫy năm châu chấn động địa cầu.",
+      "img": "assets/hcm/timeline/dien_bien_phu_1954.png",
+      "category": "Sự kiện lịch sử",
+      "source": "Bảo tàng LSQG",
+      "coordinates": {
+        "lat": 21.386,
+        "lon": 103.023
+      }
+    },
+    {
+      "id": 51,
+      "date": "21/07/1954",
+      "year": "1954",
+      "period": "Kháng chiến chống Pháp",
+      "title": "Ký Hiệp định Genève",
+      "desc": "Pháp công nhận độc lập VN. Tạm chia đôi tại vĩ tuyến 17.",
+      "img": "assets/hcm/timeline/geneve_1954.png",
+      "category": "Ngoại giao",
+      "source": "HCM Biên niên tập 5",
+      "coordinates": {
+        "lat": 46.2044,
+        "lon": 6.1432
+      }
+    },
+    {
+      "id": 49,
+      "date": "10/10/1954",
+      "year": "1954",
+      "period": "Kháng chiến chống Pháp",
+      "title": "Tiếp quản Hà Nội",
+      "desc": "QĐND tiến vào Hà Nội trong rừng cờ hoa. HCM trở về Thủ đô sau 8 năm kháng chiến.",
+      "img": "assets/hcm/timeline/tiep_quan_hanoi_1954.png",
+      "category": "Sự kiện lịch sử",
+      "source": "Bảo tàng HCM",
+      "coordinates": {
+        "lat": 21.0285,
+        "lon": 105.8542
+      }
+    },
+    {
+      "id": 52,
+      "date": "01/06/1955",
+      "year": "1955",
+      "period": "Kháng chiến chống Mỹ",
+      "title": "Thăm Liên Xô và Trung Quốc",
+      "desc": "Dẫn đầu đoàn đại biểu Chính phủ thăm Liên Xô, Trung Quốc và Mông Cổ (6-7/1955). Tăng cường quan hệ quốc tế sau chiến thắng Điện Biên Phủ.",
+      "img": "assets/hcm/timeline/tl_52_tham_lien_xo_va_trung_quoc_1955.jpg",
+      "category": "Ngoại giao",
+      "source": "HCM Bien nien tap 6",
+      "coordinates": {
+        "lat": 55.7558,
+        "lon": 37.6173
+      }
+    },
+    {
+      "id": 53,
+      "date": "01/02/1957",
+      "year": "1957",
+      "period": "Kháng chiến chống Mỹ",
+      "title": "Thăm Ấn Độ và Myanmar",
+      "desc": "HCM thăm Ấn Độ (gặp Thủ tướng Nehru) và Myanmar. Thúc đẩy tình đoàn kết với các nước châu Á mới độc lập.",
+      "img": "assets/hcm/timeline/tl_53_tham_an_do_va_myanmar_1957.jpg",
+      "category": "Ngoại giao",
+      "source": "HCM Bien nien tap 7",
+      "coordinates": {
+        "lat": 28.6139,
+        "lon": 77.209
+      }
+    },
+    {
+      "id": 66,
+      "date": "01/07/1957",
+      "year": "1957",
+      "period": "Kháng chiến chống Mỹ",
+      "title": "Thăm các nước xã hội chủ nghĩa châu Âu",
+      "desc": "Chủ tịch Hồ Chí Minh dẫn đầu đoàn đại biểu Việt Nam Dân chủ Cộng hòa thăm hữu nghị nhiều nước xã hội chủ nghĩa châu Âu trong mùa hè 1957, trong đó có Cộng hòa Dân chủ Đức và Nam Tư.",
+      "img": "assets/hcm/timeline/tl_66_tham_cac_nuoc_xhcn_chau_au_1957.jpg",
+      "category": "Ngoại giao",
+      "source": "Bổ sung khi chuẩn hóa — cần đối chiếu Hồ Chí Minh Biên niên tiểu sử tập 6",
+      "coordinates": {
+        "lat": 52.52,
+        "lon": 13.405
+      }
+    },
+    {
+      "id": 54,
+      "date": "31/12/1959",
+      "year": "1959",
+      "period": "Kháng chiến chống Mỹ",
+      "title": "Thông qua Hiến pháp 1959",
+      "desc": "HCM làm Trưởng ban dự thảo. Hiến pháp 1959 khẳng định VN là nhà nước dân chủ nhân dân, tiến lên CNXH. Đặt nền tảng pháp lý cho miền Bắc.",
+      "img": "assets/hcm/timeline/hien_phap_1959.png",
+      "category": "Xây dựng nhà nước",
+      "source": "Quoc hoi VN",
+      "coordinates": {
+        "lat": 21.0285,
+        "lon": 105.8542
+      }
+    },
+    {
+      "id": 55,
+      "date": "19/05/1960",
+      "year": "1960",
+      "period": "Kháng chiến chống Mỹ",
+      "title": "HCM tròn 70 tuổi — Bắt đầu viết Di chúc",
+      "desc": "Nhân dịp sinh nhật lần thứ 70, HCM bắt đầu viết bản Di chúc ('Tài liệu tuyệt đối bí mật'). Sửa đổi bổ sung hàng năm cho đến 1969.",
+      "img": "assets/hcm/timeline/di_chuc_1969.png",
+      "category": "Tư tưởng & Lý luận",
+      "source": "HCM Toan tap tap 15",
+      "coordinates": {
+        "lat": 21.0367,
+        "lon": 105.8358
+      }
+    },
+    {
+      "id": 56,
+      "date": "20/12/1960",
+      "year": "1960",
+      "period": "Kháng chiến chống Mỹ",
+      "title": "Thành lập MTGP miền Nam VN",
+      "desc": "Tổ chức lãnh đạo kháng chiến chống Mỹ ở miền Nam.",
+      "img": "assets/hcm/timeline/tl_56_thanh_lap_mtgp_mien_nam_1960.jpg",
+      "category": "Tổ chức cách mạng",
+      "source": "Văn kiện Đảng tập 21",
+      "coordinates": {
+        "lat": 10.7771,
+        "lon": 106.6954
+      }
+    },
+    {
+      "id": 57,
+      "date": "05/06/1961",
+      "year": "1961",
+      "period": "Di sản",
+      "title": "Phát động Tết trồng cây",
+      "desc": "HCM viết bài 'Tết trồng cây' trên báo Nhân Dân (28/11/1959) và phát động phong trào từ 1960. Năm 1961 trở thành phong trào toàn dân, di sản môi trường lâu dài.",
+      "img": "assets/hcm/timeline/tl_57_phat_dong_tet_trong_cay_1961.jpg",
+      "category": "Di sản",
+      "source": "Bao Nhan Dan; HCM Toan tap",
+      "coordinates": {
+        "lat": 21.0367,
+        "lon": 105.8358
+      }
+    },
+    {
+      "id": 58,
+      "date": "05/08/1964",
+      "year": "1964",
+      "period": "Kháng chiến chống Mỹ",
+      "title": "Mỹ ném bom miền Bắc lần đầu",
+      "desc": "Mỹ lấy cớ Sự kiện Vịnh Bắc Bộ (ngụy tạo) tấn công miền Bắc.",
+      "img": "assets/hcm/timeline/tl_58_my_nem_bom_mien_bac_1964.jpg",
+      "category": "Sự kiện lịch sử",
+      "source": "Bảo tàng LSQG",
+      "coordinates": {
+        "lat": 19.5,
+        "lon": 107.5
+      }
+    },
+    {
+      "id": 59,
+      "date": "17/07/1966",
+      "year": "1966",
+      "period": "Kháng chiến chống Mỹ",
+      "title": "Lời kêu gọi chống Mỹ lịch sử",
+      "desc": "Không có gì quý hơn độc lập tự do. Chiến tranh có thể kéo dài 5-10-20 năm nhưng VN quyết thắng.",
+      "img": "assets/hcm/timeline/tl_59_loi_keu_goi_chong_my_1966.jpg",
+      "category": "Tư tưởng & Lý luận",
+      "source": "HCM Toàn tập tập 15",
+      "coordinates": {
+        "lat": 21.0367,
+        "lon": 105.8358
+      }
+    },
+    {
+      "id": 60,
+      "date": "30/01/1968",
+      "year": "1968",
+      "period": "Kháng chiến chống Mỹ",
+      "title": "Tổng tiến công Tết Mậu Thân",
+      "desc": "Đánh vào 100+ thành phố. Đánh vào ĐSQ Mỹ. Phong trào phản chiến ở Mỹ bùng nổ.",
+      "img": "assets/hcm/timeline/tl_60_tong_tien_cong_tet_mau_than_1968.jpg",
+      "category": "Sự kiện lịch sử",
+      "source": "Bảo tàng LSQG",
+      "coordinates": {
+        "lat": 10.7771,
+        "lon": 106.6954
+      }
+    },
+    {
+      "id": 62,
+      "date": "10/05/1969",
+      "year": "1969",
+      "period": "Ra đi lịch sử",
+      "title": "Hoàn chỉnh Di chúc lần cuối",
+      "desc": "Lần sửa đổi cuối cùng bản Di chúc — văn kiện nhắn nhủ toàn Đảng toàn dân.",
+      "img": "assets/hcm/timeline/di_chuc_1969.png",
+      "category": "Tư tưởng & Lý luận",
+      "source": "HCM Toàn tập tập 15",
+      "coordinates": {
+        "lat": 21.0367,
+        "lon": 105.8358
+      }
+    },
+    {
+      "id": 61,
+      "date": "02/09/1969",
+      "year": "1969",
+      "period": "Ra đi lịch sử",
+      "title": "Chủ tịch Hồ Chí Minh từ trần",
+      "desc": "9h47 sáng ngày 2/9/1969 — đúng Quốc khánh lần thứ 24. Người ra đi hưởng thọ 79 tuổi.",
+      "img": "assets/hcm/timeline/tl_61_chu_tich_ho_chi_minh_tu_tran_1969.jpg",
+      "category": "Sự kiện lịch sử",
+      "source": "HCM Biên niên tập 10",
+      "coordinates": {
+        "lat": 21.0367,
+        "lon": 105.8358
+      }
+    },
+    {
+      "id": 63,
+      "date": "30/04/1975",
+      "year": "1975",
+      "period": "Di sản",
+      "title": "Chiến thắng 30/4 - Hoàn thành di nguyện",
+      "desc": "Chiến dịch HCM toàn thắng. Sài Gòn giải phóng, đất nước thống nhất.",
+      "img": "assets/hcm/timeline/giai_phong_saigon_1975.png",
+      "category": "Sự kiện lịch sử",
+      "source": "Bảo tàng LSQG",
+      "coordinates": {
+        "lat": 10.7771,
+        "lon": 106.6954
+      }
+    },
+    {
+      "id": 64,
+      "date": "02/07/1976",
+      "year": "1976",
+      "period": "Di sản",
+      "title": "Đổi tên TP.Sài Gòn thành TP.Hồ Chí Minh",
+      "desc": "Quốc hội thống nhất quyết định đổi tên để ghi nhớ công ơn Người.",
+      "img": "assets/hcm/timeline/tl_64_doi_ten_tp_ho_chi_minh_1976.jpg",
+      "category": "Di sản",
+      "source": "Quốc hội VN",
+      "coordinates": {
+        "lat": 10.7771,
+        "lon": 106.6954
+      }
+    },
+    {
+      "id": 65,
+      "date": "01/11/1987",
+      "year": "1987",
+      "period": "Di sản",
+      "title": "UNESCO vinh danh Hồ Chí Minh",
+      "desc": "Nghị quyết 24C/18.6.5 (khóa họp 24): Anh hùng giải phóng dân tộc và Nhà văn hóa kiệt xuất.",
+      "img": "assets/hcm/timeline/tl_65_unesco_vinh_danh_1987.jpg",
+      "category": "Di sản",
+      "source": "UNESCO — Nghị quyết 24C/18.6.5",
+      "coordinates": {
+        "lat": 48.849,
+        "lon": 2.3084
+      }
+    },
+    {
+      "id": 67,
+      "date": "",
+      "year": "null",
+      "period": "Di sản",
+      "title": "Tình cảm của Bác Hồ với thiếu nhi",
+      "desc": "Suốt cuộc đời, Chủ tịch Hồ Chí Minh luôn dành tình cảm đặc biệt cho thiếu nhi: thăm hỏi, tặng quà, viết thư nhân dịp Tết Trung thu và ngày khai trường.",
+      "img": "assets/hcm/timeline/tl_67_tinh_cam_bac_ho_voi_thieu_nhi.jpg",
+      "category": "Tình cảm với thiếu nhi",
+      "source": "Bổ sung khi chuẩn hóa",
+      "coordinates": null
+    }
+  ]
+}
