@@ -2334,3 +2334,255 @@ html, body {
   to { opacity: 1; }
 }
 
+/* ==========================================================================
+   Portrait Orientation Lock Overlay
+   ========================================================================== */
+.rotate-overlay {
+  display: none; /* Hidden on desktop */
+  position: fixed;
+  top: 0; left: 0;
+  width: 100vw; height: 100vh;
+  z-index: 99999;
+  background: linear-gradient(135deg, #050811 0%, #0d1225 40%, #1a0505 100%);
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+
+.rotate-content {
+  text-align: center;
+  padding: 30px;
+  animation: fadeIn 0.6s ease;
+}
+
+.rotate-icon {
+  position: relative;
+  display: inline-block;
+  margin-bottom: 24px;
+}
+
+.rotate-icon svg {
+  animation: rotatePhone 2.5s ease-in-out infinite;
+}
+
+@keyframes rotatePhone {
+  0%, 100% { transform: rotate(0deg); }
+  40%, 60% { transform: rotate(-90deg); }
+}
+
+.rotate-arrow {
+  position: absolute;
+  top: -8px; right: -20px;
+  font-size: 32px;
+  color: #d4af37;
+  animation: pulseArrow 2.5s ease-in-out infinite;
+}
+
+@keyframes pulseArrow {
+  0%, 100% { opacity: 0.3; transform: scale(0.8); }
+  40%, 60% { opacity: 1; transform: scale(1.2); }
+}
+
+.rotate-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 24px;
+  font-weight: 700;
+  color: #f8fafc;
+  margin: 0 0 10px 0;
+}
+
+.rotate-desc {
+  font-family: 'Inter', sans-serif;
+  font-size: 14px;
+  color: #94a3b8;
+  line-height: 1.6;
+  margin: 0 0 28px 0;
+}
+
+.rotate-brand {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  opacity: 0.6;
+}
+
+.rotate-logo {
+  height: 32px;
+  width: auto;
+  filter: drop-shadow(0 0 6px rgba(255,255,255,0.3));
+}
+
+.rotate-brand span {
+  font-family: 'Inter', sans-serif;
+  font-size: 12px;
+  font-weight: 600;
+  color: #d4af37;
+  letter-spacing: 0.5px;
+}
+
+/* Show overlay ONLY on mobile portrait */
+@media screen and (max-width: 900px) and (orientation: portrait) {
+  .rotate-overlay {
+    display: flex !important;
+  }
+}
+
+/* ==========================================================================
+   Mobile Landscape Responsive (phones in landscape mode)
+   ========================================================================== */
+@media screen and (max-height: 500px) {
+  /* Compact header */
+  .hud-header {
+    height: 42px;
+    padding: 0 10px;
+  }
+
+  .brand-logo-img {
+    height: 28px;
+  }
+
+  .brand-title {
+    font-size: 11px;
+  }
+
+  .brand-sub {
+    font-size: 7px;
+  }
+
+  .logo-box {
+    height: 30px;
+  }
+
+  .header-icon-btn {
+    width: 32px;
+    height: 32px;
+  }
+
+  .header-icon-btn svg {
+    width: 15px;
+    height: 15px;
+  }
+
+  .badge-count {
+    font-size: 8px;
+    min-width: 16px;
+    height: 16px;
+    line-height: 16px;
+  }
+
+  /* Compact pills bar */
+  .pills-bar {
+    top: 42px;
+    padding: 4px 8px;
+    gap: 4px;
+  }
+
+  .pill-btn {
+    font-size: 10px;
+    padding: 3px 8px;
+  }
+
+  /* Smaller minimap */
+  .minimap-container {
+    width: 130px;
+    height: 130px;
+    bottom: 8px;
+    right: 8px;
+  }
+
+  /* Compact help panel */
+  .help-panel {
+    max-width: 300px;
+    padding: 12px;
+  }
+
+  .help-panel h3 {
+    font-size: 14px;
+    margin-bottom: 8px;
+  }
+
+  .help-item {
+    font-size: 11px;
+    padding: 4px 0;
+  }
+
+  /* Loading screen mobile */
+  .loading-card {
+    padding: 20px;
+    max-width: 90vw;
+  }
+
+  .loading-emblem {
+    width: 60px;
+    height: 60px;
+    margin-bottom: 10px;
+  }
+
+  .loading-logo-img {
+    width: 32px;
+    height: 32px;
+  }
+
+  .loading-title {
+    font-size: 18px;
+  }
+
+  .loading-room-name {
+    font-size: 13px;
+  }
+
+  .loading-desc {
+    font-size: 10px;
+    line-height: 1.4;
+  }
+
+  .loading-tips {
+    font-size: 9px;
+    gap: 3px;
+  }
+
+  .btn-enter {
+    font-size: 13px;
+    padding: 10px 24px;
+  }
+
+  /* Drawer panel mobile */
+  .filter-drawer {
+    width: 280px;
+    max-width: 70vw;
+  }
+}
+
+/* Extra small phones landscape */
+@media screen and (max-height: 380px) {
+  .hud-header {
+    height: 36px;
+    padding: 0 6px;
+  }
+
+  .brand-text {
+    display: none;
+  }
+
+  .brand-logo-img {
+    height: 24px;
+  }
+
+  .header-icon-btn {
+    width: 28px;
+    height: 28px;
+  }
+
+  .minimap-container {
+    width: 100px;
+    height: 100px;
+  }
+}
+
+/* Tablet portrait */
+@media screen and (min-width: 601px) and (max-width: 900px) and (orientation: portrait) {
+  .rotate-overlay {
+    display: flex !important;
+  }
+}
