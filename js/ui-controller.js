@@ -308,21 +308,70 @@ export class UIController {
     if (!container) return;
     container.innerHTML = '';
 
-    items.forEach((item, idx) => {
-      const card = document.createElement('div');
-      card.className = `tour-thumb-card ${idx === 0 ? 'active' : ''}`;
-      card.dataset.index = idx;
-      card.dataset.id = item.id;
-      card.innerHTML = `
-        <img src="${item.thumb_rel_path}" alt="${item.title}" loading="lazy" />
-        <span class="tour-thumb-badge">${item.year}</span>
-      `;
+    // Group items by hall_id, maintaining order within each group
+    const hallOrder = ['hall_1', 'hall_2', 'hall_3'];
+    const hallLabels = {
+      'hall_1': 'KHU 1',
+      'hall_2': 'KHU 2',
+      'hall_3': 'KHU 3'
+    };
+    const hallColors = {
+      'hall_1': '#eab308',
+      'hall_2': '#3b82f6',
+      'hall_3': '#22c55e'
+    };
 
-      card.addEventListener('click', () => {
-        this.selectExhibitByIndex(idx);
+    // Build grouped list: [ {hall, items[]} ]
+    const grouped = [];
+    let globalIdx = 0;
+    for (const hallId of hallOrder) {
+      const hallItems = items.filter(it => it.hall_id === hallId);
+      if (hallItems.length === 0) continue;
+      grouped.push({ hallId, label: hallLabels[hallId] || hallId, color: hallColors[hallId] || '#94a3b8', items: hallItems, startIdx: globalIdx });
+      globalIdx += hallItems.length;
+    }
+    // Any items without a hall
+    const unmatched = items.filter(it => !hallOrder.includes(it.hall_id));
+    if (unmatched.length > 0) {
+      grouped.push({ hallId: 'other', label: 'KHÁC', color: '#94a3b8', items: unmatched, startIdx: globalIdx });
+    }
+
+    let flatIdx = 0;
+    grouped.forEach((group, gIdx) => {
+      // Add hall divider (skip before first group)
+      if (gIdx > 0) {
+        const divider = document.createElement('div');
+        divider.className = 'tour-hall-divider';
+        divider.style.borderColor = group.color;
+        divider.innerHTML = `<span class="tour-hall-label" style="color:${group.color}">${group.label}</span>`;
+        container.appendChild(divider);
+      } else {
+        // First group — add label at the start
+        const firstLabel = document.createElement('div');
+        firstLabel.className = 'tour-hall-divider tour-hall-first';
+        firstLabel.style.borderColor = group.color;
+        firstLabel.innerHTML = `<span class="tour-hall-label" style="color:${group.color}">${group.label}</span>`;
+        container.appendChild(firstLabel);
+      }
+
+      group.items.forEach((item) => {
+        const currentIdx = flatIdx;
+        const card = document.createElement('div');
+        card.className = `tour-thumb-card ${flatIdx === 0 ? 'active' : ''}`;
+        card.dataset.index = currentIdx;
+        card.dataset.id = item.id;
+        card.innerHTML = `
+          <img src="${item.thumb_rel_path}" alt="${item.title}" loading="lazy" />
+          <span class="tour-thumb-badge">${item.year}</span>
+        `;
+
+        card.addEventListener('click', () => {
+          this.selectExhibitByIndex(currentIdx);
+        });
+
+        container.appendChild(card);
+        flatIdx++;
       });
-
-      container.appendChild(card);
     });
   }
 

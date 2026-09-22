@@ -842,6 +842,38 @@ html, body {
   padding: 1px 0;
 }
 
+/* Hall group dividers in the carousel */
+.tour-hall-divider {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 22px;
+  height: 56px;
+  border-left: 2px solid #d4af37;
+  margin: 0 2px;
+  position: relative;
+}
+
+.tour-hall-divider.tour-hall-first {
+  border-left: none;
+  width: 18px;
+  margin-left: 0;
+}
+
+.tour-hall-label {
+  font-family: 'Inter', sans-serif;
+  font-size: 7px;
+  font-weight: 800;
+  letter-spacing: 1.5px;
+  writing-mode: vertical-rl;
+  text-orientation: mixed;
+  transform: rotate(180deg);
+  white-space: nowrap;
+  opacity: 0.8;
+  text-shadow: 0 0 4px rgba(0,0,0,0.8);
+}
+
 /* ==========================================================================
    Minimap Widget
    ========================================================================== */
