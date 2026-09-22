@@ -449,21 +449,50 @@ export class ExhibitBuilder {
 
     // Brass Label Plaque
     const plaqueCanvas = document.createElement('canvas');
-    plaqueCanvas.width = 256;
-    plaqueCanvas.height = 64;
+    plaqueCanvas.width = 640;
+    plaqueCanvas.height = 128;
     const pctx = plaqueCanvas.getContext('2d');
-    pctx.fillStyle = '#92400e';
-    pctx.fillRect(0, 0, 256, 64);
+
+    // Rich warm bronze/brass gradient
+    const pGrad = pctx.createLinearGradient(0, 0, 640, 0);
+    pGrad.addColorStop(0, '#78350f');
+    pGrad.addColorStop(0.3, '#92400e');
+    pGrad.addColorStop(0.5, '#b45309');
+    pGrad.addColorStop(0.7, '#92400e');
+    pGrad.addColorStop(1, '#78350f');
+    pctx.fillStyle = pGrad;
+    pctx.fillRect(0, 0, 640, 128);
+
+    // Double gold border
     pctx.strokeStyle = '#fde047';
-    pctx.lineWidth = 3;
-    pctx.strokeRect(4, 4, 248, 56);
+    pctx.lineWidth = 5;
+    pctx.strokeRect(5, 5, 630, 118);
+
+    pctx.strokeStyle = 'rgba(253, 224, 71, 0.45)';
+    pctx.lineWidth = 1.5;
+    pctx.strokeRect(11, 11, 618, 106);
+
+    const certText = `${item.year} • ${item.org}`;
+    let certFontSize = 36;
+    pctx.font = `bold ${certFontSize}px "Inter", "Segoe UI", Arial, sans-serif`;
+    const maxCertTextWidth = 580;
+    let certMeasured = pctx.measureText(certText).width;
+    if (certMeasured > maxCertTextWidth) {
+      certFontSize = Math.max(18, Math.floor(certFontSize * (maxCertTextWidth / certMeasured)));
+      pctx.font = `bold ${certFontSize}px "Inter", "Segoe UI", Arial, sans-serif`;
+    }
+
     pctx.fillStyle = '#ffffff';
-    pctx.font = 'bold 22px sans-serif';
     pctx.textAlign = 'center';
     pctx.textBaseline = 'middle';
-    pctx.fillText(`${item.year} • ${item.org}`, 128, 32);
+    pctx.shadowColor = 'rgba(0, 0, 0, 0.7)';
+    pctx.shadowOffsetY = 2;
+    pctx.shadowBlur = 3;
+    pctx.fillText(certText, 320, 64);
 
     const plaqueTex = new THREE.CanvasTexture(plaqueCanvas);
+    plaqueTex.colorSpace = THREE.SRGBColorSpace;
+    plaqueTex.anisotropy = 4;
     const plaqueMat = new THREE.MeshStandardMaterial({
       map: plaqueTex,
       metalness: 0.8,
@@ -472,7 +501,8 @@ export class ExhibitBuilder {
       polygonOffsetFactor: -1.0,
       polygonOffsetUnits: -1.0
     });
-    const plaqueMesh = new THREE.Mesh(new THREE.PlaneGeometry(width * 0.65, 0.15), plaqueMat);
+    const plaqueW = Math.max(width * 0.72, 0.65);
+    const plaqueMesh = new THREE.Mesh(new THREE.PlaneGeometry(plaqueW, 0.15), plaqueMat);
     plaqueMesh.position.set(0, -height / 2 - 0.13, depth / 2 + 0.008);
     group.add(plaqueMesh);
 
@@ -560,24 +590,60 @@ export class ExhibitBuilder {
 
     // Plaque
     const plaqueCanvas = document.createElement('canvas');
-    plaqueCanvas.width = 256;
-    plaqueCanvas.height = 64;
+    plaqueCanvas.width = 640;
+    plaqueCanvas.height = 128;
     const pctx = plaqueCanvas.getContext('2d');
-    pctx.fillStyle = '#991b1b';
-    pctx.fillRect(0, 0, 256, 64);
+
+    // Rich deep crimson velvet background gradient
+    const pGrad = pctx.createLinearGradient(0, 0, 640, 0);
+    pGrad.addColorStop(0, '#7f1d1d');
+    pGrad.addColorStop(0.3, '#991b1b');
+    pGrad.addColorStop(0.5, '#b91c1c');
+    pGrad.addColorStop(0.7, '#991b1b');
+    pGrad.addColorStop(1, '#7f1d1d');
+    pctx.fillStyle = pGrad;
+    pctx.fillRect(0, 0, 640, 128);
+
+    // Double gold border for prestige museum appearance
     pctx.strokeStyle = '#facc15';
-    pctx.lineWidth = 3;
-    pctx.strokeRect(4, 4, 248, 56);
+    pctx.lineWidth = 5;
+    pctx.strokeRect(5, 5, 630, 118);
+
+    pctx.strokeStyle = 'rgba(254, 240, 138, 0.45)';
+    pctx.lineWidth = 1.5;
+    pctx.strokeRect(11, 11, 618, 106);
+
+    // Flag plaque text with auto-fitting font size so it NEVER overflows
+    const flagText = `${item.year} • ${item.item_type || item.title || ''}`;
+    let flagFontSize = 36;
+    pctx.font = `bold ${flagFontSize}px "Inter", "Segoe UI", Arial, sans-serif`;
+    const maxFlagTextWidth = 580;
+    let flagMeasured = pctx.measureText(flagText).width;
+    if (flagMeasured > maxFlagTextWidth) {
+      flagFontSize = Math.max(18, Math.floor(flagFontSize * (maxFlagTextWidth / flagMeasured)));
+      pctx.font = `bold ${flagFontSize}px "Inter", "Segoe UI", Arial, sans-serif`;
+    }
+
     pctx.fillStyle = '#ffffff';
-    pctx.font = 'bold 22px sans-serif';
     pctx.textAlign = 'center';
     pctx.textBaseline = 'middle';
-    pctx.fillText(`${item.year} • ${item.item_type}`, 128, 32);
+    pctx.shadowColor = 'rgba(0, 0, 0, 0.7)';
+    pctx.shadowOffsetY = 2;
+    pctx.shadowBlur = 3;
+    pctx.fillText(flagText, 320, 64);
 
     const plaqueTex = new THREE.CanvasTexture(plaqueCanvas);
-    const plaqueMat = new THREE.MeshStandardMaterial({ map: plaqueTex, metalness: 0.7, roughness: 0.3 });
-    const plaqueMesh = new THREE.Mesh(new THREE.PlaneGeometry(width * 0.7, 0.15), plaqueMat);
-    plaqueMesh.position.set(0, -height / 2 - 0.13, 0.02);
+    plaqueTex.colorSpace = THREE.SRGBColorSpace;
+    plaqueTex.anisotropy = 4;
+
+    const plaqueMat = new THREE.MeshStandardMaterial({
+      map: plaqueTex,
+      metalness: 0.7,
+      roughness: 0.3
+    });
+    // Increased plaque width to 0.85 * width (user: "khung bảng tên hơi nhỏ")
+    const plaqueMesh = new THREE.Mesh(new THREE.PlaneGeometry(width * 0.85, 0.16), plaqueMat);
+    plaqueMesh.position.set(0, -height / 2 - 0.14, 0.02);
     group.add(plaqueMesh);
 
     // Interactive Hitbox (Precise thin plane directly in front of pennant)
