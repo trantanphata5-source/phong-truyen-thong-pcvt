@@ -1,8 +1,8 @@
 import * as THREE from 'three';
-import { AudioService } from './audio-service.js?v=hcm_real_v6';
+import { AudioService } from './audio-service.js?v=music_v1';
 import { DataService } from './data-service.js?v=hcm_real_v6';
 import { MuseumArchitect } from './museum-architect.js?v=hcm_v9';
-import { ExhibitBuilder } from './exhibit-builder.js?v=hcm_real_v6';
+import { ExhibitBuilder } from './exhibit-builder.js?v=plaque_v2';
 import { ControlsManager } from './controls-manager.js?v=hcm_real_v6';
 import { UIController } from './ui-controller.js?v=hcm_real_v6';
 import { AlbumViewer } from './album-viewer.js?v=hcm_real_v6';

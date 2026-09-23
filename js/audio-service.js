@@ -1,17 +1,36 @@
 /**
- * Audio Service using Web Audio API
- * Generates ambient museum atmosphere, chime sounds on interaction, and footsteps
- * Does not require external audio files, works 100% reliably in any environment
+ * Audio Service using Web Audio API & HTML5 Audio
+ * Plays soothing museum background music (from MP3) and delicate UI SFX (chimes, clicks, footsteps, book pages)
  */
 export class AudioService {
   constructor() {
     this.ctx = null;
     this.enabled = true;
-    this.ambientGain = null;
     this.sfxGain = null;
-    this.ambientOsc1 = null;
-    this.ambientOsc2 = null;
     this.isInitialized = false;
+
+    // Background Music
+    this.bgm = null;
+    this.bgmVolume = 0.3; // 30% volume - gentle, elegant background atmosphere
+    this.fadeTimer = null;
+    this.wasPlayingBeforeHidden = false;
+
+    // Visibility change listener to pause music when tab is hidden
+    if (typeof document !== 'undefined') {
+      document.addEventListener('visibilitychange', () => {
+        if (document.hidden) {
+          if (this.bgm && !this.bgm.paused) {
+            this.wasPlayingBeforeHidden = true;
+            this.bgm.pause();
+          }
+        } else {
+          if (this.enabled && this.wasPlayingBeforeHidden) {
+            this.wasPlayingBeforeHidden = false;
+            this.bgm?.play().catch(() => {});
+          }
+        }
+      });
+    }
   }
 
   init() {
@@ -25,56 +44,99 @@ export class AudioService {
       this.sfxGain.gain.value = 0.25;
       this.sfxGain.connect(this.ctx.destination);
 
-      // Ambient Drone Gain (very soft, relaxing museum reverb)
-      this.ambientGain = this.ctx.createGain();
-      this.ambientGain.gain.value = 0.03;
-      this.ambientGain.connect(this.ctx.destination);
+      // Initialize Background Music (HTML5 Audio for smooth streaming & looping)
+      this.initBgm();
 
-      this.startAmbientDrone();
       this.isInitialized = true;
     } catch (e) {
       console.warn('Web Audio not supported or blocked:', e);
     }
   }
 
-  startAmbientDrone() {
-    if (!this.ctx) return;
+  initBgm() {
+    if (this.bgm) return;
     try {
-      // Warm low frequency museum room resonance (55Hz and 110Hz harmonic)
-      this.ambientOsc1 = this.ctx.createOscillator();
-      this.ambientOsc1.type = 'sine';
-      this.ambientOsc1.frequency.setValueAtTime(55, this.ctx.currentTime);
+      this.bgm = new Audio('assets/audio/hitslab-art-gallery-exhibition-museum-music-272222.mp3');
+      this.bgm.loop = true;
+      this.bgm.volume = this.enabled ? this.bgmVolume : 0;
+      this.bgm.preload = 'auto';
 
-      this.ambientOsc2 = this.ctx.createOscillator();
-      this.ambientOsc2.type = 'triangle';
-      this.ambientOsc2.frequency.setValueAtTime(110, this.ctx.currentTime);
+      if (this.enabled) {
+        this.playBgm();
+      }
+    } catch (e) {
+      console.warn('Background music failed to load:', e);
+    }
+  }
 
-      const filter = this.ctx.createBiquadFilter();
-      filter.type = 'lowpass';
-      filter.frequency.setValueAtTime(180, this.ctx.currentTime);
+  playBgm() {
+    if (!this.bgm || !this.enabled) return;
+    this.bgm.play().catch(e => {
+      // Browser autoplay policy might block before interaction; attach one-time listener
+      const onUserInteraction = () => {
+        if (this.enabled && this.bgm && this.bgm.paused) {
+          this.bgm.play().catch(() => {});
+        }
+        window.removeEventListener('click', onUserInteraction);
+        window.removeEventListener('keydown', onUserInteraction);
+        window.removeEventListener('touchstart', onUserInteraction);
+      };
+      window.addEventListener('click', onUserInteraction, { once: true });
+      window.addEventListener('keydown', onUserInteraction, { once: true });
+      window.addEventListener('touchstart', onUserInteraction, { once: true });
+    });
+  }
 
-      this.ambientOsc1.connect(filter);
-      this.ambientOsc2.connect(filter);
-      filter.connect(this.ambientGain);
+  pauseBgm() {
+    if (this.bgm) {
+      this.bgm.pause();
+    }
+  }
 
-      this.ambientOsc1.start();
-      this.ambientOsc2.start();
-    } catch (e) {}
+  fadeBgm(targetVol, durationSec = 0.4, onComplete = null) {
+    if (!this.bgm) return;
+    if (this.fadeTimer) clearInterval(this.fadeTimer);
+
+    const startVol = this.bgm.volume;
+    const startTime = performance.now();
+    const durationMs = durationSec * 1000;
+
+    this.fadeTimer = setInterval(() => {
+      const elapsed = performance.now() - startTime;
+      const progress = Math.min(elapsed / durationMs, 1);
+      this.bgm.volume = Math.max(0, Math.min(1, startVol + (targetVol - startVol) * progress));
+
+      if (progress >= 1) {
+        clearInterval(this.fadeTimer);
+        this.fadeTimer = null;
+        if (onComplete) onComplete();
+      }
+    }, 25);
   }
 
   toggleAudio() {
     this.init();
     this.enabled = !this.enabled;
+
     if (this.ctx) {
+      if (this.ctx.state === 'suspended' && this.enabled) {
+        this.ctx.resume();
+      }
+      this.sfxGain.gain.setValueAtTime(this.enabled ? 0.25 : 0, this.ctx.currentTime);
+    }
+
+    if (this.bgm) {
       if (this.enabled) {
-        if (this.ctx.state === 'suspended') this.ctx.resume();
-        this.sfxGain.gain.setValueAtTime(0.25, this.ctx.currentTime);
-        this.ambientGain.gain.setValueAtTime(0.03, this.ctx.currentTime);
+        this.bgm.play().then(() => {
+          this.fadeBgm(this.bgmVolume, 0.4);
+        }).catch(() => {});
       } else {
-        this.sfxGain.gain.setValueAtTime(0, this.ctx.currentTime);
-        this.ambientGain.gain.setValueAtTime(0, this.ctx.currentTime);
+        this.fadeBgm(0, 0.3, () => {
+          this.bgm.pause();
+        });
       }
     }
+
     return this.enabled;
   }
 
