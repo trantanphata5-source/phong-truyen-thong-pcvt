@@ -3,14 +3,10 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-  <title>Phòng Truyền Thống Số Hóa 3D - Công Ty Điện Lực Vũng Tàu (EVNHCMC)</title>
-  <meta name="description" content="Không gian ảo 3D trưng bày 205 Huân chương, Bằng khen và Cờ thi đua kỷ niệm 40 năm xây dựng và phát triển Công ty Điện lực Vũng Tàu (trực thuộc Tổng công ty Điện lực TP. Hồ Chí Minh - EVNHCMC)." />
+  <title>Phòng Truyền Thống Số Hóa 3D - Công Ty Điện Lực Vũng Tàu</title>
+  <meta name="description" content="Không gian ảo 3D trưng bày Huân chương, Bằng khen và Cờ thi đua - Công ty Điện lực Vũng Tàu (Tổng công ty Điện lực TP. Hồ Chí Minh)." />
   
   <link rel="icon" type="image/png" href="assets/logo.png" />
-  <!-- Google Fonts: Inter & Playfair Display (Full Vietnamese Diacritics Support) -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Playfair+Display:ital,wght@0,600;0,700;0,800;0,900;1,600;1,700&display=swap" rel="stylesheet">
   
   <!-- Lucide Icons -->
   <script src="https://unpkg.com/lucide@latest"></script>
@@ -55,12 +51,12 @@
       <div class="loading-emblem">
         <div class="emblem-ring ring-outer"></div>
         <div class="emblem-ring ring-inner"></div>
-        <img src="assets/logo.png" alt="EVNHCMC Logo" class="loading-logo-img" />
+        <img src="assets/logo.png" alt="PCVT Logo" class="loading-logo-img" />
       </div>
-      <div class="loading-subtitle">TỔNG CÔNG TY ĐIỆN LỰC THÀNH PHỐ HỒ CHÍ MINH (EVNHCMC)</div>
+      <div class="loading-subtitle">TỔNG CÔNG TY ĐIỆN LỰC THÀNH PHỐ HỒ CHÍ MINH</div>
       <h1 class="loading-title">CÔNG TY ĐIỆN LỰC VŨNG TÀU</h1>
-      <h2 class="loading-room-name">PHÒNG TRUYỀN THỐNG SỐ HÓA 3D (1985 - 2025)</h2>
-      <p class="loading-desc">Không gian vinh danh 40 năm xây dựng và phát triển<br>Trưng bày đầy đủ 205 Bằng khen, Huân chương & Cờ thi đua các thời kỳ</p>
+      <h2 class="loading-room-name">PHÒNG TRUYỀN THỐNG SỐ HÓA 3D</h2>
+      <p class="loading-desc">Không gian vinh danh hơn 40 năm xây dựng và phát triển</p>
       
       <div class="loading-bar-wrap">
         <div class="loading-bar" id="loading-bar"></div>
@@ -71,10 +67,53 @@
         <span>BƯỚC VÀO THAM QUAN</span>
         <i data-lucide="compass"></i>
       </button>
-      <div class="loading-tips">
-        <span><i data-lucide="mouse-pointer-click"></i> <b>Chạm sàn</b> để bước tới • <b>Kéo chuột</b> để xoay góc nhìn</span>
-        <span><i data-lucide="search"></i> <b>Nhấp vào hiện vật</b> để tiến lại gần chiêm ngưỡng</span>
+    </div>
+  </div>
+
+  <!-- Welcome Guide Overlay (shown after entering) -->
+  <div class="welcome-guide-overlay hidden" id="welcome-guide-overlay">
+    <div class="welcome-guide-card">
+      <h2 class="welcome-guide-title">Hướng Dẫn Thao Tác</h2>
+      <div class="welcome-guide-icons">
+        <div class="guide-icon-block">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="6" y="3" width="12" height="18" rx="4" />
+            <line x1="12" y1="7" x2="12" y2="10" />
+          </svg>
+          <span class="guide-icon-label">Chuột</span>
+        </div>
+        <div class="guide-icon-block">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="5" y="2" width="14" height="20" rx="2" />
+            <path d="M12 18h.01" />
+            <path d="M12 9 L8 12 M12 9 L16 12 M12 9 L12 15" stroke-width="1.2" />
+          </svg>
+          <span class="guide-icon-label">Cảm ứng</span>
+        </div>
       </div>
+      <p class="welcome-guide-subtitle">Nhấn / Chạm để trải nghiệm phòng truyền thống</p>
+      <div class="welcome-guide-steps">
+        <div class="wg-step">
+          <div class="wg-step-icon"><i data-lucide="mouse-pointer-click"></i></div>
+          <div class="wg-step-text"><b>Chạm vào mặt sàn</b> để bước tới vị trí bạn muốn</div>
+        </div>
+        <div class="wg-step">
+          <div class="wg-step-icon"><i data-lucide="move"></i></div>
+          <div class="wg-step-text"><b>Kéo chuột</b> hoặc <b>vuốt ngón tay</b> để xoay góc nhìn 360°</div>
+        </div>
+        <div class="wg-step">
+          <div class="wg-step-icon"><i data-lucide="search"></i></div>
+          <div class="wg-step-text"><b>Nhấp vào hiện vật</b> (Bằng khen, Cờ thi đua) để tiến lại gần chiêm ngưỡng chi tiết</div>
+        </div>
+        <div class="wg-step">
+          <div class="wg-step-icon"><i data-lucide="play"></i></div>
+          <div class="wg-step-text">Sử dụng <b>thanh tham quan</b> bên dưới để chuyển nhanh giữa các hiện vật</div>
+        </div>
+      </div>
+      <button class="btn-welcome-start" id="btn-welcome-start">
+        <span>BẮT ĐẦU THAM QUAN</span>
+        <i data-lucide="compass"></i>
+      </button>
     </div>
   </div>
 
@@ -519,6 +558,6 @@
   </div>
 
   <!-- App Entry -->
-  <script type="module" src="js/main.js?v=music_v1"></script>
+  <script type="module" src="js/main.js?v=font_v2"></script>
 </body>
 </html>

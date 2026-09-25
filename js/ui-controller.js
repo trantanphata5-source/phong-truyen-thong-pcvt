@@ -80,7 +80,11 @@ export class UIController {
       // Help Modal
       helpModal: document.getElementById('help-modal'),
       btnCloseHelp: document.getElementById('btn-close-help'),
-      btnGuideOk: document.getElementById('btn-guide-ok')
+      btnGuideOk: document.getElementById('btn-guide-ok'),
+
+      // Welcome Guide Overlay
+      welcomeGuide: document.getElementById('welcome-guide-overlay'),
+      btnWelcomeStart: document.getElementById('btn-welcome-start')
     };
 
     this.initEvents();
@@ -93,7 +97,22 @@ export class UIController {
       document.body.classList.remove('loading-active');
       this.audioService.init();
       this.audioService.playClickSound();
-      lucide.createIcons();
+
+      // Show welcome guide overlay after a short delay for smooth transition
+      setTimeout(() => {
+        if (this.dom.welcomeGuide) {
+          this.dom.welcomeGuide.classList.remove('hidden');
+          lucide.createIcons();
+        }
+      }, 700);
+    });
+
+    // Welcome Guide Start Button
+    this.dom.btnWelcomeStart?.addEventListener('click', () => {
+      if (this.dom.welcomeGuide) {
+        this.dom.welcomeGuide.classList.add('hidden');
+      }
+      this.audioService.playClickSound();
     });
 
     // Pills Bar Toggle (collapsible secondary nav row)
