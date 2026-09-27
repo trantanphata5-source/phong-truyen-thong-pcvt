@@ -1,13 +1,13 @@
 import * as THREE from 'three';
-import { AudioService } from './audio-service.js?v=music_v1';
-import { DataService } from './data-service.js?v=hcm_real_v6';
-import { MuseumArchitect } from './museum-architect.js?v=hcm_v9';
-import { ExhibitBuilder } from './exhibit-builder.js?v=plaque_v2';
-import { ControlsManager } from './controls-manager.js?v=hcm_real_v6';
-import { UIController } from './ui-controller.js?v=hcm_real_v6';
-import { AlbumViewer } from './album-viewer.js?v=hcm_real_v6';
-import { HCMExhibitBuilder } from './hcm-exhibit-builder.js?v=chuanhoa_v1';
-import { HCMTimelineBuilder } from './hcm-timeline-builder.js?v=chuanhoa_v1';
+import { AudioService } from './audio-service.js?v=gd3';
+import { DataService } from './data-service.js?v=gd3';
+import { MuseumArchitect } from './museum-architect.js?v=gd3';
+import { ExhibitBuilder } from './exhibit-builder.js?v=gd3';
+import { ControlsManager } from './controls-manager.js?v=gd3';
+import { UIController } from './ui-controller.js?v=gd3';
+import { AlbumViewer } from './album-viewer.js?v=gd3';
+import { HCMExhibitBuilder } from './hcm-exhibit-builder.js?v=gd3';
+import { HCMTimelineBuilder } from './hcm-timeline-builder.js?v=gd3';
 
 /**
  * Main Application Orchestrator (Artsteps Standard)
@@ -91,9 +91,11 @@ class HeritageApp {
         });
       }
 
-      this.uiController.updateLoadingProgress(55, 'Đang bố trí 100% hiện vật lên các vách trưng bày...');
+      this.uiController.updateLoadingProgress(55, 'Đang bố trí hiện vật lên các vách trưng bày...');
       this.exhibitBuilder = new ExhibitBuilder(this.scene);
-      this.exhibitBuilder.buildAllExhibits(this.dataService.items, (done, total) => {
+      // GĐ3: Tải room_data.json mới (539 hiện vật)
+      const roomData = await this.dataService.loadRoomData();
+      this.exhibitBuilder.buildAllExhibits(roomData, (done, total) => {
         const pct = 55 + (done / total) * 30;
         this.uiController.updateLoadingProgress(pct, `Bố trí hiện vật: ${done}/${total}...`);
       });

@@ -46,6 +46,23 @@ export class DataService {
     }
   }
 
+  /** GĐ3: Tải room_data.json (dữ liệu 539 hiện vật mới) */
+  async loadRoomData() {
+    try {
+      const response = await fetch('assets/room_data.json');
+      if (!response.ok) throw new Error(`HTTP error ${response.status}`);
+      this.roomData = await response.json();
+      // Cập nhật itemsById cho các item mới
+      for (const item of this.roomData.items) {
+        this.itemsById.set(item.id, item);
+      }
+      return this.roomData;
+    } catch (err) {
+      console.error('Failed to load room_data.json:', err);
+      throw err;
+    }
+  }
+
   getItemById(id) {
     return this.itemsById.get(id);
   }

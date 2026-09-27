@@ -551,12 +551,16 @@ export class MuseumArchitect {
 
     // Entrance Sign - Removed: was blocking HCM zone entrance view
     // (Previously: createSignBanner at Z=37.0, Math.PI)
-    // Hall 1 Sign (Properly auto-fitted to avoid clipping!)
-    createSignBanner('KHU VỰC 1: VINH DANH NHÀ NƯỚC & EVN - EVNHCMC', 'HUÂN CHƯƠNG LAO ĐỘNG • THỦ TƯỚNG • BỘ CÔNG THƯƠNG • EVN • EVNHCMC', '#eab308', 0, 6.5, -17.0, 0);
-    // Hall 2 Sign
-    createSignBanner('KHU VỰC 2: TỈNH BÀ RỊA - VŨNG TÀU', 'UBND TỈNH • TP. VŨNG TÀU • ĐẢNG BỘ • BHXH • BCH QUÂN SỰ', '#16a34a', -18.0, 6.5, 0, Math.PI / 2);
-    // Hall 3 Sign
-    createSignBanner('KHU VỰC 3: CÔNG ĐOÀN & PHONG TRÀO THI ĐUA', 'TỔNG LĐLĐ VN • CÔNG ĐOÀN ĐIỆN LỰC • LĐLĐ TỈNH • HỘI THAO', '#dc2626', 18.0, 6.5, 0, -Math.PI / 2);
+    // Khu 1 Sign (Tây) — Ký ức & Tranh tặng
+    createSignBanner('KHU 1: KÝ ỨC & TRANH TẶNG', 'ẢNH TƯ LIỆU 1985–2009 • TRANH TẶNG CÁC ĐƠN VỊ', '#8B6F47', -18.0, 6.2, 0, Math.PI / 2);
+    // Khu 2 Sign (Bắc) — Bằng khen & Cờ lưu niệm
+    createSignBanner('KHU 2: BẰNG KHEN & CỜ LƯU NIỆM', 'HUÂN CHƯƠNG • THỦ TƯỚNG • BỘ CÔNG THƯƠNG • UBND • EVN • EVNSPC', '#8B1A1A', 0, 6.2, -17.0, 0);
+    // Khu 3 Sign (Đông) — Hiện tại (PCVT)
+    createSignBanner('KHU 3: HIỆN TẠI', 'CÔNG TY ĐIỆN LỰC VŨNG TÀU 2025–2026', '#16a34a', 18.0, 6.2, 0, -Math.PI / 2);
+    // Khu 4 Sign (Đông Nam) — Đảng bộ
+    createSignBanner('KHU 4: ĐẢNG BỘ CÔNG TY', 'ĐẢNG BỘ CÔNG TY ĐIỆN LỰC VŨNG TÀU', '#C62828', 36, 6.2, 39.0, 0);
+    // Khu 6 Sign (Tây Nam) — Công đoàn & Đoàn TN
+    createSignBanner('KHU 6: CÔNG ĐOÀN & ĐOÀN THANH NIÊN', 'CÔNG ĐOÀN • ĐOÀN THANH NIÊN CÔNG TY', '#1565C0', -36, 6.2, 39.0, 0);
   }
 
   /**
