@@ -1,0 +1,3412 @@
+[
+  {
+    "id": "souvenir",
+    "cabinet": 1,
+    "title": "Ảnh Lưu Niệm",
+    "subtitle": "Ký ức xây dựng và phát triển",
+    "cover": {
+      "color": "#F5EBD7",
+      "accent": "#5B3A1E"
+    },
+    "chapters": [
+      {
+        "title": "Ảnh tư liệu 1985–2009",
+        "start": 0,
+        "end": 58
+      },
+      {
+        "title": "Tranh tặng",
+        "start": 59,
+        "end": 107
+      }
+    ],
+    "pages": [
+      {
+        "full": "assets/full/khu1/atl_0000_022.jpg",
+        "thumb": "assets/thumbs/khu1/atl_0000_022.jpg",
+        "caption": "Chi nhánh ĐL TX Bà Rịa",
+        "date": "0"
+      },
+      {
+        "full": "assets/full/khu1/atl_0000_023.jpg",
+        "thumb": "assets/thumbs/khu1/atl_0000_023.jpg",
+        "caption": "Chào mừng Hội thao CNVC Điện lực BR-VT lần thứ V",
+        "date": "0"
+      },
+      {
+        "full": "assets/full/khu1/atl_0000_024.jpg",
+        "thumb": "assets/thumbs/khu1/atl_0000_024.jpg",
+        "caption": "Cán bộ điều hành trực bàn điện thoại",
+        "date": "0"
+      },
+      {
+        "full": "assets/full/khu1/atl_0000_025.jpg",
+        "thumb": "assets/thumbs/khu1/atl_0000_025.jpg",
+        "caption": "Giám đốc Hồ Văn Cường",
+        "date": "0"
+      },
+      {
+        "full": "assets/full/khu1/atl_0000_026.jpg",
+        "thumb": "assets/thumbs/khu1/atl_0000_026.jpg",
+        "caption": "Giải bóng đá ĐL BRVT",
+        "date": "0"
+      },
+      {
+        "full": "assets/full/khu1/atl_0000_027.jpg",
+        "thumb": "assets/thumbs/khu1/atl_0000_027.jpg",
+        "caption": "Họp Ban Giám đốc và cán bộ chủ chốt",
+        "date": "0"
+      },
+      {
+        "full": "assets/full/khu1/atl_0000_028.jpg",
+        "thumb": "assets/thumbs/khu1/atl_0000_028.jpg",
+        "caption": "Hội thao CNVC Điện lực BR-VT Thi kéo co",
+        "date": "0"
+      },
+      {
+        "full": "assets/full/khu1/atl_0000_029.jpg",
+        "thumb": "assets/thumbs/khu1/atl_0000_029.jpg",
+        "caption": "Hội thao",
+        "date": "0"
+      },
+      {
+        "full": "assets/full/khu1/atl_0000_030.jpg",
+        "thumb": "assets/thumbs/khu1/atl_0000_030.jpg",
+        "caption": "Hội thi ATVSV giỏi",
+        "date": "0"
+      },
+      {
+        "full": "assets/full/khu1/atl_0000_031.jpg",
+        "thumb": "assets/thumbs/khu1/atl_0000_031.jpg",
+        "caption": "Hội thi kiến thưc pháp luật kiến thức gia đình 2001 (2)",
+        "date": "0"
+      },
+      {
+        "full": "assets/full/khu1/atl_0000_032.jpg",
+        "thumb": "assets/thumbs/khu1/atl_0000_032.jpg",
+        "caption": "Hội thi kiến thưc pháp luật kiến thức gia đình 2001",
+        "date": "0"
+      },
+      {
+        "full": "assets/full/khu1/atl_0000_033.jpg",
+        "thumb": "assets/thumbs/khu1/atl_0000_033.jpg",
+        "caption": "Hội thi PCCC",
+        "date": "0"
+      },
+      {
+        "full": "assets/full/khu1/atl_0000_034.jpg",
+        "thumb": "assets/thumbs/khu1/atl_0000_034.jpg",
+        "caption": "Hội thi thợ giỏi thanh niên công nhân đường dây 2001",
+        "date": "0"
+      },
+      {
+        "full": "assets/full/khu1/atl_0000_035.jpg",
+        "thumb": "assets/thumbs/khu1/atl_0000_035.jpg",
+        "caption": "KS Du lịch Điện lực",
+        "date": "0"
+      },
+      {
+        "full": "assets/full/khu1/atl_0000_036.jpg",
+        "thumb": "assets/thumbs/khu1/atl_0000_036.jpg",
+        "caption": "Lắp đặt công trình mới của Điện lực",
+        "date": "0"
+      },
+      {
+        "full": "assets/full/khu1/atl_0000_037.jpg",
+        "thumb": "assets/thumbs/khu1/atl_0000_037.jpg",
+        "caption": "Lễ kết nạp Đảng viên mới",
+        "date": "0"
+      },
+      {
+        "full": "assets/full/khu1/atl_0000_038.jpg",
+        "thumb": "assets/thumbs/khu1/atl_0000_038.jpg",
+        "caption": "PGĐ Hồ Văn Quới",
+        "date": "0"
+      },
+      {
+        "full": "assets/full/khu1/atl_0000_039.jpg",
+        "thumb": "assets/thumbs/khu1/atl_0000_039.jpg",
+        "caption": "Phòng kinh doanh điện năng",
+        "date": "0"
+      },
+      {
+        "full": "assets/full/khu1/atl_0000_040.jpg",
+        "thumb": "assets/thumbs/khu1/atl_0000_040.jpg",
+        "caption": "Phòng vật tư",
+        "date": "0"
+      },
+      {
+        "full": "assets/full/khu1/atl_0000_041.jpg",
+        "thumb": "assets/thumbs/khu1/atl_0000_041.jpg",
+        "caption": "Phương tiện sẵn sàng lên đường làm nhiệm vụ (1)",
+        "date": "0"
+      },
+      {
+        "full": "assets/full/khu1/atl_0000_042.jpg",
+        "thumb": "assets/thumbs/khu1/atl_0000_042.jpg",
+        "caption": "Phương tiện sẵn sàng lên đường làm nhiệm vụ",
+        "date": "0"
+      },
+      {
+        "full": "assets/full/khu1/atl_0000_043.jpg",
+        "thumb": "assets/thumbs/khu1/atl_0000_043.jpg",
+        "caption": "Trao cờ lưu niệm Hội thao CNVC Điện lực BR-VT",
+        "date": "0"
+      },
+      {
+        "full": "assets/full/khu1/atl_0000_044.jpg",
+        "thumb": "assets/thumbs/khu1/atl_0000_044.jpg",
+        "caption": "Trao giỏ quà chúc mừng",
+        "date": "0"
+      },
+      {
+        "full": "assets/full/khu1/atl_0000_045.jpg",
+        "thumb": "assets/thumbs/khu1/atl_0000_045.jpg",
+        "caption": "Trạm 35kV Hoà Bình",
+        "date": "0"
+      },
+      {
+        "full": "assets/full/khu1/atl_0000_046.jpg",
+        "thumb": "assets/thumbs/khu1/atl_0000_046.jpg",
+        "caption": "trạm 35kV xuyên mộc",
+        "date": "0"
+      },
+      {
+        "full": "assets/full/khu1/atl_0000_047.jpg",
+        "thumb": "assets/thumbs/khu1/atl_0000_047.jpg",
+        "caption": "trạm 35kV Đất Đỏ",
+        "date": "0"
+      },
+      {
+        "full": "assets/full/khu1/atl_0000_048.jpg",
+        "thumb": "assets/thumbs/khu1/atl_0000_048.jpg",
+        "caption": "Tổng kết công tác năm 1985 - Côn Đảo",
+        "date": "0"
+      },
+      {
+        "full": "assets/full/khu1/atl_0000_049.jpg",
+        "thumb": "assets/thumbs/khu1/atl_0000_049.jpg",
+        "caption": "Đoàn đại biểu Đại hội Đảng bộ Điện lực BR-VT",
+        "date": "0"
+      },
+      {
+        "full": "assets/full/khu1/atl_0000_050.jpg",
+        "thumb": "assets/thumbs/khu1/atl_0000_050.jpg",
+        "caption": "Đưa điện về vùng sâu huyện Long Đất",
+        "date": "0"
+      },
+      {
+        "full": "assets/full/khu1/atl_0000_051.jpg",
+        "thumb": "assets/thumbs/khu1/atl_0000_051.jpg",
+        "caption": "Đại biểu biểu quyết tại hội trường hội nghị",
+        "date": "0"
+      },
+      {
+        "full": "assets/full/khu1/atl_0000_052.jpg",
+        "thumb": "assets/thumbs/khu1/atl_0000_052.jpg",
+        "caption": "Đại biểu dự hội nghị trong hội trường",
+        "date": "0"
+      },
+      {
+        "full": "assets/full/khu1/atl_0000_053.jpg",
+        "thumb": "assets/thumbs/khu1/atl_0000_053.jpg",
+        "caption": "Đại biểu khách mời dự hội nghị Điện lực Bà Rịa - Vũng Tàu",
+        "date": "0"
+      },
+      {
+        "full": "assets/full/khu1/atl_0000_054.jpg",
+        "thumb": "assets/thumbs/khu1/atl_0000_054.jpg",
+        "caption": "Đại hội công Đoàn Sở điện lực VTCD",
+        "date": "0"
+      },
+      {
+        "full": "assets/full/khu1/atl_0000_055.jpg",
+        "thumb": "assets/thumbs/khu1/atl_0000_055.jpg",
+        "caption": "Đại hội Công đoàn Điện lực Bà Rịa - Vũng Tàu - Trao quyết định khen thưởng",
+        "date": "0"
+      },
+      {
+        "full": "assets/full/khu1/atl_0000_056.jpg",
+        "thumb": "assets/thumbs/khu1/atl_0000_056.jpg",
+        "caption": "Đại hội đại biểu CNVC Điện lực Bà Rịa - Vũng Tàu năm 2009",
+        "date": "0"
+      },
+      {
+        "full": "assets/full/khu1/atl_0000_057.jpg",
+        "thumb": "assets/thumbs/khu1/atl_0000_057.jpg",
+        "caption": "Đội quản lý cao thế (2)",
+        "date": "0"
+      },
+      {
+        "full": "assets/full/khu1/atl_0000_058.jpg",
+        "thumb": "assets/thumbs/khu1/atl_0000_058.jpg",
+        "caption": "Đội quản lý cao thế",
+        "date": "0"
+      },
+      {
+        "full": "assets/full/khu1/atl_0000_059.jpg",
+        "thumb": "assets/thumbs/khu1/atl_0000_059.jpg",
+        "caption": "Đội tuần tra bảo vệ mạng lưới điện",
+        "date": "0"
+      },
+      {
+        "full": "assets/full/khu1/atl_1997_001.jpg",
+        "thumb": "assets/thumbs/khu1/atl_1997_001.jpg",
+        "caption": "Hội nghị làm việc ngày 18-9-1997",
+        "date": "1997"
+      },
+      {
+        "full": "assets/full/khu1/atl_1997_002.jpg",
+        "thumb": "assets/thumbs/khu1/atl_1997_002.jpg",
+        "caption": "Hội thi ATVSV giỏi lần IV - Trao giải thưởng",
+        "date": "1997"
+      },
+      {
+        "full": "assets/full/khu1/atl_1997_003.jpg",
+        "thumb": "assets/thumbs/khu1/atl_1997_003.jpg",
+        "caption": "Hội thi ATVSV giỏi lần IV - Đội Chi nhánh Điện Bà Rịa nhận hoa",
+        "date": "1997"
+      },
+      {
+        "full": "assets/full/khu1/atl_1998_004.jpg",
+        "thumb": "assets/thumbs/khu1/atl_1998_004.jpg",
+        "caption": "Hội nghị tổng kết công tác SXKD - Báo cáo tại hội trường",
+        "date": "1998"
+      },
+      {
+        "full": "assets/full/khu1/atl_1998_005.jpg",
+        "thumb": "assets/thumbs/khu1/atl_1998_005.jpg",
+        "caption": "Hội nghị tổng kết công tác SXKD - Khen thưởng cá nhân",
+        "date": "1998"
+      },
+      {
+        "full": "assets/full/khu1/atl_1998_006.jpg",
+        "thumb": "assets/thumbs/khu1/atl_1998_006.jpg",
+        "caption": "Đại hội đại biểu Công đoàn Điện lực BR-VT - Ban Chấp hành ra mắt",
+        "date": "1998"
+      },
+      {
+        "full": "assets/full/khu1/atl_1999_007.jpg",
+        "thumb": "assets/thumbs/khu1/atl_1999_007.jpg",
+        "caption": "Lễ kết nạp Đảng viên mới 1999 (1)",
+        "date": "1999"
+      },
+      {
+        "full": "assets/full/khu1/atl_1999_008.jpg",
+        "thumb": "assets/thumbs/khu1/atl_1999_008.jpg",
+        "caption": "Lễ kết nạp Đảng viên mới",
+        "date": "1999"
+      },
+      {
+        "full": "assets/full/khu1/atl_2003_009.jpg",
+        "thumb": "assets/thumbs/khu1/atl_2003_009.jpg",
+        "caption": "Hội nghị tổng kết công tác năm 2003 và triển khai kế hoạch năm 2004",
+        "date": "2003"
+      },
+      {
+        "full": "assets/full/khu1/atl_2004_010.jpg",
+        "thumb": "assets/thumbs/khu1/atl_2004_010.jpg",
+        "caption": "Giải quần vợt Điện lực BR-VT lần 2 - Chào mừng ngày truyền thống ngành Điện",
+        "date": "2004"
+      },
+      {
+        "full": "assets/full/khu1/atl_2004_011.jpg",
+        "thumb": "assets/thumbs/khu1/atl_2004_011.jpg",
+        "caption": "Đại hội Chi bộ Khối Văn phòng lần I - Bỏ phiếu bầu cử (1)",
+        "date": "2004"
+      },
+      {
+        "full": "assets/full/khu1/atl_2004_012.jpg",
+        "thumb": "assets/thumbs/khu1/atl_2004_012.jpg",
+        "caption": "Đại hội Chi bộ Khối Văn phòng lần I - Bỏ phiếu bầu cử (2)",
+        "date": "2004"
+      },
+      {
+        "full": "assets/full/khu1/atl_2004_013.jpg",
+        "thumb": "assets/thumbs/khu1/atl_2004_013.jpg",
+        "caption": "Đại hội Chi bộ Khối Văn phòng lần I - Đoàn chủ tịch",
+        "date": "2004"
+      },
+      {
+        "full": "assets/full/khu1/atl_2005_014.jpg",
+        "thumb": "assets/thumbs/khu1/atl_2005_014.jpg",
+        "caption": "Đại hội đại biểu Công đoàn Điện lực BR-VT - Ban Chấp hành ra mắt",
+        "date": "2005"
+      },
+      {
+        "full": "assets/full/khu1/atl_2005_015.jpg",
+        "thumb": "assets/thumbs/khu1/atl_2005_015.jpg",
+        "caption": "Đại hội đại biểu Công đoàn Điện lực BR-VT - Đoàn chủ tịch",
+        "date": "2005"
+      },
+      {
+        "full": "assets/full/khu1/atl_2006_016.jpg",
+        "thumb": "assets/thumbs/khu1/atl_2006_016.jpg",
+        "caption": "Hội nghị sơ kết công tác SXKD 6 tháng đầu năm - Báo cáo tại hội trường",
+        "date": "2006"
+      },
+      {
+        "full": "assets/full/khu1/atl_2006_017.jpg",
+        "thumb": "assets/thumbs/khu1/atl_2006_017.jpg",
+        "caption": "Hội nghị sơ kết công tác SXKD 6 tháng đầu năm - Toàn cảnh hội nghị",
+        "date": "2006"
+      },
+      {
+        "full": "assets/full/khu1/atl_2007_018.jpg",
+        "thumb": "assets/thumbs/khu1/atl_2007_018.jpg",
+        "caption": "Đại hội đại biểu Công đoàn Điện lực BR-VT - Phát biểu chỉ đạo",
+        "date": "2007"
+      },
+      {
+        "full": "assets/full/khu1/atl_2009_019.jpg",
+        "thumb": "assets/thumbs/khu1/atl_2009_019.jpg",
+        "caption": "Chúc mừng Năm mới Xuân Kỷ Sửu Điện lực BR-VT",
+        "date": "2009"
+      },
+      {
+        "full": "assets/full/khu1/atl_2009_020.jpg",
+        "thumb": "assets/thumbs/khu1/atl_2009_020.jpg",
+        "caption": "Hội thao CNVC Điện lực BR-VT lần thứ V - Các đội bóng chuyền",
+        "date": "2009"
+      },
+      {
+        "full": "assets/full/khu1/atl_2009_021.jpg",
+        "thumb": "assets/thumbs/khu1/atl_2009_021.jpg",
+        "caption": "Đại hội đại biểu CNVC Điện lực BR-VT - Ký kết giao ước thi đua",
+        "date": "2009"
+      },
+      {
+        "full": "assets/full/khu1/tt_2014_001.jpg",
+        "thumb": "assets/thumbs/khu1/tt_2014_001.jpg",
+        "caption": "Bình yên làng chài",
+        "date": "2014"
+      },
+      {
+        "full": "assets/full/khu1/tt_2014_002.jpg",
+        "thumb": "assets/thumbs/khu1/tt_2014_002.jpg",
+        "caption": "Băng rừng",
+        "date": "2014"
+      },
+      {
+        "full": "assets/full/khu1/tt_2014_003.jpg",
+        "thumb": "assets/thumbs/khu1/tt_2014_003.jpg",
+        "caption": "Bảo trì đường dây cao thế",
+        "date": "2014"
+      },
+      {
+        "full": "assets/full/khu1/tt_2014_004.jpg",
+        "thumb": "assets/thumbs/khu1/tt_2014_004.jpg",
+        "caption": "Bảo trì",
+        "date": "2014"
+      },
+      {
+        "full": "assets/full/khu1/tt_2014_005.jpg",
+        "thumb": "assets/thumbs/khu1/tt_2014_005.jpg",
+        "caption": "Chân dung người thợ",
+        "date": "2014"
+      },
+      {
+        "full": "assets/full/khu1/tt_2014_006.jpg",
+        "thumb": "assets/thumbs/khu1/tt_2014_006.jpg",
+        "caption": "Chăm sóc",
+        "date": "2014"
+      },
+      {
+        "full": "assets/full/khu1/tt_2014_007.jpg",
+        "thumb": "assets/thumbs/khu1/tt_2014_007.jpg",
+        "caption": "Chỉnh trang đường điện",
+        "date": "2014"
+      },
+      {
+        "full": "assets/full/khu1/tt_2014_008.jpg",
+        "thumb": "assets/thumbs/khu1/tt_2014_008.jpg",
+        "caption": "Cung cấp điện cho khách hàng",
+        "date": "2014"
+      },
+      {
+        "full": "assets/full/khu1/tt_2014_009.jpg",
+        "thumb": "assets/thumbs/khu1/tt_2014_009.jpg",
+        "caption": "Cánh đồng hoa",
+        "date": "2014"
+      },
+      {
+        "full": "assets/full/khu1/tt_2014_010.jpg",
+        "thumb": "assets/thumbs/khu1/tt_2014_010.jpg",
+        "caption": "Công nghệ tưới điện tự động",
+        "date": "2014"
+      },
+      {
+        "full": "assets/full/khu1/tt_2014_011.jpg",
+        "thumb": "assets/thumbs/khu1/tt_2014_011.jpg",
+        "caption": "Công trình Thủy điện Cửa Đạt",
+        "date": "2014"
+      },
+      {
+        "full": "assets/full/khu1/tt_2014_012.jpg",
+        "thumb": "assets/thumbs/khu1/tt_2014_012.jpg",
+        "caption": "Công trường Thủy điện Sông Ba Hạ 2",
+        "date": "2014"
+      },
+      {
+        "full": "assets/full/khu1/tt_2014_013.jpg",
+        "thumb": "assets/thumbs/khu1/tt_2014_013.jpg",
+        "caption": "Hành trang",
+        "date": "2014"
+      },
+      {
+        "full": "assets/full/khu1/tt_2014_014.jpg",
+        "thumb": "assets/thumbs/khu1/tt_2014_014.jpg",
+        "caption": "Hạ thế điện nông thôn",
+        "date": "2014"
+      },
+      {
+        "full": "assets/full/khu1/tt_2014_015.jpg",
+        "thumb": "assets/thumbs/khu1/tt_2014_015.jpg",
+        "caption": "Hội An điểm hẹn",
+        "date": "2014"
+      },
+      {
+        "full": "assets/full/khu1/tt_2014_016.jpg",
+        "thumb": "assets/thumbs/khu1/tt_2014_016.jpg",
+        "caption": "Kiểm tra định kỳ",
+        "date": "2014"
+      },
+      {
+        "full": "assets/full/khu1/tt_2014_017.jpg",
+        "thumb": "assets/thumbs/khu1/tt_2014_017.jpg",
+        "caption": "Kiểm tra",
+        "date": "2014"
+      },
+      {
+        "full": "assets/full/khu1/tt_2014_018.jpg",
+        "thumb": "assets/thumbs/khu1/tt_2014_018.jpg",
+        "caption": "Kéo cáp điện ngầm vào bờ",
+        "date": "2014"
+      },
+      {
+        "full": "assets/full/khu1/tt_2014_019.jpg",
+        "thumb": "assets/thumbs/khu1/tt_2014_019.jpg",
+        "caption": "Kéo dây",
+        "date": "2014"
+      },
+      {
+        "full": "assets/full/khu1/tt_2014_020.jpg",
+        "thumb": "assets/thumbs/khu1/tt_2014_020.jpg",
+        "caption": "Kết nối",
+        "date": "2014"
+      },
+      {
+        "full": "assets/full/khu1/tt_2014_021.jpg",
+        "thumb": "assets/thumbs/khu1/tt_2014_021.jpg",
+        "caption": "Lung linh Hạ Long",
+        "date": "2014"
+      },
+      {
+        "full": "assets/full/khu1/tt_2014_022.jpg",
+        "thumb": "assets/thumbs/khu1/tt_2014_022.jpg",
+        "caption": "Lưới điện",
+        "date": "2014"
+      },
+      {
+        "full": "assets/full/khu1/tt_2014_023.jpg",
+        "thumb": "assets/thumbs/khu1/tt_2014_023.jpg",
+        "caption": "Lớp vi tính Lũng Cú - Hà Giang",
+        "date": "2014"
+      },
+      {
+        "full": "assets/full/khu1/tt_2014_024.jpg",
+        "thumb": "assets/thumbs/khu1/tt_2014_024.jpg",
+        "caption": "Nhân con giống theo phương pháp mới",
+        "date": "2014"
+      },
+      {
+        "full": "assets/full/khu1/tt_2014_025.jpg",
+        "thumb": "assets/thumbs/khu1/tt_2014_025.jpg",
+        "caption": "Những người thợ Điện lực Năm Căn",
+        "date": "2014"
+      },
+      {
+        "full": "assets/full/khu1/tt_2014_026.jpg",
+        "thumb": "assets/thumbs/khu1/tt_2014_026.jpg",
+        "caption": "Phú Quý một góc nhìn",
+        "date": "2014"
+      },
+      {
+        "full": "assets/full/khu1/tt_2014_027.jpg",
+        "thumb": "assets/thumbs/khu1/tt_2014_027.jpg",
+        "caption": "Phố núi lên đèn",
+        "date": "2014"
+      },
+      {
+        "full": "assets/full/khu1/tt_2014_028.jpg",
+        "thumb": "assets/thumbs/khu1/tt_2014_028.jpg",
+        "caption": "Thắp sáng dòng điện mùa xuân",
+        "date": "2014"
+      },
+      {
+        "full": "assets/full/khu1/tt_2014_029.jpg",
+        "thumb": "assets/thumbs/khu1/tt_2014_029.jpg",
+        "caption": "Thủy điện Sơn La những khoảnh khắc đáng nhớ",
+        "date": "2014"
+      },
+      {
+        "full": "assets/full/khu1/tt_2014_030.jpg",
+        "thumb": "assets/thumbs/khu1/tt_2014_030.jpg",
+        "caption": "Thủy điện Sơn La trọn vẹn niềm tin",
+        "date": "2014"
+      },
+      {
+        "full": "assets/full/khu1/tt_2014_031.jpg",
+        "thumb": "assets/thumbs/khu1/tt_2014_031.jpg",
+        "caption": "Trên công trình Thủy điện Lai Châu 3",
+        "date": "2014"
+      },
+      {
+        "full": "assets/full/khu1/tt_2014_032.jpg",
+        "thumb": "assets/thumbs/khu1/tt_2014_032.jpg",
+        "caption": "Trăng Trường Sa",
+        "date": "2014"
+      },
+      {
+        "full": "assets/full/khu1/tt_2014_033.jpg",
+        "thumb": "assets/thumbs/khu1/tt_2014_033.jpg",
+        "caption": "Trước giờ xuất kích",
+        "date": "2014"
+      },
+      {
+        "full": "assets/full/khu1/tt_2014_034.jpg",
+        "thumb": "assets/thumbs/khu1/tt_2014_034.jpg",
+        "caption": "Trạm điều khiển Thủy điện Hòa Bình",
+        "date": "2014"
+      },
+      {
+        "full": "assets/full/khu1/tt_2014_035.jpg",
+        "thumb": "assets/thumbs/khu1/tt_2014_035.jpg",
+        "caption": "Tuổi trẻ thủ đô hưởng ứng giờ Trái đất",
+        "date": "2014"
+      },
+      {
+        "full": "assets/full/khu1/tt_2014_036.jpg",
+        "thumb": "assets/thumbs/khu1/tt_2014_036.jpg",
+        "caption": "Tây Bắc đẹp giàu",
+        "date": "2014"
+      },
+      {
+        "full": "assets/full/khu1/tt_2014_037.jpg",
+        "thumb": "assets/thumbs/khu1/tt_2014_037.jpg",
+        "caption": "Tín hiệu mùa xuân",
+        "date": "2014"
+      },
+      {
+        "full": "assets/full/khu1/tt_2014_038.jpg",
+        "thumb": "assets/thumbs/khu1/tt_2014_038.jpg",
+        "caption": "Tầm cao",
+        "date": "2014"
+      },
+      {
+        "full": "assets/full/khu1/tt_2014_039.jpg",
+        "thumb": "assets/thumbs/khu1/tt_2014_039.jpg",
+        "caption": "Vui ngày hội lớn",
+        "date": "2014"
+      },
+      {
+        "full": "assets/full/khu1/tt_2014_040.jpg",
+        "thumb": "assets/thumbs/khu1/tt_2014_040.jpg",
+        "caption": "Vũ điệu trên cao",
+        "date": "2014"
+      },
+      {
+        "full": "assets/full/khu1/tt_2014_041.jpg",
+        "thumb": "assets/thumbs/khu1/tt_2014_041.jpg",
+        "caption": "Ánh sáng mùa xuân",
+        "date": "2014"
+      },
+      {
+        "full": "assets/full/khu1/tt_2014_042.jpg",
+        "thumb": "assets/thumbs/khu1/tt_2014_042.jpg",
+        "caption": "Ánh sáng về bản (1)",
+        "date": "2014"
+      },
+      {
+        "full": "assets/full/khu1/tt_2014_043.jpg",
+        "thumb": "assets/thumbs/khu1/tt_2014_043.jpg",
+        "caption": "Ánh sáng về bản (2)",
+        "date": "2014"
+      },
+      {
+        "full": "assets/full/khu1/tt_2014_044.jpg",
+        "thumb": "assets/thumbs/khu1/tt_2014_044.jpg",
+        "caption": "Điện khí hóa điện nông thôn",
+        "date": "2014"
+      },
+      {
+        "full": "assets/full/khu1/tt_2014_045.jpg",
+        "thumb": "assets/thumbs/khu1/tt_2014_045.jpg",
+        "caption": "Điện về bản Mông",
+        "date": "2014"
+      },
+      {
+        "full": "assets/full/khu1/tt_2014_046.jpg",
+        "thumb": "assets/thumbs/khu1/tt_2014_046.jpg",
+        "caption": "Điện về miền xa",
+        "date": "2014"
+      },
+      {
+        "full": "assets/full/khu1/tt_2014_047.jpg",
+        "thumb": "assets/thumbs/khu1/tt_2014_047.jpg",
+        "caption": "Điện về nông thôn Hóc Môn",
+        "date": "2014"
+      },
+      {
+        "full": "assets/full/khu1/tt_2014_048.jpg",
+        "thumb": "assets/thumbs/khu1/tt_2014_048.jpg",
+        "caption": "Điện về vùng sâu",
+        "date": "2014"
+      },
+      {
+        "full": "assets/full/khu1/tt_2014_049.jpg",
+        "thumb": "assets/thumbs/khu1/tt_2014_049.jpg",
+        "caption": "Đường về Đất Mũi",
+        "date": "2014"
+      }
+    ]
+  },
+  {
+    "id": "awards_flags",
+    "cabinet": 1,
+    "title": "Bằng Khen & Cờ Lưu Niệm",
+    "subtitle": "Vinh quang những chặng đường",
+    "cover": {
+      "color": "#8B1A1A",
+      "accent": "#F6D26B"
+    },
+    "chapters": [
+      {
+        "title": "Huân chương & Nhà nước",
+        "start": 0,
+        "end": 8
+      },
+      {
+        "title": "Bộ, EVN, TLĐLĐ",
+        "start": 9,
+        "end": 23
+      },
+      {
+        "title": "EVNSPC",
+        "start": 24,
+        "end": 38
+      },
+      {
+        "title": "Tỉnh/TP",
+        "start": 39,
+        "end": 109
+      },
+      {
+        "title": "Đoàn thể",
+        "start": 110,
+        "end": 128
+      },
+      {
+        "title": "Cờ thi đua & Lưu niệm",
+        "start": 129,
+        "end": 210
+      }
+    ],
+    "pages": [
+      {
+        "full": "assets/full/khu2/bk_2001_ctn_13.jpg",
+        "thumb": "assets/thumbs/khu2/bk_2001_ctn_13.jpg",
+        "caption": "Huân chương năm 2001",
+        "date": "2001"
+      },
+      {
+        "full": "assets/full/khu2/bk_2001_ctn_14.jpg",
+        "thumb": "assets/thumbs/khu2/bk_2001_ctn_14.jpg",
+        "caption": "Huân chương năm 2001",
+        "date": "2001"
+      },
+      {
+        "full": "assets/full/khu2/bk_2008_ctn_06.jpg",
+        "thumb": "assets/thumbs/khu2/bk_2008_ctn_06.jpg",
+        "caption": "Huân chương năm 2008",
+        "date": "2008"
+      },
+      {
+        "full": "assets/full/khu2/bk_2008_ctn_07.jpg",
+        "thumb": "assets/thumbs/khu2/bk_2008_ctn_07.jpg",
+        "caption": "Huân chương năm 2008",
+        "date": "2008"
+      },
+      {
+        "full": "assets/full/khu2/bk_2009_ttcp_61.jpg",
+        "thumb": "assets/thumbs/khu2/bk_2009_ttcp_61.jpg",
+        "caption": "Bằng khen năm 2009",
+        "date": "2009"
+      },
+      {
+        "full": "assets/full/khu2/bk_2010_ctn_08.jpg",
+        "thumb": "assets/thumbs/khu2/bk_2010_ctn_08.jpg",
+        "caption": "Huân chương năm 2010",
+        "date": "2010"
+      },
+      {
+        "full": "assets/full/khu2/bk_2014_ctn_10.jpg",
+        "thumb": "assets/thumbs/khu2/bk_2014_ctn_10.jpg",
+        "caption": "Huân chương năm 2014",
+        "date": "2014"
+      },
+      {
+        "full": "assets/full/khu2/bk_2016_ctn_11.jpg",
+        "thumb": "assets/thumbs/khu2/bk_2016_ctn_11.jpg",
+        "caption": "Huân chương năm 2016",
+        "date": "2016"
+      },
+      {
+        "full": "assets/full/khu2/bk_2016_ctn_12.jpg",
+        "thumb": "assets/thumbs/khu2/bk_2016_ctn_12.jpg",
+        "caption": "Huân chương năm 2016",
+        "date": "2016"
+      },
+      {
+        "full": "assets/full/khu2/bk_1994_bct_47.jpg",
+        "thumb": "assets/thumbs/khu2/bk_1994_bct_47.jpg",
+        "caption": "Bằng khen năm 1994",
+        "date": "1994"
+      },
+      {
+        "full": "assets/full/khu2/bk_1998_evn_49.jpg",
+        "thumb": "assets/thumbs/khu2/bk_1998_evn_49.jpg",
+        "caption": "Bằng khen năm 1998",
+        "date": "1998"
+      },
+      {
+        "full": "assets/full/khu2/bk_1998_evn_50.jpg",
+        "thumb": "assets/thumbs/khu2/bk_1998_evn_50.jpg",
+        "caption": "Bằng khen năm 1998",
+        "date": "1998"
+      },
+      {
+        "full": "assets/full/khu2/bk_1999_evn_113.jpg",
+        "thumb": "assets/thumbs/khu2/bk_1999_evn_113.jpg",
+        "caption": "Bằng khen năm 1999",
+        "date": "1999"
+      },
+      {
+        "full": "assets/full/khu2/bk_2000_evn_52.jpg",
+        "thumb": "assets/thumbs/khu2/bk_2000_evn_52.jpg",
+        "caption": "Bằng khen năm 2000",
+        "date": "2000"
+      },
+      {
+        "full": "assets/full/khu2/bk_2000_evn_53.jpg",
+        "thumb": "assets/thumbs/khu2/bk_2000_evn_53.jpg",
+        "caption": "Bằng khen năm 2000",
+        "date": "2000"
+      },
+      {
+        "full": "assets/full/khu2/bk_2009_evn_05.jpg",
+        "thumb": "assets/thumbs/khu2/bk_2009_evn_05.jpg",
+        "caption": "Bằng khen năm 2009",
+        "date": "2009"
+      },
+      {
+        "full": "assets/full/khu2/bk_2010_evn_87.jpg",
+        "thumb": "assets/thumbs/khu2/bk_2010_evn_87.jpg",
+        "caption": "Bằng khen năm 2010",
+        "date": "2010"
+      },
+      {
+        "full": "assets/full/khu2/bk_2011_tldldvn_89.jpg",
+        "thumb": "assets/thumbs/khu2/bk_2011_tldldvn_89.jpg",
+        "caption": "Bằng khen năm 2011",
+        "date": "2011"
+      },
+      {
+        "full": "assets/full/khu2/bk_2012_evn_78.jpg",
+        "thumb": "assets/thumbs/khu2/bk_2012_evn_78.jpg",
+        "caption": "Bằng khen năm 2012",
+        "date": "2012"
+      },
+      {
+        "full": "assets/full/khu2/bk_2012_evn_86.jpg",
+        "thumb": "assets/thumbs/khu2/bk_2012_evn_86.jpg",
+        "caption": "Bằng khen năm 2012",
+        "date": "2012"
+      },
+      {
+        "full": "assets/full/khu2/bk_2013_evn_107.jpg",
+        "thumb": "assets/thumbs/khu2/bk_2013_evn_107.jpg",
+        "caption": "Bằng khen năm 2013",
+        "date": "2013"
+      },
+      {
+        "full": "assets/full/khu2/bk_2014_tldldvn_29.jpg",
+        "thumb": "assets/thumbs/khu2/bk_2014_tldldvn_29.jpg",
+        "caption": "Bằng khen năm 2014",
+        "date": "2014"
+      },
+      {
+        "full": "assets/full/khu2/bk_2015_evn_88.jpg",
+        "thumb": "assets/thumbs/khu2/bk_2015_evn_88.jpg",
+        "caption": "Bằng khen năm 2015",
+        "date": "2015"
+      },
+      {
+        "full": "assets/full/khu2/bk_2022_tldldvn_43.jpg",
+        "thumb": "assets/thumbs/khu2/bk_2022_tldldvn_43.jpg",
+        "caption": "Bằng khen năm 2022",
+        "date": "2022"
+      },
+      {
+        "full": "assets/full/khu2/bk_1994_evnspc_56.jpg",
+        "thumb": "assets/thumbs/khu2/bk_1994_evnspc_56.jpg",
+        "caption": "Bằng khen năm 1994",
+        "date": "1994"
+      },
+      {
+        "full": "assets/full/khu2/bk_1997_evnspc_57.jpg",
+        "thumb": "assets/thumbs/khu2/bk_1997_evnspc_57.jpg",
+        "caption": "Bằng khen năm 1997",
+        "date": "1997"
+      },
+      {
+        "full": "assets/full/khu2/bk_1997_evnspc_58.jpg",
+        "thumb": "assets/thumbs/khu2/bk_1997_evnspc_58.jpg",
+        "caption": "Bằng khen năm 1997",
+        "date": "1997"
+      },
+      {
+        "full": "assets/full/khu2/bk_1998_evnspc_07.jpg",
+        "thumb": "assets/thumbs/khu2/bk_1998_evnspc_07.jpg",
+        "caption": "Bằng khen năm 1998",
+        "date": "1998"
+      },
+      {
+        "full": "assets/full/khu2/bk_2008_evnspc_15.jpg",
+        "thumb": "assets/thumbs/khu2/bk_2008_evnspc_15.jpg",
+        "caption": "Bằng khen năm 2008",
+        "date": "2008"
+      },
+      {
+        "full": "assets/full/khu2/bk_2014_evnspc_03.jpg",
+        "thumb": "assets/thumbs/khu2/bk_2014_evnspc_03.jpg",
+        "caption": "Bằng khen năm 2014",
+        "date": "2014"
+      },
+      {
+        "full": "assets/full/khu2/bk_2018_evnspc_04.jpg",
+        "thumb": "assets/thumbs/khu2/bk_2018_evnspc_04.jpg",
+        "caption": "Bằng khen năm 2018",
+        "date": "2018"
+      },
+      {
+        "full": "assets/full/khu2/bk_2018_evnspc_10.jpg",
+        "thumb": "assets/thumbs/khu2/bk_2018_evnspc_10.jpg",
+        "caption": "Giấy khen năm 2018",
+        "date": "2018"
+      },
+      {
+        "full": "assets/full/khu2/bk_2019_evnspc_12.jpg",
+        "thumb": "assets/thumbs/khu2/bk_2019_evnspc_12.jpg",
+        "caption": "Giấy khen năm 2019",
+        "date": "2019"
+      },
+      {
+        "full": "assets/full/khu2/bk_2021_evnspc_04.jpg",
+        "thumb": "assets/thumbs/khu2/bk_2021_evnspc_04.jpg",
+        "caption": "Giấy khen năm 2021",
+        "date": "2021"
+      },
+      {
+        "full": "assets/full/khu2/bk_2021_evnspc_08.jpg",
+        "thumb": "assets/thumbs/khu2/bk_2021_evnspc_08.jpg",
+        "caption": "Giấy khen năm 2021",
+        "date": "2021"
+      },
+      {
+        "full": "assets/full/khu2/bk_2022_evnspc_66.jpg",
+        "thumb": "assets/thumbs/khu2/bk_2022_evnspc_66.jpg",
+        "caption": "Giấy khen năm 2022",
+        "date": "2022"
+      },
+      {
+        "full": "assets/full/khu2/bk_2024_evnspc_01.jpg",
+        "thumb": "assets/thumbs/khu2/bk_2024_evnspc_01.jpg",
+        "caption": "Bằng khen năm 2024",
+        "date": "2024"
+      },
+      {
+        "full": "assets/full/khu2/bk_2024_evnspc_09.jpg",
+        "thumb": "assets/thumbs/khu2/bk_2024_evnspc_09.jpg",
+        "caption": "Giấy khen năm 2024",
+        "date": "2024"
+      },
+      {
+        "full": "assets/full/khu2/bk_2024_evnspc_11.jpg",
+        "thumb": "assets/thumbs/khu2/bk_2024_evnspc_11.jpg",
+        "caption": "Giấy khen năm 2024",
+        "date": "2024"
+      },
+      {
+        "full": "assets/full/khu2/bk_1985_ubnd_brvt_45.jpg",
+        "thumb": "assets/thumbs/khu2/bk_1985_ubnd_brvt_45.jpg",
+        "caption": "Bằng khen năm 1985",
+        "date": "1985"
+      },
+      {
+        "full": "assets/full/khu2/bk_1990_ubnd_brvt_46.jpg",
+        "thumb": "assets/thumbs/khu2/bk_1990_ubnd_brvt_46.jpg",
+        "caption": "Bằng khen năm 1990",
+        "date": "1990"
+      },
+      {
+        "full": "assets/full/khu2/bk_1991_danguy_brvt_35.jpg",
+        "thumb": "assets/thumbs/khu2/bk_1991_danguy_brvt_35.jpg",
+        "caption": "Giấy khen năm 1991",
+        "date": "1991"
+      },
+      {
+        "full": "assets/full/khu2/bk_1994_ubnd_brvt_96.jpg",
+        "thumb": "assets/thumbs/khu2/bk_1994_ubnd_brvt_96.jpg",
+        "caption": "Bằng khen năm 1994",
+        "date": "1994"
+      },
+      {
+        "full": "assets/full/khu2/bk_1995_ldld_brvt_54.jpg",
+        "thumb": "assets/thumbs/khu2/bk_1995_ldld_brvt_54.jpg",
+        "caption": "Bằng khen năm 1995",
+        "date": "1995"
+      },
+      {
+        "full": "assets/full/khu2/bk_1995_ldld_brvt_55.jpg",
+        "thumb": "assets/thumbs/khu2/bk_1995_ldld_brvt_55.jpg",
+        "caption": "Bằng khen năm 1995",
+        "date": "1995"
+      },
+      {
+        "full": "assets/full/khu2/bk_1996_ubnd_brvt_95.jpg",
+        "thumb": "assets/thumbs/khu2/bk_1996_ubnd_brvt_95.jpg",
+        "caption": "Bằng khen năm 1996",
+        "date": "1996"
+      },
+      {
+        "full": "assets/full/khu2/bk_1997_ldld_brvt_31.jpg",
+        "thumb": "assets/thumbs/khu2/bk_1997_ldld_brvt_31.jpg",
+        "caption": "Bằng khen năm 1997",
+        "date": "1997"
+      },
+      {
+        "full": "assets/full/khu2/bk_1998_ubnd_brvt_97.jpg",
+        "thumb": "assets/thumbs/khu2/bk_1998_ubnd_brvt_97.jpg",
+        "caption": "Bằng khen năm 1998",
+        "date": "1998"
+      },
+      {
+        "full": "assets/full/khu2/bk_1998_ubnd_brvt_98.jpg",
+        "thumb": "assets/thumbs/khu2/bk_1998_ubnd_brvt_98.jpg",
+        "caption": "Bằng khen năm 1998",
+        "date": "1998"
+      },
+      {
+        "full": "assets/full/khu2/bk_1999_ubnd_brvt_103.jpg",
+        "thumb": "assets/thumbs/khu2/bk_1999_ubnd_brvt_103.jpg",
+        "caption": "Bằng khen năm 1999",
+        "date": "1999"
+      },
+      {
+        "full": "assets/full/khu2/bk_2000_ubnd_brvt_82.jpg",
+        "thumb": "assets/thumbs/khu2/bk_2000_ubnd_brvt_82.jpg",
+        "caption": "Bằng khen năm 2000",
+        "date": "2000"
+      },
+      {
+        "full": "assets/full/khu2/bk_2000_ubnd_brvt_102.jpg",
+        "thumb": "assets/thumbs/khu2/bk_2000_ubnd_brvt_102.jpg",
+        "caption": "Bằng khen năm 2000",
+        "date": "2000"
+      },
+      {
+        "full": "assets/full/khu2/bk_2004_ubnd_brvt_91.jpg",
+        "thumb": "assets/thumbs/khu2/bk_2004_ubnd_brvt_91.jpg",
+        "caption": "Bằng khen năm 2004",
+        "date": "2004"
+      },
+      {
+        "full": "assets/full/khu2/bk_2005_bhxh_brvt_02.jpg",
+        "thumb": "assets/thumbs/khu2/bk_2005_bhxh_brvt_02.jpg",
+        "caption": "Giấy khen năm 2005",
+        "date": "2005"
+      },
+      {
+        "full": "assets/full/khu2/bk_2005_ubnd_brvt_84.jpg",
+        "thumb": "assets/thumbs/khu2/bk_2005_ubnd_brvt_84.jpg",
+        "caption": "Bằng khen năm 2005",
+        "date": "2005"
+      },
+      {
+        "full": "assets/full/khu2/bk_2006_bhxh_brvt_48.jpg",
+        "thumb": "assets/thumbs/khu2/bk_2006_bhxh_brvt_48.jpg",
+        "caption": "Giấy khen năm 2006",
+        "date": "2006"
+      },
+      {
+        "full": "assets/full/khu2/bk_2006_ldld_brvt_39.jpg",
+        "thumb": "assets/thumbs/khu2/bk_2006_ldld_brvt_39.jpg",
+        "caption": "Bằng khen năm 2006",
+        "date": "2006"
+      },
+      {
+        "full": "assets/full/khu2/bk_2006_ubnd_brvt_17.jpg",
+        "thumb": "assets/thumbs/khu2/bk_2006_ubnd_brvt_17.jpg",
+        "caption": "Giấy khen năm 2006",
+        "date": "2006"
+      },
+      {
+        "full": "assets/full/khu2/bk_2006_ubnd_brvt_85.jpg",
+        "thumb": "assets/thumbs/khu2/bk_2006_ubnd_brvt_85.jpg",
+        "caption": "Bằng khen năm 2006",
+        "date": "2006"
+      },
+      {
+        "full": "assets/full/khu2/bk_2008_ubnd_brvt_19.jpg",
+        "thumb": "assets/thumbs/khu2/bk_2008_ubnd_brvt_19.jpg",
+        "caption": "Giấy khen năm 2008",
+        "date": "2008"
+      },
+      {
+        "full": "assets/full/khu2/bk_2008_ubnd_brvt_20.jpg",
+        "thumb": "assets/thumbs/khu2/bk_2008_ubnd_brvt_20.jpg",
+        "caption": "Giấy khen năm 2008",
+        "date": "2008"
+      },
+      {
+        "full": "assets/full/khu2/bk_2008_ubnd_brvt_27.jpg",
+        "thumb": "assets/thumbs/khu2/bk_2008_ubnd_brvt_27.jpg",
+        "caption": "Bằng khen năm 2008",
+        "date": "2008"
+      },
+      {
+        "full": "assets/full/khu2/bk_2008_ubnd_brvt_72.jpg",
+        "thumb": "assets/thumbs/khu2/bk_2008_ubnd_brvt_72.jpg",
+        "caption": "Bằng khen năm 2008",
+        "date": "2008"
+      },
+      {
+        "full": "assets/full/khu2/bk_2009_bhxh_brvt_21.jpg",
+        "thumb": "assets/thumbs/khu2/bk_2009_bhxh_brvt_21.jpg",
+        "caption": "Giấy khen năm 2009",
+        "date": "2009"
+      },
+      {
+        "full": "assets/full/khu2/bk_2009_ubnd_brvt_26.jpg",
+        "thumb": "assets/thumbs/khu2/bk_2009_ubnd_brvt_26.jpg",
+        "caption": "Bằng khen năm 2009",
+        "date": "2009"
+      },
+      {
+        "full": "assets/full/khu2/bk_2010_ubnd_brvt_70.jpg",
+        "thumb": "assets/thumbs/khu2/bk_2010_ubnd_brvt_70.jpg",
+        "caption": "Bằng khen năm 2010",
+        "date": "2010"
+      },
+      {
+        "full": "assets/full/khu2/bk_2010_ubnd_brvt_71.jpg",
+        "thumb": "assets/thumbs/khu2/bk_2010_ubnd_brvt_71.jpg",
+        "caption": "Bằng khen năm 2010",
+        "date": "2010"
+      },
+      {
+        "full": "assets/full/khu2/bk_2010_ubnd_brvt_73.jpg",
+        "thumb": "assets/thumbs/khu2/bk_2010_ubnd_brvt_73.jpg",
+        "caption": "Bằng khen năm 2010",
+        "date": "2010"
+      },
+      {
+        "full": "assets/full/khu2/bk_2011_bhxh_brvt_16.jpg",
+        "thumb": "assets/thumbs/khu2/bk_2011_bhxh_brvt_16.jpg",
+        "caption": "Giấy khen năm 2011",
+        "date": "2011"
+      },
+      {
+        "full": "assets/full/khu2/bk_2011_ldld_brvt_38.jpg",
+        "thumb": "assets/thumbs/khu2/bk_2011_ldld_brvt_38.jpg",
+        "caption": "Bằng khen năm 2011",
+        "date": "2011"
+      },
+      {
+        "full": "assets/full/khu2/bk_2011_ubnd_brvt_92.jpg",
+        "thumb": "assets/thumbs/khu2/bk_2011_ubnd_brvt_92.jpg",
+        "caption": "Bằng khen năm 2011",
+        "date": "2011"
+      },
+      {
+        "full": "assets/full/khu2/bk_2011_ubnd_brvt_93.jpg",
+        "thumb": "assets/thumbs/khu2/bk_2011_ubnd_brvt_93.jpg",
+        "caption": "Bằng khen năm 2011",
+        "date": "2011"
+      },
+      {
+        "full": "assets/full/khu2/bk_2011_ubnd_brvt_94.jpg",
+        "thumb": "assets/thumbs/khu2/bk_2011_ubnd_brvt_94.jpg",
+        "caption": "Bằng khen năm 2011",
+        "date": "2011"
+      },
+      {
+        "full": "assets/full/khu2/bk_2012_danguy_brvt_41.jpg",
+        "thumb": "assets/thumbs/khu2/bk_2012_danguy_brvt_41.jpg",
+        "caption": "Giấy khen năm 2012",
+        "date": "2012"
+      },
+      {
+        "full": "assets/full/khu2/bk_2013_ubnd_brvt_36.jpg",
+        "thumb": "assets/thumbs/khu2/bk_2013_ubnd_brvt_36.jpg",
+        "caption": "Bằng khen năm 2013",
+        "date": "2013"
+      },
+      {
+        "full": "assets/full/khu2/bk_2013_ubnd_brvt_77.jpg",
+        "thumb": "assets/thumbs/khu2/bk_2013_ubnd_brvt_77.jpg",
+        "caption": "Bằng khen năm 2013",
+        "date": "2013"
+      },
+      {
+        "full": "assets/full/khu2/bk_2014_ldld_brvt_37.jpg",
+        "thumb": "assets/thumbs/khu2/bk_2014_ldld_brvt_37.jpg",
+        "caption": "Bằng khen năm 2014",
+        "date": "2014"
+      },
+      {
+        "full": "assets/full/khu2/bk_2014_ubnd_tpvt_76.jpg",
+        "thumb": "assets/thumbs/khu2/bk_2014_ubnd_tpvt_76.jpg",
+        "caption": "Bằng khen năm 2014",
+        "date": "2014"
+      },
+      {
+        "full": "assets/full/khu2/bk_2015_bhxh_brvt_18.jpg",
+        "thumb": "assets/thumbs/khu2/bk_2015_bhxh_brvt_18.jpg",
+        "caption": "Giấy khen năm 2015",
+        "date": "2015"
+      },
+      {
+        "full": "assets/full/khu2/bk_2015_bhxh_brvt_22.jpg",
+        "thumb": "assets/thumbs/khu2/bk_2015_bhxh_brvt_22.jpg",
+        "caption": "Giấy khen năm 2015",
+        "date": "2015"
+      },
+      {
+        "full": "assets/full/khu2/bk_2015_danguy_brvt_06.jpg",
+        "thumb": "assets/thumbs/khu2/bk_2015_danguy_brvt_06.jpg",
+        "caption": "Giấy khen năm 2015",
+        "date": "2015"
+      },
+      {
+        "full": "assets/full/khu2/bk_2015_ubnd_brvt_02.jpg",
+        "thumb": "assets/thumbs/khu2/bk_2015_ubnd_brvt_02.jpg",
+        "caption": "Bằng khen năm 2015",
+        "date": "2015"
+      },
+      {
+        "full": "assets/full/khu2/bk_2015_ubnd_brvt_100.jpg",
+        "thumb": "assets/thumbs/khu2/bk_2015_ubnd_brvt_100.jpg",
+        "caption": "Bằng khen năm 2015",
+        "date": "2015"
+      },
+      {
+        "full": "assets/full/khu2/bk_2016_bchqs_brvt_03.jpg",
+        "thumb": "assets/thumbs/khu2/bk_2016_bchqs_brvt_03.jpg",
+        "caption": "Giấy khen năm 2016",
+        "date": "2016"
+      },
+      {
+        "full": "assets/full/khu2/bk_2016_ldld_brvt_30.jpg",
+        "thumb": "assets/thumbs/khu2/bk_2016_ldld_brvt_30.jpg",
+        "caption": "Bằng khen năm 2016",
+        "date": "2016"
+      },
+      {
+        "full": "assets/full/khu2/bk_2016_ubnd_brvt_74.jpg",
+        "thumb": "assets/thumbs/khu2/bk_2016_ubnd_brvt_74.jpg",
+        "caption": "Bằng khen năm 2016",
+        "date": "2016"
+      },
+      {
+        "full": "assets/full/khu2/bk_2016_ubnd_brvt_75.jpg",
+        "thumb": "assets/thumbs/khu2/bk_2016_ubnd_brvt_75.jpg",
+        "caption": "Bằng khen năm 2016",
+        "date": "2016"
+      },
+      {
+        "full": "assets/full/khu2/bk_2016_ubnd_tpvt_101.jpg",
+        "thumb": "assets/thumbs/khu2/bk_2016_ubnd_tpvt_101.jpg",
+        "caption": "Bằng khen năm 2016",
+        "date": "2016"
+      },
+      {
+        "full": "assets/full/khu2/bk_2017_danguy_brvt_44.jpg",
+        "thumb": "assets/thumbs/khu2/bk_2017_danguy_brvt_44.jpg",
+        "caption": "Giấy khen năm 2017",
+        "date": "2017"
+      },
+      {
+        "full": "assets/full/khu2/bk_2017_ubnd_brvt_28.jpg",
+        "thumb": "assets/thumbs/khu2/bk_2017_ubnd_brvt_28.jpg",
+        "caption": "Bằng khen năm 2017",
+        "date": "2017"
+      },
+      {
+        "full": "assets/full/khu2/bk_2017_ubnd_brvt_64.jpg",
+        "thumb": "assets/thumbs/khu2/bk_2017_ubnd_brvt_64.jpg",
+        "caption": "Bằng khen năm 2017",
+        "date": "2017"
+      },
+      {
+        "full": "assets/full/khu2/bk_2017_ubnd_tpvt_62.jpg",
+        "thumb": "assets/thumbs/khu2/bk_2017_ubnd_tpvt_62.jpg",
+        "caption": "Giấy khen năm 2017",
+        "date": "2017"
+      },
+      {
+        "full": "assets/full/khu2/bk_2018_ldld_brvt_05.jpg",
+        "thumb": "assets/thumbs/khu2/bk_2018_ldld_brvt_05.jpg",
+        "caption": "Bằng khen năm 2018",
+        "date": "2018"
+      },
+      {
+        "full": "assets/full/khu2/bk_2018_ubnd_brvt_13.jpg",
+        "thumb": "assets/thumbs/khu2/bk_2018_ubnd_brvt_13.jpg",
+        "caption": "Giấy khen năm 2018",
+        "date": "2018"
+      },
+      {
+        "full": "assets/full/khu2/bk_2018_ubnd_brvt_65.jpg",
+        "thumb": "assets/thumbs/khu2/bk_2018_ubnd_brvt_65.jpg",
+        "caption": "Bằng khen năm 2018",
+        "date": "2018"
+      },
+      {
+        "full": "assets/full/khu2/bk_2020_danguy_brvt_32.jpg",
+        "thumb": "assets/thumbs/khu2/bk_2020_danguy_brvt_32.jpg",
+        "caption": "Giấy khen năm 2020",
+        "date": "2020"
+      },
+      {
+        "full": "assets/full/khu2/bk_2020_ubnd_brvt_83.jpg",
+        "thumb": "assets/thumbs/khu2/bk_2020_ubnd_brvt_83.jpg",
+        "caption": "Bằng khen năm 2020",
+        "date": "2020"
+      },
+      {
+        "full": "assets/full/khu2/bk_2020_ubnd_brvt_105.jpg",
+        "thumb": "assets/thumbs/khu2/bk_2020_ubnd_brvt_105.jpg",
+        "caption": "Bằng khen năm 2020",
+        "date": "2020"
+      },
+      {
+        "full": "assets/full/khu2/bk_2020_ubnd_tpvt_14.jpg",
+        "thumb": "assets/thumbs/khu2/bk_2020_ubnd_tpvt_14.jpg",
+        "caption": "Bằng khen năm 2020",
+        "date": "2020"
+      },
+      {
+        "full": "assets/full/khu2/bk_2022_ubnd_brvt_99.jpg",
+        "thumb": "assets/thumbs/khu2/bk_2022_ubnd_brvt_99.jpg",
+        "caption": "Bằng khen năm 2022",
+        "date": "2022"
+      },
+      {
+        "full": "assets/full/khu2/bk_2023_ubnd_brvt_81.jpg",
+        "thumb": "assets/thumbs/khu2/bk_2023_ubnd_brvt_81.jpg",
+        "caption": "Bằng khen năm 2023",
+        "date": "2023"
+      },
+      {
+        "full": "assets/full/khu2/bk_2023_ubnd_brvt_104.jpg",
+        "thumb": "assets/thumbs/khu2/bk_2023_ubnd_brvt_104.jpg",
+        "caption": "Bằng khen năm 2023",
+        "date": "2023"
+      },
+      {
+        "full": "assets/full/khu2/bk_2023_ubnd_tpvt_79.jpg",
+        "thumb": "assets/thumbs/khu2/bk_2023_ubnd_tpvt_79.jpg",
+        "caption": "Giấy khen năm 2023",
+        "date": "2023"
+      },
+      {
+        "full": "assets/full/khu2/bk_2024_danguy_brvt_23.jpg",
+        "thumb": "assets/thumbs/khu2/bk_2024_danguy_brvt_23.jpg",
+        "caption": "Giấy khen năm 2024",
+        "date": "2024"
+      },
+      {
+        "full": "assets/full/khu2/bk_2024_danguy_brvt_24.jpg",
+        "thumb": "assets/thumbs/khu2/bk_2024_danguy_brvt_24.jpg",
+        "caption": "Giấy khen năm 2024",
+        "date": "2024"
+      },
+      {
+        "full": "assets/full/khu2/bk_2024_danguy_brvt_25.jpg",
+        "thumb": "assets/thumbs/khu2/bk_2024_danguy_brvt_25.jpg",
+        "caption": "Bằng khen năm 2024",
+        "date": "2024"
+      },
+      {
+        "full": "assets/full/khu2/bk_2024_ubnd_tpvt_80.jpg",
+        "thumb": "assets/thumbs/khu2/bk_2024_ubnd_tpvt_80.jpg",
+        "caption": "Giấy khen năm 2024",
+        "date": "2024"
+      },
+      {
+        "full": "assets/full/khu2/bk_2025_ubnd_brvt_15.jpg",
+        "thumb": "assets/thumbs/khu2/bk_2025_ubnd_brvt_15.jpg",
+        "caption": "Bằng khen năm 2025",
+        "date": "2025"
+      },
+      {
+        "full": "assets/full/khu2/bk_2025_ubnd_brvt_90.jpg",
+        "thumb": "assets/thumbs/khu2/bk_2025_ubnd_brvt_90.jpg",
+        "caption": "Giấy khen năm 2025",
+        "date": "2025"
+      },
+      {
+        "full": "assets/full/khu2/bk_2025_ubnd_brvt_109.jpg",
+        "thumb": "assets/thumbs/khu2/bk_2025_ubnd_brvt_109.jpg",
+        "caption": "Thư cảm ơn năm 2025",
+        "date": "2025"
+      },
+      {
+        "full": "assets/full/khu2/bk_1996_cd_evn_60.jpg",
+        "thumb": "assets/thumbs/khu2/bk_1996_cd_evn_60.jpg",
+        "caption": "Bằng khen năm 1996",
+        "date": "1996"
+      },
+      {
+        "full": "assets/full/khu2/bk_1997_cd_evn_59.jpg",
+        "thumb": "assets/thumbs/khu2/bk_1997_cd_evn_59.jpg",
+        "caption": "Bằng khen năm 1997",
+        "date": "1997"
+      },
+      {
+        "full": "assets/full/khu2/bk_1999_cd_evnspc_69.jpg",
+        "thumb": "assets/thumbs/khu2/bk_1999_cd_evnspc_69.jpg",
+        "caption": "Bằng khen năm 1999",
+        "date": "1999"
+      },
+      {
+        "full": "assets/full/khu2/bk_2000_cd_bct_51.jpg",
+        "thumb": "assets/thumbs/khu2/bk_2000_cd_bct_51.jpg",
+        "caption": "Bằng khen năm 2000",
+        "date": "2000"
+      },
+      {
+        "full": "assets/full/khu2/bk_2006_cd_evn_40.jpg",
+        "thumb": "assets/thumbs/khu2/bk_2006_cd_evn_40.jpg",
+        "caption": "Bằng khen năm 2006",
+        "date": "2006"
+      },
+      {
+        "full": "assets/full/khu2/bk_2008_cd_evnspc_106.jpg",
+        "thumb": "assets/thumbs/khu2/bk_2008_cd_evnspc_106.jpg",
+        "caption": "Bằng khen năm 2008",
+        "date": "2008"
+      },
+      {
+        "full": "assets/full/khu2/bk_2010_cd_evn_114.jpg",
+        "thumb": "assets/thumbs/khu2/bk_2010_cd_evn_114.jpg",
+        "caption": "Bằng khen năm 2010",
+        "date": "2010"
+      },
+      {
+        "full": "assets/full/khu2/bk_2011_cd_evn_115.jpg",
+        "thumb": "assets/thumbs/khu2/bk_2011_cd_evn_115.jpg",
+        "caption": "Bằng khen năm 2011",
+        "date": "2011"
+      },
+      {
+        "full": "assets/full/khu2/bk_2013_cd_evn_01.jpg",
+        "thumb": "assets/thumbs/khu2/bk_2013_cd_evn_01.jpg",
+        "caption": "Bằng khen năm 2013",
+        "date": "2013"
+      },
+      {
+        "full": "assets/full/khu2/bk_2014_cd_evnspc_63.jpg",
+        "thumb": "assets/thumbs/khu2/bk_2014_cd_evnspc_63.jpg",
+        "caption": "Giấy khen năm 2014",
+        "date": "2014"
+      },
+      {
+        "full": "assets/full/khu2/bk_2016_cd_evn_112.jpg",
+        "thumb": "assets/thumbs/khu2/bk_2016_cd_evn_112.jpg",
+        "caption": "Bằng khen năm 2016",
+        "date": "2016"
+      },
+      {
+        "full": "assets/full/khu2/bk_2016_cd_evnspc_108.jpg",
+        "thumb": "assets/thumbs/khu2/bk_2016_cd_evnspc_108.jpg",
+        "caption": "Giấy khen năm 2016",
+        "date": "2016"
+      },
+      {
+        "full": "assets/full/khu2/bk_2017_cd_evn_42.jpg",
+        "thumb": "assets/thumbs/khu2/bk_2017_cd_evn_42.jpg",
+        "caption": "Bằng khen năm 2017",
+        "date": "2017"
+      },
+      {
+        "full": "assets/full/khu2/bk_2020_cd_evnspc_67.jpg",
+        "thumb": "assets/thumbs/khu2/bk_2020_cd_evnspc_67.jpg",
+        "caption": "Giấy khen năm 2020",
+        "date": "2020"
+      },
+      {
+        "full": "assets/full/khu2/bk_2020_cd_evnspc_68.jpg",
+        "thumb": "assets/thumbs/khu2/bk_2020_cd_evnspc_68.jpg",
+        "caption": "Giấy khen năm 2020",
+        "date": "2020"
+      },
+      {
+        "full": "assets/full/khu2/bk_2023_cd_evn_110.jpg",
+        "thumb": "assets/thumbs/khu2/bk_2023_cd_evn_110.jpg",
+        "caption": "Bằng khen năm 2023",
+        "date": "2023"
+      },
+      {
+        "full": "assets/full/khu2/bk_2023_cd_evnspc_33.jpg",
+        "thumb": "assets/thumbs/khu2/bk_2023_cd_evnspc_33.jpg",
+        "caption": "Giấy khen năm 2023",
+        "date": "2023"
+      },
+      {
+        "full": "assets/full/khu2/bk_2023_cd_evnspc_34.jpg",
+        "thumb": "assets/thumbs/khu2/bk_2023_cd_evnspc_34.jpg",
+        "caption": "Giấy khen năm 2023",
+        "date": "2023"
+      },
+      {
+        "full": "assets/full/khu2/bk_2024_cd_evn_111.jpg",
+        "thumb": "assets/thumbs/khu2/bk_2024_cd_evn_111.jpg",
+        "caption": "Bằng khen năm 2024",
+        "date": "2024"
+      },
+      {
+        "full": "assets/full/khu2/co_1991_ldld_brvt_34.jpg",
+        "thumb": "assets/thumbs/khu2/co_1991_ldld_brvt_34.jpg",
+        "caption": "1991 • Cờ Hội thao / Hội thi",
+        "date": "1991"
+      },
+      {
+        "full": "assets/full/khu2/co_1994_cd_evnspc_73.jpg",
+        "thumb": "assets/thumbs/khu2/co_1994_cd_evnspc_73.jpg",
+        "caption": "1994 • Cờ",
+        "date": "1994"
+      },
+      {
+        "full": "assets/full/khu2/co_1995_cd_evnspc_35.jpg",
+        "thumb": "assets/thumbs/khu2/co_1995_cd_evnspc_35.jpg",
+        "caption": "1995 • Cờ",
+        "date": "1995"
+      },
+      {
+        "full": "assets/full/khu2/co_1995_ldld_tinh_ba_ria_33.jpg",
+        "thumb": "assets/thumbs/khu2/co_1995_ldld_tinh_ba_ria_33.jpg",
+        "caption": "1995 • Cờ",
+        "date": "1995"
+      },
+      {
+        "full": "assets/full/khu2/co_1995_ldld_tinh_ba_ria_39.jpg",
+        "thumb": "assets/thumbs/khu2/co_1995_ldld_tinh_ba_ria_39.jpg",
+        "caption": "1995 • Cờ",
+        "date": "1995"
+      },
+      {
+        "full": "assets/full/khu2/co_1996_ban_chap_hanh_dang_bo_tinh_ba_ria_42.jpg",
+        "thumb": "assets/thumbs/khu2/co_1996_ban_chap_hanh_dang_bo_tinh_ba_ria_42.jpg",
+        "caption": "1996 • Cờ",
+        "date": "1996"
+      },
+      {
+        "full": "assets/full/khu2/co_1996_cd_evnspc_23.jpg",
+        "thumb": "assets/thumbs/khu2/co_1996_cd_evnspc_23.jpg",
+        "caption": "1996 • Cờ",
+        "date": "1996"
+      },
+      {
+        "full": "assets/full/khu2/co_1996_cd_evnspc_25.jpg",
+        "thumb": "assets/thumbs/khu2/co_1996_cd_evnspc_25.jpg",
+        "caption": "1996 • Cờ",
+        "date": "1996"
+      },
+      {
+        "full": "assets/full/khu2/co_1996_ldld_tinh_ba_ria_47.jpg",
+        "thumb": "assets/thumbs/khu2/co_1996_ldld_tinh_ba_ria_47.jpg",
+        "caption": "1996 • Cờ",
+        "date": "1996"
+      },
+      {
+        "full": "assets/full/khu2/co_1997_cd_evnspc_21.jpg",
+        "thumb": "assets/thumbs/khu2/co_1997_cd_evnspc_21.jpg",
+        "caption": "1997 • Cờ Hội thao / Hội thi",
+        "date": "1997"
+      },
+      {
+        "full": "assets/full/khu2/co_1997_cd_evnspc_63.jpg",
+        "thumb": "assets/thumbs/khu2/co_1997_cd_evnspc_63.jpg",
+        "caption": "1997 • Cờ",
+        "date": "1997"
+      },
+      {
+        "full": "assets/full/khu2/co_1998_cd_evnspc_57.jpg",
+        "thumb": "assets/thumbs/khu2/co_1998_cd_evnspc_57.jpg",
+        "caption": "1998 • Cờ",
+        "date": "1998"
+      },
+      {
+        "full": "assets/full/khu2/co_1998_evn_58.jpg",
+        "thumb": "assets/thumbs/khu2/co_1998_evn_58.jpg",
+        "caption": "1998 • Cờ Thi đua",
+        "date": "1998"
+      },
+      {
+        "full": "assets/full/khu2/co_1998_evn_59.jpg",
+        "thumb": "assets/thumbs/khu2/co_1998_evn_59.jpg",
+        "caption": "1998 • Cờ Thi đua",
+        "date": "1998"
+      },
+      {
+        "full": "assets/full/khu2/co_1998_tldldvn_64.jpg",
+        "thumb": "assets/thumbs/khu2/co_1998_tldldvn_64.jpg",
+        "caption": "1998 • Cờ",
+        "date": "1998"
+      },
+      {
+        "full": "assets/full/khu2/co_1999_cd_evnspc_16.jpg",
+        "thumb": "assets/thumbs/khu2/co_1999_cd_evnspc_16.jpg",
+        "caption": "1999 • Cờ",
+        "date": "1999"
+      },
+      {
+        "full": "assets/full/khu2/co_1999_cong_doan_cong_nghiep_viet_nam_56.jpg",
+        "thumb": "assets/thumbs/khu2/co_1999_cong_doan_cong_nghiep_viet_nam_56.jpg",
+        "caption": "1999 • Cờ",
+        "date": "1999"
+      },
+      {
+        "full": "assets/full/khu2/co_1999_evn_61.jpg",
+        "thumb": "assets/thumbs/khu2/co_1999_evn_61.jpg",
+        "caption": "1999 • Cờ Thi đua",
+        "date": "1999"
+      },
+      {
+        "full": "assets/full/khu2/co_1999_evn_62.jpg",
+        "thumb": "assets/thumbs/khu2/co_1999_evn_62.jpg",
+        "caption": "1999 • Cờ Thi đua",
+        "date": "1999"
+      },
+      {
+        "full": "assets/full/khu2/co_1999_tldldvn_65.jpg",
+        "thumb": "assets/thumbs/khu2/co_1999_tldldvn_65.jpg",
+        "caption": "1999 • Cờ",
+        "date": "1999"
+      },
+      {
+        "full": "assets/full/khu2/co_2000_cd_evnspc_18.jpg",
+        "thumb": "assets/thumbs/khu2/co_2000_cd_evnspc_18.jpg",
+        "caption": "2000 • Cờ",
+        "date": "2000"
+      },
+      {
+        "full": "assets/full/khu2/co_2000_cong_ty_dien_luc_2_72.jpg",
+        "thumb": "assets/thumbs/khu2/co_2000_cong_ty_dien_luc_2_72.jpg",
+        "caption": "2000 • Cờ Thi đua",
+        "date": "2000"
+      },
+      {
+        "full": "assets/full/khu2/co_2000_unknown_00.jpg",
+        "thumb": "assets/thumbs/khu2/co_2000_unknown_00.jpg",
+        "caption": "2000 • Cờ",
+        "date": "2000"
+      },
+      {
+        "full": "assets/full/khu2/co_2002_ban_chap_hanh_dang_bo_tinh_ba_ria_19.jpg",
+        "thumb": "assets/thumbs/khu2/co_2002_ban_chap_hanh_dang_bo_tinh_ba_ria_19.jpg",
+        "caption": "2002 • Cờ",
+        "date": "2002"
+      },
+      {
+        "full": "assets/full/khu2/co_2002_cong_doan_cty_dien_luc_2_03.jpg",
+        "thumb": "assets/thumbs/khu2/co_2002_cong_doan_cty_dien_luc_2_03.jpg",
+        "caption": "2002 • Cờ Hội thao / Hội thi",
+        "date": "2002"
+      },
+      {
+        "full": "assets/full/khu2/co_2003_hoi_thao_cnvc_lao_dong_cty_dien_luc_2_71.jpg",
+        "thumb": "assets/thumbs/khu2/co_2003_hoi_thao_cnvc_lao_dong_cty_dien_luc_2_71.jpg",
+        "caption": "2003 • Cờ",
+        "date": "2003"
+      },
+      {
+        "full": "assets/full/khu2/co_2003_ubnd_tinh_ba_ria_50.jpg",
+        "thumb": "assets/thumbs/khu2/co_2003_ubnd_tinh_ba_ria_50.jpg",
+        "caption": "2003 • Cờ Thi đua",
+        "date": "2003"
+      },
+      {
+        "full": "assets/full/khu2/co_2003_unknown_00.jpg",
+        "thumb": "assets/thumbs/khu2/co_2003_unknown_00.jpg",
+        "caption": "2003 • Cờ",
+        "date": "2003"
+      },
+      {
+        "full": "assets/full/khu2/co_2003_unknown_00.jpg",
+        "thumb": "assets/thumbs/khu2/co_2003_unknown_00.jpg",
+        "caption": "2003 • Cờ Hội thao / Hội thi",
+        "date": "2003"
+      },
+      {
+        "full": "assets/full/khu2/co_2004_cd_evnspc_29.jpg",
+        "thumb": "assets/thumbs/khu2/co_2004_cd_evnspc_29.jpg",
+        "caption": "2004 • Cờ Thi đua",
+        "date": "2004"
+      },
+      {
+        "full": "assets/full/khu2/co_2004_ldld_tinh_ba_ria_02.jpg",
+        "thumb": "assets/thumbs/khu2/co_2004_ldld_tinh_ba_ria_02.jpg",
+        "caption": "2004 • Cờ Hội thao / Hội thi",
+        "date": "2004"
+      },
+      {
+        "full": "assets/full/khu2/co_2004_unknown_00.jpg",
+        "thumb": "assets/thumbs/khu2/co_2004_unknown_00.jpg",
+        "caption": "2004 • Cờ Hội thao / Hội thi",
+        "date": "2004"
+      },
+      {
+        "full": "assets/full/khu2/co_2004_unknown_00.jpg",
+        "thumb": "assets/thumbs/khu2/co_2004_unknown_00.jpg",
+        "caption": "2004 • Cờ",
+        "date": "2004"
+      },
+      {
+        "full": "assets/full/khu2/co_2005_cd_evnspc_27.jpg",
+        "thumb": "assets/thumbs/khu2/co_2005_cd_evnspc_27.jpg",
+        "caption": "2005 • Cờ Thi đua",
+        "date": "2005"
+      },
+      {
+        "full": "assets/full/khu2/co_2005_ldld_tinh_ba_ria_08.jpg",
+        "thumb": "assets/thumbs/khu2/co_2005_ldld_tinh_ba_ria_08.jpg",
+        "caption": "2005 • Cờ Hội thao / Hội thi",
+        "date": "2005"
+      },
+      {
+        "full": "assets/full/khu2/co_2006_cd_evnspc_15.jpg",
+        "thumb": "assets/thumbs/khu2/co_2006_cd_evnspc_15.jpg",
+        "caption": "2006 • Cờ Thi đua",
+        "date": "2006"
+      },
+      {
+        "full": "assets/full/khu2/co_2006_cd_evnspc_24.jpg",
+        "thumb": "assets/thumbs/khu2/co_2006_cd_evnspc_24.jpg",
+        "caption": "2006 • Cờ Thi đua",
+        "date": "2006"
+      },
+      {
+        "full": "assets/full/khu2/co_2006_unknown_00.jpg",
+        "thumb": "assets/thumbs/khu2/co_2006_unknown_00.jpg",
+        "caption": "2006 • Cờ",
+        "date": "2006"
+      },
+      {
+        "full": "assets/full/khu2/co_2007_cd_evnspc_28.jpg",
+        "thumb": "assets/thumbs/khu2/co_2007_cd_evnspc_28.jpg",
+        "caption": "2007 • Cờ Thi đua",
+        "date": "2007"
+      },
+      {
+        "full": "assets/full/khu2/co_2007_hoi_thao_cong_nhan_vien_chuc_dien_luc_ba_ria_01.jpg",
+        "thumb": "assets/thumbs/khu2/co_2007_hoi_thao_cong_nhan_vien_chuc_dien_luc_ba_ria_01.jpg",
+        "caption": "2007 • Cờ Lưu niệm",
+        "date": "2007"
+      },
+      {
+        "full": "assets/full/khu2/co_2007_hoi_thao_cong_nhan_vien_chuc_dien_luc_ba_ria_66.jpg",
+        "thumb": "assets/thumbs/khu2/co_2007_hoi_thao_cong_nhan_vien_chuc_dien_luc_ba_ria_66.jpg",
+        "caption": "2007 • Cờ Lưu niệm",
+        "date": "2007"
+      },
+      {
+        "full": "assets/full/khu2/co_2007_hoi_thao_cong_nhan_vien_chuc_dien_luc_ba_ria_70.jpg",
+        "thumb": "assets/thumbs/khu2/co_2007_hoi_thao_cong_nhan_vien_chuc_dien_luc_ba_ria_70.jpg",
+        "caption": "2007 • Cờ Lưu niệm",
+        "date": "2007"
+      },
+      {
+        "full": "assets/full/khu2/co_2008_cd_evnspc_74.jpg",
+        "thumb": "assets/thumbs/khu2/co_2008_cd_evnspc_74.jpg",
+        "caption": "2008 • Cờ Thi đua",
+        "date": "2008"
+      },
+      {
+        "full": "assets/full/khu2/co_2008_cd_evnspc_76.jpg",
+        "thumb": "assets/thumbs/khu2/co_2008_cd_evnspc_76.jpg",
+        "caption": "2008 • Cờ Thi đua",
+        "date": "2008"
+      },
+      {
+        "full": "assets/full/khu2/co_2008_hoi_thao_cnvc_04.jpg",
+        "thumb": "assets/thumbs/khu2/co_2008_hoi_thao_cnvc_04.jpg",
+        "caption": "2008 • Cờ",
+        "date": "2008"
+      },
+      {
+        "full": "assets/full/khu2/co_2008_hoi_thao_cnvc_06.jpg",
+        "thumb": "assets/thumbs/khu2/co_2008_hoi_thao_cnvc_06.jpg",
+        "caption": "2008 • Cờ",
+        "date": "2008"
+      },
+      {
+        "full": "assets/full/khu2/co_2008_hoi_thao_cnvc_10.jpg",
+        "thumb": "assets/thumbs/khu2/co_2008_hoi_thao_cnvc_10.jpg",
+        "caption": "2008 • Cờ",
+        "date": "2008"
+      },
+      {
+        "full": "assets/full/khu2/co_2008_hoi_thao_cnvc_68.jpg",
+        "thumb": "assets/thumbs/khu2/co_2008_hoi_thao_cnvc_68.jpg",
+        "caption": "2008 • Cờ",
+        "date": "2008"
+      },
+      {
+        "full": "assets/full/khu2/co_2008_pc2_05.jpg",
+        "thumb": "assets/thumbs/khu2/co_2008_pc2_05.jpg",
+        "caption": "2008 • Cờ Lưu niệm",
+        "date": "2008"
+      },
+      {
+        "full": "assets/full/khu2/co_2009_cd_evnspc_17.jpg",
+        "thumb": "assets/thumbs/khu2/co_2009_cd_evnspc_17.jpg",
+        "caption": "2009 • Cờ Thi đua",
+        "date": "2009"
+      },
+      {
+        "full": "assets/full/khu2/co_2009_hoi_thao_cnvc_09.jpg",
+        "thumb": "assets/thumbs/khu2/co_2009_hoi_thao_cnvc_09.jpg",
+        "caption": "2009 • Cờ",
+        "date": "2009"
+      },
+      {
+        "full": "assets/full/khu2/co_2009_ubnd_tinh_ba_ria_44.jpg",
+        "thumb": "assets/thumbs/khu2/co_2009_ubnd_tinh_ba_ria_44.jpg",
+        "caption": "2009 • Cờ Thi đua",
+        "date": "2009"
+      },
+      {
+        "full": "assets/full/khu2/co_2009_unknown_00.jpg",
+        "thumb": "assets/thumbs/khu2/co_2009_unknown_00.jpg",
+        "caption": "2009 • Cờ Hội thao / Hội thi",
+        "date": "2009"
+      },
+      {
+        "full": "assets/full/khu2/co_2009_unknown_00.jpg",
+        "thumb": "assets/thumbs/khu2/co_2009_unknown_00.jpg",
+        "caption": "2009 • Cờ Hội thao / Hội thi",
+        "date": "2009"
+      },
+      {
+        "full": "assets/full/khu2/co_2009_unknown_00.jpg",
+        "thumb": "assets/thumbs/khu2/co_2009_unknown_00.jpg",
+        "caption": "2009 • Cờ Hội thao / Hội thi",
+        "date": "2009"
+      },
+      {
+        "full": "assets/full/khu2/co_2010_so_vh_tt_du_lich_tinh_ba_ria_75.jpg",
+        "thumb": "assets/thumbs/khu2/co_2010_so_vh_tt_du_lich_tinh_ba_ria_75.jpg",
+        "caption": "2010 • Cờ Hội thao / Hội thi",
+        "date": "2010"
+      },
+      {
+        "full": "assets/full/khu2/co_2010_unknown_00.jpg",
+        "thumb": "assets/thumbs/khu2/co_2010_unknown_00.jpg",
+        "caption": "2010 • Cờ",
+        "date": "2010"
+      },
+      {
+        "full": "assets/full/khu2/co_2011_cd_evnspc_13.jpg",
+        "thumb": "assets/thumbs/khu2/co_2011_cd_evnspc_13.jpg",
+        "caption": "2011 • Cờ Thi đua",
+        "date": "2011"
+      },
+      {
+        "full": "assets/full/khu2/co_2012_ubnd_tinh_ba_ria_46.jpg",
+        "thumb": "assets/thumbs/khu2/co_2012_ubnd_tinh_ba_ria_46.jpg",
+        "caption": "2012 • Cờ Thi đua",
+        "date": "2012"
+      },
+      {
+        "full": "assets/full/khu2/co_2013_cd_evnspc_20.jpg",
+        "thumb": "assets/thumbs/khu2/co_2013_cd_evnspc_20.jpg",
+        "caption": "2013 • Cờ Thi đua",
+        "date": "2013"
+      },
+      {
+        "full": "assets/full/khu2/co_2013_ubnd_tinh_ba_ria_52.jpg",
+        "thumb": "assets/thumbs/khu2/co_2013_ubnd_tinh_ba_ria_52.jpg",
+        "caption": "2013 • Cờ Thi đua",
+        "date": "2013"
+      },
+      {
+        "full": "assets/full/khu2/co_2014_cd_evnspc_26.jpg",
+        "thumb": "assets/thumbs/khu2/co_2014_cd_evnspc_26.jpg",
+        "caption": "2014 • Cờ Thi đua",
+        "date": "2014"
+      },
+      {
+        "full": "assets/full/khu2/co_2014_evnspc_07.jpg",
+        "thumb": "assets/thumbs/khu2/co_2014_evnspc_07.jpg",
+        "caption": "2014 • Cờ Lưu niệm",
+        "date": "2014"
+      },
+      {
+        "full": "assets/full/khu2/co_2014_evnspc_11.jpg",
+        "thumb": "assets/thumbs/khu2/co_2014_evnspc_11.jpg",
+        "caption": "2014 • Cờ Hội thao / Hội thi",
+        "date": "2014"
+      },
+      {
+        "full": "assets/full/khu2/co_2014_evnspc_60.jpg",
+        "thumb": "assets/thumbs/khu2/co_2014_evnspc_60.jpg",
+        "caption": "2014 • Cờ",
+        "date": "2014"
+      },
+      {
+        "full": "assets/full/khu2/co_2014_ubnd_tinh_ba_ria_36.jpg",
+        "thumb": "assets/thumbs/khu2/co_2014_ubnd_tinh_ba_ria_36.jpg",
+        "caption": "2014 • Cờ Thi đua",
+        "date": "2014"
+      },
+      {
+        "full": "assets/full/khu2/co_2014_unknown_00.jpg",
+        "thumb": "assets/thumbs/khu2/co_2014_unknown_00.jpg",
+        "caption": "2014 • Cờ Hội thao / Hội thi",
+        "date": "2014"
+      },
+      {
+        "full": "assets/full/khu2/co_2015_bct_43.jpg",
+        "thumb": "assets/thumbs/khu2/co_2015_bct_43.jpg",
+        "caption": "2015 • Cờ Thi đua",
+        "date": "2015"
+      },
+      {
+        "full": "assets/full/khu2/co_2015_cd_evnspc_12.jpg",
+        "thumb": "assets/thumbs/khu2/co_2015_cd_evnspc_12.jpg",
+        "caption": "2015 • Cờ Thi đua",
+        "date": "2015"
+      },
+      {
+        "full": "assets/full/khu2/co_2015_ubnd_tinh_ba_ria_38.jpg",
+        "thumb": "assets/thumbs/khu2/co_2015_ubnd_tinh_ba_ria_38.jpg",
+        "caption": "2015 • Cờ Thi đua",
+        "date": "2015"
+      },
+      {
+        "full": "assets/full/khu2/co_2015_ubnd_tinh_ba_ria_48.jpg",
+        "thumb": "assets/thumbs/khu2/co_2015_ubnd_tinh_ba_ria_48.jpg",
+        "caption": "2015 • Cờ Thi đua",
+        "date": "2015"
+      },
+      {
+        "full": "assets/full/khu2/co_2016_ban_thuong_vu_tinh_uy_ba_ria_49.jpg",
+        "thumb": "assets/thumbs/khu2/co_2016_ban_thuong_vu_tinh_uy_ba_ria_49.jpg",
+        "caption": "2016 • Cờ",
+        "date": "2016"
+      },
+      {
+        "full": "assets/full/khu2/co_2016_cd_evnspc_51.jpg",
+        "thumb": "assets/thumbs/khu2/co_2016_cd_evnspc_51.jpg",
+        "caption": "2016 • Cờ Thi đua",
+        "date": "2016"
+      },
+      {
+        "full": "assets/full/khu2/co_2016_ubnd_tinh_ba_ria_53.jpg",
+        "thumb": "assets/thumbs/khu2/co_2016_ubnd_tinh_ba_ria_53.jpg",
+        "caption": "2016 • Cờ Thi đua",
+        "date": "2016"
+      },
+      {
+        "full": "assets/full/khu2/co_2018_ubnd_tinh_ba_ria_54.jpg",
+        "thumb": "assets/thumbs/khu2/co_2018_ubnd_tinh_ba_ria_54.jpg",
+        "caption": "2018 • Cờ Thi đua",
+        "date": "2018"
+      },
+      {
+        "full": "assets/full/khu2/co_2020_cd_evnspc_37.jpg",
+        "thumb": "assets/thumbs/khu2/co_2020_cd_evnspc_37.jpg",
+        "caption": "2020 • Cờ Thi đua",
+        "date": "2020"
+      },
+      {
+        "full": "assets/full/khu2/co_2020_evn_45.jpg",
+        "thumb": "assets/thumbs/khu2/co_2020_evn_45.jpg",
+        "caption": "2020 • Cờ Thi đua",
+        "date": "2020"
+      },
+      {
+        "full": "assets/full/khu2/co_2020_ubnd_tinh_ba_ria_30.jpg",
+        "thumb": "assets/thumbs/khu2/co_2020_ubnd_tinh_ba_ria_30.jpg",
+        "caption": "2020 • Cờ Thi đua",
+        "date": "2020"
+      },
+      {
+        "full": "assets/full/khu2/co_2020_ubnd_tinh_ba_ria_55.jpg",
+        "thumb": "assets/thumbs/khu2/co_2020_ubnd_tinh_ba_ria_55.jpg",
+        "caption": "2020 • Cờ Thi đua",
+        "date": "2020"
+      },
+      {
+        "full": "assets/full/khu2/co_2021_cd_evnspc_32.jpg",
+        "thumb": "assets/thumbs/khu2/co_2021_cd_evnspc_32.jpg",
+        "caption": "2021 • Cờ Thi đua",
+        "date": "2021"
+      },
+      {
+        "full": "assets/full/khu2/co_2021_cd_evnspc_41.jpg",
+        "thumb": "assets/thumbs/khu2/co_2021_cd_evnspc_41.jpg",
+        "caption": "2021 • Cờ Thi đua",
+        "date": "2021"
+      },
+      {
+        "full": "assets/full/khu2/co_2022_cd_evnspc_14.jpg",
+        "thumb": "assets/thumbs/khu2/co_2022_cd_evnspc_14.jpg",
+        "caption": "2022 • Cờ Thi đua",
+        "date": "2022"
+      }
+    ]
+  },
+  {
+    "id": "pcvt",
+    "cabinet": 2,
+    "title": "Công Ty Điện Lực Vũng Tàu",
+    "subtitle": "Hành trình xây dựng và phát triển",
+    "cover": {
+      "color": "#1E40A0",
+      "accent": "#FACC15"
+    },
+    "chapters": [
+      {
+        "title": "Tháng 7/2025",
+        "start": 0,
+        "end": 1
+      },
+      {
+        "title": "Tháng 8/2025",
+        "start": 2,
+        "end": 15
+      },
+      {
+        "title": "Tháng 9/2025",
+        "start": 16,
+        "end": 16
+      },
+      {
+        "title": "Tháng 11/2025",
+        "start": 17,
+        "end": 17
+      },
+      {
+        "title": "Tháng 1/2026",
+        "start": 18,
+        "end": 26
+      },
+      {
+        "title": "Tháng 2/2026",
+        "start": 27,
+        "end": 34
+      },
+      {
+        "title": "Tháng 3/2026",
+        "start": 35,
+        "end": 47
+      },
+      {
+        "title": "Tháng 4/2026",
+        "start": 48,
+        "end": 51
+      },
+      {
+        "title": "Tháng 5/2026",
+        "start": 52,
+        "end": 61
+      },
+      {
+        "title": "Tháng 6/2026",
+        "start": 62,
+        "end": 67
+      },
+      {
+        "title": "Tháng 7/2026",
+        "start": 68,
+        "end": 85
+      },
+      {
+        "title": "Tháng 8/2026",
+        "start": 86,
+        "end": 91
+      },
+      {
+        "title": "Tháng 9/2026",
+        "start": 92,
+        "end": 99
+      }
+    ],
+    "pages": [
+      {
+        "full": "assets/full/khu3/pcvt_001_2025-07-23.jpg",
+        "thumb": "assets/thumbs/khu3/pcvt_001_2025-07-23.jpg",
+        "caption": "Trao doi nghiep vu cong tac to chuc nhan su giua cong ty dien luc thu",
+        "date": "2025-07-23"
+      },
+      {
+        "full": "assets/full/khu3/pcvt_002_2025-07-23.jpg",
+        "thumb": "assets/thumbs/khu3/pcvt_002_2025-07-23.jpg",
+        "caption": "Trao doi nghiep vu cong tac to chuc nhan su giua cong ty dien luc thu",
+        "date": "2025-07-23"
+      },
+      {
+        "full": "assets/full/khu3/pcvt_003_2025-08-04.jpg",
+        "thumb": "assets/thumbs/khu3/pcvt_003_2025-08-04.jpg",
+        "caption": "Cong bo quyet dinh thanh lap cong ty dien luc vung",
+        "date": "2025-08-04"
+      },
+      {
+        "full": "assets/full/khu3/pcvt_004_2025-08-04.jpg",
+        "thumb": "assets/thumbs/khu3/pcvt_004_2025-08-04.jpg",
+        "caption": "Cong bo quyet dinh thanh lap cong ty dien luc vung",
+        "date": "2025-08-04"
+      },
+      {
+        "full": "assets/full/khu3/pcvt_005_2025-08-04.jpg",
+        "thumb": "assets/thumbs/khu3/pcvt_005_2025-08-04.jpg",
+        "caption": "Cong bo quyet dinh thanh lap cong ty dien luc vung",
+        "date": "2025-08-04"
+      },
+      {
+        "full": "assets/full/khu3/pcvt_006_2025-08-05.jpg",
+        "thumb": "assets/thumbs/khu3/pcvt_006_2025-08-05.jpg",
+        "caption": "Chuc mung sinh nhat nhan vien net van hoa tai",
+        "date": "2025-08-05"
+      },
+      {
+        "full": "assets/full/khu3/pcvt_007_2025-08-11.jpg",
+        "thumb": "assets/thumbs/khu3/pcvt_007_2025-08-11.jpg",
+        "caption": "Can cu theo van ban so 3053 evnhcmc at tcns ngay 29 07 2025 cua tong",
+        "date": "2025-08-11"
+      },
+      {
+        "full": "assets/full/khu3/pcvt_008_2025-08-11.jpg",
+        "thumb": "assets/thumbs/khu3/pcvt_008_2025-08-11.jpg",
+        "caption": "Can cu theo van ban so 3053 evnhcmc at tcns ngay 29 07 2025 cua tong",
+        "date": "2025-08-11"
+      },
+      {
+        "full": "assets/full/khu3/pcvt_009_2025-08-13.jpg",
+        "thumb": "assets/thumbs/khu3/pcvt_009_2025-08-13.jpg",
+        "caption": "Sang nay ngay 13 08 2025 doan cong tac tong cong ty dien luc thanh",
+        "date": "2025-08-13"
+      },
+      {
+        "full": "assets/full/khu3/pcvt_010_2025-08-13.jpg",
+        "thumb": "assets/thumbs/khu3/pcvt_010_2025-08-13.jpg",
+        "caption": "Sang nay ngay 13 08 2025 doan cong tac tong cong ty dien luc thanh",
+        "date": "2025-08-13"
+      },
+      {
+        "full": "assets/full/khu3/pcvt_011_2025-08-20.jpg",
+        "thumb": "assets/thumbs/khu3/pcvt_011_2025-08-20.jpg",
+        "caption": "Nham ho tro cong ty dien luc vung tau tiep nhan va giai quyet kip",
+        "date": "2025-08-20"
+      },
+      {
+        "full": "assets/full/khu3/pcvt_012_2025-08-27.jpg",
+        "thumb": "assets/thumbs/khu3/pcvt_012_2025-08-27.jpg",
+        "caption": "Sang ngay 27 thang 08 nam 2025 doan cong tac do ong pham quoc bao chu",
+        "date": "2025-08-27"
+      },
+      {
+        "full": "assets/full/khu3/pcvt_013_2025-08-27.jpg",
+        "thumb": "assets/thumbs/khu3/pcvt_013_2025-08-27.jpg",
+        "caption": "Sang ngay 27 thang 08 nam 2025 doan cong tac do ong pham quoc bao chu",
+        "date": "2025-08-27"
+      },
+      {
+        "full": "assets/full/khu3/pcvt_014_2025-08-29.jpg",
+        "thumb": "assets/thumbs/khu3/pcvt_014_2025-08-29.jpg",
+        "caption": "Cong ty dien luc vung tau pcvt to chuc hoi nghi doi thoai nguoi lao",
+        "date": "2025-08-29"
+      },
+      {
+        "full": "assets/full/khu3/pcvt_015_2025-08-29.jpg",
+        "thumb": "assets/thumbs/khu3/pcvt_015_2025-08-29.jpg",
+        "caption": "Cong ty dien luc vung tau pcvt to chuc hoi nghi doi thoai nguoi lao",
+        "date": "2025-08-29"
+      },
+      {
+        "full": "assets/full/khu3/pcvt_016_2025-08-29.jpg",
+        "thumb": "assets/thumbs/khu3/pcvt_016_2025-08-29.jpg",
+        "caption": "Cong ty dien luc vung tau pcvt to chuc hoi nghi doi thoai nguoi lao",
+        "date": "2025-08-29"
+      },
+      {
+        "full": "assets/full/khu3/pcvt_017_2025-09-04.jpg",
+        "thumb": "assets/thumbs/khu3/pcvt_017_2025-09-04.jpg",
+        "caption": "Lanh dao tong cong ty dien luc tp ho chi minh kiem tra ra soat danh",
+        "date": "2025-09-04"
+      },
+      {
+        "full": "assets/full/khu3/pcvt_018_2025-11-28.jpg",
+        "thumb": "assets/thumbs/khu3/pcvt_018_2025-11-28.jpg",
+        "caption": "Cong nhan tang cuong tai cong ty dien luc vung tau thi ly thuyet kiem",
+        "date": "2025-11-28"
+      },
+      {
+        "full": "assets/full/khu3/pcvt_019_2026-01-15.jpg",
+        "thumb": "assets/thumbs/khu3/pcvt_019_2026-01-15.jpg",
+        "caption": "Ngay 16 01 2026 cong ty dien luc vung tau pc vung tau da to chuc le",
+        "date": "2026-01-15"
+      },
+      {
+        "full": "assets/full/khu3/pcvt_020_2026-01-15.jpg",
+        "thumb": "assets/thumbs/khu3/pcvt_020_2026-01-15.jpg",
+        "caption": "Ngay 16 01 2026 cong ty dien luc vung tau pc vung tau da to chuc le",
+        "date": "2026-01-15"
+      },
+      {
+        "full": "assets/full/khu3/pcvt_021_2026-01-16.jpg",
+        "thumb": "assets/thumbs/khu3/pcvt_021_2026-01-16.jpg",
+        "caption": "Trong hai ngay 15 va 16 01 2026 tai cong ty dien luc vung tau tong",
+        "date": "2026-01-16"
+      },
+      {
+        "full": "assets/full/khu3/pcvt_022_2026-01-22.jpg",
+        "thumb": "assets/thumbs/khu3/pcvt_022_2026-01-22.jpg",
+        "caption": "Tin nhanh dien luc vung tau khi nhung buoc chan chinh phuc thu",
+        "date": "2026-01-22"
+      },
+      {
+        "full": "assets/full/khu3/pcvt_023_2026-01-22.jpg",
+        "thumb": "assets/thumbs/khu3/pcvt_023_2026-01-22.jpg",
+        "caption": "Tin nhanh dien luc vung tau khi nhung buoc chan chinh phuc thu",
+        "date": "2026-01-22"
+      },
+      {
+        "full": "assets/full/khu3/pcvt_024_2026-01-22.jpg",
+        "thumb": "assets/thumbs/khu3/pcvt_024_2026-01-22.jpg",
+        "caption": "Tin nhanh dien luc vung tau khi nhung buoc chan chinh phuc thu",
+        "date": "2026-01-22"
+      },
+      {
+        "full": "assets/full/khu3/pcvt_025_2026-01-22.jpg",
+        "thumb": "assets/thumbs/khu3/pcvt_025_2026-01-22.jpg",
+        "caption": "Tin nhanh dien luc vung tau khi nhung buoc chan chinh phuc thu",
+        "date": "2026-01-22"
+      },
+      {
+        "full": "assets/full/khu3/pcvt_026_2026-01-31.jpg",
+        "thumb": "assets/thumbs/khu3/pcvt_026_2026-01-31.jpg",
+        "caption": "[CHỜ XÁC NHẬN]",
+        "date": "2026-01-31"
+      },
+      {
+        "full": "assets/full/khu3/pcvt_027_2026-01-31.jpg",
+        "thumb": "assets/thumbs/khu3/pcvt_027_2026-01-31.jpg",
+        "caption": "[CHỜ XÁC NHẬN]",
+        "date": "2026-01-31"
+      },
+      {
+        "full": "assets/full/khu3/pcvt_028_2026-02-01.jpg",
+        "thumb": "assets/thumbs/khu3/pcvt_028_2026-02-01.jpg",
+        "caption": "[CHỜ XÁC NHẬN]",
+        "date": "2026-02-01"
+      },
+      {
+        "full": "assets/full/khu3/pcvt_029_2026-02-02.jpg",
+        "thumb": "assets/thumbs/khu3/pcvt_029_2026-02-02.jpg",
+        "caption": "[CHỜ XÁC NHẬN]",
+        "date": "2026-02-02"
+      },
+      {
+        "full": "assets/full/khu3/pcvt_030_2026-02-02.jpg",
+        "thumb": "assets/thumbs/khu3/pcvt_030_2026-02-02.jpg",
+        "caption": "[CHỜ XÁC NHẬN]",
+        "date": "2026-02-02"
+      },
+      {
+        "full": "assets/full/khu3/pcvt_031_2026-02-02.jpg",
+        "thumb": "assets/thumbs/khu3/pcvt_031_2026-02-02.jpg",
+        "caption": "[CHỜ XÁC NHẬN]",
+        "date": "2026-02-02"
+      },
+      {
+        "full": "assets/full/khu3/pcvt_032_2026-02-07.jpg",
+        "thumb": "assets/thumbs/khu3/pcvt_032_2026-02-07.jpg",
+        "caption": "Sac xuan 2026 tai doi qlvh tong hop dac khu con",
+        "date": "2026-02-07"
+      },
+      {
+        "full": "assets/full/khu3/pcvt_033_2026-02-07.jpg",
+        "thumb": "assets/thumbs/khu3/pcvt_033_2026-02-07.jpg",
+        "caption": "Sac xuan 2026 tai doi qlvh tong hop dac khu con",
+        "date": "2026-02-07"
+      },
+      {
+        "full": "assets/full/khu3/pcvt_034_2026-02-12.jpg",
+        "thumb": "assets/thumbs/khu3/pcvt_034_2026-02-12.jpg",
+        "caption": "Con dao san sang dam bao dien an toan on",
+        "date": "2026-02-12"
+      },
+      {
+        "full": "assets/full/khu3/pcvt_035_2026-02-12.jpg",
+        "thumb": "assets/thumbs/khu3/pcvt_035_2026-02-12.jpg",
+        "caption": "Con dao san sang dam bao dien an toan on",
+        "date": "2026-02-12"
+      },
+      {
+        "full": "assets/full/khu3/pcvt_036_2026-03-14.jpg",
+        "thumb": "assets/thumbs/khu3/pcvt_036_2026-03-14.jpg",
+        "caption": "Hoa minh trong khong khi phan khoi cua ngay hoi non song sang nay",
+        "date": "2026-03-14"
+      },
+      {
+        "full": "assets/full/khu3/pcvt_037_2026-03-14.jpg",
+        "thumb": "assets/thumbs/khu3/pcvt_037_2026-03-14.jpg",
+        "caption": "Hoa minh trong khong khi phan khoi cua ngay hoi non song sang nay",
+        "date": "2026-03-14"
+      },
+      {
+        "full": "assets/full/khu3/pcvt_038_2026-03-17.jpg",
+        "thumb": "assets/thumbs/khu3/pcvt_038_2026-03-17.jpg",
+        "caption": "[CHỜ XÁC NHẬN]",
+        "date": "2026-03-17"
+      },
+      {
+        "full": "assets/full/khu3/pcvt_039_2026-03-17.jpg",
+        "thumb": "assets/thumbs/khu3/pcvt_039_2026-03-17.jpg",
+        "caption": "[CHỜ XÁC NHẬN]",
+        "date": "2026-03-17"
+      },
+      {
+        "full": "assets/full/khu3/pcvt_040_2026-03-17.jpg",
+        "thumb": "assets/thumbs/khu3/pcvt_040_2026-03-17.jpg",
+        "caption": "[CHỜ XÁC NHẬN]",
+        "date": "2026-03-17"
+      },
+      {
+        "full": "assets/full/khu3/pcvt_041_2026-03-17.jpg",
+        "thumb": "assets/thumbs/khu3/pcvt_041_2026-03-17.jpg",
+        "caption": "[CHỜ XÁC NHẬN]",
+        "date": "2026-03-17"
+      },
+      {
+        "full": "assets/full/khu3/pcvt_042_2026-03-20.jpg",
+        "thumb": "assets/thumbs/khu3/pcvt_042_2026-03-20.jpg",
+        "caption": "Goc tu hao quoc te hanh phuc nhan doi tan binh dien luc vung tau chao",
+        "date": "2026-03-20"
+      },
+      {
+        "full": "assets/full/khu3/pcvt_043_2026-03-20.jpg",
+        "thumb": "assets/thumbs/khu3/pcvt_043_2026-03-20.jpg",
+        "caption": "Goc tu hao quoc te hanh phuc nhan doi tan binh dien luc vung tau chao",
+        "date": "2026-03-20"
+      },
+      {
+        "full": "assets/full/khu3/pcvt_044_2026-03-25.jpg",
+        "thumb": "assets/thumbs/khu3/pcvt_044_2026-03-25.jpg",
+        "caption": "Thuc hien theo noi dung cua van ban so 832 evnhcmc kd ngay 27 02 2026",
+        "date": "2026-03-25"
+      },
+      {
+        "full": "assets/full/khu3/pcvt_045_2026-03-25.jpg",
+        "thumb": "assets/thumbs/khu3/pcvt_045_2026-03-25.jpg",
+        "caption": "Thuc hien theo noi dung cua van ban so 832 evnhcmc kd ngay 27 02 2026",
+        "date": "2026-03-25"
+      },
+      {
+        "full": "assets/full/khu3/pcvt_046_2026-03-25.jpg",
+        "thumb": "assets/thumbs/khu3/pcvt_046_2026-03-25.jpg",
+        "caption": "Thuc hien theo noi dung cua van ban so 832 evnhcmc kd ngay 27 02 2026",
+        "date": "2026-03-25"
+      },
+      {
+        "full": "assets/full/khu3/pcvt_047_2026-03-27.jpg",
+        "thumb": "assets/thumbs/khu3/pcvt_047_2026-03-27.jpg",
+        "caption": "[CHỜ XÁC NHẬN]",
+        "date": "2026-03-27"
+      },
+      {
+        "full": "assets/full/khu3/pcvt_048_2026-03-27.jpg",
+        "thumb": "assets/thumbs/khu3/pcvt_048_2026-03-27.jpg",
+        "caption": "[CHỜ XÁC NHẬN]",
+        "date": "2026-03-27"
+      },
+      {
+        "full": "assets/full/khu3/pcvt_049_2026-04-03.jpg",
+        "thumb": "assets/thumbs/khu3/pcvt_049_2026-04-03.jpg",
+        "caption": "Vung tau ngay 02 4 2026 doan cong tac tong cong ty dien luc tp ho chi",
+        "date": "2026-04-03"
+      },
+      {
+        "full": "assets/full/khu3/pcvt_050_2026-04-03.jpg",
+        "thumb": "assets/thumbs/khu3/pcvt_050_2026-04-03.jpg",
+        "caption": "Vung tau ngay 02 4 2026 doan cong tac tong cong ty dien luc tp ho chi",
+        "date": "2026-04-03"
+      },
+      {
+        "full": "assets/full/khu3/pcvt_051_2026-04-03.jpg",
+        "thumb": "assets/thumbs/khu3/pcvt_051_2026-04-03.jpg",
+        "caption": "Vung tau ngay 02 4 2026 doan cong tac tong cong ty dien luc tp ho chi",
+        "date": "2026-04-03"
+      },
+      {
+        "full": "assets/full/khu3/pcvt_052_2026-04-14.jpg",
+        "thumb": "assets/thumbs/khu3/pcvt_052_2026-04-14.jpg",
+        "caption": "Pho giam doc kinh doanh lam viec voi doi quan ly thu ghi ve tinh hinh",
+        "date": "2026-04-14"
+      },
+      {
+        "full": "assets/full/khu3/pcvt_053_2026-05-04.jpg",
+        "thumb": "assets/thumbs/khu3/pcvt_053_2026-05-04.jpg",
+        "caption": "Nguoi giu lua tham lang phia sau nhung dong",
+        "date": "2026-05-04"
+      },
+      {
+        "full": "assets/full/khu3/pcvt_054_2026-05-06.jpg",
+        "thumb": "assets/thumbs/khu3/pcvt_054_2026-05-06.jpg",
+        "caption": "[CHỜ XÁC NHẬN]",
+        "date": "2026-05-06"
+      },
+      {
+        "full": "assets/full/khu3/pcvt_055_2026-05-11.jpg",
+        "thumb": "assets/thumbs/khu3/pcvt_055_2026-05-11.jpg",
+        "caption": "Cong ty dien luc vung tau thuc hien day manh hoan thien he thong do",
+        "date": "2026-05-11"
+      },
+      {
+        "full": "assets/full/khu3/pcvt_056_2026-05-15.jpg",
+        "thumb": "assets/thumbs/khu3/pcvt_056_2026-05-15.jpg",
+        "caption": "Cong ty dien luc vung tau cham lo suc khoe cbcnv tai dac khu con",
+        "date": "2026-05-15"
+      },
+      {
+        "full": "assets/full/khu3/pcvt_057_2026-05-15.jpg",
+        "thumb": "assets/thumbs/khu3/pcvt_057_2026-05-15.jpg",
+        "caption": "Cong ty dien luc vung tau cham lo suc khoe cbcnv tai dac khu con",
+        "date": "2026-05-15"
+      },
+      {
+        "full": "assets/full/khu3/pcvt_058_2026-05-22.jpg",
+        "thumb": "assets/thumbs/khu3/pcvt_058_2026-05-22.jpg",
+        "caption": "Huong ung thang hanh dong ve an toan ve sinh lao dong lan thu 10 nam",
+        "date": "2026-05-22"
+      },
+      {
+        "full": "assets/full/khu3/pcvt_059_2026-05-24.jpg",
+        "thumb": "assets/thumbs/khu3/pcvt_059_2026-05-24.jpg",
+        "caption": "[CHỜ XÁC NHẬN]",
+        "date": "2026-05-24"
+      },
+      {
+        "full": "assets/full/khu3/pcvt_060_2026-05-24.jpg",
+        "thumb": "assets/thumbs/khu3/pcvt_060_2026-05-24.jpg",
+        "caption": "[CHỜ XÁC NHẬN]",
+        "date": "2026-05-24"
+      },
+      {
+        "full": "assets/full/khu3/pcvt_061_2026-05-24.jpg",
+        "thumb": "assets/thumbs/khu3/pcvt_061_2026-05-24.jpg",
+        "caption": "[CHỜ XÁC NHẬN]",
+        "date": "2026-05-24"
+      },
+      {
+        "full": "assets/full/khu3/pcvt_062_2026-05-31.jpg",
+        "thumb": "assets/thumbs/khu3/pcvt_062_2026-05-31.jpg",
+        "caption": "Am ap buoi le chao co dau tuan dien luc vung tau tri an va chia tay",
+        "date": "2026-05-31"
+      },
+      {
+        "full": "assets/full/khu3/pcvt_063_2026-06-11.jpg",
+        "thumb": "assets/thumbs/khu3/pcvt_063_2026-06-11.jpg",
+        "caption": "Dien luc con dao tiep suc mua",
+        "date": "2026-06-11"
+      },
+      {
+        "full": "assets/full/khu3/pcvt_064_2026-06-11.jpg",
+        "thumb": "assets/thumbs/khu3/pcvt_064_2026-06-11.jpg",
+        "caption": "Dien luc con dao tiep suc mua",
+        "date": "2026-06-11"
+      },
+      {
+        "full": "assets/full/khu3/pcvt_065_2026-06-11.jpg",
+        "thumb": "assets/thumbs/khu3/pcvt_065_2026-06-11.jpg",
+        "caption": "Dien luc con dao tiep suc mua",
+        "date": "2026-06-11"
+      },
+      {
+        "full": "assets/full/khu3/pcvt_066_2026-06-15.jpg",
+        "thumb": "assets/thumbs/khu3/pcvt_066_2026-06-15.jpg",
+        "caption": "Nguoi kiem",
+        "date": "2026-06-15"
+      },
+      {
+        "full": "assets/full/khu3/pcvt_067_2026-06-15.jpg",
+        "thumb": "assets/thumbs/khu3/pcvt_067_2026-06-15.jpg",
+        "caption": "Nguoi kiem",
+        "date": "2026-06-15"
+      },
+      {
+        "full": "assets/full/khu3/pcvt_068_2026-06-15.jpg",
+        "thumb": "assets/thumbs/khu3/pcvt_068_2026-06-15.jpg",
+        "caption": "Nguoi kiem",
+        "date": "2026-06-15"
+      },
+      {
+        "full": "assets/full/khu3/pcvt_069_2026-07-01.jpg",
+        "thumb": "assets/thumbs/khu3/pcvt_069_2026-07-01.jpg",
+        "caption": "Vung tau nam trong chuoi cac hoat dong soi noi chao mung ky niem 1",
+        "date": "2026-07-01"
+      },
+      {
+        "full": "assets/full/khu3/pcvt_070_2026-07-01.jpg",
+        "thumb": "assets/thumbs/khu3/pcvt_070_2026-07-01.jpg",
+        "caption": "Vung tau nam trong chuoi cac hoat dong soi noi chao mung ky niem 1",
+        "date": "2026-07-01"
+      },
+      {
+        "full": "assets/full/khu3/pcvt_071_2026-07-01.jpg",
+        "thumb": "assets/thumbs/khu3/pcvt_071_2026-07-01.jpg",
+        "caption": "Vung tau nam trong chuoi cac hoat dong soi noi chao mung ky niem 1",
+        "date": "2026-07-01"
+      },
+      {
+        "full": "assets/full/khu3/pcvt_072_2026-07-01.jpg",
+        "thumb": "assets/thumbs/khu3/pcvt_072_2026-07-01.jpg",
+        "caption": "Vung tau nam trong chuoi cac hoat dong soi noi chao mung ky niem 1",
+        "date": "2026-07-01"
+      },
+      {
+        "full": "assets/full/khu3/pcvt_073_2026-07-06.jpg",
+        "thumb": "assets/thumbs/khu3/pcvt_073_2026-07-06.jpg",
+        "caption": "Ngay 07 7 2026 tai cong ty dien luc vung tau da trang trong dien ra",
+        "date": "2026-07-06"
+      },
+      {
+        "full": "assets/full/khu3/pcvt_074_2026-07-06.jpg",
+        "thumb": "assets/thumbs/khu3/pcvt_074_2026-07-06.jpg",
+        "caption": "Ngay 07 7 2026 tai cong ty dien luc vung tau da trang trong dien ra",
+        "date": "2026-07-06"
+      },
+      {
+        "full": "assets/full/khu3/pcvt_075_2026-07-08.jpg",
+        "thumb": "assets/thumbs/khu3/pcvt_075_2026-07-08.jpg",
+        "caption": "Dien luc dac khu con dao dau moc moi khoi dau chang duong phat",
+        "date": "2026-07-08"
+      },
+      {
+        "full": "assets/full/khu3/pcvt_076_2026-07-08.jpg",
+        "thumb": "assets/thumbs/khu3/pcvt_076_2026-07-08.jpg",
+        "caption": "Dien luc dac khu con dao dau moc moi khoi dau chang duong phat",
+        "date": "2026-07-08"
+      },
+      {
+        "full": "assets/full/khu3/pcvt_077_2026-07-08.jpg",
+        "thumb": "assets/thumbs/khu3/pcvt_077_2026-07-08.jpg",
+        "caption": "Dien luc dac khu con dao dau moc moi khoi dau chang duong phat",
+        "date": "2026-07-08"
+      },
+      {
+        "full": "assets/full/khu3/pcvt_078_2026-07-13.jpg",
+        "thumb": "assets/thumbs/khu3/pcvt_078_2026-07-13.jpg",
+        "caption": "Cong ty dien luc vung tau to chuc huan luyen so cuu cap cuu nam",
+        "date": "2026-07-13"
+      },
+      {
+        "full": "assets/full/khu3/pcvt_079_2026-07-13.jpg",
+        "thumb": "assets/thumbs/khu3/pcvt_079_2026-07-13.jpg",
+        "caption": "Cong ty dien luc vung tau to chuc huan luyen so cuu cap cuu nam",
+        "date": "2026-07-13"
+      },
+      {
+        "full": "assets/full/khu3/pcvt_080_2026-07-16.jpg",
+        "thumb": "assets/thumbs/khu3/pcvt_080_2026-07-16.jpg",
+        "caption": "Ngay 16 7 tai cong ty dien luc vung tau da to chuc hoi nghi so ket",
+        "date": "2026-07-16"
+      },
+      {
+        "full": "assets/full/khu3/pcvt_081_2026-07-16.jpg",
+        "thumb": "assets/thumbs/khu3/pcvt_081_2026-07-16.jpg",
+        "caption": "Ngay 16 7 tai cong ty dien luc vung tau da to chuc hoi nghi so ket",
+        "date": "2026-07-16"
+      },
+      {
+        "full": "assets/full/khu3/pcvt_082_2026-07-16.jpg",
+        "thumb": "assets/thumbs/khu3/pcvt_082_2026-07-16.jpg",
+        "caption": "Ngay 16 7 tai cong ty dien luc vung tau da to chuc hoi nghi so ket",
+        "date": "2026-07-16"
+      },
+      {
+        "full": "assets/full/khu3/pcvt_083_2026-07-16.jpg",
+        "thumb": "assets/thumbs/khu3/pcvt_083_2026-07-16.jpg",
+        "caption": "Ngay 16 7 tai cong ty dien luc vung tau da to chuc hoi nghi so ket",
+        "date": "2026-07-16"
+      },
+      {
+        "full": "assets/full/khu3/pcvt_084_2026-07-19.jpg",
+        "thumb": "assets/thumbs/khu3/pcvt_084_2026-07-19.jpg",
+        "caption": "[CHỜ XÁC NHẬN]",
+        "date": "2026-07-19"
+      },
+      {
+        "full": "assets/full/khu3/pcvt_085_2026-07-19.jpg",
+        "thumb": "assets/thumbs/khu3/pcvt_085_2026-07-19.jpg",
+        "caption": "[CHỜ XÁC NHẬN]",
+        "date": "2026-07-19"
+      },
+      {
+        "full": "assets/full/khu3/pcvt_086_2026-07-19.jpg",
+        "thumb": "assets/thumbs/khu3/pcvt_086_2026-07-19.jpg",
+        "caption": "[CHỜ XÁC NHẬN]",
+        "date": "2026-07-19"
+      },
+      {
+        "full": "assets/full/khu3/pcvt_087_2026-08-04.jpg",
+        "thumb": "assets/thumbs/khu3/pcvt_087_2026-08-04.jpg",
+        "caption": "[CHỜ XÁC NHẬN]",
+        "date": "2026-08-04"
+      },
+      {
+        "full": "assets/full/khu3/pcvt_088_2026-08-04.jpg",
+        "thumb": "assets/thumbs/khu3/pcvt_088_2026-08-04.jpg",
+        "caption": "[CHỜ XÁC NHẬN]",
+        "date": "2026-08-04"
+      },
+      {
+        "full": "assets/full/khu3/pcvt_089_2026-08-04.jpg",
+        "thumb": "assets/thumbs/khu3/pcvt_089_2026-08-04.jpg",
+        "caption": "[CHỜ XÁC NHẬN]",
+        "date": "2026-08-04"
+      },
+      {
+        "full": "assets/full/khu3/pcvt_090_2026-08-09.jpg",
+        "thumb": "assets/thumbs/khu3/pcvt_090_2026-08-09.jpg",
+        "caption": "[CHỜ XÁC NHẬN]",
+        "date": "2026-08-09"
+      },
+      {
+        "full": "assets/full/khu3/pcvt_091_2026-08-09.jpg",
+        "thumb": "assets/thumbs/khu3/pcvt_091_2026-08-09.jpg",
+        "caption": "[CHỜ XÁC NHẬN]",
+        "date": "2026-08-09"
+      },
+      {
+        "full": "assets/full/khu3/pcvt_092_2026-08-09.jpg",
+        "thumb": "assets/thumbs/khu3/pcvt_092_2026-08-09.jpg",
+        "caption": "[CHỜ XÁC NHẬN]",
+        "date": "2026-08-09"
+      },
+      {
+        "full": "assets/full/khu3/pcvt_093_2026-09-10.jpg",
+        "thumb": "assets/thumbs/khu3/pcvt_093_2026-09-10.jpg",
+        "caption": "Con dao cung buoc lan toa nang luong tich",
+        "date": "2026-09-10"
+      },
+      {
+        "full": "assets/full/khu3/pcvt_094_2026-09-10.jpg",
+        "thumb": "assets/thumbs/khu3/pcvt_094_2026-09-10.jpg",
+        "caption": "Con dao cung buoc lan toa nang luong tich",
+        "date": "2026-09-10"
+      },
+      {
+        "full": "assets/full/khu3/pcvt_095_2026-09-15.jpg",
+        "thumb": "assets/thumbs/khu3/pcvt_095_2026-09-15.jpg",
+        "caption": "Nang cao hieu qua van hanh qua khoa dao tao iso 9001 2015 tai cong ty",
+        "date": "2026-09-15"
+      },
+      {
+        "full": "assets/full/khu3/pcvt_096_2026-09-15.jpg",
+        "thumb": "assets/thumbs/khu3/pcvt_096_2026-09-15.jpg",
+        "caption": "Nang cao hieu qua van hanh qua khoa dao tao iso 9001 2015 tai cong ty",
+        "date": "2026-09-15"
+      },
+      {
+        "full": "assets/full/khu3/pcvt_097_2026-09-15.jpg",
+        "thumb": "assets/thumbs/khu3/pcvt_097_2026-09-15.jpg",
+        "caption": "Nang cao hieu qua van hanh qua khoa dao tao iso 9001 2015 tai cong ty",
+        "date": "2026-09-15"
+      },
+      {
+        "full": "assets/full/khu3/pcvt_098_2026-09-20.jpg",
+        "thumb": "assets/thumbs/khu3/pcvt_098_2026-09-20.jpg",
+        "caption": "Chu dong dam bao an toan luoi dien mua mua",
+        "date": "2026-09-20"
+      },
+      {
+        "full": "assets/full/khu3/pcvt_099_2026-09-20.jpg",
+        "thumb": "assets/thumbs/khu3/pcvt_099_2026-09-20.jpg",
+        "caption": "Chu dong dam bao an toan luoi dien mua mua",
+        "date": "2026-09-20"
+      },
+      {
+        "full": "assets/full/khu3/pcvt_100_2026-09-20.jpg",
+        "thumb": "assets/thumbs/khu3/pcvt_100_2026-09-20.jpg",
+        "caption": "Chu dong dam bao an toan luoi dien mua mua",
+        "date": "2026-09-20"
+      }
+    ]
+  },
+  {
+    "id": "doan_the",
+    "cabinet": 2,
+    "title": "Đảng Bộ – Công Đoàn – Đoàn TN",
+    "subtitle": "Đoàn kết · Sáng tạo · Xung kích",
+    "cover": {
+      "color": "#B91C1C",
+      "accent": "#FACC15"
+    },
+    "chapters": [
+      {
+        "title": "Đảng bộ",
+        "start": 0,
+        "end": 48
+      },
+      {
+        "title": "Công đoàn",
+        "start": 49,
+        "end": 94
+      },
+      {
+        "title": "Đoàn Thanh niên",
+        "start": 95,
+        "end": 119
+      }
+    ],
+    "pages": [
+      {
+        "full": "assets/full/khu4/dang_bo_001_2026-02-06.jpg",
+        "thumb": "assets/thumbs/khu4/dang_bo_001_2026-02-06.jpg",
+        "caption": "Dang bo cong ty dien luc vung tau nghiem tuc hoc tap quan triet nghi",
+        "date": "2026-02-06"
+      },
+      {
+        "full": "assets/full/khu4/dang_bo_002_2026-02-06.jpg",
+        "thumb": "assets/thumbs/khu4/dang_bo_002_2026-02-06.jpg",
+        "caption": "Dang bo cong ty dien luc vung tau nghiem tuc hoc tap quan triet nghi",
+        "date": "2026-02-06"
+      },
+      {
+        "full": "assets/full/khu4/dang_bo_003_2026-02-06.jpg",
+        "thumb": "assets/thumbs/khu4/dang_bo_003_2026-02-06.jpg",
+        "caption": "Dang bo cong ty dien luc vung tau nghiem tuc hoc tap quan triet nghi",
+        "date": "2026-02-06"
+      },
+      {
+        "full": "assets/full/khu4/dang_bo_004_2026-02-06.jpg",
+        "thumb": "assets/thumbs/khu4/dang_bo_004_2026-02-06.jpg",
+        "caption": "Dang bo cong ty dien luc vung tau nghiem tuc hoc tap quan triet nghi",
+        "date": "2026-02-06"
+      },
+      {
+        "full": "assets/full/khu4/dang_bo_005_2026-02-06.jpg",
+        "thumb": "assets/thumbs/khu4/dang_bo_005_2026-02-06.jpg",
+        "caption": "Dang bo cong ty dien luc vung tau nghiem tuc hoc tap quan triet nghi",
+        "date": "2026-02-06"
+      },
+      {
+        "full": "assets/full/khu4/dang_bo_006_2026-03-02.jpg",
+        "thumb": "assets/thumbs/khu4/dang_bo_006_2026-03-02.jpg",
+        "caption": "Dang bo cong ty dien luc vung tau hanh trinh ve nguon thap sang ly",
+        "date": "2026-03-02"
+      },
+      {
+        "full": "assets/full/khu4/dang_bo_007_2026-03-02.jpg",
+        "thumb": "assets/thumbs/khu4/dang_bo_007_2026-03-02.jpg",
+        "caption": "Dang bo cong ty dien luc vung tau hanh trinh ve nguon thap sang ly",
+        "date": "2026-03-02"
+      },
+      {
+        "full": "assets/full/khu4/dang_bo_008_2026-03-02.jpg",
+        "thumb": "assets/thumbs/khu4/dang_bo_008_2026-03-02.jpg",
+        "caption": "Dang bo cong ty dien luc vung tau hanh trinh ve nguon thap sang ly",
+        "date": "2026-03-02"
+      },
+      {
+        "full": "assets/full/khu4/dang_bo_009_2026-03-02.jpg",
+        "thumb": "assets/thumbs/khu4/dang_bo_009_2026-03-02.jpg",
+        "caption": "Dang bo cong ty dien luc vung tau hanh trinh ve nguon thap sang ly",
+        "date": "2026-03-02"
+      },
+      {
+        "full": "assets/full/khu4/dang_bo_010_2026-03-02.jpg",
+        "thumb": "assets/thumbs/khu4/dang_bo_010_2026-03-02.jpg",
+        "caption": "Dang bo cong ty dien luc vung tau hanh trinh ve nguon thap sang ly",
+        "date": "2026-03-02"
+      },
+      {
+        "full": "assets/full/khu4/dang_bo_011_2026-03-02.jpg",
+        "thumb": "assets/thumbs/khu4/dang_bo_011_2026-03-02.jpg",
+        "caption": "Dang bo cong ty dien luc vung tau hanh trinh ve nguon thap sang ly",
+        "date": "2026-03-02"
+      },
+      {
+        "full": "assets/full/khu4/dang_bo_012_2026-03-02.jpg",
+        "thumb": "assets/thumbs/khu4/dang_bo_012_2026-03-02.jpg",
+        "caption": "Dang bo cong ty dien luc vung tau hanh trinh ve nguon thap sang ly",
+        "date": "2026-03-02"
+      },
+      {
+        "full": "assets/full/khu4/dang_bo_013_2026-03-02.jpg",
+        "thumb": "assets/thumbs/khu4/dang_bo_013_2026-03-02.jpg",
+        "caption": "Dang bo cong ty dien luc vung tau hanh trinh ve nguon thap sang ly",
+        "date": "2026-03-02"
+      },
+      {
+        "full": "assets/full/khu4/dang_bo_014_2026-03-02.jpg",
+        "thumb": "assets/thumbs/khu4/dang_bo_014_2026-03-02.jpg",
+        "caption": "Dang bo cong ty dien luc vung tau hanh trinh ve nguon thap sang ly",
+        "date": "2026-03-02"
+      },
+      {
+        "full": "assets/full/khu4/dang_bo_015_2026-03-02.jpg",
+        "thumb": "assets/thumbs/khu4/dang_bo_015_2026-03-02.jpg",
+        "caption": "Dang bo cong ty dien luc vung tau hanh trinh ve nguon thap sang ly",
+        "date": "2026-03-02"
+      },
+      {
+        "full": "assets/full/khu4/dang_bo_016_2026-03-03.jpg",
+        "thumb": "assets/thumbs/khu4/dang_bo_016_2026-03-03.jpg",
+        "caption": "Chi bo 2 truc thuoc dang bo cong ty dien luc vung tau to chuc le ket",
+        "date": "2026-03-03"
+      },
+      {
+        "full": "assets/full/khu4/dang_bo_017_2026-03-03.jpg",
+        "thumb": "assets/thumbs/khu4/dang_bo_017_2026-03-03.jpg",
+        "caption": "Chi bo 2 truc thuoc dang bo cong ty dien luc vung tau to chuc le ket",
+        "date": "2026-03-03"
+      },
+      {
+        "full": "assets/full/khu4/dang_bo_018_2026-03-03.jpg",
+        "thumb": "assets/thumbs/khu4/dang_bo_018_2026-03-03.jpg",
+        "caption": "Chi bo 2 truc thuoc dang bo cong ty dien luc vung tau to chuc le ket",
+        "date": "2026-03-03"
+      },
+      {
+        "full": "assets/full/khu4/dang_bo_019_2026-03-03.jpg",
+        "thumb": "assets/thumbs/khu4/dang_bo_019_2026-03-03.jpg",
+        "caption": "Chi bo 2 truc thuoc dang bo cong ty dien luc vung tau to chuc le ket",
+        "date": "2026-03-03"
+      },
+      {
+        "full": "assets/full/khu4/dang_bo_020_2026-04-18.jpg",
+        "thumb": "assets/thumbs/khu4/dang_bo_020_2026-04-18.jpg",
+        "caption": "Con dao hanh trinh ve nguon day xuc",
+        "date": "2026-04-18"
+      },
+      {
+        "full": "assets/full/khu4/dang_bo_021_2026-04-18.jpg",
+        "thumb": "assets/thumbs/khu4/dang_bo_021_2026-04-18.jpg",
+        "caption": "Con dao hanh trinh ve nguon day xuc",
+        "date": "2026-04-18"
+      },
+      {
+        "full": "assets/full/khu4/dang_bo_022_2026-04-18.jpg",
+        "thumb": "assets/thumbs/khu4/dang_bo_022_2026-04-18.jpg",
+        "caption": "Con dao hanh trinh ve nguon day xuc",
+        "date": "2026-04-18"
+      },
+      {
+        "full": "assets/full/khu4/dang_bo_023_2026-04-18.jpg",
+        "thumb": "assets/thumbs/khu4/dang_bo_023_2026-04-18.jpg",
+        "caption": "Con dao hanh trinh ve nguon day xuc",
+        "date": "2026-04-18"
+      },
+      {
+        "full": "assets/full/khu4/dang_bo_024_2026-04-18.jpg",
+        "thumb": "assets/thumbs/khu4/dang_bo_024_2026-04-18.jpg",
+        "caption": "Con dao hanh trinh ve nguon day xuc",
+        "date": "2026-04-18"
+      },
+      {
+        "full": "assets/full/khu4/dang_bo_025_2026-04-18.jpg",
+        "thumb": "assets/thumbs/khu4/dang_bo_025_2026-04-18.jpg",
+        "caption": "Con dao hanh trinh ve nguon day xuc",
+        "date": "2026-04-18"
+      },
+      {
+        "full": "assets/full/khu4/dang_bo_026_2026-04-18.jpg",
+        "thumb": "assets/thumbs/khu4/dang_bo_026_2026-04-18.jpg",
+        "caption": "Con dao hanh trinh ve nguon day xuc",
+        "date": "2026-04-18"
+      },
+      {
+        "full": "assets/full/khu4/dang_bo_027_2026-04-18.jpg",
+        "thumb": "assets/thumbs/khu4/dang_bo_027_2026-04-18.jpg",
+        "caption": "Con dao hanh trinh ve nguon day xuc",
+        "date": "2026-04-18"
+      },
+      {
+        "full": "assets/full/khu4/dang_bo_028_2026-04-18.jpg",
+        "thumb": "assets/thumbs/khu4/dang_bo_028_2026-04-18.jpg",
+        "caption": "Con dao hanh trinh ve nguon day xuc",
+        "date": "2026-04-18"
+      },
+      {
+        "full": "assets/full/khu4/dang_bo_029_2026-04-18.jpg",
+        "thumb": "assets/thumbs/khu4/dang_bo_029_2026-04-18.jpg",
+        "caption": "Con dao hanh trinh ve nguon day xuc",
+        "date": "2026-04-18"
+      },
+      {
+        "full": "assets/full/khu4/dang_bo_030_2026-04-18.jpg",
+        "thumb": "assets/thumbs/khu4/dang_bo_030_2026-04-18.jpg",
+        "caption": "Con dao hanh trinh ve nguon day xuc",
+        "date": "2026-04-18"
+      },
+      {
+        "full": "assets/full/khu4/dang_bo_031_2026-04-18.jpg",
+        "thumb": "assets/thumbs/khu4/dang_bo_031_2026-04-18.jpg",
+        "caption": "Con dao hanh trinh ve nguon day xuc",
+        "date": "2026-04-18"
+      },
+      {
+        "full": "assets/full/khu4/dang_bo_032_2026-04-18.jpg",
+        "thumb": "assets/thumbs/khu4/dang_bo_032_2026-04-18.jpg",
+        "caption": "Con dao hanh trinh ve nguon day xuc",
+        "date": "2026-04-18"
+      },
+      {
+        "full": "assets/full/khu4/dang_bo_033_2026-04-18.jpg",
+        "thumb": "assets/thumbs/khu4/dang_bo_033_2026-04-18.jpg",
+        "caption": "Con dao hanh trinh ve nguon day xuc",
+        "date": "2026-04-18"
+      },
+      {
+        "full": "assets/full/khu4/dang_bo_034_2026-04-18.jpg",
+        "thumb": "assets/thumbs/khu4/dang_bo_034_2026-04-18.jpg",
+        "caption": "Con dao hanh trinh ve nguon day xuc",
+        "date": "2026-04-18"
+      },
+      {
+        "full": "assets/full/khu4/dang_bo_035_2026-04-18.jpg",
+        "thumb": "assets/thumbs/khu4/dang_bo_035_2026-04-18.jpg",
+        "caption": "Con dao hanh trinh ve nguon day xuc",
+        "date": "2026-04-18"
+      },
+      {
+        "full": "assets/full/khu4/dang_bo_036_2026-04-18.jpg",
+        "thumb": "assets/thumbs/khu4/dang_bo_036_2026-04-18.jpg",
+        "caption": "Con dao hanh trinh ve nguon day xuc",
+        "date": "2026-04-18"
+      },
+      {
+        "full": "assets/full/khu4/dang_bo_037_2026-04-18.jpg",
+        "thumb": "assets/thumbs/khu4/dang_bo_037_2026-04-18.jpg",
+        "caption": "Con dao hanh trinh ve nguon day xuc",
+        "date": "2026-04-18"
+      },
+      {
+        "full": "assets/full/khu4/dang_bo_038_2026-04-18.jpg",
+        "thumb": "assets/thumbs/khu4/dang_bo_038_2026-04-18.jpg",
+        "caption": "Con dao hanh trinh ve nguon day xuc",
+        "date": "2026-04-18"
+      },
+      {
+        "full": "assets/full/khu4/dang_bo_039_2026-04-18.jpg",
+        "thumb": "assets/thumbs/khu4/dang_bo_039_2026-04-18.jpg",
+        "caption": "Con dao hanh trinh ve nguon day xuc",
+        "date": "2026-04-18"
+      },
+      {
+        "full": "assets/full/khu4/dang_bo_040_2026-04-18.jpg",
+        "thumb": "assets/thumbs/khu4/dang_bo_040_2026-04-18.jpg",
+        "caption": "Con dao hanh trinh ve nguon day xuc",
+        "date": "2026-04-18"
+      },
+      {
+        "full": "assets/full/khu4/dang_bo_041_2026-05-19.jpg",
+        "thumb": "assets/thumbs/khu4/dang_bo_041_2026-05-19.jpg",
+        "caption": "Hanh trinh vi dai cua chu tich ho chi minh qua 65 su kien https luoc",
+        "date": "2026-05-19"
+      },
+      {
+        "full": "assets/full/khu4/dang_bo_042_2026-07-16.jpg",
+        "thumb": "assets/thumbs/khu4/dang_bo_042_2026-07-16.jpg",
+        "caption": "Ngay 16 7 tai cong ty dien luc vung tau da to chuc hoi nghi so ket",
+        "date": "2026-07-16"
+      },
+      {
+        "full": "assets/full/khu4/dang_bo_043_2026-07-16.jpg",
+        "thumb": "assets/thumbs/khu4/dang_bo_043_2026-07-16.jpg",
+        "caption": "Ngay 16 7 tai cong ty dien luc vung tau da to chuc hoi nghi so ket",
+        "date": "2026-07-16"
+      },
+      {
+        "full": "assets/full/khu4/dang_bo_044_2026-07-27.jpg",
+        "thumb": "assets/thumbs/khu4/dang_bo_044_2026-07-27.jpg",
+        "caption": "[CHỜ XÁC NHẬN]",
+        "date": "2026-07-27"
+      },
+      {
+        "full": "assets/full/khu4/dang_bo_045_2026-07-27.jpg",
+        "thumb": "assets/thumbs/khu4/dang_bo_045_2026-07-27.jpg",
+        "caption": "[CHỜ XÁC NHẬN]",
+        "date": "2026-07-27"
+      },
+      {
+        "full": "assets/full/khu4/dang_bo_046_2026-08-09.jpg",
+        "thumb": "assets/thumbs/khu4/dang_bo_046_2026-08-09.jpg",
+        "caption": "[CHỜ XÁC NHẬN]",
+        "date": "2026-08-09"
+      },
+      {
+        "full": "assets/full/khu4/dang_bo_047_2026-08-09.jpg",
+        "thumb": "assets/thumbs/khu4/dang_bo_047_2026-08-09.jpg",
+        "caption": "[CHỜ XÁC NHẬN]",
+        "date": "2026-08-09"
+      },
+      {
+        "full": "assets/full/khu4/dang_bo_048_2026-08-09.jpg",
+        "thumb": "assets/thumbs/khu4/dang_bo_048_2026-08-09.jpg",
+        "caption": "[CHỜ XÁC NHẬN]",
+        "date": "2026-08-09"
+      },
+      {
+        "full": "assets/full/khu4/dang_bo_049_2026-08-09.jpg",
+        "thumb": "assets/thumbs/khu4/dang_bo_049_2026-08-09.jpg",
+        "caption": "[CHỜ XÁC NHẬN]",
+        "date": "2026-08-09"
+      },
+      {
+        "full": "assets/full/khu6/cong_doan_001_2025-08-28.jpg",
+        "thumb": "assets/thumbs/khu6/cong_doan_001_2025-08-28.jpg",
+        "caption": "Bua com cong doan chia se doan ket gan",
+        "date": "2025-08-28"
+      },
+      {
+        "full": "assets/full/khu6/cong_doan_002_2025-08-28.jpg",
+        "thumb": "assets/thumbs/khu6/cong_doan_002_2025-08-28.jpg",
+        "caption": "Bua com cong doan chia se doan ket gan",
+        "date": "2025-08-28"
+      },
+      {
+        "full": "assets/full/khu6/cong_doan_003_2025-08-28.jpg",
+        "thumb": "assets/thumbs/khu6/cong_doan_003_2025-08-28.jpg",
+        "caption": "Bua com cong doan chia se doan ket gan",
+        "date": "2025-08-28"
+      },
+      {
+        "full": "assets/full/khu6/cong_doan_004_2025-08-28.jpg",
+        "thumb": "assets/thumbs/khu6/cong_doan_004_2025-08-28.jpg",
+        "caption": "Bua com cong doan chia se doan ket gan",
+        "date": "2025-08-28"
+      },
+      {
+        "full": "assets/full/khu6/cong_doan_005_2025-08-28.jpg",
+        "thumb": "assets/thumbs/khu6/cong_doan_005_2025-08-28.jpg",
+        "caption": "Bua com cong doan chia se doan ket gan",
+        "date": "2025-08-28"
+      },
+      {
+        "full": "assets/full/khu6/cong_doan_003_2025-10-18.jpg",
+        "thumb": "assets/thumbs/khu6/cong_doan_003_2025-10-18.jpg",
+        "caption": "Ngay 18 10 2025 tai phuong vung tau cong doan cong ty dien luc vung",
+        "date": "2025-10-18"
+      },
+      {
+        "full": "assets/full/khu6/cong_doan_004_2025-10-18.jpg",
+        "thumb": "assets/thumbs/khu6/cong_doan_004_2025-10-18.jpg",
+        "caption": "Ngay 18 10 2025 tai phuong vung tau cong doan cong ty dien luc vung",
+        "date": "2025-10-18"
+      },
+      {
+        "full": "assets/full/khu6/cong_doan_006_2025-10-18.jpg",
+        "thumb": "assets/thumbs/khu6/cong_doan_006_2025-10-18.jpg",
+        "caption": "Ngay 18 10 2025 tai phuong vung tau cong doan cong ty dien luc vung",
+        "date": "2025-10-18"
+      },
+      {
+        "full": "assets/full/khu6/cong_doan_007_2025-10-18.jpg",
+        "thumb": "assets/thumbs/khu6/cong_doan_007_2025-10-18.jpg",
+        "caption": "Ngay 18 10 2025 tai phuong vung tau cong doan cong ty dien luc vung",
+        "date": "2025-10-18"
+      },
+      {
+        "full": "assets/full/khu6/cong_doan_008_2025-10-18.jpg",
+        "thumb": "assets/thumbs/khu6/cong_doan_008_2025-10-18.jpg",
+        "caption": "Ngay 18 10 2025 tai phuong vung tau cong doan cong ty dien luc vung",
+        "date": "2025-10-18"
+      },
+      {
+        "full": "assets/full/khu6/cong_doan_009_2025-10-18.jpg",
+        "thumb": "assets/thumbs/khu6/cong_doan_009_2025-10-18.jpg",
+        "caption": "Ngay 18 10 2025 tai phuong vung tau cong doan cong ty dien luc vung",
+        "date": "2025-10-18"
+      },
+      {
+        "full": "assets/full/khu6/cong_doan_010_2025-10-18.jpg",
+        "thumb": "assets/thumbs/khu6/cong_doan_010_2025-10-18.jpg",
+        "caption": "Ngay 18 10 2025 tai phuong vung tau cong doan cong ty dien luc vung",
+        "date": "2025-10-18"
+      },
+      {
+        "full": "assets/full/khu6/cong_doan_011_2025-10-18.jpg",
+        "thumb": "assets/thumbs/khu6/cong_doan_011_2025-10-18.jpg",
+        "caption": "Ngay 18 10 2025 tai phuong vung tau cong doan cong ty dien luc vung",
+        "date": "2025-10-18"
+      },
+      {
+        "full": "assets/full/khu6/cong_doan_012_2025-10-18.jpg",
+        "thumb": "assets/thumbs/khu6/cong_doan_012_2025-10-18.jpg",
+        "caption": "Ngay 18 10 2025 tai phuong vung tau cong doan cong ty dien luc vung",
+        "date": "2025-10-18"
+      },
+      {
+        "full": "assets/full/khu6/cong_doan_005_2026-01-31.jpg",
+        "thumb": "assets/thumbs/khu6/cong_doan_005_2026-01-31.jpg",
+        "caption": "[CHỜ XÁC NHẬN]",
+        "date": "2026-01-31"
+      },
+      {
+        "full": "assets/full/khu6/cong_doan_006_2026-01-31.jpg",
+        "thumb": "assets/thumbs/khu6/cong_doan_006_2026-01-31.jpg",
+        "caption": "[CHỜ XÁC NHẬN]",
+        "date": "2026-01-31"
+      },
+      {
+        "full": "assets/full/khu6/cong_doan_013_2026-01-31.jpg",
+        "thumb": "assets/thumbs/khu6/cong_doan_013_2026-01-31.jpg",
+        "caption": "[CHỜ XÁC NHẬN]",
+        "date": "2026-01-31"
+      },
+      {
+        "full": "assets/full/khu6/cong_doan_014_2026-01-31.jpg",
+        "thumb": "assets/thumbs/khu6/cong_doan_014_2026-01-31.jpg",
+        "caption": "[CHỜ XÁC NHẬN]",
+        "date": "2026-01-31"
+      },
+      {
+        "full": "assets/full/khu6/cong_doan_015_2026-01-31.jpg",
+        "thumb": "assets/thumbs/khu6/cong_doan_015_2026-01-31.jpg",
+        "caption": "[CHỜ XÁC NHẬN]",
+        "date": "2026-01-31"
+      },
+      {
+        "full": "assets/full/khu6/cong_doan_016_2026-01-31.jpg",
+        "thumb": "assets/thumbs/khu6/cong_doan_016_2026-01-31.jpg",
+        "caption": "[CHỜ XÁC NHẬN]",
+        "date": "2026-01-31"
+      },
+      {
+        "full": "assets/full/khu6/cong_doan_007_2026-03-04.jpg",
+        "thumb": "assets/thumbs/khu6/cong_doan_007_2026-03-04.jpg",
+        "caption": "Cong ty dien luc vung tau huong ung le hoi ao dai nam",
+        "date": "2026-03-04"
+      },
+      {
+        "full": "assets/full/khu6/cong_doan_008_2026-03-04.jpg",
+        "thumb": "assets/thumbs/khu6/cong_doan_008_2026-03-04.jpg",
+        "caption": "Cong ty dien luc vung tau huong ung le hoi ao dai nam",
+        "date": "2026-03-04"
+      },
+      {
+        "full": "assets/full/khu6/cong_doan_009_2026-03-04.jpg",
+        "thumb": "assets/thumbs/khu6/cong_doan_009_2026-03-04.jpg",
+        "caption": "Cong ty dien luc vung tau huong ung le hoi ao dai nam",
+        "date": "2026-03-04"
+      },
+      {
+        "full": "assets/full/khu6/cong_doan_010_2026-03-09.jpg",
+        "thumb": "assets/thumbs/khu6/cong_doan_010_2026-03-09.jpg",
+        "caption": "Hoi thi nau an nhan dip quoc te phu nu 8",
+        "date": "2026-03-09"
+      },
+      {
+        "full": "assets/full/khu6/cong_doan_011_2026-03-09.jpg",
+        "thumb": "assets/thumbs/khu6/cong_doan_011_2026-03-09.jpg",
+        "caption": "Hoi thi nau an nhan dip quoc te phu nu 8",
+        "date": "2026-03-09"
+      },
+      {
+        "full": "assets/full/khu6/cong_doan_012_2026-03-09.jpg",
+        "thumb": "assets/thumbs/khu6/cong_doan_012_2026-03-09.jpg",
+        "caption": "Hoi thi nau an nhan dip quoc te phu nu 8",
+        "date": "2026-03-09"
+      },
+      {
+        "full": "assets/full/khu6/cong_doan_013_2026-03-09.jpg",
+        "thumb": "assets/thumbs/khu6/cong_doan_013_2026-03-09.jpg",
+        "caption": "Hoi thi nau an nhan dip quoc te phu nu 8",
+        "date": "2026-03-09"
+      },
+      {
+        "full": "assets/full/khu6/cong_doan_014_2026-03-10.jpg",
+        "thumb": "assets/thumbs/khu6/cong_doan_014_2026-03-10.jpg",
+        "caption": "Ron rang sac ao dai am ap ngay 8 3 tai cong ty dien luc vung",
+        "date": "2026-03-10"
+      },
+      {
+        "full": "assets/full/khu6/cong_doan_015_2026-03-10.jpg",
+        "thumb": "assets/thumbs/khu6/cong_doan_015_2026-03-10.jpg",
+        "caption": "Ron rang sac ao dai am ap ngay 8 3 tai cong ty dien luc vung",
+        "date": "2026-03-10"
+      },
+      {
+        "full": "assets/full/khu6/cong_doan_016_2026-03-10.jpg",
+        "thumb": "assets/thumbs/khu6/cong_doan_016_2026-03-10.jpg",
+        "caption": "Ron rang sac ao dai am ap ngay 8 3 tai cong ty dien luc vung",
+        "date": "2026-03-10"
+      },
+      {
+        "full": "assets/full/khu6/cong_doan_017_2026-04-11.jpg",
+        "thumb": "assets/thumbs/khu6/cong_doan_017_2026-04-11.jpg",
+        "caption": "Cong ty dien luc vung tau mo man bung no tran dau dai",
+        "date": "2026-04-11"
+      },
+      {
+        "full": "assets/full/khu6/cong_doan_018_2026-04-11.jpg",
+        "thumb": "assets/thumbs/khu6/cong_doan_018_2026-04-11.jpg",
+        "caption": "Cong ty dien luc vung tau mo man bung no tran dau dai",
+        "date": "2026-04-11"
+      },
+      {
+        "full": "assets/full/khu6/cong_doan_019_2026-04-11.jpg",
+        "thumb": "assets/thumbs/khu6/cong_doan_019_2026-04-11.jpg",
+        "caption": "Cong ty dien luc vung tau mo man bung no tran dau dai",
+        "date": "2026-04-11"
+      },
+      {
+        "full": "assets/full/khu6/cong_doan_020_2026-05-12.jpg",
+        "thumb": "assets/thumbs/khu6/cong_doan_020_2026-05-12.jpg",
+        "caption": "Tran dau dau tien cua doi bong nu cong ty dien luc vung tau da khep",
+        "date": "2026-05-12"
+      },
+      {
+        "full": "assets/full/khu6/cong_doan_021_2026-05-12.jpg",
+        "thumb": "assets/thumbs/khu6/cong_doan_021_2026-05-12.jpg",
+        "caption": "Tran dau dau tien cua doi bong nu cong ty dien luc vung tau da khep",
+        "date": "2026-05-12"
+      },
+      {
+        "full": "assets/full/khu6/cong_doan_017_2026-08-24.jpg",
+        "thumb": "assets/thumbs/khu6/cong_doan_017_2026-08-24.jpg",
+        "caption": "[CHỜ XÁC NHẬN]",
+        "date": "2026-08-24"
+      },
+      {
+        "full": "assets/full/khu6/cong_doan_018_2026-08-24.jpg",
+        "thumb": "assets/thumbs/khu6/cong_doan_018_2026-08-24.jpg",
+        "caption": "[CHỜ XÁC NHẬN]",
+        "date": "2026-08-24"
+      },
+      {
+        "full": "assets/full/khu6/cong_doan_019_2026-08-24.jpg",
+        "thumb": "assets/thumbs/khu6/cong_doan_019_2026-08-24.jpg",
+        "caption": "[CHỜ XÁC NHẬN]",
+        "date": "2026-08-24"
+      },
+      {
+        "full": "assets/full/khu6/cong_doan_020_2026-08-24.jpg",
+        "thumb": "assets/thumbs/khu6/cong_doan_020_2026-08-24.jpg",
+        "caption": "[CHỜ XÁC NHẬN]",
+        "date": "2026-08-24"
+      },
+      {
+        "full": "assets/full/khu6/cong_doan_022_2026-08-24.jpg",
+        "thumb": "assets/thumbs/khu6/cong_doan_022_2026-08-24.jpg",
+        "caption": "[CHỜ XÁC NHẬN]",
+        "date": "2026-08-24"
+      },
+      {
+        "full": "assets/full/khu6/cong_doan_023_2026-08-24.jpg",
+        "thumb": "assets/thumbs/khu6/cong_doan_023_2026-08-24.jpg",
+        "caption": "[CHỜ XÁC NHẬN]",
+        "date": "2026-08-24"
+      },
+      {
+        "full": "assets/full/khu6/cong_doan_021_2026-09-24.jpg",
+        "thumb": "assets/thumbs/khu6/cong_doan_021_2026-09-24.jpg",
+        "caption": "Dem hoi trang ram trao yeu thuong gan ket gia dinh",
+        "date": "2026-09-24"
+      },
+      {
+        "full": "assets/full/khu6/cong_doan_022_2026-09-24.jpg",
+        "thumb": "assets/thumbs/khu6/cong_doan_022_2026-09-24.jpg",
+        "caption": "Dem hoi trang ram trao yeu thuong gan ket gia dinh",
+        "date": "2026-09-24"
+      },
+      {
+        "full": "assets/full/khu6/cong_doan_023_2026-09-24.jpg",
+        "thumb": "assets/thumbs/khu6/cong_doan_023_2026-09-24.jpg",
+        "caption": "Dem hoi trang ram trao yeu thuong gan ket gia dinh",
+        "date": "2026-09-24"
+      },
+      {
+        "full": "assets/full/khu6/cong_doan_024_2026-09-24.jpg",
+        "thumb": "assets/thumbs/khu6/cong_doan_024_2026-09-24.jpg",
+        "caption": "Dem hoi trang ram trao yeu thuong gan ket gia dinh",
+        "date": "2026-09-24"
+      },
+      {
+        "full": "assets/full/khu6/cong_doan_025_2026-09-24.jpg",
+        "thumb": "assets/thumbs/khu6/cong_doan_025_2026-09-24.jpg",
+        "caption": "Dem hoi trang ram trao yeu thuong gan ket gia dinh",
+        "date": "2026-09-24"
+      },
+      {
+        "full": "assets/full/khu6/doan_tn_001_2025-10-06.jpg",
+        "thumb": "assets/thumbs/khu6/doan_tn_001_2025-10-06.jpg",
+        "caption": "Doan co so cong ty dien luc vung tau tham du dai hoi dai bieu doan",
+        "date": "2025-10-06"
+      },
+      {
+        "full": "assets/full/khu6/doan_tn_002_2025-10-06.jpg",
+        "thumb": "assets/thumbs/khu6/doan_tn_002_2025-10-06.jpg",
+        "caption": "Doan co so cong ty dien luc vung tau tham du dai hoi dai bieu doan",
+        "date": "2025-10-06"
+      },
+      {
+        "full": "assets/full/khu6/doan_tn_003_2025-10-06.jpg",
+        "thumb": "assets/thumbs/khu6/doan_tn_003_2025-10-06.jpg",
+        "caption": "Doan co so cong ty dien luc vung tau tham du dai hoi dai bieu doan",
+        "date": "2025-10-06"
+      },
+      {
+        "full": "assets/full/khu6/doan_tn_004_2025-10-06.jpg",
+        "thumb": "assets/thumbs/khu6/doan_tn_004_2025-10-06.jpg",
+        "caption": "Doan co so cong ty dien luc vung tau tham du dai hoi dai bieu doan",
+        "date": "2025-10-06"
+      },
+      {
+        "full": "assets/full/khu6/doan_tn_005_2025-10-06.jpg",
+        "thumb": "assets/thumbs/khu6/doan_tn_005_2025-10-06.jpg",
+        "caption": "Doan co so cong ty dien luc vung tau tham du dai hoi dai bieu doan",
+        "date": "2025-10-06"
+      },
+      {
+        "full": "assets/full/khu6/doan_tn_006_2025-10-06.jpg",
+        "thumb": "assets/thumbs/khu6/doan_tn_006_2025-10-06.jpg",
+        "caption": "Doan co so cong ty dien luc vung tau tham du dai hoi dai bieu doan",
+        "date": "2025-10-06"
+      },
+      {
+        "full": "assets/full/khu6/doan_tn_007_2025-10-06.jpg",
+        "thumb": "assets/thumbs/khu6/doan_tn_007_2025-10-06.jpg",
+        "caption": "Doan co so cong ty dien luc vung tau tham du dai hoi dai bieu doan",
+        "date": "2025-10-06"
+      },
+      {
+        "full": "assets/full/khu6/doan_tn_008_2025-10-06.jpg",
+        "thumb": "assets/thumbs/khu6/doan_tn_008_2025-10-06.jpg",
+        "caption": "Doan co so cong ty dien luc vung tau tham du dai hoi dai bieu doan",
+        "date": "2025-10-06"
+      },
+      {
+        "full": "assets/full/khu6/doan_tn_009_2025-12-06.jpg",
+        "thumb": "assets/thumbs/khu6/doan_tn_009_2025-12-06.jpg",
+        "caption": "Cung thay avatar huong ung tuan le hong evn lan thu",
+        "date": "2025-12-06"
+      },
+      {
+        "full": "assets/full/khu6/doan_tn_010_2026-01-17.jpg",
+        "thumb": "assets/thumbs/khu6/doan_tn_010_2026-01-17.jpg",
+        "caption": "Gop suc xuan tinh nguyen 2026 doan co so cong ty dien luc vung tau",
+        "date": "2026-01-17"
+      },
+      {
+        "full": "assets/full/khu6/doan_tn_011_2026-01-17.jpg",
+        "thumb": "assets/thumbs/khu6/doan_tn_011_2026-01-17.jpg",
+        "caption": "Gop suc xuan tinh nguyen 2026 doan co so cong ty dien luc vung tau",
+        "date": "2026-01-17"
+      },
+      {
+        "full": "assets/full/khu6/doan_tn_012_2026-01-17.jpg",
+        "thumb": "assets/thumbs/khu6/doan_tn_012_2026-01-17.jpg",
+        "caption": "Gop suc xuan tinh nguyen 2026 doan co so cong ty dien luc vung tau",
+        "date": "2026-01-17"
+      },
+      {
+        "full": "assets/full/khu6/doan_tn_013_2026-01-17.jpg",
+        "thumb": "assets/thumbs/khu6/doan_tn_013_2026-01-17.jpg",
+        "caption": "Gop suc xuan tinh nguyen 2026 doan co so cong ty dien luc vung tau",
+        "date": "2026-01-17"
+      },
+      {
+        "full": "assets/full/khu6/doan_tn_014_2026-01-17.jpg",
+        "thumb": "assets/thumbs/khu6/doan_tn_014_2026-01-17.jpg",
+        "caption": "Gop suc xuan tinh nguyen 2026 doan co so cong ty dien luc vung tau",
+        "date": "2026-01-17"
+      },
+      {
+        "full": "assets/full/khu6/doan_tn_015_2026-03-26.jpg",
+        "thumb": "assets/thumbs/khu6/doan_tn_015_2026-03-26.jpg",
+        "caption": "[CHỜ XÁC NHẬN]",
+        "date": "2026-03-26"
+      },
+      {
+        "full": "assets/full/khu6/doan_tn_016_2026-03-26.jpg",
+        "thumb": "assets/thumbs/khu6/doan_tn_016_2026-03-26.jpg",
+        "caption": "[CHỜ XÁC NHẬN]",
+        "date": "2026-03-26"
+      },
+      {
+        "full": "assets/full/khu6/doan_tn_017_2026-03-26.jpg",
+        "thumb": "assets/thumbs/khu6/doan_tn_017_2026-03-26.jpg",
+        "caption": "[CHỜ XÁC NHẬN]",
+        "date": "2026-03-26"
+      },
+      {
+        "full": "assets/full/khu6/doan_tn_018_2026-03-26.jpg",
+        "thumb": "assets/thumbs/khu6/doan_tn_018_2026-03-26.jpg",
+        "caption": "[CHỜ XÁC NHẬN]",
+        "date": "2026-03-26"
+      },
+      {
+        "full": "assets/full/khu6/doan_tn_019_2026-03-26.jpg",
+        "thumb": "assets/thumbs/khu6/doan_tn_019_2026-03-26.jpg",
+        "caption": "[CHỜ XÁC NHẬN]",
+        "date": "2026-03-26"
+      },
+      {
+        "full": "assets/full/khu6/doan_tn_020_2026-06-25.jpg",
+        "thumb": "assets/thumbs/khu6/doan_tn_020_2026-06-25.jpg",
+        "caption": "Tuoi tre pcvt mang nang luong an toan tiet kiem va so hoa den xa chau",
+        "date": "2026-06-25"
+      },
+      {
+        "full": "assets/full/khu6/doan_tn_021_2026-06-25.jpg",
+        "thumb": "assets/thumbs/khu6/doan_tn_021_2026-06-25.jpg",
+        "caption": "Tuoi tre pcvt mang nang luong an toan tiet kiem va so hoa den xa chau",
+        "date": "2026-06-25"
+      },
+      {
+        "full": "assets/full/khu6/doan_tn_022_2026-09-23.jpg",
+        "thumb": "assets/thumbs/khu6/doan_tn_022_2026-09-23.jpg",
+        "caption": "Doan thanh nien cong ty dien luc vung tau hanh trinh ve nguon tai di",
+        "date": "2026-09-23"
+      },
+      {
+        "full": "assets/full/khu6/doan_tn_023_2026-09-23.jpg",
+        "thumb": "assets/thumbs/khu6/doan_tn_023_2026-09-23.jpg",
+        "caption": "Doan thanh nien cong ty dien luc vung tau hanh trinh ve nguon tai di",
+        "date": "2026-09-23"
+      },
+      {
+        "full": "assets/full/khu6/doan_tn_024_2026-09-23.jpg",
+        "thumb": "assets/thumbs/khu6/doan_tn_024_2026-09-23.jpg",
+        "caption": "Doan thanh nien cong ty dien luc vung tau hanh trinh ve nguon tai di",
+        "date": "2026-09-23"
+      },
+      {
+        "full": "assets/full/khu6/doan_tn_025_2026-09-23.jpg",
+        "thumb": "assets/thumbs/khu6/doan_tn_025_2026-09-23.jpg",
+        "caption": "Doan thanh nien cong ty dien luc vung tau hanh trinh ve nguon tai di",
+        "date": "2026-09-23"
+      }
+    ]
+  }
+]
