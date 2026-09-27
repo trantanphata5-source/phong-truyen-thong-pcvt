@@ -1,4 +1,5 @@
 import * as THREE from 'three';
+import { WALLS, PARTITIONS, WALL_HEIGHT, PARTITION_HEIGHT, FLOORS } from './layout-config.js';
 
 /**
  * Museum Architect (Artsteps Standard)
@@ -151,13 +152,13 @@ export class MuseumArchitect {
     const museumGroup = new THREE.Group();
     museumGroup.name = 'MuseumArchitecture';
 
-    // 1. Floor & Ceiling
+    // 1. Floor & Ceiling (bao gồm khu 4 & 6)
     this.buildFloorsAndCeilings(museumGroup);
 
-    // 2. Main Outer Structural Walls
+    // 2. All Walls from layout-config.js
     this.buildOuterWalls(museumGroup);
 
-    // 3. Exhibition Partition Walls (Vách Trưng Bày Nghệ Thuật)
+    // 3. Partition Walls (chỉ còn vách khu 1)
     this.buildPartitionWalls(museumGroup);
 
     // 4. Central Rotunda & PCVT Seal
@@ -178,13 +179,13 @@ export class MuseumArchitect {
     // 8. Luxury Showcase Vitrine for Historical Albums (Matching Reference Photo)
     this.buildLuxuryShowcaseVitrine(museumGroup);
 
-    // 9. Grand Lighting
+    // 9. Grand Lighting (bao gồm khu 4 & 6)
     this.setupLighting(museumGroup);
 
     // 10. Interactive Floor Target Marker for Artsteps Navigation
     this.buildFloorMarker(museumGroup);
 
-    // 11. Ho Chi Minh Cultural Zone (Khu 4: Không Gian Văn Hóa Hồ Chí Minh)
+    // 11. Ho Chi Minh Cultural Zone (Khu 5)
     this.buildHCMCulturalZone(museumGroup);
 
     this.scene.add(museumGroup);
@@ -192,22 +193,40 @@ export class MuseumArchitect {
   }
 
   buildFloorsAndCeilings(parent) {
-    // Main Floor
-    const floorGeo = new THREE.PlaneGeometry(140, 140);
+    // Main Floor (expanded to cover all zones including khu 4/6)
+    const mainFloor = FLOORS.main;
+    const floorGeo = new THREE.PlaneGeometry(mainFloor.width, mainFloor.depth);
     this.floorMesh = new THREE.Mesh(floorGeo, this.matFloor);
     this.floorMesh.rotation.x = -Math.PI / 2;
+    this.floorMesh.position.set(mainFloor.cx, 0, mainFloor.cz);
     this.floorMesh.receiveShadow = true;
     this.floorMesh.name = 'WalkableFloor';
     this.floorMesh.userData = { isFloor: true };
     parent.add(this.floorMesh);
 
-    // Ceiling — clipped to not extend into HCM zone (HCM has its own ceiling)
-    // Main museum spans X=-70..70, Z=-70..38 (stop before HCM entrance)
-    const ceilGeo = new THREE.PlaneGeometry(140, 108);
+    // Main Ceiling (khu 1, 2, 3 + sảnh)
+    const mainCeil = FLOORS.main_ceiling;
+    const ceilGeo = new THREE.PlaneGeometry(mainCeil.width, mainCeil.depth);
     const ceilMesh = new THREE.Mesh(ceilGeo, this.matCeiling);
-    ceilMesh.position.set(0, 8.5, -16);
+    ceilMesh.position.set(mainCeil.cx, mainCeil.y, mainCeil.cz);
     ceilMesh.rotation.x = Math.PI / 2;
     parent.add(ceilMesh);
+
+    // Ceiling Khu 4 (Đảng bộ)
+    const ceil4 = FLOORS.ceiling_khu4;
+    const ceilGeo4 = new THREE.PlaneGeometry(ceil4.width, ceil4.depth);
+    const ceilMesh4 = new THREE.Mesh(ceilGeo4, this.matCeiling);
+    ceilMesh4.position.set(ceil4.cx, ceil4.y, ceil4.cz);
+    ceilMesh4.rotation.x = Math.PI / 2;
+    parent.add(ceilMesh4);
+
+    // Ceiling Khu 6 (CĐ + ĐTN)
+    const ceil6 = FLOORS.ceiling_khu6;
+    const ceilGeo6 = new THREE.PlaneGeometry(ceil6.width, ceil6.depth);
+    const ceilMesh6 = new THREE.Mesh(ceilGeo6, this.matCeiling);
+    ceilMesh6.position.set(ceil6.cx, ceil6.y, ceil6.cz);
+    ceilMesh6.rotation.x = Math.PI / 2;
+    parent.add(ceilMesh6);
   }
 
   createWallMesh(w, h, d, x, y, z, rotY = 0, mat = this.matWall, name = '') {
@@ -239,34 +258,15 @@ export class MuseumArchitect {
   }
 
   buildOuterWalls(parent) {
-    const h = 8.0;
-
-    // --- NORTH HALL (Khu 1: Nhà Nước & EVN) ---
-    // Back Wall (Tường Danh Dự Huân Chương Lao Động)
-    parent.add(this.createWallMesh(36, h, 1.2, 0, h / 2, -45, 0, this.matWall, 'Wall_North_Back'));
-    // North West Wall
-    parent.add(this.createWallMesh(32, h, 1.2, -18, h / 2, -29, Math.PI / 2, this.matWall, 'Wall_North_West'));
-    // North East Wall
-    parent.add(this.createWallMesh(32, h, 1.2, 18, h / 2, -29, Math.PI / 2, this.matWall, 'Wall_North_East'));
-
-    // --- WEST HALL (Khu 2: Tỉnh Bà Rịa - Vũng Tàu) ---
-    // West Far Wall (Tường chính dài 50m)
-    parent.add(this.createWallMesh(52, h, 1.2, -50, h / 2, 0, Math.PI / 2, this.matWall, 'Wall_West_Far'));
-    // West North Wall
-    parent.add(this.createWallMesh(32, h, 1.2, -34, h / 2, -25, 0, this.matWall, 'Wall_West_North'));
-    // West South Wall
-    parent.add(this.createWallMesh(32, h, 1.2, -34, h / 2, 25, 0, this.matWall, 'Wall_West_South'));
-
-    // --- EAST HALL (Khu 3: Công Đoàn & Phong Trào) ---
-    // East Far Wall (Tường chính dài 50m)
-    parent.add(this.createWallMesh(52, h, 1.2, 50, h / 2, 0, -Math.PI / 2, this.matWall, 'Wall_East_Far'));
-    // East North Wall
-    parent.add(this.createWallMesh(32, h, 1.2, 34, h / 2, -25, 0, this.matWall, 'Wall_East_North'));
-    // East South Wall
-    parent.add(this.createWallMesh(32, h, 1.2, 34, h / 2, 25, 0, this.matWall, 'Wall_East_South'));
-
-    // --- SOUTH ENTRANCE — walls removed to open clean view into HCM Zone ---
-    // (Wall_South_Left and Wall_South_Right removed per user request)
+    // Dựng tường từ layout-config.js
+    for (const wall of WALLS) {
+      const h = wall.h;
+      parent.add(this.createWallMesh(
+        wall.w, h, wall.d,
+        wall.x, h / 2, wall.z,
+        wall.rotY, this.matWall, wall.id
+      ));
+    }
   }
 
   /**
@@ -274,16 +274,17 @@ export class MuseumArchitect {
    * Provides ample exhibition surfaces for all 205 items
    */
   buildPartitionWalls(parent) {
-    const h = 5.2; // Gallery partition height (elegant museum proportion)
-
-    // 1. Hall 1 Center Island Partition (X=0, Z=-31, Length 16m, oriented along Z)
-    parent.add(this.createWallMesh(16, h, 0.8, 0, h / 2, -31, Math.PI / 2, this.matPartition, 'Partition_Hall1_Center'));
-
-    // 2. Hall 2 Gallery Partition (X=-35, Z=0, Length 24m, oriented along Z)
-    parent.add(this.createWallMesh(24, h, 0.8, -35, h / 2, 0, Math.PI / 2, this.matPartition, 'Partition_Hall2_Center'));
-
-    // 3. Hall 3 Gallery Partition (X=35, Z=0, Length 22m, oriented along Z)
-    parent.add(this.createWallMesh(22, h, 0.8, 35, h / 2, 0, Math.PI / 2, this.matPartition, 'Partition_Hall3_Center'));
+    // Dựng vách ngăn từ layout-config.js
+    // GĐ2: Bỏ Partition_Hall1_Center (x=0) và Partition_Hall3_Center (x=35)
+    // Chỉ còn vách khu 1 (x=-35)
+    for (const part of PARTITIONS) {
+      const h = part.h;
+      parent.add(this.createWallMesh(
+        part.w, h, part.d,
+        part.x, h / 2, part.z,
+        part.rotY, this.matPartition, part.id
+      ));
+    }
   }
 
   buildCentralRotunda(parent) {
@@ -1012,14 +1013,13 @@ export class MuseumArchitect {
 
     // Plant Coordinates - Exactly flush against wall baseboards and corners (3cm clearance)
     const plantCoords = [
-      // 1. North Hall (Hall 1) - Back corners, Portal side walls & Partition south end
-      [-16.93, -43.93], // North-West back corner
-      [ 16.93, -43.93], // North-East back corner
+      // 1. Khu 2 (North Hall) - Back corners, Portal side walls
+      [-16.93, -53.93], // Back wall North-West corner (z adjusted for z=-55)
+      [ 16.93, -53.93], // Back wall North-East corner
       [-16.93, -15.00], // Entrance Portal West wall
       [ 16.93, -15.00], // Entrance Portal East wall
-      [  0.00, -22.57], // Center Island Partition south end
 
-      // 2. West Hall (Hall 2) - Far corners, Partition ends, Portal corners
+      // 2. Khu 1 (West Hall) - Far corners, Partition ends, Portal corners
       [-48.93, -23.93], // Far North-West corner
       [-48.93,  23.93], // Far South-West corner
       [-19.00, -23.93], // East Portal North wall
@@ -1027,17 +1027,23 @@ export class MuseumArchitect {
       [-35.00, -12.43], // Center Partition North end
       [-35.00,  12.43], // Center Partition South end
 
-      // 3. East Hall (Hall 3) - Far corners, Partition ends, Portal corners
+      // 3. Khu 3 (East Hall) - Far corners, Portal corners (partition removed)
       [ 48.93, -23.93], // Far North-East corner
       [ 48.93,  23.93], // Far South-East corner
       [ 19.00, -23.93], // West Portal North wall
       [ 19.00,  23.93], // West Portal South wall
-      [ 35.00, -11.43], // Center Partition North end
-      [ 35.00,  11.43], // Center Partition South end
 
-      // 4. South Lobby - Entrance wall corners
-      [-21.50,  36.93], // Lobby South-West corner
-      [ 21.50,  36.93]  // Lobby South-East corner
+      // 4. Khu 4 (Đảng bộ - SE) corners
+      [ 48.93,  39.00], // NE corner
+      [ 48.93,  80.93], // SE corner
+      [ 23.00,  80.93], // SW corner
+      [ 23.00,  39.00], // NW corner
+
+      // 5. Khu 6 (CĐ+ĐTN - SW) corners
+      [-48.93,  39.00], // NW corner
+      [-48.93,  80.93], // SW corner
+      [-23.00,  80.93], // SE corner
+      [-23.00,  39.00], // NE corner
     ];
 
     plantCoords.forEach(([x, z]) => createPlant(x, z));
@@ -1098,23 +1104,34 @@ export class MuseumArchitect {
       ceilGroup.add(g);
     };
 
-    // Hall 1 ceiling lights
+    // Khu 2 ceiling lights (North - deeper with z=-55)
     createCoffer(12, 2.5, 0, 8.35, -24, 0);
     createCoffer(12, 2.5, 0, 8.35, -34, 0);
-    createCoffer(12, 2.5, 0, 8.35, -42, 0);
+    createCoffer(12, 2.5, 0, 8.35, -44, 0);
+    createCoffer(12, 2.5, 0, 8.35, -52, 0);
 
-    // Hall 2 ceiling lights (West)
+    // Khu 1 ceiling lights (West)
     createCoffer(14, 2.5, -26, 8.35, 0, Math.PI / 2);
     createCoffer(14, 2.5, -36, 8.35, 0, Math.PI / 2);
     createCoffer(14, 2.5, -46, 8.35, 0, Math.PI / 2);
 
-    // Hall 3 ceiling lights (East)
+    // Khu 3 ceiling lights (East)
     createCoffer(14, 2.5, 26, 8.35, 0, Math.PI / 2);
     createCoffer(14, 2.5, 36, 8.35, 0, Math.PI / 2);
     createCoffer(14, 2.5, 46, 8.35, 0, Math.PI / 2);
 
     // South lobby ceiling light
     createCoffer(10, 2.5, 0, 8.35, 26, 0);
+
+    // Khu 4 ceiling lights (Đảng bộ)
+    createCoffer(12, 2.5, 36, 8.35, 50, 0);
+    createCoffer(12, 2.5, 36, 8.35, 65, 0);
+    createCoffer(12, 2.5, 36, 8.35, 77, 0);
+
+    // Khu 6 ceiling lights (CĐ + ĐTN)
+    createCoffer(12, 2.5, -36, 8.35, 50, 0);
+    createCoffer(12, 2.5, -36, 8.35, 65, 0);
+    createCoffer(12, 2.5, -36, 8.35, 77, 0);
 
     parent.add(ceilGroup);
   }
@@ -1191,6 +1208,20 @@ export class MuseumArchitect {
     createHallSpot(0xfee2e2, 32, 7.5, 0, 49, 3.0, 0);
     createHallSpot(0xfee2e2, 35, 7.5, -12, 35, 3.0, 0);
     createHallSpot(0xfee2e2, 35, 7.5, 12, 35, 3.0, 0);
+
+    // Khu 4 (Đảng bộ) — warm red accent
+    const k4Light = new THREE.PointLight(0xfffaed, 3.0, 35);
+    k4Light.position.set(36, 7.5, 60);
+    parent.add(k4Light);
+    createHallSpot(0xfee2e2, 36, 7.5, 50, 36, 3.0, 55);
+    createHallSpot(0xfee2e2, 36, 7.5, 70, 36, 3.0, 65);
+
+    // Khu 6 (CĐ + ĐTN) — cool blue accent
+    const k6Light = new THREE.PointLight(0xfffaed, 3.0, 35);
+    k6Light.position.set(-36, 7.5, 60);
+    parent.add(k6Light);
+    createHallSpot(0xdcfce7, -36, 7.5, 50, -36, 3.0, 55);
+    createHallSpot(0xdcfce7, -36, 7.5, 70, -36, 3.0, 65);
   }
 
   /**

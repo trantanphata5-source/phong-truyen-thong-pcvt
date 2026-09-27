@@ -1,4 +1,5 @@
 import * as THREE from 'three';
+import { EYE_HEIGHT, buildCollisionBoxes, WALKABLE_REGIONS, HALL_TARGETS } from './layout-config.js';
 
 /**
  * Controls Manager (Artsteps Standard)
@@ -16,7 +17,7 @@ export class ControlsManager {
     this.audioService = audioService;
 
     // View Heights & Speeds
-    this.eyeHeight = 1.75;
+    this.eyeHeight = EYE_HEIGHT;
     this.walkSpeed = 9.0;
     this.sensitivity = 0.0025;
 
@@ -46,41 +47,13 @@ export class ControlsManager {
     this.glideTween = null;
     this.isAlbumViewingActive = false;
 
-    // Museum Wall & Partition Collision Boxes (AABBs: minX, maxX, minZ, maxZ)
-    // Completely prevents walking through walls or partitions anywhere in the museum
-    this.collisionWalls = [
-      // 1. Central Partitions (Freestanding exhibit walls)
-      { name: 'Partition_Hall1_Center', minX: -0.6, maxX: 0.6, minZ: -40.0, maxZ: -22.0 },
-      { name: 'Partition_Hall2_Center', minX: -36.0, maxX: -34.0, minZ: -13.0, maxZ: 13.0 },
-      { name: 'Partition_Hall3_Center', minX: 34.0, maxX: 36.0, minZ: -13.0, maxZ: 13.0 },
+    // Museum Wall & Partition Collision Boxes (generated from layout-config.js)
+    this.collisionWalls = buildCollisionBoxes();
 
-      // 2. North Hall Outer Walls
-      { name: 'Wall_North_Back', minX: -19.0, maxX: 19.0, minZ: -46.0, maxZ: -44.0 },
-      { name: 'Wall_North_West', minX: -19.0, maxX: -17.0, minZ: -45.0, maxZ: -17.0 },
-      { name: 'Wall_North_East', minX: 17.0, maxX: 19.0, minZ: -45.0, maxZ: -17.0 },
-
-      // 3. West Hall Outer Walls
-      { name: 'Wall_West_Far', minX: -51.0, maxX: -49.0, minZ: -26.0, maxZ: 26.0 },
-      { name: 'Wall_West_North', minX: -50.0, maxX: -17.0, minZ: -26.0, maxZ: -24.0 },
-      { name: 'Wall_West_South', minX: -50.0, maxX: -17.0, minZ: 24.0, maxZ: 26.0 },
-
-      // 4. East Hall Outer Walls
-      { name: 'Wall_East_Far', minX: 49.0, maxX: 51.0, minZ: -26.0, maxZ: 26.0 },
-      { name: 'Wall_East_North', minX: 17.0, maxX: 50.0, minZ: -26.0, maxZ: -24.0 },
-      { name: 'Wall_East_South', minX: 17.0, maxX: 50.0, minZ: 24.0, maxZ: 26.0 },
-
-      // 5. South Lobby & Entrance Walls
-      { name: 'Wall_South_Left', minX: -35.0, maxX: -22.0, minZ: 37.0, maxZ: 39.0 },
-      { name: 'Wall_South_Right', minX: 22.0, maxX: 35.0, minZ: 37.0, maxZ: 39.0 },
-
-      // 6. Luxury Showcase Vitrine for Historical Albums (Central Rotunda)
-      { name: 'Showcase_Album_Vitrine', minX: -1.25, maxX: 1.25, minZ: -8.9, maxZ: -7.5 },
-
-      // 7. HCM Cultural Zone (Khu 4) Walls
-      { name: 'Wall_HCM_West', minX: -23.0, maxX: -21.0, minZ: 38.0, maxZ: 82.0 },
-      { name: 'Wall_HCM_East', minX: 21.0, maxX: 23.0, minZ: 38.0, maxZ: 82.0 },
-      { name: 'Wall_HCM_South', minX: -22.0, maxX: 22.0, minZ: 81.0, maxZ: 83.0 }
-    ];
+    // Showcase Vitrine in Central Rotunda
+    this.collisionWalls.push(
+      { id: 'Showcase_Album_Vitrine', minX: -1.25, maxX: 1.25, minZ: -8.9, maxZ: -7.5 }
+    );
 
     // Player collision radius (50cm)
     this.playerRadius = 0.5;
@@ -101,15 +74,15 @@ export class ControlsManager {
       }
     }
 
-    // 2. Validate position inside defined architectural rooms (T-shape museum + HCM Zone)
-    const inHall1 = x >= -17.5 && x <= 17.5 && z >= -44.2 && z <= -17.0;
-    const inHall2 = x >= -49.2 && x <= -17.0 && z >= -24.2 && z <= 24.2;
-    const inHall3 = x >= 17.0 && x <= 49.2 && z >= -24.2 && z <= 24.2;
-    const inRotunda = x >= -17.5 && x <= 17.5 && z >= -17.0 && z <= 24.5;
-    const inLobby = x >= -10.0 && x <= 10.0 && z >= 24.5 && z <= 37.5;
-    const inHCM = x >= -21.0 && x <= 21.0 && z >= 36.5 && z <= 80.5;
-
-    if (!inHall1 && !inHall2 && !inHall3 && !inRotunda && !inLobby && !inHCM) {
+    // 2. Validate position inside walkable regions from layout-config.js
+    let inAnyRegion = false;
+    for (const region of WALKABLE_REGIONS) {
+      if (x >= region.minX && x <= region.maxX && z >= region.minZ && z <= region.maxZ) {
+        inAnyRegion = true;
+        break;
+      }
+    }
+    if (!inAnyRegion) {
       return true; // Outside bounds
     }
 
@@ -378,25 +351,13 @@ export class ControlsManager {
   }
 
   teleportToHall(hallId) {
-    let targetPos, lookTarget;
+    // Map old hall IDs to new khu IDs
+    const idMap = { hall_1: 'khu1', hall_2: 'khu2', hall_3: 'khu3', hcm: 'khu5' };
+    const khuId = idMap[hallId] || hallId;
+    const target = HALL_TARGETS[khuId] || HALL_TARGETS.all;
 
-    if (hallId === 'hall_1') {
-      targetPos = new THREE.Vector3(0, this.eyeHeight, -25);
-      lookTarget = new THREE.Vector3(0, 3.5, -45);
-    } else if (hallId === 'hall_2') {
-      targetPos = new THREE.Vector3(-28, this.eyeHeight, 0);
-      lookTarget = new THREE.Vector3(-49, 3.0, 0);
-    } else if (hallId === 'hall_3') {
-      targetPos = new THREE.Vector3(28, this.eyeHeight, 0);
-      lookTarget = new THREE.Vector3(49, 3.0, 0);
-    } else if (hallId === 'hcm') {
-      targetPos = new THREE.Vector3(0, this.eyeHeight, 45);
-      lookTarget = new THREE.Vector3(0, 4.0, 60);
-    } else {
-      // All / Rotunda
-      targetPos = new THREE.Vector3(0, this.eyeHeight, 18);
-      lookTarget = new THREE.Vector3(0, 2.5, 0);
-    }
+    const targetPos = new THREE.Vector3(target.x, this.eyeHeight, target.z);
+    const lookTarget = new THREE.Vector3(target.lookX, target.lookY, target.lookZ);
 
     const lookDir = new THREE.Vector3().subVectors(lookTarget, targetPos).normalize();
     const endYaw = Math.atan2(-lookDir.x, -lookDir.z);

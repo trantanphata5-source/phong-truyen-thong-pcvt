@@ -29,7 +29,7 @@ class HeritageApp {
       250
     );
     // Start position at the South entrance looking into the hall
-    this.camera.position.set(0, 1.75, 26);
+    this.camera.position.set(0, 2.75, 26);
 
     // Mobile detection for performance tuning
     this.isMobile = /Android|iPhone|iPad|iPod|Opera Mini|IEMobile/i.test(navigator.userAgent)
