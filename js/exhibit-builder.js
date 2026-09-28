@@ -22,8 +22,12 @@ export class ExhibitBuilder {
     this.mountedExhibits = [];
 
     // GĐ3-fix2 thông số tầng ảnh
+    // Vách ngăn đơn giữa khu (partition_k1): 3.10 / 1.50
     this.ROW_Y_TOP = 3.10;
     this.ROW_Y_BOTTOM = 1.50;
+    // Các bức tường xung quanh bảo tàng nâng cao lên vừa tầm mắt người xem (eyeHeight 2.85m)
+    this.OUTER_ROW_Y_TOP = 3.50;
+    this.OUTER_ROW_Y_BOTTOM = 1.85;
     this.MIN_GAP = 0.35;
     this.END_MARGIN = 1.20;
 
@@ -196,8 +200,14 @@ export class ExhibitBuilder {
       }
     };
 
-    mountRow(topItems, this.ROW_Y_TOP);
-    mountRow(bottomItems, this.ROW_Y_BOTTOM);
+    // Tường đơn giữa khu (partition_k1) giữ mức cũ 3.10 / 1.50
+    // Các bức tường xung quanh bảo tàng nâng cao lên vừa tầm mắt người xem: 3.50 / 1.85
+    const isPartition = wallId === 'partition_k1' || (wallId && wallId.startsWith('partition_'));
+    const yTop = isPartition ? this.ROW_Y_TOP : this.OUTER_ROW_Y_TOP;
+    const yBottom = isPartition ? this.ROW_Y_BOTTOM : this.OUTER_ROW_Y_BOTTOM;
+
+    mountRow(topItems, yTop);
+    mountRow(bottomItems, yBottom);
   }
 
   // ===========================================================================

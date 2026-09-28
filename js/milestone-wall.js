@@ -48,15 +48,15 @@ export class MilestoneWallBuilder {
     const xWest = 35.0 - 0.3 - 0.05; // 34.65
     const rotYWest = -Math.PI / 2;
 
-    // 1.1 Dòng đầu "CHẶNG ĐƯỜNG MỚI" ở y = 5.1
-    this.addHeaderBanner(westGroup, xWest, 5.1, 0, rotYWest, 'CHẶNG ĐƯỜNG MỚI');
+    // 1.1 Dòng đầu "CHẶNG ĐƯỜNG MỚI" ở y = 5.2
+    this.addHeaderBanner(westGroup, xWest, 5.2, 0, rotYWest, 'CHẶNG ĐƯỜNG MỚI');
 
-    // 1.2 Đường LED dòng thời gian ở y = 2.2, chạy từ z = -10.5 đến +10.5
+    // 1.2 Đường LED dòng thời gian ở y = 2.25, chạy từ z = -10.5 đến +10.5
     const ledLength = 21.0;
-    const ledGeo = new THREE.CylinderGeometry(0.04, 0.04, ledLength, 16);
+    const ledGeo = new THREE.CylinderGeometry(0.035, 0.035, ledLength, 16);
     const ledMesh = new THREE.Mesh(ledGeo, this.matCyanLED);
     ledMesh.rotation.x = Math.PI / 2;
-    ledMesh.position.set(xWest, 2.2, 0);
+    ledMesh.position.set(xWest, 2.25, 0);
     westGroup.add(ledMesh);
 
     // 3 Mốc son chi tiết
@@ -65,8 +65,9 @@ export class MilestoneWallBuilder {
         index: 1,
         z: -7.5,
         date: '04/08/2025',
-        title: 'Công bố Quyết định thành lập',
+        title: 'CÔNG BỐ QUYẾT ĐỊNH THÀNH LẬP',
         subtitle: 'Công ty Điện lực Vũng Tàu',
+        descExtra: 'Theo Quyết định số 186/QĐ-EVNSPC của EVNSPC',
         mainId: 'pcvt_003_2025-08-04',
         smallIds: ['pcvt_004_2025-08-04', 'pcvt_005_2025-08-04'],
         mainSize: { w: 3.2, h: 1.8 },
@@ -77,8 +78,8 @@ export class MilestoneWallBuilder {
         index: 2,
         z: 0.0,
         date: '01/01/2026',
-        title: 'Đồng chí Nguyễn Ngọc Tuyến',
-        subtitle: 'nhận nhiệm vụ Giám đốc Công ty',
+        title: 'ĐỒNG CHÍ NGUYỄN NGỌC TUYẾN',
+        subtitle: 'Nhận nhiệm vụ Giám đốc Công ty (từ 01/01/2026)',
         descExtra: 'Lễ công bố và trao quyết định cán bộ – 16/01/2026',
         mainId: 'moc2_01',
         smallIds: ['moc2_02'],
@@ -90,8 +91,9 @@ export class MilestoneWallBuilder {
         index: 3,
         z: 7.5,
         date: '01/07/2026',
-        title: 'Kỷ niệm 1 năm thành lập',
+        title: 'KỶ NIỆM 1 NĂM THÀNH LẬP',
         subtitle: 'Công ty Điện lực Vũng Tàu',
+        descExtra: 'Đánh dấu chặng đường 1 năm xây dựng, ổn định và phát triển bền vững',
         mainId: 'pcvt_069_2026-07-01',
         smallIds: ['pcvt_070_2026-07-01', 'pcvt_071_2026-07-01'],
         mainSize: { w: 3.2, h: 1.8 },
@@ -101,19 +103,19 @@ export class MilestoneWallBuilder {
     ];
 
     milestones.forEach(m => {
-      // Node LED trên đường timeline
+      // Node LED trên đường timeline (y = 2.25)
       const nodeGeo = new THREE.CylinderGeometry(0.18, 0.18, 0.08, 24);
       const nodeMesh = new THREE.Mesh(nodeGeo, this.matGold);
       nodeMesh.rotation.z = Math.PI / 2;
-      nodeMesh.position.set(xWest - 0.01, 2.2, m.z);
+      nodeMesh.position.set(xWest - 0.01, 2.25, m.z);
       westGroup.add(nodeMesh);
 
       const nodeCore = new THREE.Mesh(new THREE.CylinderGeometry(0.12, 0.12, 0.09, 24), this.matCyanLED);
       nodeCore.rotation.z = Math.PI / 2;
-      nodeCore.position.set(xWest - 0.015, 2.2, m.z);
+      nodeCore.position.set(xWest - 0.015, 2.25, m.z);
       westGroup.add(nodeCore);
 
-      // Ảnh chính tại y = 3.5
+      // Ảnh chính tại y = 3.60
       const mainItem = itemsById.get(m.mainId) || {
         id: m.mainId,
         source: 'pcvt',
@@ -129,14 +131,14 @@ export class MilestoneWallBuilder {
         { w: m.mainSize.w, h: m.mainSize.h, frameType: 'gold_honor' },
         rotYWest
       );
-      mainExhibit.position.set(xWest, 3.5, m.z + m.mainOffsetZ);
+      mainExhibit.position.set(xWest, 3.60, m.z + m.mainOffsetZ);
       westGroup.add(mainExhibit);
       if (onExhibitDone) onExhibitDone();
 
       // Các ảnh nhỏ xếp bên cạnh
       if (m.smallIds && m.smallIds.length > 0) {
         if (m.smallIds.length === 1) {
-          // 1 ảnh nhỏ (Mốc 2)
+          // 1 ảnh nhỏ (Mốc 2) tại y = 3.60
           const smItem = itemsById.get(m.smallIds[0]) || {
             id: m.smallIds[0],
             source: 'pcvt',
@@ -151,12 +153,12 @@ export class MilestoneWallBuilder {
             { w: 1.4, h: 0.95, frameType: 'cert' },
             rotYWest
           );
-          smExhibit.position.set(xWest, 3.5, m.z + m.smallOffsetZ);
+          smExhibit.position.set(xWest, 3.60, m.z + m.smallOffsetZ);
           westGroup.add(smExhibit);
           if (onExhibitDone) onExhibitDone();
         } else {
-          // 2 ảnh nhỏ xếp chồng (y = 4.0 và y = 3.0)
-          const yOffsets = [4.0, 3.0];
+          // 2 ảnh nhỏ xếp chồng tại y = 4.15 và y = 3.05
+          const yOffsets = [4.15, 3.05];
           m.smallIds.forEach((smId, idx) => {
             const smItem = itemsById.get(smId) || {
               id: smId,
@@ -179,11 +181,9 @@ export class MilestoneWallBuilder {
         }
       }
 
-      // Ngày tháng lớn (font weight 900) ở y = 1.75
-      this.addDateText(westGroup, xWest, 1.75, m.z, rotYWest, m.date);
-
-      // Mô tả ở y = 1.30
-      this.addDescText(westGroup, xWest, 1.30, m.z, rotYWest, m.title, m.subtitle, m.descExtra);
+      // Bảng thông tin mốc son tích hợp (y = 1.35, cao 1.30m: từ 0.70m đến 2.00m)
+      // Không còn z-fighting, không chồng chéo, ngày tháng nổi bật ở đỉnh card
+      this.addMilestoneCard(westGroup, xWest, 1.35, m.z, rotYWest, m);
     });
 
     group.add(westGroup);
@@ -272,72 +272,96 @@ export class MilestoneWallBuilder {
     parent.add(mesh);
   }
 
-  addDateText(parent, x, y, z, rotY, dateStr) {
+  addMilestoneCard(parent, x, y, z, rotY, m) {
     const canvas = document.createElement('canvas');
-    canvas.width = 640;
-    canvas.height = 128;
+    canvas.width = 1200;
+    canvas.height = 420;
     const ctx = canvas.getContext('2d');
 
-    ctx.fillStyle = '#0a1020';
-    ctx.fillRect(0, 0, 640, 128);
+    // 1. Nền card bo góc sang trọng
+    ctx.fillStyle = '#080d1a';
+    ctx.beginPath();
+    ctx.roundRect(8, 8, 1184, 404, 16);
+    ctx.fill();
+
+    // Viền vàng kim loại sang trọng
+    ctx.strokeStyle = 'rgba(250, 204, 21, 0.75)';
+    ctx.lineWidth = 3.5;
+    ctx.stroke();
+
+    // Viền trong cyan neon nhẹ
+    ctx.strokeStyle = 'rgba(34, 211, 238, 0.25)';
+    ctx.lineWidth = 1.5;
+    ctx.beginPath();
+    ctx.roundRect(18, 18, 1164, 384, 12);
+    ctx.stroke();
+
+    // 2. Badge ngày tháng nổi bật ở đỉnh card
+    const badgeW = 420;
+    const badgeH = 64;
+    const badgeX = (1200 - badgeW) / 2;
+    const badgeY = 28;
+
+    const grad = ctx.createLinearGradient(badgeX, badgeY, badgeX + badgeW, badgeY + badgeH);
+    grad.addColorStop(0, '#0369a1');
+    grad.addColorStop(0.5, '#0891b2');
+    grad.addColorStop(1, '#0369a1');
+
+    ctx.fillStyle = grad;
+    ctx.beginPath();
+    ctx.roundRect(badgeX, badgeY, badgeW, badgeH, 32);
+    ctx.fill();
 
     ctx.strokeStyle = '#22d3ee';
-    ctx.lineWidth = 4;
-    ctx.strokeRect(4, 4, 632, 120);
+    ctx.lineWidth = 3;
+    ctx.stroke();
 
+    // Chữ ngày tháng nổi bật (font 900, glow cyan)
     ctx.fillStyle = '#ffffff';
-    ctx.font = `900 46px ${FONT_FAMILY}`;
+    ctx.font = `900 40px ${FONT_FAMILY}`;
     ctx.textAlign = 'center';
     ctx.textBaseline = 'middle';
     ctx.shadowColor = '#22d3ee';
-    ctx.shadowBlur = 8;
-    ctx.fillText(dateStr, 320, 64);
+    ctx.shadowBlur = 10;
+    ctx.fillText(m.date, 600, badgeY + badgeH / 2);
+    ctx.shadowBlur = 0; // reset shadow
 
-    const tex = new THREE.CanvasTexture(canvas);
-    tex.colorSpace = THREE.SRGBColorSpace;
-    const mat = new THREE.MeshStandardMaterial({
-      map: tex,
-      metalness: 0.7,
-      roughness: 0.25,
-      emissive: new THREE.Color(0x22d3ee),
-      emissiveIntensity: 0.25
-    });
+    // 3. Đường kẻ trang trí ngăn cách
+    const divGrad = ctx.createLinearGradient(200, 118, 1000, 118);
+    divGrad.addColorStop(0, 'rgba(250, 204, 21, 0)');
+    divGrad.addColorStop(0.5, 'rgba(250, 204, 21, 0.6)');
+    divGrad.addColorStop(1, 'rgba(250, 204, 21, 0)');
+    ctx.strokeStyle = divGrad;
+    ctx.lineWidth = 2;
+    ctx.beginPath();
+    ctx.moveTo(200, 118);
+    ctx.lineTo(1000, 118);
+    ctx.stroke();
 
-    const mesh = new THREE.Mesh(new THREE.PlaneGeometry(2.4, 0.48), mat);
-    mesh.position.set(x, y, z);
-    mesh.rotation.y = rotY;
-    parent.add(mesh);
-  }
-
-  addDescText(parent, x, y, z, rotY, title, subtitle, extra) {
-    const canvas = document.createElement('canvas');
-    canvas.width = 1024;
-    canvas.height = 256;
-    const ctx = canvas.getContext('2d');
-
-    ctx.fillStyle = 'rgba(10, 16, 32, 0.95)';
-    ctx.fillRect(0, 0, 1024, 256);
-
-    ctx.strokeStyle = 'rgba(250, 204, 21, 0.4)';
-    ctx.lineWidth = 3;
-    ctx.strokeRect(6, 6, 1012, 244);
-
+    // 4. Tiêu đề chính (Màu vàng kim sang trọng, font 800 36px)
     ctx.fillStyle = '#fde047';
-    ctx.font = `700 32px ${FONT_FAMILY}`;
+    ctx.font = `800 36px ${FONT_FAMILY}`;
     ctx.textAlign = 'center';
     ctx.textBaseline = 'middle';
-    ctx.fillText(title, 512, 60);
+    ctx.shadowColor = 'rgba(0, 0, 0, 0.9)';
+    ctx.shadowOffsetY = 2;
+    ctx.shadowBlur = 4;
+    ctx.fillText(m.title, 600, 172);
+    ctx.shadowOffsetY = 0;
+    ctx.shadowBlur = 0;
 
-    if (subtitle) {
-      ctx.fillStyle = '#ffffff';
+    // 5. Phụ đề (Màu trắng sáng, font 600 28px)
+    if (m.subtitle) {
+      ctx.fillStyle = '#f8fafc';
       ctx.font = `600 28px ${FONT_FAMILY}`;
-      ctx.fillText(subtitle, 512, 115);
+      ctx.fillText(m.subtitle, 600, 240);
     }
 
-    if (extra) {
+    // 6. Ghi chú sự kiện / chi tiết (Màu bạc sáng, font 500 22px)
+    if (m.descExtra) {
       ctx.fillStyle = '#94a3b8';
-      ctx.font = `500 24px ${FONT_FAMILY}`;
-      ctx.fillText(extra, 512, 175);
+      ctx.font = `500 22px ${FONT_FAMILY}`;
+      ctx.fillText(m.descExtra, 600, 315);
     }
 
     const tex = new THREE.CanvasTexture(canvas);
@@ -345,13 +369,24 @@ export class MilestoneWallBuilder {
     const mat = new THREE.MeshStandardMaterial({
       map: tex,
       metalness: 0.5,
-      roughness: 0.4,
-      transparent: true
+      roughness: 0.35
     });
 
-    const mesh = new THREE.Mesh(new THREE.PlaneGeometry(3.6, 0.9), mat);
+    // Kích thước card trong 3D: rộng 3.8m, cao 1.30m
+    const mesh = new THREE.Mesh(new THREE.PlaneGeometry(3.8, 1.30), mat);
     mesh.position.set(x, y, z);
     mesh.rotation.y = rotY;
     parent.add(mesh);
+
+    // Thanh liên kết đứng từ Node LED (y=2.25) xuống đỉnh Card (y + 1.30/2 = y + 0.65)
+    const cardTopY = y + 1.30 / 2;
+    const nodeY = 2.25;
+    const pinH = nodeY - cardTopY;
+    if (pinH > 0.05) {
+      const pinGeo = new THREE.CylinderGeometry(0.02, 0.02, pinH, 16);
+      const pinMesh = new THREE.Mesh(pinGeo, this.matCyanLED);
+      pinMesh.position.set(x - 0.01, cardTopY + pinH / 2, z);
+      parent.add(pinMesh);
+    }
   }
 }
