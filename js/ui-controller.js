@@ -442,19 +442,71 @@ export class UIController {
   showExhibitCard(item) {
     this.currentExhibit = item;
     this.dom.cardImg.src = item.thumb_path || item.wall_path;
-    this.dom.cardTitle.textContent = item.caption || item.new_name || '';
-    this.dom.cardTypeTag.textContent = item.source || '';
-    this.dom.cardYearTag.textContent = `Năm ${item.year}`;
-    this.dom.cardOrgName.textContent = item.org_name || item.org_code || '';
-    this.dom.cardDescription.textContent = item.caption || '';
-    this.dom.cardOrigLink.href = item.full_path || item.wall_path || '';
 
-    const icons = {
-      CTN: '★', TTCP: '★', EVN: '⚡', EVNSPC: '⚡',
-      UBND_BRVT: '🏛', UBND_TPVT: '🏛',
-      CD_EVN: '🚩', CD_EVNSPC: '🚩', LDLD_BRVT: '🚩'
+    // Tiêu đề lớn: dùng caption. Nếu trống thì hiện "Ảnh ngày dd/mm/yyyy"
+    if (item.caption) {
+      this.dom.cardTitle.textContent = item.caption;
+    } else if (item.date) {
+      const parts = item.date.split('-');
+      const dateDisplay = parts.length === 3 ? `${parts[2]}/${parts[1]}/${parts[0]}` : item.date;
+      this.dom.cardTitle.textContent = `Ảnh ngày ${dateDisplay}`;
+    } else {
+      this.dom.cardTitle.textContent = item.new_name || '';
+    }
+
+    // Nhãn loại bằng tiếng Việt thay cho mã
+    const typeNames = {
+      pcvt: 'Ảnh hoạt động PCVT',
+      dang_bo: 'Đảng bộ',
+      cong_doan: 'Công đoàn',
+      doan_tn: 'Đoàn Thanh niên',
+      anh_tu_lieu: 'Ảnh tư liệu',
+      tranh_tang: 'Tranh tặng',
+      bang_khen: 'Bằng khen',
+      co: 'Cờ thi đua'
     };
-    this.dom.cardOrgIcon.textContent = icons[item.org_code] || '🎖';
+    this.dom.cardTypeTag.textContent = typeNames[item.source] || item.source || '';
+
+    // Tag năm / ngày
+    if (item.date) {
+      const parts = item.date.split('-');
+      this.dom.cardYearTag.textContent = parts.length === 3 ? `${parts[2]}/${parts[1]}/${parts[0]}` : item.date;
+    } else {
+      this.dom.cardYearTag.textContent = `Năm ${item.year}`;
+    }
+
+    // Với ảnh: thay dòng "ĐƠN VỊ TRAO TẶNG" bằng "SỰ KIỆN", hiện caption và ngày đầy đủ.
+    // Mục "Đơn vị trao tặng" chỉ hiện cho bằng khen và cờ.
+    const isAward = (item.source === 'bang_khen' || item.source === 'co');
+    const orgSubEl = document.getElementById('card-org-sub');
+    const cohortTitleEl = document.getElementById('card-cohort-title');
+
+    if (isAward) {
+      if (orgSubEl) orgSubEl.textContent = 'ĐƠN VỊ TRAO TẶNG';
+      this.dom.cardOrgName.textContent = item.org_name || item.org_code || '';
+      const icons = {
+        CTN: '★', TTCP: '★', EVN: '⚡', EVNSPC: '⚡',
+        UBND_BRVT: '🏛', UBND_TPVT: '🏛',
+        CD_EVN: '🚩', CD_EVNSPC: '🚩', LDLD_BRVT: '🚩'
+      };
+      this.dom.cardOrgIcon.textContent = icons[item.org_code] || '🎖';
+      this.dom.cardDescription.textContent = item.caption || `${item.item_type || 'Hiện vật'} năm ${item.year}`;
+      if (cohortTitleEl) {
+        cohortTitleEl.innerHTML = '<i data-lucide="layers"></i> CÙNG NĂM & CÙNG BỘ';
+      }
+    } else {
+      if (orgSubEl) orgSubEl.textContent = 'SỰ KIỆN';
+      const parts = item.date ? item.date.split('-') : [];
+      const dateDisplay = parts.length === 3 ? `${parts[2]}/${parts[1]}/${parts[0]}` : (item.date || `${item.year}`);
+      this.dom.cardOrgName.textContent = item.caption ? `${dateDisplay} • ${item.caption}` : `Sự kiện ngày ${dateDisplay}`;
+      this.dom.cardOrgIcon.textContent = '📸';
+      this.dom.cardDescription.textContent = item.caption ? `${item.caption} (ngày ${dateDisplay})` : `Ảnh hoạt động ngày ${dateDisplay}`;
+      if (cohortTitleEl) {
+        cohortTitleEl.innerHTML = '<i data-lucide="layers"></i> CÙNG SỰ KIỆN';
+      }
+    }
+
+    this.dom.cardOrigLink.href = item.full_path || item.wall_path || '';
 
     // Cohort items
     this.renderCohortItems(item);
@@ -477,9 +529,10 @@ export class UIController {
     related.forEach(rel => {
       const chip = document.createElement('div');
       chip.className = 'cohort-item-chip';
+      const labelText = rel.caption || rel.new_name || '';
       chip.innerHTML = `
         <img class="cohort-thumb" src="${rel.thumb_path || rel.wall_path}" alt="${rel.caption || ''}" />
-        <span class="cohort-info">${rel.caption || rel.new_name} (${rel.source})</span>
+        <span class="cohort-info" title="${labelText}">${labelText}</span>
       `;
       chip.addEventListener('click', () => {
         const idx = this.dataService.filteredItems.findIndex(it => it.id === rel.id);

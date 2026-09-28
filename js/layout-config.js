@@ -15,7 +15,7 @@ export const WALL_HEIGHT = 8.0;
 export const PARTITION_HEIGHT = 5.2;
 export const WALL_THICKNESS = 1.2;
 export const PARTITION_THICKNESS = 0.8;
-export const EYE_HEIGHT = 2.75;
+export const EYE_HEIGHT = 2.85;
 export const DEFAULT_PITCH = -3 * Math.PI / 180; // −3°
 
 /** Điểm xuất phát: (0, EYE_HEIGHT, 26), nhìn về hướng Bắc */
@@ -163,8 +163,9 @@ export const PARTITIONS = [
   // Khu 1: vách x = −35 (dùng làm vách tranh), giữ nguyên
   { id: 'partition_k1', zone: 'khu1', w: 24, h: PARTITION_HEIGHT, d: PARTITION_THICKNESS,
     x: -35, z: 0, rotY: Math.PI / 2 },
-  // Khu 2: BỎ Partition_Hall1_Center (x=0, z −40…−22)
-  // Khu 3: BỎ Partition_Hall3_Center (x=35) — thay bằng sa bàn
+  // Khu 3: Vách mốc son partition_k3 (dài 24m, cao 6.8m, dày 0.6m)
+  { id: 'partition_k3', zone: 'khu3', w: 24, h: 6.8, d: 0.6,
+    x: 35, z: 0, rotY: Math.PI / 2 },
 ];
 
 // ============================================================================
@@ -280,7 +281,7 @@ export const ALBUM_CABINETS = [
 // 10. SA BÀN LƯỚI ĐIỆN
 // ============================================================================
 export const GRID_TABLE = {
-  position: { x: 32, z: 0 },
+  position: { x: 43, z: 0 },
   width: 4.2,
   depth: 6.0,
   height: 0.95,

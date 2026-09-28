@@ -45,7 +45,12 @@ export class DataService {
 
   getRelatedItems(item) {
     if (!item) return [];
-    // Cùng năm, cùng khu
+    // Với ảnh có event_folder: trả về các ảnh cùng sự kiện
+    if (item.event_folder) {
+      const sameEvent = this.items.filter(it => it.event_folder === item.event_folder && it.id !== item.id);
+      if (sameEvent.length > 0) return sameEvent.slice(0, 6);
+    }
+    // Với bằng khen/cờ hoặc ảnh không có event_folder: cùng năm, cùng khu
     return this.items
       .filter(it => it.year === item.year && it.khu === item.khu && it.id !== item.id)
       .slice(0, 4);

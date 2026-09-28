@@ -537,12 +537,14 @@ export class MuseumArchitect {
         roughness: 0.3
       });
 
+      const nx = Math.sin(rotY);
+      const nz = Math.cos(rotY);
       const mesh = new THREE.Mesh(geo, mat);
-      mesh.position.set(x, y, z);
+      mesh.position.set(x + nx * 0.08, y, z + nz * 0.08);
       mesh.rotation.y = rotY;
 
       const frameMesh = new THREE.Mesh(new THREE.BoxGeometry(8.2, 2.2, 0.15), this.matGold);
-      frameMesh.position.set(x, y, z - 0.08 * Math.cos(rotY));
+      frameMesh.position.set(x, y, z);
       frameMesh.rotation.y = rotY;
 
       parent.add(frameMesh);
@@ -555,8 +557,8 @@ export class MuseumArchitect {
     createSignBanner('KHU 1: KÝ ỨC & TRANH TẶNG', 'ẢNH TƯ LIỆU 1985–2009 • TRANH TẶNG CÁC ĐƠN VỊ', '#8B6F47', -18.0, 6.2, 0, Math.PI / 2);
     // Khu 2 Sign (Bắc) — Bằng khen & Cờ lưu niệm
     createSignBanner('KHU 2: BẰNG KHEN & CỜ LƯU NIỆM', 'HUÂN CHƯƠNG • THỦ TƯỚNG • BỘ CÔNG THƯƠNG • UBND • EVN • EVNSPC', '#8B1A1A', 0, 6.2, -17.0, 0);
-    // Khu 3 Sign (Đông) — Hiện tại (PCVT)
-    createSignBanner('KHU 3: HIỆN TẠI', 'CÔNG TY ĐIỆN LỰC VŨNG TÀU 2025–2026', '#16a34a', 18.0, 6.2, 0, -Math.PI / 2);
+    // Khu 3 Sign (Đông) — Vững bước kỷ nguyên mới (gắn phía trên mặt Tây vách mốc son x=35, y=6.2)
+    createSignBanner('VỮNG BƯỚC KỶ NGUYÊN MỚI', 'CÔNG TY ĐIỆN LỰC VŨNG TÀU', '#22D3EE', 34.65, 6.2, 0, -Math.PI / 2);
     // Khu 4 Sign (Đông Nam) — Đảng bộ
     createSignBanner('KHU 4: ĐẢNG BỘ CÔNG TY', 'ĐẢNG BỘ CÔNG TY ĐIỆN LỰC VŨNG TÀU', '#C62828', 36, 6.2, 39.0, 0);
     // Khu 6 Sign (Tây Nam) — Công đoàn & Đoàn TN
