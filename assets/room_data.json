@@ -1,7 +1,7 @@
 {
-  "total_items": 539,
-  "wall_count": 506,
-  "album_only_count": 33,
+  "total_items": 537,
+  "wall_count": 401,
+  "album_only_count": 136,
   "dropped_count": 0,
   "items": [
     {
@@ -1031,42 +1031,6 @@
       "full_path": "assets/full/khu1/atl_0000_057.jpg"
     },
     {
-      "id": "atl_0000_058",
-      "source": "anh_tu_lieu",
-      "khu": "khu1",
-      "src_name": "Đội quản lý cao thế.jpg",
-      "new_name": "atl_0000_058.jpg",
-      "year": 0,
-      "date": "",
-      "org_code": "",
-      "org_name": "",
-      "item_type": "Ảnh tư liệu",
-      "caption": "Đội quản lý cao thế",
-      "aspect_ratio": 1.336,
-      "treo": true,
-      "wall_path": "assets/wall/khu1/atl_0000_058.jpg",
-      "thumb_path": "assets/thumbs/khu1/atl_0000_058.jpg",
-      "full_path": "assets/full/khu1/atl_0000_058.jpg"
-    },
-    {
-      "id": "atl_0000_059",
-      "source": "anh_tu_lieu",
-      "khu": "khu1",
-      "src_name": "Đội tuần tra bảo vệ mạng lưới điện.JPG",
-      "new_name": "atl_0000_059.jpg",
-      "year": 0,
-      "date": "",
-      "org_code": "",
-      "org_name": "",
-      "item_type": "Ảnh tư liệu",
-      "caption": "Đội tuần tra bảo vệ mạng lưới điện",
-      "aspect_ratio": 1.332,
-      "treo": true,
-      "wall_path": "assets/wall/khu1/atl_0000_059.jpg",
-      "thumb_path": "assets/thumbs/khu1/atl_0000_059.jpg",
-      "full_path": "assets/full/khu1/atl_0000_059.jpg"
-    },
-    {
       "id": "tt_2014_001",
       "source": "tranh_tang",
       "khu": "khu1",
@@ -1964,7 +1928,8 @@
       "treo": true,
       "wall_path": "assets/wall/khu2/bk_1985_ubnd_brvt_45.jpg",
       "thumb_path": "assets/thumbs/khu2/bk_1985_ubnd_brvt_45.jpg",
-      "full_path": "assets/full/khu2/bk_1985_ubnd_brvt_45.jpg"
+      "full_path": "assets/full/khu2/bk_1985_ubnd_brvt_45.jpg",
+      "tuong": "tay"
     },
     {
       "id": "bk_1990_ubnd_brvt_46",
@@ -1982,7 +1947,8 @@
       "treo": true,
       "wall_path": "assets/wall/khu2/bk_1990_ubnd_brvt_46.jpg",
       "thumb_path": "assets/thumbs/khu2/bk_1990_ubnd_brvt_46.jpg",
-      "full_path": "assets/full/khu2/bk_1990_ubnd_brvt_46.jpg"
+      "full_path": "assets/full/khu2/bk_1990_ubnd_brvt_46.jpg",
+      "tuong": "tay"
     },
     {
       "id": "bk_1991_danguy_brvt_35",
@@ -1997,7 +1963,7 @@
       "item_type": "Giấy khen",
       "caption": "Giấy khen năm 1991",
       "aspect_ratio": 1.414,
-      "treo": true,
+      "treo": false,
       "wall_path": "assets/wall/khu2/bk_1991_danguy_brvt_35.jpg",
       "thumb_path": "assets/thumbs/khu2/bk_1991_danguy_brvt_35.jpg",
       "full_path": "assets/full/khu2/bk_1991_danguy_brvt_35.jpg"
@@ -2018,7 +1984,8 @@
       "treo": true,
       "wall_path": "assets/wall/khu2/bk_1994_bct_47.jpg",
       "thumb_path": "assets/thumbs/khu2/bk_1994_bct_47.jpg",
-      "full_path": "assets/full/khu2/bk_1994_bct_47.jpg"
+      "full_path": "assets/full/khu2/bk_1994_bct_47.jpg",
+      "tuong": "giua"
     },
     {
       "id": "bk_1994_evnspc_56",
@@ -2036,7 +2003,8 @@
       "treo": true,
       "wall_path": "assets/wall/khu2/bk_1994_evnspc_56.jpg",
       "thumb_path": "assets/thumbs/khu2/bk_1994_evnspc_56.jpg",
-      "full_path": "assets/full/khu2/bk_1994_evnspc_56.jpg"
+      "full_path": "assets/full/khu2/bk_1994_evnspc_56.jpg",
+      "tuong": "dong"
     },
     {
       "id": "bk_1994_ubnd_brvt_96",
@@ -2054,7 +2022,8 @@
       "treo": true,
       "wall_path": "assets/wall/khu2/bk_1994_ubnd_brvt_96.jpg",
       "thumb_path": "assets/thumbs/khu2/bk_1994_ubnd_brvt_96.jpg",
-      "full_path": "assets/full/khu2/bk_1994_ubnd_brvt_96.jpg"
+      "full_path": "assets/full/khu2/bk_1994_ubnd_brvt_96.jpg",
+      "tuong": "tay"
     },
     {
       "id": "bk_1995_ldld_brvt_54",
@@ -2072,7 +2041,8 @@
       "treo": true,
       "wall_path": "assets/wall/khu2/bk_1995_ldld_brvt_54.jpg",
       "thumb_path": "assets/thumbs/khu2/bk_1995_ldld_brvt_54.jpg",
-      "full_path": "assets/full/khu2/bk_1995_ldld_brvt_54.jpg"
+      "full_path": "assets/full/khu2/bk_1995_ldld_brvt_54.jpg",
+      "tuong": "tay"
     },
     {
       "id": "bk_1996_cd_evn_60",
@@ -2090,7 +2060,8 @@
       "treo": true,
       "wall_path": "assets/wall/khu2/bk_1996_cd_evn_60.jpg",
       "thumb_path": "assets/thumbs/khu2/bk_1996_cd_evn_60.jpg",
-      "full_path": "assets/full/khu2/bk_1996_cd_evn_60.jpg"
+      "full_path": "assets/full/khu2/bk_1996_cd_evn_60.jpg",
+      "tuong": "dong"
     },
     {
       "id": "bk_1996_ubnd_brvt_95",
@@ -2108,7 +2079,8 @@
       "treo": true,
       "wall_path": "assets/wall/khu2/bk_1996_ubnd_brvt_95.jpg",
       "thumb_path": "assets/thumbs/khu2/bk_1996_ubnd_brvt_95.jpg",
-      "full_path": "assets/full/khu2/bk_1996_ubnd_brvt_95.jpg"
+      "full_path": "assets/full/khu2/bk_1996_ubnd_brvt_95.jpg",
+      "tuong": "tay"
     },
     {
       "id": "bk_1997_cd_evn_59",
@@ -2126,7 +2098,8 @@
       "treo": true,
       "wall_path": "assets/wall/khu2/bk_1997_cd_evn_59.jpg",
       "thumb_path": "assets/thumbs/khu2/bk_1997_cd_evn_59.jpg",
-      "full_path": "assets/full/khu2/bk_1997_cd_evn_59.jpg"
+      "full_path": "assets/full/khu2/bk_1997_cd_evn_59.jpg",
+      "tuong": "dong"
     },
     {
       "id": "bk_1997_evnspc_57",
@@ -2144,7 +2117,8 @@
       "treo": true,
       "wall_path": "assets/wall/khu2/bk_1997_evnspc_57.jpg",
       "thumb_path": "assets/thumbs/khu2/bk_1997_evnspc_57.jpg",
-      "full_path": "assets/full/khu2/bk_1997_evnspc_57.jpg"
+      "full_path": "assets/full/khu2/bk_1997_evnspc_57.jpg",
+      "tuong": "dong"
     },
     {
       "id": "bk_1997_ldld_brvt_31",
@@ -2162,7 +2136,8 @@
       "treo": true,
       "wall_path": "assets/wall/khu2/bk_1997_ldld_brvt_31.jpg",
       "thumb_path": "assets/thumbs/khu2/bk_1997_ldld_brvt_31.jpg",
-      "full_path": "assets/full/khu2/bk_1997_ldld_brvt_31.jpg"
+      "full_path": "assets/full/khu2/bk_1997_ldld_brvt_31.jpg",
+      "tuong": "tay"
     },
     {
       "id": "bk_1998_evn_49",
@@ -2180,7 +2155,8 @@
       "treo": true,
       "wall_path": "assets/wall/khu2/bk_1998_evn_49.jpg",
       "thumb_path": "assets/thumbs/khu2/bk_1998_evn_49.jpg",
-      "full_path": "assets/full/khu2/bk_1998_evn_49.jpg"
+      "full_path": "assets/full/khu2/bk_1998_evn_49.jpg",
+      "tuong": "giua"
     },
     {
       "id": "bk_1998_evnspc_07",
@@ -2198,7 +2174,8 @@
       "treo": true,
       "wall_path": "assets/wall/khu2/bk_1998_evnspc_07.jpg",
       "thumb_path": "assets/thumbs/khu2/bk_1998_evnspc_07.jpg",
-      "full_path": "assets/full/khu2/bk_1998_evnspc_07.jpg"
+      "full_path": "assets/full/khu2/bk_1998_evnspc_07.jpg",
+      "tuong": "dong"
     },
     {
       "id": "bk_1998_ubnd_brvt_97",
@@ -2216,7 +2193,8 @@
       "treo": true,
       "wall_path": "assets/wall/khu2/bk_1998_ubnd_brvt_97.jpg",
       "thumb_path": "assets/thumbs/khu2/bk_1998_ubnd_brvt_97.jpg",
-      "full_path": "assets/full/khu2/bk_1998_ubnd_brvt_97.jpg"
+      "full_path": "assets/full/khu2/bk_1998_ubnd_brvt_97.jpg",
+      "tuong": "tay"
     },
     {
       "id": "bk_1999_cd_evnspc_69",
@@ -2234,7 +2212,8 @@
       "treo": true,
       "wall_path": "assets/wall/khu2/bk_1999_cd_evnspc_69.jpg",
       "thumb_path": "assets/thumbs/khu2/bk_1999_cd_evnspc_69.jpg",
-      "full_path": "assets/full/khu2/bk_1999_cd_evnspc_69.jpg"
+      "full_path": "assets/full/khu2/bk_1999_cd_evnspc_69.jpg",
+      "tuong": "dong"
     },
     {
       "id": "bk_1999_evn_113",
@@ -2252,7 +2231,8 @@
       "treo": true,
       "wall_path": "assets/wall/khu2/bk_1999_evn_113.jpg",
       "thumb_path": "assets/thumbs/khu2/bk_1999_evn_113.jpg",
-      "full_path": "assets/full/khu2/bk_1999_evn_113.jpg"
+      "full_path": "assets/full/khu2/bk_1999_evn_113.jpg",
+      "tuong": "giua"
     },
     {
       "id": "bk_1999_ubnd_brvt_103",
@@ -2270,7 +2250,8 @@
       "treo": true,
       "wall_path": "assets/wall/khu2/bk_1999_ubnd_brvt_103.jpg",
       "thumb_path": "assets/thumbs/khu2/bk_1999_ubnd_brvt_103.jpg",
-      "full_path": "assets/full/khu2/bk_1999_ubnd_brvt_103.jpg"
+      "full_path": "assets/full/khu2/bk_1999_ubnd_brvt_103.jpg",
+      "tuong": "tay"
     },
     {
       "id": "bk_2000_cd_bct_51",
@@ -2288,7 +2269,8 @@
       "treo": true,
       "wall_path": "assets/wall/khu2/bk_2000_cd_bct_51.jpg",
       "thumb_path": "assets/thumbs/khu2/bk_2000_cd_bct_51.jpg",
-      "full_path": "assets/full/khu2/bk_2000_cd_bct_51.jpg"
+      "full_path": "assets/full/khu2/bk_2000_cd_bct_51.jpg",
+      "tuong": "dong"
     },
     {
       "id": "bk_2000_evn_52",
@@ -2306,7 +2288,8 @@
       "treo": true,
       "wall_path": "assets/wall/khu2/bk_2000_evn_52.jpg",
       "thumb_path": "assets/thumbs/khu2/bk_2000_evn_52.jpg",
-      "full_path": "assets/full/khu2/bk_2000_evn_52.jpg"
+      "full_path": "assets/full/khu2/bk_2000_evn_52.jpg",
+      "tuong": "giua"
     },
     {
       "id": "bk_2000_ubnd_brvt_82",
@@ -2324,7 +2307,8 @@
       "treo": true,
       "wall_path": "assets/wall/khu2/bk_2000_ubnd_brvt_82.jpg",
       "thumb_path": "assets/thumbs/khu2/bk_2000_ubnd_brvt_82.jpg",
-      "full_path": "assets/full/khu2/bk_2000_ubnd_brvt_82.jpg"
+      "full_path": "assets/full/khu2/bk_2000_ubnd_brvt_82.jpg",
+      "tuong": "tay"
     },
     {
       "id": "bk_2001_ctn_13",
@@ -2342,7 +2326,8 @@
       "treo": true,
       "wall_path": "assets/wall/khu2/bk_2001_ctn_13.jpg",
       "thumb_path": "assets/thumbs/khu2/bk_2001_ctn_13.jpg",
-      "full_path": "assets/full/khu2/bk_2001_ctn_13.jpg"
+      "full_path": "assets/full/khu2/bk_2001_ctn_13.jpg",
+      "tuong": "giua"
     },
     {
       "id": "bk_2001_ctn_14",
@@ -2360,7 +2345,8 @@
       "treo": true,
       "wall_path": "assets/wall/khu2/bk_2001_ctn_14.jpg",
       "thumb_path": "assets/thumbs/khu2/bk_2001_ctn_14.jpg",
-      "full_path": "assets/full/khu2/bk_2001_ctn_14.jpg"
+      "full_path": "assets/full/khu2/bk_2001_ctn_14.jpg",
+      "tuong": "giua"
     },
     {
       "id": "bk_2004_ubnd_brvt_91",
@@ -2378,7 +2364,8 @@
       "treo": true,
       "wall_path": "assets/wall/khu2/bk_2004_ubnd_brvt_91.jpg",
       "thumb_path": "assets/thumbs/khu2/bk_2004_ubnd_brvt_91.jpg",
-      "full_path": "assets/full/khu2/bk_2004_ubnd_brvt_91.jpg"
+      "full_path": "assets/full/khu2/bk_2004_ubnd_brvt_91.jpg",
+      "tuong": "tay"
     },
     {
       "id": "bk_2005_bhxh_brvt_02",
@@ -2393,7 +2380,7 @@
       "item_type": "Giấy khen",
       "caption": "Giấy khen năm 2005",
       "aspect_ratio": 1.416,
-      "treo": true,
+      "treo": false,
       "wall_path": "assets/wall/khu2/bk_2005_bhxh_brvt_02.jpg",
       "thumb_path": "assets/thumbs/khu2/bk_2005_bhxh_brvt_02.jpg",
       "full_path": "assets/full/khu2/bk_2005_bhxh_brvt_02.jpg"
@@ -2414,7 +2401,8 @@
       "treo": true,
       "wall_path": "assets/wall/khu2/bk_2005_ubnd_brvt_84.jpg",
       "thumb_path": "assets/thumbs/khu2/bk_2005_ubnd_brvt_84.jpg",
-      "full_path": "assets/full/khu2/bk_2005_ubnd_brvt_84.jpg"
+      "full_path": "assets/full/khu2/bk_2005_ubnd_brvt_84.jpg",
+      "tuong": "tay"
     },
     {
       "id": "bk_2006_bhxh_brvt_48",
@@ -2429,7 +2417,7 @@
       "item_type": "Giấy khen",
       "caption": "Giấy khen năm 2006",
       "aspect_ratio": 1.414,
-      "treo": true,
+      "treo": false,
       "wall_path": "assets/wall/khu2/bk_2006_bhxh_brvt_48.jpg",
       "thumb_path": "assets/thumbs/khu2/bk_2006_bhxh_brvt_48.jpg",
       "full_path": "assets/full/khu2/bk_2006_bhxh_brvt_48.jpg"
@@ -2450,7 +2438,8 @@
       "treo": true,
       "wall_path": "assets/wall/khu2/bk_2006_cd_evn_40.jpg",
       "thumb_path": "assets/thumbs/khu2/bk_2006_cd_evn_40.jpg",
-      "full_path": "assets/full/khu2/bk_2006_cd_evn_40.jpg"
+      "full_path": "assets/full/khu2/bk_2006_cd_evn_40.jpg",
+      "tuong": "dong"
     },
     {
       "id": "bk_2006_ldld_brvt_39",
@@ -2468,7 +2457,8 @@
       "treo": true,
       "wall_path": "assets/wall/khu2/bk_2006_ldld_brvt_39.jpg",
       "thumb_path": "assets/thumbs/khu2/bk_2006_ldld_brvt_39.jpg",
-      "full_path": "assets/full/khu2/bk_2006_ldld_brvt_39.jpg"
+      "full_path": "assets/full/khu2/bk_2006_ldld_brvt_39.jpg",
+      "tuong": "tay"
     },
     {
       "id": "bk_2006_ubnd_brvt_85",
@@ -2486,7 +2476,8 @@
       "treo": true,
       "wall_path": "assets/wall/khu2/bk_2006_ubnd_brvt_85.jpg",
       "thumb_path": "assets/thumbs/khu2/bk_2006_ubnd_brvt_85.jpg",
-      "full_path": "assets/full/khu2/bk_2006_ubnd_brvt_85.jpg"
+      "full_path": "assets/full/khu2/bk_2006_ubnd_brvt_85.jpg",
+      "tuong": "tay"
     },
     {
       "id": "bk_2006_ubnd_brvt_17",
@@ -2501,7 +2492,7 @@
       "item_type": "Giấy khen",
       "caption": "Giấy khen năm 2006",
       "aspect_ratio": 1.414,
-      "treo": true,
+      "treo": false,
       "wall_path": "assets/wall/khu2/bk_2006_ubnd_brvt_17.jpg",
       "thumb_path": "assets/thumbs/khu2/bk_2006_ubnd_brvt_17.jpg",
       "full_path": "assets/full/khu2/bk_2006_ubnd_brvt_17.jpg"
@@ -2522,7 +2513,8 @@
       "treo": true,
       "wall_path": "assets/wall/khu2/bk_2008_cd_evnspc_106.jpg",
       "thumb_path": "assets/thumbs/khu2/bk_2008_cd_evnspc_106.jpg",
-      "full_path": "assets/full/khu2/bk_2008_cd_evnspc_106.jpg"
+      "full_path": "assets/full/khu2/bk_2008_cd_evnspc_106.jpg",
+      "tuong": "dong"
     },
     {
       "id": "bk_2008_ctn_06",
@@ -2540,7 +2532,8 @@
       "treo": true,
       "wall_path": "assets/wall/khu2/bk_2008_ctn_06.jpg",
       "thumb_path": "assets/thumbs/khu2/bk_2008_ctn_06.jpg",
-      "full_path": "assets/full/khu2/bk_2008_ctn_06.jpg"
+      "full_path": "assets/full/khu2/bk_2008_ctn_06.jpg",
+      "tuong": "giua"
     },
     {
       "id": "bk_2008_ctn_07",
@@ -2558,7 +2551,8 @@
       "treo": true,
       "wall_path": "assets/wall/khu2/bk_2008_ctn_07.jpg",
       "thumb_path": "assets/thumbs/khu2/bk_2008_ctn_07.jpg",
-      "full_path": "assets/full/khu2/bk_2008_ctn_07.jpg"
+      "full_path": "assets/full/khu2/bk_2008_ctn_07.jpg",
+      "tuong": "giua"
     },
     {
       "id": "bk_2008_evnspc_15",
@@ -2576,7 +2570,8 @@
       "treo": true,
       "wall_path": "assets/wall/khu2/bk_2008_evnspc_15.jpg",
       "thumb_path": "assets/thumbs/khu2/bk_2008_evnspc_15.jpg",
-      "full_path": "assets/full/khu2/bk_2008_evnspc_15.jpg"
+      "full_path": "assets/full/khu2/bk_2008_evnspc_15.jpg",
+      "tuong": "dong"
     },
     {
       "id": "bk_2008_ubnd_brvt_27",
@@ -2594,7 +2589,8 @@
       "treo": true,
       "wall_path": "assets/wall/khu2/bk_2008_ubnd_brvt_27.jpg",
       "thumb_path": "assets/thumbs/khu2/bk_2008_ubnd_brvt_27.jpg",
-      "full_path": "assets/full/khu2/bk_2008_ubnd_brvt_27.jpg"
+      "full_path": "assets/full/khu2/bk_2008_ubnd_brvt_27.jpg",
+      "tuong": "tay"
     },
     {
       "id": "bk_2008_ubnd_brvt_19",
@@ -2609,7 +2605,7 @@
       "item_type": "Giấy khen",
       "caption": "Giấy khen năm 2008",
       "aspect_ratio": 1.414,
-      "treo": true,
+      "treo": false,
       "wall_path": "assets/wall/khu2/bk_2008_ubnd_brvt_19.jpg",
       "thumb_path": "assets/thumbs/khu2/bk_2008_ubnd_brvt_19.jpg",
       "full_path": "assets/full/khu2/bk_2008_ubnd_brvt_19.jpg"
@@ -2627,7 +2623,7 @@
       "item_type": "Giấy khen",
       "caption": "Giấy khen năm 2009",
       "aspect_ratio": 1.414,
-      "treo": true,
+      "treo": false,
       "wall_path": "assets/wall/khu2/bk_2009_bhxh_brvt_21.jpg",
       "thumb_path": "assets/thumbs/khu2/bk_2009_bhxh_brvt_21.jpg",
       "full_path": "assets/full/khu2/bk_2009_bhxh_brvt_21.jpg"
@@ -2648,7 +2644,8 @@
       "treo": true,
       "wall_path": "assets/wall/khu2/bk_2009_evn_05.jpg",
       "thumb_path": "assets/thumbs/khu2/bk_2009_evn_05.jpg",
-      "full_path": "assets/full/khu2/bk_2009_evn_05.jpg"
+      "full_path": "assets/full/khu2/bk_2009_evn_05.jpg",
+      "tuong": "giua"
     },
     {
       "id": "bk_2009_ttcp_61",
@@ -2666,7 +2663,8 @@
       "treo": true,
       "wall_path": "assets/wall/khu2/bk_2009_ttcp_61.jpg",
       "thumb_path": "assets/thumbs/khu2/bk_2009_ttcp_61.jpg",
-      "full_path": "assets/full/khu2/bk_2009_ttcp_61.jpg"
+      "full_path": "assets/full/khu2/bk_2009_ttcp_61.jpg",
+      "tuong": "giua"
     },
     {
       "id": "bk_2009_ubnd_brvt_26",
@@ -2684,7 +2682,8 @@
       "treo": true,
       "wall_path": "assets/wall/khu2/bk_2009_ubnd_brvt_26.jpg",
       "thumb_path": "assets/thumbs/khu2/bk_2009_ubnd_brvt_26.jpg",
-      "full_path": "assets/full/khu2/bk_2009_ubnd_brvt_26.jpg"
+      "full_path": "assets/full/khu2/bk_2009_ubnd_brvt_26.jpg",
+      "tuong": "tay"
     },
     {
       "id": "bk_2010_cd_evn_114",
@@ -2702,7 +2701,8 @@
       "treo": true,
       "wall_path": "assets/wall/khu2/bk_2010_cd_evn_114.jpg",
       "thumb_path": "assets/thumbs/khu2/bk_2010_cd_evn_114.jpg",
-      "full_path": "assets/full/khu2/bk_2010_cd_evn_114.jpg"
+      "full_path": "assets/full/khu2/bk_2010_cd_evn_114.jpg",
+      "tuong": "dong"
     },
     {
       "id": "bk_2010_ctn_08",
@@ -2720,7 +2720,8 @@
       "treo": true,
       "wall_path": "assets/wall/khu2/bk_2010_ctn_08.jpg",
       "thumb_path": "assets/thumbs/khu2/bk_2010_ctn_08.jpg",
-      "full_path": "assets/full/khu2/bk_2010_ctn_08.jpg"
+      "full_path": "assets/full/khu2/bk_2010_ctn_08.jpg",
+      "tuong": "giua"
     },
     {
       "id": "bk_2010_evn_87",
@@ -2738,7 +2739,8 @@
       "treo": true,
       "wall_path": "assets/wall/khu2/bk_2010_evn_87.jpg",
       "thumb_path": "assets/thumbs/khu2/bk_2010_evn_87.jpg",
-      "full_path": "assets/full/khu2/bk_2010_evn_87.jpg"
+      "full_path": "assets/full/khu2/bk_2010_evn_87.jpg",
+      "tuong": "giua"
     },
     {
       "id": "bk_2010_ubnd_brvt_70",
@@ -2756,7 +2758,8 @@
       "treo": true,
       "wall_path": "assets/wall/khu2/bk_2010_ubnd_brvt_70.jpg",
       "thumb_path": "assets/thumbs/khu2/bk_2010_ubnd_brvt_70.jpg",
-      "full_path": "assets/full/khu2/bk_2010_ubnd_brvt_70.jpg"
+      "full_path": "assets/full/khu2/bk_2010_ubnd_brvt_70.jpg",
+      "tuong": "tay"
     },
     {
       "id": "bk_2011_bhxh_brvt_16",
@@ -2771,7 +2774,7 @@
       "item_type": "Giấy khen",
       "caption": "Giấy khen năm 2011",
       "aspect_ratio": 1.414,
-      "treo": true,
+      "treo": false,
       "wall_path": "assets/wall/khu2/bk_2011_bhxh_brvt_16.jpg",
       "thumb_path": "assets/thumbs/khu2/bk_2011_bhxh_brvt_16.jpg",
       "full_path": "assets/full/khu2/bk_2011_bhxh_brvt_16.jpg"
@@ -2792,7 +2795,8 @@
       "treo": true,
       "wall_path": "assets/wall/khu2/bk_2011_cd_evn_115.jpg",
       "thumb_path": "assets/thumbs/khu2/bk_2011_cd_evn_115.jpg",
-      "full_path": "assets/full/khu2/bk_2011_cd_evn_115.jpg"
+      "full_path": "assets/full/khu2/bk_2011_cd_evn_115.jpg",
+      "tuong": "dong"
     },
     {
       "id": "bk_2011_ldld_brvt_38",
@@ -2807,7 +2811,7 @@
       "item_type": "Bằng khen",
       "caption": "Bằng khen năm 2011",
       "aspect_ratio": 1.414,
-      "treo": true,
+      "treo": false,
       "wall_path": "assets/wall/khu2/bk_2011_ldld_brvt_38.jpg",
       "thumb_path": "assets/thumbs/khu2/bk_2011_ldld_brvt_38.jpg",
       "full_path": "assets/full/khu2/bk_2011_ldld_brvt_38.jpg"
@@ -2828,7 +2832,8 @@
       "treo": true,
       "wall_path": "assets/wall/khu2/bk_2011_tldldvn_89.jpg",
       "thumb_path": "assets/thumbs/khu2/bk_2011_tldldvn_89.jpg",
-      "full_path": "assets/full/khu2/bk_2011_tldldvn_89.jpg"
+      "full_path": "assets/full/khu2/bk_2011_tldldvn_89.jpg",
+      "tuong": "giua"
     },
     {
       "id": "bk_2011_ubnd_brvt_92",
@@ -2846,7 +2851,8 @@
       "treo": true,
       "wall_path": "assets/wall/khu2/bk_2011_ubnd_brvt_92.jpg",
       "thumb_path": "assets/thumbs/khu2/bk_2011_ubnd_brvt_92.jpg",
-      "full_path": "assets/full/khu2/bk_2011_ubnd_brvt_92.jpg"
+      "full_path": "assets/full/khu2/bk_2011_ubnd_brvt_92.jpg",
+      "tuong": "tay"
     },
     {
       "id": "bk_2012_danguy_brvt_41",
@@ -2861,7 +2867,7 @@
       "item_type": "Giấy khen",
       "caption": "Giấy khen năm 2012",
       "aspect_ratio": 1.414,
-      "treo": true,
+      "treo": false,
       "wall_path": "assets/wall/khu2/bk_2012_danguy_brvt_41.jpg",
       "thumb_path": "assets/thumbs/khu2/bk_2012_danguy_brvt_41.jpg",
       "full_path": "assets/full/khu2/bk_2012_danguy_brvt_41.jpg"
@@ -2882,7 +2888,8 @@
       "treo": true,
       "wall_path": "assets/wall/khu2/bk_2012_evn_78.jpg",
       "thumb_path": "assets/thumbs/khu2/bk_2012_evn_78.jpg",
-      "full_path": "assets/full/khu2/bk_2012_evn_78.jpg"
+      "full_path": "assets/full/khu2/bk_2012_evn_78.jpg",
+      "tuong": "giua"
     },
     {
       "id": "bk_2013_cd_evn_01",
@@ -2900,7 +2907,8 @@
       "treo": true,
       "wall_path": "assets/wall/khu2/bk_2013_cd_evn_01.jpg",
       "thumb_path": "assets/thumbs/khu2/bk_2013_cd_evn_01.jpg",
-      "full_path": "assets/full/khu2/bk_2013_cd_evn_01.jpg"
+      "full_path": "assets/full/khu2/bk_2013_cd_evn_01.jpg",
+      "tuong": "dong"
     },
     {
       "id": "bk_2013_evn_107",
@@ -2918,7 +2926,8 @@
       "treo": true,
       "wall_path": "assets/wall/khu2/bk_2013_evn_107.jpg",
       "thumb_path": "assets/thumbs/khu2/bk_2013_evn_107.jpg",
-      "full_path": "assets/full/khu2/bk_2013_evn_107.jpg"
+      "full_path": "assets/full/khu2/bk_2013_evn_107.jpg",
+      "tuong": "giua"
     },
     {
       "id": "bk_2013_ubnd_brvt_36",
@@ -2936,7 +2945,8 @@
       "treo": true,
       "wall_path": "assets/wall/khu2/bk_2013_ubnd_brvt_36.jpg",
       "thumb_path": "assets/thumbs/khu2/bk_2013_ubnd_brvt_36.jpg",
-      "full_path": "assets/full/khu2/bk_2013_ubnd_brvt_36.jpg"
+      "full_path": "assets/full/khu2/bk_2013_ubnd_brvt_36.jpg",
+      "tuong": "tay"
     },
     {
       "id": "bk_2014_cd_evnspc_63",
@@ -2951,7 +2961,7 @@
       "item_type": "Giấy khen",
       "caption": "Giấy khen năm 2014",
       "aspect_ratio": 1.414,
-      "treo": true,
+      "treo": false,
       "wall_path": "assets/wall/khu2/bk_2014_cd_evnspc_63.jpg",
       "thumb_path": "assets/thumbs/khu2/bk_2014_cd_evnspc_63.jpg",
       "full_path": "assets/full/khu2/bk_2014_cd_evnspc_63.jpg"
@@ -2972,7 +2982,8 @@
       "treo": true,
       "wall_path": "assets/wall/khu2/bk_2014_ctn_10.jpg",
       "thumb_path": "assets/thumbs/khu2/bk_2014_ctn_10.jpg",
-      "full_path": "assets/full/khu2/bk_2014_ctn_10.jpg"
+      "full_path": "assets/full/khu2/bk_2014_ctn_10.jpg",
+      "tuong": "giua"
     },
     {
       "id": "bk_2014_evnspc_03",
@@ -2990,7 +3001,8 @@
       "treo": true,
       "wall_path": "assets/wall/khu2/bk_2014_evnspc_03.jpg",
       "thumb_path": "assets/thumbs/khu2/bk_2014_evnspc_03.jpg",
-      "full_path": "assets/full/khu2/bk_2014_evnspc_03.jpg"
+      "full_path": "assets/full/khu2/bk_2014_evnspc_03.jpg",
+      "tuong": "dong"
     },
     {
       "id": "bk_2014_ldld_brvt_37",
@@ -3005,7 +3017,7 @@
       "item_type": "Bằng khen",
       "caption": "Bằng khen năm 2014",
       "aspect_ratio": 1.414,
-      "treo": true,
+      "treo": false,
       "wall_path": "assets/wall/khu2/bk_2014_ldld_brvt_37.jpg",
       "thumb_path": "assets/thumbs/khu2/bk_2014_ldld_brvt_37.jpg",
       "full_path": "assets/full/khu2/bk_2014_ldld_brvt_37.jpg"
@@ -3026,7 +3038,8 @@
       "treo": true,
       "wall_path": "assets/wall/khu2/bk_2014_tldldvn_29.jpg",
       "thumb_path": "assets/thumbs/khu2/bk_2014_tldldvn_29.jpg",
-      "full_path": "assets/full/khu2/bk_2014_tldldvn_29.jpg"
+      "full_path": "assets/full/khu2/bk_2014_tldldvn_29.jpg",
+      "tuong": "giua"
     },
     {
       "id": "bk_2014_ubnd_tpvt_76",
@@ -3041,7 +3054,7 @@
       "item_type": "Bằng khen",
       "caption": "Bằng khen năm 2014",
       "aspect_ratio": 1.414,
-      "treo": true,
+      "treo": false,
       "wall_path": "assets/wall/khu2/bk_2014_ubnd_tpvt_76.jpg",
       "thumb_path": "assets/thumbs/khu2/bk_2014_ubnd_tpvt_76.jpg",
       "full_path": "assets/full/khu2/bk_2014_ubnd_tpvt_76.jpg"
@@ -3059,7 +3072,7 @@
       "item_type": "Giấy khen",
       "caption": "Giấy khen năm 2015",
       "aspect_ratio": 1.414,
-      "treo": true,
+      "treo": false,
       "wall_path": "assets/wall/khu2/bk_2015_bhxh_brvt_18.jpg",
       "thumb_path": "assets/thumbs/khu2/bk_2015_bhxh_brvt_18.jpg",
       "full_path": "assets/full/khu2/bk_2015_bhxh_brvt_18.jpg"
@@ -3077,7 +3090,7 @@
       "item_type": "Giấy khen",
       "caption": "Giấy khen năm 2015",
       "aspect_ratio": 1.416,
-      "treo": true,
+      "treo": false,
       "wall_path": "assets/wall/khu2/bk_2015_danguy_brvt_06.jpg",
       "thumb_path": "assets/thumbs/khu2/bk_2015_danguy_brvt_06.jpg",
       "full_path": "assets/full/khu2/bk_2015_danguy_brvt_06.jpg"
@@ -3098,7 +3111,8 @@
       "treo": true,
       "wall_path": "assets/wall/khu2/bk_2015_evn_88.jpg",
       "thumb_path": "assets/thumbs/khu2/bk_2015_evn_88.jpg",
-      "full_path": "assets/full/khu2/bk_2015_evn_88.jpg"
+      "full_path": "assets/full/khu2/bk_2015_evn_88.jpg",
+      "tuong": "giua"
     },
     {
       "id": "bk_2015_ubnd_brvt_02",
@@ -3116,7 +3130,8 @@
       "treo": true,
       "wall_path": "assets/wall/khu2/bk_2015_ubnd_brvt_02.jpg",
       "thumb_path": "assets/thumbs/khu2/bk_2015_ubnd_brvt_02.jpg",
-      "full_path": "assets/full/khu2/bk_2015_ubnd_brvt_02.jpg"
+      "full_path": "assets/full/khu2/bk_2015_ubnd_brvt_02.jpg",
+      "tuong": "tay"
     },
     {
       "id": "bk_2016_bchqs_brvt_03",
@@ -3131,7 +3146,7 @@
       "item_type": "Giấy khen",
       "caption": "Giấy khen năm 2016",
       "aspect_ratio": 1.416,
-      "treo": true,
+      "treo": false,
       "wall_path": "assets/wall/khu2/bk_2016_bchqs_brvt_03.jpg",
       "thumb_path": "assets/thumbs/khu2/bk_2016_bchqs_brvt_03.jpg",
       "full_path": "assets/full/khu2/bk_2016_bchqs_brvt_03.jpg"
@@ -3152,7 +3167,8 @@
       "treo": true,
       "wall_path": "assets/wall/khu2/bk_2016_cd_evn_112.jpg",
       "thumb_path": "assets/thumbs/khu2/bk_2016_cd_evn_112.jpg",
-      "full_path": "assets/full/khu2/bk_2016_cd_evn_112.jpg"
+      "full_path": "assets/full/khu2/bk_2016_cd_evn_112.jpg",
+      "tuong": "dong"
     },
     {
       "id": "bk_2016_cd_evnspc_108",
@@ -3167,7 +3183,7 @@
       "item_type": "Giấy khen",
       "caption": "Giấy khen năm 2016",
       "aspect_ratio": 1.414,
-      "treo": true,
+      "treo": false,
       "wall_path": "assets/wall/khu2/bk_2016_cd_evnspc_108.jpg",
       "thumb_path": "assets/thumbs/khu2/bk_2016_cd_evnspc_108.jpg",
       "full_path": "assets/full/khu2/bk_2016_cd_evnspc_108.jpg"
@@ -3188,7 +3204,8 @@
       "treo": true,
       "wall_path": "assets/wall/khu2/bk_2016_ctn_11.jpg",
       "thumb_path": "assets/thumbs/khu2/bk_2016_ctn_11.jpg",
-      "full_path": "assets/full/khu2/bk_2016_ctn_11.jpg"
+      "full_path": "assets/full/khu2/bk_2016_ctn_11.jpg",
+      "tuong": "giua"
     },
     {
       "id": "bk_2016_ctn_12",
@@ -3206,7 +3223,8 @@
       "treo": true,
       "wall_path": "assets/wall/khu2/bk_2016_ctn_12.jpg",
       "thumb_path": "assets/thumbs/khu2/bk_2016_ctn_12.jpg",
-      "full_path": "assets/full/khu2/bk_2016_ctn_12.jpg"
+      "full_path": "assets/full/khu2/bk_2016_ctn_12.jpg",
+      "tuong": "giua"
     },
     {
       "id": "bk_2016_ldld_brvt_30",
@@ -3221,7 +3239,7 @@
       "item_type": "Bằng khen",
       "caption": "Bằng khen năm 2016",
       "aspect_ratio": 1.414,
-      "treo": true,
+      "treo": false,
       "wall_path": "assets/wall/khu2/bk_2016_ldld_brvt_30.jpg",
       "thumb_path": "assets/thumbs/khu2/bk_2016_ldld_brvt_30.jpg",
       "full_path": "assets/full/khu2/bk_2016_ldld_brvt_30.jpg"
@@ -3242,7 +3260,8 @@
       "treo": true,
       "wall_path": "assets/wall/khu2/bk_2016_ubnd_brvt_74.jpg",
       "thumb_path": "assets/thumbs/khu2/bk_2016_ubnd_brvt_74.jpg",
-      "full_path": "assets/full/khu2/bk_2016_ubnd_brvt_74.jpg"
+      "full_path": "assets/full/khu2/bk_2016_ubnd_brvt_74.jpg",
+      "tuong": "tay"
     },
     {
       "id": "bk_2016_ubnd_tpvt_101",
@@ -3257,7 +3276,7 @@
       "item_type": "Bằng khen",
       "caption": "Bằng khen năm 2016",
       "aspect_ratio": 1.414,
-      "treo": true,
+      "treo": false,
       "wall_path": "assets/wall/khu2/bk_2016_ubnd_tpvt_101.jpg",
       "thumb_path": "assets/thumbs/khu2/bk_2016_ubnd_tpvt_101.jpg",
       "full_path": "assets/full/khu2/bk_2016_ubnd_tpvt_101.jpg"
@@ -3278,7 +3297,8 @@
       "treo": true,
       "wall_path": "assets/wall/khu2/bk_2017_cd_evn_42.jpg",
       "thumb_path": "assets/thumbs/khu2/bk_2017_cd_evn_42.jpg",
-      "full_path": "assets/full/khu2/bk_2017_cd_evn_42.jpg"
+      "full_path": "assets/full/khu2/bk_2017_cd_evn_42.jpg",
+      "tuong": "dong"
     },
     {
       "id": "bk_2017_danguy_brvt_44",
@@ -3293,7 +3313,7 @@
       "item_type": "Giấy khen",
       "caption": "Giấy khen năm 2017",
       "aspect_ratio": 1.414,
-      "treo": true,
+      "treo": false,
       "wall_path": "assets/wall/khu2/bk_2017_danguy_brvt_44.jpg",
       "thumb_path": "assets/thumbs/khu2/bk_2017_danguy_brvt_44.jpg",
       "full_path": "assets/full/khu2/bk_2017_danguy_brvt_44.jpg"
@@ -3314,7 +3334,8 @@
       "treo": true,
       "wall_path": "assets/wall/khu2/bk_2017_ubnd_brvt_28.jpg",
       "thumb_path": "assets/thumbs/khu2/bk_2017_ubnd_brvt_28.jpg",
-      "full_path": "assets/full/khu2/bk_2017_ubnd_brvt_28.jpg"
+      "full_path": "assets/full/khu2/bk_2017_ubnd_brvt_28.jpg",
+      "tuong": "tay"
     },
     {
       "id": "bk_2017_ubnd_tpvt_62",
@@ -3329,7 +3350,7 @@
       "item_type": "Giấy khen",
       "caption": "Giấy khen năm 2017",
       "aspect_ratio": 1.416,
-      "treo": true,
+      "treo": false,
       "wall_path": "assets/wall/khu2/bk_2017_ubnd_tpvt_62.jpg",
       "thumb_path": "assets/thumbs/khu2/bk_2017_ubnd_tpvt_62.jpg",
       "full_path": "assets/full/khu2/bk_2017_ubnd_tpvt_62.jpg"
@@ -3350,7 +3371,8 @@
       "treo": true,
       "wall_path": "assets/wall/khu2/bk_2018_evnspc_04.jpg",
       "thumb_path": "assets/thumbs/khu2/bk_2018_evnspc_04.jpg",
-      "full_path": "assets/full/khu2/bk_2018_evnspc_04.jpg"
+      "full_path": "assets/full/khu2/bk_2018_evnspc_04.jpg",
+      "tuong": "dong"
     },
     {
       "id": "bk_2018_evnspc_10",
@@ -3365,7 +3387,7 @@
       "item_type": "Giấy khen",
       "caption": "Giấy khen năm 2018",
       "aspect_ratio": 1.416,
-      "treo": true,
+      "treo": false,
       "wall_path": "assets/wall/khu2/bk_2018_evnspc_10.jpg",
       "thumb_path": "assets/thumbs/khu2/bk_2018_evnspc_10.jpg",
       "full_path": "assets/full/khu2/bk_2018_evnspc_10.jpg"
@@ -3383,7 +3405,7 @@
       "item_type": "Bằng khen",
       "caption": "Bằng khen năm 2018",
       "aspect_ratio": 1.416,
-      "treo": true,
+      "treo": false,
       "wall_path": "assets/wall/khu2/bk_2018_ldld_brvt_05.jpg",
       "thumb_path": "assets/thumbs/khu2/bk_2018_ldld_brvt_05.jpg",
       "full_path": "assets/full/khu2/bk_2018_ldld_brvt_05.jpg"
@@ -3404,7 +3426,8 @@
       "treo": true,
       "wall_path": "assets/wall/khu2/bk_2018_ubnd_brvt_65.jpg",
       "thumb_path": "assets/thumbs/khu2/bk_2018_ubnd_brvt_65.jpg",
-      "full_path": "assets/full/khu2/bk_2018_ubnd_brvt_65.jpg"
+      "full_path": "assets/full/khu2/bk_2018_ubnd_brvt_65.jpg",
+      "tuong": "tay"
     },
     {
       "id": "bk_2018_ubnd_brvt_13",
@@ -3419,7 +3442,7 @@
       "item_type": "Giấy khen",
       "caption": "Giấy khen năm 2018",
       "aspect_ratio": 1.416,
-      "treo": true,
+      "treo": false,
       "wall_path": "assets/wall/khu2/bk_2018_ubnd_brvt_13.jpg",
       "thumb_path": "assets/thumbs/khu2/bk_2018_ubnd_brvt_13.jpg",
       "full_path": "assets/full/khu2/bk_2018_ubnd_brvt_13.jpg"
@@ -3437,7 +3460,7 @@
       "item_type": "Giấy khen",
       "caption": "Giấy khen năm 2019",
       "aspect_ratio": 1.416,
-      "treo": true,
+      "treo": false,
       "wall_path": "assets/wall/khu2/bk_2019_evnspc_12.jpg",
       "thumb_path": "assets/thumbs/khu2/bk_2019_evnspc_12.jpg",
       "full_path": "assets/full/khu2/bk_2019_evnspc_12.jpg"
@@ -3455,7 +3478,7 @@
       "item_type": "Giấy khen",
       "caption": "Giấy khen năm 2020",
       "aspect_ratio": 1.414,
-      "treo": true,
+      "treo": false,
       "wall_path": "assets/wall/khu2/bk_2020_cd_evnspc_67.jpg",
       "thumb_path": "assets/thumbs/khu2/bk_2020_cd_evnspc_67.jpg",
       "full_path": "assets/full/khu2/bk_2020_cd_evnspc_67.jpg"
@@ -3473,7 +3496,7 @@
       "item_type": "Giấy khen",
       "caption": "Giấy khen năm 2020",
       "aspect_ratio": 1.414,
-      "treo": true,
+      "treo": false,
       "wall_path": "assets/wall/khu2/bk_2020_danguy_brvt_32.jpg",
       "thumb_path": "assets/thumbs/khu2/bk_2020_danguy_brvt_32.jpg",
       "full_path": "assets/full/khu2/bk_2020_danguy_brvt_32.jpg"
@@ -3494,7 +3517,8 @@
       "treo": true,
       "wall_path": "assets/wall/khu2/bk_2020_ubnd_brvt_83.jpg",
       "thumb_path": "assets/thumbs/khu2/bk_2020_ubnd_brvt_83.jpg",
-      "full_path": "assets/full/khu2/bk_2020_ubnd_brvt_83.jpg"
+      "full_path": "assets/full/khu2/bk_2020_ubnd_brvt_83.jpg",
+      "tuong": "tay"
     },
     {
       "id": "bk_2020_ubnd_tpvt_14",
@@ -3509,7 +3533,7 @@
       "item_type": "Bằng khen",
       "caption": "Bằng khen năm 2020",
       "aspect_ratio": 0.707,
-      "treo": true,
+      "treo": false,
       "wall_path": "assets/wall/khu2/bk_2020_ubnd_tpvt_14.jpg",
       "thumb_path": "assets/thumbs/khu2/bk_2020_ubnd_tpvt_14.jpg",
       "full_path": "assets/full/khu2/bk_2020_ubnd_tpvt_14.jpg"
@@ -3527,7 +3551,7 @@
       "item_type": "Giấy khen",
       "caption": "Giấy khen năm 2021",
       "aspect_ratio": 1.416,
-      "treo": true,
+      "treo": false,
       "wall_path": "assets/wall/khu2/bk_2021_evnspc_04.jpg",
       "thumb_path": "assets/thumbs/khu2/bk_2021_evnspc_04.jpg",
       "full_path": "assets/full/khu2/bk_2021_evnspc_04.jpg"
@@ -3545,7 +3569,7 @@
       "item_type": "Giấy khen",
       "caption": "Giấy khen năm 2022",
       "aspect_ratio": 1.416,
-      "treo": true,
+      "treo": false,
       "wall_path": "assets/wall/khu2/bk_2022_evnspc_66.jpg",
       "thumb_path": "assets/thumbs/khu2/bk_2022_evnspc_66.jpg",
       "full_path": "assets/full/khu2/bk_2022_evnspc_66.jpg"
@@ -3566,7 +3590,8 @@
       "treo": true,
       "wall_path": "assets/wall/khu2/bk_2022_tldldvn_43.jpg",
       "thumb_path": "assets/thumbs/khu2/bk_2022_tldldvn_43.jpg",
-      "full_path": "assets/full/khu2/bk_2022_tldldvn_43.jpg"
+      "full_path": "assets/full/khu2/bk_2022_tldldvn_43.jpg",
+      "tuong": "giua"
     },
     {
       "id": "bk_2022_ubnd_brvt_99",
@@ -3584,7 +3609,8 @@
       "treo": true,
       "wall_path": "assets/wall/khu2/bk_2022_ubnd_brvt_99.jpg",
       "thumb_path": "assets/thumbs/khu2/bk_2022_ubnd_brvt_99.jpg",
-      "full_path": "assets/full/khu2/bk_2022_ubnd_brvt_99.jpg"
+      "full_path": "assets/full/khu2/bk_2022_ubnd_brvt_99.jpg",
+      "tuong": "tay"
     },
     {
       "id": "bk_2023_cd_evn_110",
@@ -3602,7 +3628,8 @@
       "treo": true,
       "wall_path": "assets/wall/khu2/bk_2023_cd_evn_110.jpg",
       "thumb_path": "assets/thumbs/khu2/bk_2023_cd_evn_110.jpg",
-      "full_path": "assets/full/khu2/bk_2023_cd_evn_110.jpg"
+      "full_path": "assets/full/khu2/bk_2023_cd_evn_110.jpg",
+      "tuong": "dong"
     },
     {
       "id": "bk_2023_cd_evnspc_33",
@@ -3617,7 +3644,7 @@
       "item_type": "Giấy khen",
       "caption": "Giấy khen năm 2023",
       "aspect_ratio": 1.414,
-      "treo": true,
+      "treo": false,
       "wall_path": "assets/wall/khu2/bk_2023_cd_evnspc_33.jpg",
       "thumb_path": "assets/thumbs/khu2/bk_2023_cd_evnspc_33.jpg",
       "full_path": "assets/full/khu2/bk_2023_cd_evnspc_33.jpg"
@@ -3638,7 +3665,8 @@
       "treo": true,
       "wall_path": "assets/wall/khu2/bk_2023_ubnd_brvt_81.jpg",
       "thumb_path": "assets/thumbs/khu2/bk_2023_ubnd_brvt_81.jpg",
-      "full_path": "assets/full/khu2/bk_2023_ubnd_brvt_81.jpg"
+      "full_path": "assets/full/khu2/bk_2023_ubnd_brvt_81.jpg",
+      "tuong": "tay"
     },
     {
       "id": "bk_2023_ubnd_tpvt_79",
@@ -3653,7 +3681,7 @@
       "item_type": "Giấy khen",
       "caption": "Giấy khen năm 2023",
       "aspect_ratio": 1.416,
-      "treo": true,
+      "treo": false,
       "wall_path": "assets/wall/khu2/bk_2023_ubnd_tpvt_79.jpg",
       "thumb_path": "assets/thumbs/khu2/bk_2023_ubnd_tpvt_79.jpg",
       "full_path": "assets/full/khu2/bk_2023_ubnd_tpvt_79.jpg"
@@ -3674,7 +3702,8 @@
       "treo": true,
       "wall_path": "assets/wall/khu2/bk_2024_cd_evn_111.jpg",
       "thumb_path": "assets/thumbs/khu2/bk_2024_cd_evn_111.jpg",
-      "full_path": "assets/full/khu2/bk_2024_cd_evn_111.jpg"
+      "full_path": "assets/full/khu2/bk_2024_cd_evn_111.jpg",
+      "tuong": "dong"
     },
     {
       "id": "bk_2024_danguy_brvt_25",
@@ -3692,7 +3721,8 @@
       "treo": true,
       "wall_path": "assets/wall/khu2/bk_2024_danguy_brvt_25.jpg",
       "thumb_path": "assets/thumbs/khu2/bk_2024_danguy_brvt_25.jpg",
-      "full_path": "assets/full/khu2/bk_2024_danguy_brvt_25.jpg"
+      "full_path": "assets/full/khu2/bk_2024_danguy_brvt_25.jpg",
+      "tuong": "tay"
     },
     {
       "id": "bk_2024_danguy_brvt_23",
@@ -3707,7 +3737,7 @@
       "item_type": "Giấy khen",
       "caption": "Giấy khen năm 2024",
       "aspect_ratio": 1.414,
-      "treo": true,
+      "treo": false,
       "wall_path": "assets/wall/khu2/bk_2024_danguy_brvt_23.jpg",
       "thumb_path": "assets/thumbs/khu2/bk_2024_danguy_brvt_23.jpg",
       "full_path": "assets/full/khu2/bk_2024_danguy_brvt_23.jpg"
@@ -3728,7 +3758,8 @@
       "treo": true,
       "wall_path": "assets/wall/khu2/bk_2024_evnspc_01.jpg",
       "thumb_path": "assets/thumbs/khu2/bk_2024_evnspc_01.jpg",
-      "full_path": "assets/full/khu2/bk_2024_evnspc_01.jpg"
+      "full_path": "assets/full/khu2/bk_2024_evnspc_01.jpg",
+      "tuong": "dong"
     },
     {
       "id": "bk_2024_evnspc_09",
@@ -3743,7 +3774,7 @@
       "item_type": "Giấy khen",
       "caption": "Giấy khen năm 2024",
       "aspect_ratio": 1.416,
-      "treo": true,
+      "treo": false,
       "wall_path": "assets/wall/khu2/bk_2024_evnspc_09.jpg",
       "thumb_path": "assets/thumbs/khu2/bk_2024_evnspc_09.jpg",
       "full_path": "assets/full/khu2/bk_2024_evnspc_09.jpg"
@@ -3761,7 +3792,7 @@
       "item_type": "Giấy khen",
       "caption": "Giấy khen năm 2024",
       "aspect_ratio": 1.416,
-      "treo": true,
+      "treo": false,
       "wall_path": "assets/wall/khu2/bk_2024_ubnd_tpvt_80.jpg",
       "thumb_path": "assets/thumbs/khu2/bk_2024_ubnd_tpvt_80.jpg",
       "full_path": "assets/full/khu2/bk_2024_ubnd_tpvt_80.jpg"
@@ -3782,7 +3813,8 @@
       "treo": true,
       "wall_path": "assets/wall/khu2/bk_2025_ubnd_brvt_15.jpg",
       "thumb_path": "assets/thumbs/khu2/bk_2025_ubnd_brvt_15.jpg",
-      "full_path": "assets/full/khu2/bk_2025_ubnd_brvt_15.jpg"
+      "full_path": "assets/full/khu2/bk_2025_ubnd_brvt_15.jpg",
+      "tuong": "tay"
     },
     {
       "id": "bk_2025_ubnd_brvt_90",
@@ -3797,7 +3829,7 @@
       "item_type": "Giấy khen",
       "caption": "Giấy khen năm 2025",
       "aspect_ratio": 1.414,
-      "treo": true,
+      "treo": false,
       "wall_path": "assets/wall/khu2/bk_2025_ubnd_brvt_90.jpg",
       "thumb_path": "assets/thumbs/khu2/bk_2025_ubnd_brvt_90.jpg",
       "full_path": "assets/full/khu2/bk_2025_ubnd_brvt_90.jpg"
@@ -3815,7 +3847,7 @@
       "item_type": "Thư cảm ơn",
       "caption": "Thư cảm ơn năm 2025",
       "aspect_ratio": 0.707,
-      "treo": true,
+      "treo": false,
       "wall_path": "assets/wall/khu2/bk_2025_ubnd_brvt_109.jpg",
       "thumb_path": "assets/thumbs/khu2/bk_2025_ubnd_brvt_109.jpg",
       "full_path": "assets/full/khu2/bk_2025_ubnd_brvt_109.jpg"
@@ -3836,7 +3868,8 @@
       "treo": true,
       "wall_path": "assets/wall/khu2/co_1991_ldld_brvt_34.jpg",
       "thumb_path": "assets/thumbs/khu2/co_1991_ldld_brvt_34.jpg",
-      "full_path": "assets/full/khu2/co_1991_ldld_brvt_34.jpg"
+      "full_path": "assets/full/khu2/co_1991_ldld_brvt_34.jpg",
+      "tuong": "dong"
     },
     {
       "id": "co_1994_cd_evnspc_73",
@@ -3854,7 +3887,8 @@
       "treo": true,
       "wall_path": "assets/wall/khu2/co_1994_cd_evnspc_73.jpg",
       "thumb_path": "assets/thumbs/khu2/co_1994_cd_evnspc_73.jpg",
-      "full_path": "assets/full/khu2/co_1994_cd_evnspc_73.jpg"
+      "full_path": "assets/full/khu2/co_1994_cd_evnspc_73.jpg",
+      "tuong": "giua"
     },
     {
       "id": "co_1995_cd_evnspc_35",
@@ -3872,7 +3906,8 @@
       "treo": true,
       "wall_path": "assets/wall/khu2/co_1995_cd_evnspc_35.jpg",
       "thumb_path": "assets/thumbs/khu2/co_1995_cd_evnspc_35.jpg",
-      "full_path": "assets/full/khu2/co_1995_cd_evnspc_35.jpg"
+      "full_path": "assets/full/khu2/co_1995_cd_evnspc_35.jpg",
+      "tuong": "giua"
     },
     {
       "id": "co_1995_ldld_tinh_ba_ria_33",
@@ -3890,7 +3925,8 @@
       "treo": true,
       "wall_path": "assets/wall/khu2/co_1995_ldld_tinh_ba_ria_33.jpg",
       "thumb_path": "assets/thumbs/khu2/co_1995_ldld_tinh_ba_ria_33.jpg",
-      "full_path": "assets/full/khu2/co_1995_ldld_tinh_ba_ria_33.jpg"
+      "full_path": "assets/full/khu2/co_1995_ldld_tinh_ba_ria_33.jpg",
+      "tuong": "dong"
     },
     {
       "id": "co_1995_ldld_tinh_ba_ria_39",
@@ -3905,7 +3941,7 @@
       "item_type": "Cờ",
       "caption": "1995 • Cờ",
       "aspect_ratio": 1.099,
-      "treo": true,
+      "treo": false,
       "wall_path": "assets/wall/khu2/co_1995_ldld_tinh_ba_ria_39.jpg",
       "thumb_path": "assets/thumbs/khu2/co_1995_ldld_tinh_ba_ria_39.jpg",
       "full_path": "assets/full/khu2/co_1995_ldld_tinh_ba_ria_39.jpg"
@@ -3926,7 +3962,8 @@
       "treo": true,
       "wall_path": "assets/wall/khu2/co_1996_ban_chap_hanh_dang_bo_tinh_ba_ria_42.jpg",
       "thumb_path": "assets/thumbs/khu2/co_1996_ban_chap_hanh_dang_bo_tinh_ba_ria_42.jpg",
-      "full_path": "assets/full/khu2/co_1996_ban_chap_hanh_dang_bo_tinh_ba_ria_42.jpg"
+      "full_path": "assets/full/khu2/co_1996_ban_chap_hanh_dang_bo_tinh_ba_ria_42.jpg",
+      "tuong": "dong"
     },
     {
       "id": "co_1996_cd_evnspc_23",
@@ -3944,7 +3981,8 @@
       "treo": true,
       "wall_path": "assets/wall/khu2/co_1996_cd_evnspc_23.jpg",
       "thumb_path": "assets/thumbs/khu2/co_1996_cd_evnspc_23.jpg",
-      "full_path": "assets/full/khu2/co_1996_cd_evnspc_23.jpg"
+      "full_path": "assets/full/khu2/co_1996_cd_evnspc_23.jpg",
+      "tuong": "giua"
     },
     {
       "id": "co_1996_ldld_tinh_ba_ria_47",
@@ -3962,7 +4000,8 @@
       "treo": true,
       "wall_path": "assets/wall/khu2/co_1996_ldld_tinh_ba_ria_47.jpg",
       "thumb_path": "assets/thumbs/khu2/co_1996_ldld_tinh_ba_ria_47.jpg",
-      "full_path": "assets/full/khu2/co_1996_ldld_tinh_ba_ria_47.jpg"
+      "full_path": "assets/full/khu2/co_1996_ldld_tinh_ba_ria_47.jpg",
+      "tuong": "dong"
     },
     {
       "id": "co_1997_cd_evnspc_63",
@@ -3980,7 +4019,8 @@
       "treo": true,
       "wall_path": "assets/wall/khu2/co_1997_cd_evnspc_63.jpg",
       "thumb_path": "assets/thumbs/khu2/co_1997_cd_evnspc_63.jpg",
-      "full_path": "assets/full/khu2/co_1997_cd_evnspc_63.jpg"
+      "full_path": "assets/full/khu2/co_1997_cd_evnspc_63.jpg",
+      "tuong": "tay"
     },
     {
       "id": "co_1997_cd_evnspc_21",
@@ -3995,7 +4035,7 @@
       "item_type": "Cờ Hội thao / Hội thi",
       "caption": "1997 • Cờ Hội thao / Hội thi",
       "aspect_ratio": 1.402,
-      "treo": true,
+      "treo": false,
       "wall_path": "assets/wall/khu2/co_1997_cd_evnspc_21.jpg",
       "thumb_path": "assets/thumbs/khu2/co_1997_cd_evnspc_21.jpg",
       "full_path": "assets/full/khu2/co_1997_cd_evnspc_21.jpg"
@@ -4016,7 +4056,8 @@
       "treo": true,
       "wall_path": "assets/wall/khu2/co_1998_cd_evnspc_57.jpg",
       "thumb_path": "assets/thumbs/khu2/co_1998_cd_evnspc_57.jpg",
-      "full_path": "assets/full/khu2/co_1998_cd_evnspc_57.jpg"
+      "full_path": "assets/full/khu2/co_1998_cd_evnspc_57.jpg",
+      "tuong": "tay"
     },
     {
       "id": "co_1998_evn_58",
@@ -4034,7 +4075,8 @@
       "treo": true,
       "wall_path": "assets/wall/khu2/co_1998_evn_58.jpg",
       "thumb_path": "assets/thumbs/khu2/co_1998_evn_58.jpg",
-      "full_path": "assets/full/khu2/co_1998_evn_58.jpg"
+      "full_path": "assets/full/khu2/co_1998_evn_58.jpg",
+      "tuong": "giua"
     },
     {
       "id": "co_1998_tldldvn_64",
@@ -4052,7 +4094,8 @@
       "treo": true,
       "wall_path": "assets/wall/khu2/co_1998_tldldvn_64.jpg",
       "thumb_path": "assets/thumbs/khu2/co_1998_tldldvn_64.jpg",
-      "full_path": "assets/full/khu2/co_1998_tldldvn_64.jpg"
+      "full_path": "assets/full/khu2/co_1998_tldldvn_64.jpg",
+      "tuong": "giua"
     },
     {
       "id": "co_1999_cong_doan_cong_nghiep_viet_nam_56",
@@ -4070,7 +4113,8 @@
       "treo": true,
       "wall_path": "assets/wall/khu2/co_1999_cong_doan_cong_nghiep_viet_nam_56.jpg",
       "thumb_path": "assets/thumbs/khu2/co_1999_cong_doan_cong_nghiep_viet_nam_56.jpg",
-      "full_path": "assets/full/khu2/co_1999_cong_doan_cong_nghiep_viet_nam_56.jpg"
+      "full_path": "assets/full/khu2/co_1999_cong_doan_cong_nghiep_viet_nam_56.jpg",
+      "tuong": "dong"
     },
     {
       "id": "co_1999_cd_evnspc_16",
@@ -4088,7 +4132,8 @@
       "treo": true,
       "wall_path": "assets/wall/khu2/co_1999_cd_evnspc_16.jpg",
       "thumb_path": "assets/thumbs/khu2/co_1999_cd_evnspc_16.jpg",
-      "full_path": "assets/full/khu2/co_1999_cd_evnspc_16.jpg"
+      "full_path": "assets/full/khu2/co_1999_cd_evnspc_16.jpg",
+      "tuong": "tay"
     },
     {
       "id": "co_1999_evn_61",
@@ -4106,7 +4151,8 @@
       "treo": true,
       "wall_path": "assets/wall/khu2/co_1999_evn_61.jpg",
       "thumb_path": "assets/thumbs/khu2/co_1999_evn_61.jpg",
-      "full_path": "assets/full/khu2/co_1999_evn_61.jpg"
+      "full_path": "assets/full/khu2/co_1999_evn_61.jpg",
+      "tuong": "giua"
     },
     {
       "id": "co_1999_tldldvn_65",
@@ -4124,7 +4170,8 @@
       "treo": true,
       "wall_path": "assets/wall/khu2/co_1999_tldldvn_65.jpg",
       "thumb_path": "assets/thumbs/khu2/co_1999_tldldvn_65.jpg",
-      "full_path": "assets/full/khu2/co_1999_tldldvn_65.jpg"
+      "full_path": "assets/full/khu2/co_1999_tldldvn_65.jpg",
+      "tuong": "giua"
     },
     {
       "id": "co_2000_cong_ty_dien_luc_2_72",
@@ -4142,7 +4189,8 @@
       "treo": true,
       "wall_path": "assets/wall/khu2/co_2000_cong_ty_dien_luc_2_72.jpg",
       "thumb_path": "assets/thumbs/khu2/co_2000_cong_ty_dien_luc_2_72.jpg",
-      "full_path": "assets/full/khu2/co_2000_cong_ty_dien_luc_2_72.jpg"
+      "full_path": "assets/full/khu2/co_2000_cong_ty_dien_luc_2_72.jpg",
+      "tuong": "dong"
     },
     {
       "id": "co_2000_cd_evnspc_18",
@@ -4160,7 +4208,8 @@
       "treo": true,
       "wall_path": "assets/wall/khu2/co_2000_cd_evnspc_18.jpg",
       "thumb_path": "assets/thumbs/khu2/co_2000_cd_evnspc_18.jpg",
-      "full_path": "assets/full/khu2/co_2000_cd_evnspc_18.jpg"
+      "full_path": "assets/full/khu2/co_2000_cd_evnspc_18.jpg",
+      "tuong": "tay"
     },
     {
       "id": "co_2000_unknown_00",
@@ -4178,7 +4227,8 @@
       "treo": true,
       "wall_path": "assets/wall/khu2/co_2000_unknown_00.jpg",
       "thumb_path": "assets/thumbs/khu2/co_2000_unknown_00.jpg",
-      "full_path": "assets/full/khu2/co_2000_unknown_00.jpg"
+      "full_path": "assets/full/khu2/co_2000_unknown_00.jpg",
+      "tuong": "dong"
     },
     {
       "id": "co_2002_ban_chap_hanh_dang_bo_tinh_ba_ria_19",
@@ -4196,7 +4246,8 @@
       "treo": true,
       "wall_path": "assets/wall/khu2/co_2002_ban_chap_hanh_dang_bo_tinh_ba_ria_19.jpg",
       "thumb_path": "assets/thumbs/khu2/co_2002_ban_chap_hanh_dang_bo_tinh_ba_ria_19.jpg",
-      "full_path": "assets/full/khu2/co_2002_ban_chap_hanh_dang_bo_tinh_ba_ria_19.jpg"
+      "full_path": "assets/full/khu2/co_2002_ban_chap_hanh_dang_bo_tinh_ba_ria_19.jpg",
+      "tuong": "dong"
     },
     {
       "id": "co_2002_cong_doan_cty_dien_luc_2_03",
@@ -4214,7 +4265,8 @@
       "treo": true,
       "wall_path": "assets/wall/khu2/co_2002_cong_doan_cty_dien_luc_2_03.jpg",
       "thumb_path": "assets/thumbs/khu2/co_2002_cong_doan_cty_dien_luc_2_03.jpg",
-      "full_path": "assets/full/khu2/co_2002_cong_doan_cty_dien_luc_2_03.jpg"
+      "full_path": "assets/full/khu2/co_2002_cong_doan_cty_dien_luc_2_03.jpg",
+      "tuong": "dong"
     },
     {
       "id": "co_2003_hoi_thao_cnvc_lao_dong_cty_dien_luc_2_71",
@@ -4232,7 +4284,8 @@
       "treo": true,
       "wall_path": "assets/wall/khu2/co_2003_hoi_thao_cnvc_lao_dong_cty_dien_luc_2_71.jpg",
       "thumb_path": "assets/thumbs/khu2/co_2003_hoi_thao_cnvc_lao_dong_cty_dien_luc_2_71.jpg",
-      "full_path": "assets/full/khu2/co_2003_hoi_thao_cnvc_lao_dong_cty_dien_luc_2_71.jpg"
+      "full_path": "assets/full/khu2/co_2003_hoi_thao_cnvc_lao_dong_cty_dien_luc_2_71.jpg",
+      "tuong": "dong"
     },
     {
       "id": "co_2003_unknown_00",
@@ -4250,7 +4303,8 @@
       "treo": true,
       "wall_path": "assets/wall/khu2/co_2003_unknown_00.jpg",
       "thumb_path": "assets/thumbs/khu2/co_2003_unknown_00.jpg",
-      "full_path": "assets/full/khu2/co_2003_unknown_00.jpg"
+      "full_path": "assets/full/khu2/co_2003_unknown_00.jpg",
+      "tuong": "dong"
     },
     {
       "id": "co_2003_unknown_00",
@@ -4265,7 +4319,7 @@
       "item_type": "Cờ Hội thao / Hội thi",
       "caption": "2003 • Cờ Hội thao / Hội thi",
       "aspect_ratio": 0.739,
-      "treo": true,
+      "treo": false,
       "wall_path": "assets/wall/khu2/co_2003_unknown_00.jpg",
       "thumb_path": "assets/thumbs/khu2/co_2003_unknown_00.jpg",
       "full_path": "assets/full/khu2/co_2003_unknown_00.jpg"
@@ -4286,7 +4340,8 @@
       "treo": true,
       "wall_path": "assets/wall/khu2/co_2003_ubnd_tinh_ba_ria_50.jpg",
       "thumb_path": "assets/thumbs/khu2/co_2003_ubnd_tinh_ba_ria_50.jpg",
-      "full_path": "assets/full/khu2/co_2003_ubnd_tinh_ba_ria_50.jpg"
+      "full_path": "assets/full/khu2/co_2003_ubnd_tinh_ba_ria_50.jpg",
+      "tuong": "dong"
     },
     {
       "id": "co_2004_cd_evnspc_29",
@@ -4304,7 +4359,8 @@
       "treo": true,
       "wall_path": "assets/wall/khu2/co_2004_cd_evnspc_29.jpg",
       "thumb_path": "assets/thumbs/khu2/co_2004_cd_evnspc_29.jpg",
-      "full_path": "assets/full/khu2/co_2004_cd_evnspc_29.jpg"
+      "full_path": "assets/full/khu2/co_2004_cd_evnspc_29.jpg",
+      "tuong": "tay"
     },
     {
       "id": "co_2004_unknown_00",
@@ -4322,7 +4378,8 @@
       "treo": true,
       "wall_path": "assets/wall/khu2/co_2004_unknown_00.jpg",
       "thumb_path": "assets/thumbs/khu2/co_2004_unknown_00.jpg",
-      "full_path": "assets/full/khu2/co_2004_unknown_00.jpg"
+      "full_path": "assets/full/khu2/co_2004_unknown_00.jpg",
+      "tuong": "dong"
     },
     {
       "id": "co_2004_ldld_tinh_ba_ria_02",
@@ -4340,7 +4397,8 @@
       "treo": true,
       "wall_path": "assets/wall/khu2/co_2004_ldld_tinh_ba_ria_02.jpg",
       "thumb_path": "assets/thumbs/khu2/co_2004_ldld_tinh_ba_ria_02.jpg",
-      "full_path": "assets/full/khu2/co_2004_ldld_tinh_ba_ria_02.jpg"
+      "full_path": "assets/full/khu2/co_2004_ldld_tinh_ba_ria_02.jpg",
+      "tuong": "dong"
     },
     {
       "id": "co_2004_unknown_00",
@@ -4355,7 +4413,7 @@
       "item_type": "Cờ",
       "caption": "2004 • Cờ",
       "aspect_ratio": 0.848,
-      "treo": true,
+      "treo": false,
       "wall_path": "assets/wall/khu2/co_2004_unknown_00.jpg",
       "thumb_path": "assets/thumbs/khu2/co_2004_unknown_00.jpg",
       "full_path": "assets/full/khu2/co_2004_unknown_00.jpg"
@@ -4376,7 +4434,8 @@
       "treo": true,
       "wall_path": "assets/wall/khu2/co_2005_cd_evnspc_27.jpg",
       "thumb_path": "assets/thumbs/khu2/co_2005_cd_evnspc_27.jpg",
-      "full_path": "assets/full/khu2/co_2005_cd_evnspc_27.jpg"
+      "full_path": "assets/full/khu2/co_2005_cd_evnspc_27.jpg",
+      "tuong": "tay"
     },
     {
       "id": "co_2005_ldld_tinh_ba_ria_08",
@@ -4394,7 +4453,8 @@
       "treo": true,
       "wall_path": "assets/wall/khu2/co_2005_ldld_tinh_ba_ria_08.jpg",
       "thumb_path": "assets/thumbs/khu2/co_2005_ldld_tinh_ba_ria_08.jpg",
-      "full_path": "assets/full/khu2/co_2005_ldld_tinh_ba_ria_08.jpg"
+      "full_path": "assets/full/khu2/co_2005_ldld_tinh_ba_ria_08.jpg",
+      "tuong": "dong"
     },
     {
       "id": "co_2006_cd_evnspc_24",
@@ -4412,7 +4472,8 @@
       "treo": true,
       "wall_path": "assets/wall/khu2/co_2006_cd_evnspc_24.jpg",
       "thumb_path": "assets/thumbs/khu2/co_2006_cd_evnspc_24.jpg",
-      "full_path": "assets/full/khu2/co_2006_cd_evnspc_24.jpg"
+      "full_path": "assets/full/khu2/co_2006_cd_evnspc_24.jpg",
+      "tuong": "tay"
     },
     {
       "id": "co_2006_cd_evnspc_15",
@@ -4427,7 +4488,7 @@
       "item_type": "Cờ Thi đua",
       "caption": "2006 • Cờ Thi đua",
       "aspect_ratio": 1.537,
-      "treo": true,
+      "treo": false,
       "wall_path": "assets/wall/khu2/co_2006_cd_evnspc_15.jpg",
       "thumb_path": "assets/thumbs/khu2/co_2006_cd_evnspc_15.jpg",
       "full_path": "assets/full/khu2/co_2006_cd_evnspc_15.jpg"
@@ -4445,7 +4506,7 @@
       "item_type": "Cờ",
       "caption": "2006 • Cờ",
       "aspect_ratio": 0.872,
-      "treo": true,
+      "treo": false,
       "wall_path": "assets/wall/khu2/co_2006_unknown_00.jpg",
       "thumb_path": "assets/thumbs/khu2/co_2006_unknown_00.jpg",
       "full_path": "assets/full/khu2/co_2006_unknown_00.jpg"
@@ -4466,7 +4527,8 @@
       "treo": true,
       "wall_path": "assets/wall/khu2/co_2007_cd_evnspc_28.jpg",
       "thumb_path": "assets/thumbs/khu2/co_2007_cd_evnspc_28.jpg",
-      "full_path": "assets/full/khu2/co_2007_cd_evnspc_28.jpg"
+      "full_path": "assets/full/khu2/co_2007_cd_evnspc_28.jpg",
+      "tuong": "tay"
     },
     {
       "id": "co_2007_hoi_thao_cong_nhan_vien_chuc_dien_luc_ba_ria_01",
@@ -4481,7 +4543,7 @@
       "item_type": "Cờ Lưu niệm",
       "caption": "2007 • Cờ Lưu niệm",
       "aspect_ratio": 1.965,
-      "treo": true,
+      "treo": false,
       "wall_path": "assets/wall/khu2/co_2007_hoi_thao_cong_nhan_vien_chuc_dien_luc_ba_ria_01.jpg",
       "thumb_path": "assets/thumbs/khu2/co_2007_hoi_thao_cong_nhan_vien_chuc_dien_luc_ba_ria_01.jpg",
       "full_path": "assets/full/khu2/co_2007_hoi_thao_cong_nhan_vien_chuc_dien_luc_ba_ria_01.jpg"
@@ -4502,7 +4564,8 @@
       "treo": true,
       "wall_path": "assets/wall/khu2/co_2008_cd_evnspc_74.jpg",
       "thumb_path": "assets/thumbs/khu2/co_2008_cd_evnspc_74.jpg",
-      "full_path": "assets/full/khu2/co_2008_cd_evnspc_74.jpg"
+      "full_path": "assets/full/khu2/co_2008_cd_evnspc_74.jpg",
+      "tuong": "tay"
     },
     {
       "id": "co_2008_hoi_thao_cnvc_04",
@@ -4517,7 +4580,7 @@
       "item_type": "Cờ",
       "caption": "2008 • Cờ",
       "aspect_ratio": 1.193,
-      "treo": true,
+      "treo": false,
       "wall_path": "assets/wall/khu2/co_2008_hoi_thao_cnvc_04.jpg",
       "thumb_path": "assets/thumbs/khu2/co_2008_hoi_thao_cnvc_04.jpg",
       "full_path": "assets/full/khu2/co_2008_hoi_thao_cnvc_04.jpg"
@@ -4535,7 +4598,7 @@
       "item_type": "Cờ",
       "caption": "2008 • Cờ",
       "aspect_ratio": 1.443,
-      "treo": true,
+      "treo": false,
       "wall_path": "assets/wall/khu2/co_2008_hoi_thao_cnvc_68.jpg",
       "thumb_path": "assets/thumbs/khu2/co_2008_hoi_thao_cnvc_68.jpg",
       "full_path": "assets/full/khu2/co_2008_hoi_thao_cnvc_68.jpg"
@@ -4553,7 +4616,7 @@
       "item_type": "Cờ",
       "caption": "2008 • Cờ",
       "aspect_ratio": 0.821,
-      "treo": true,
+      "treo": false,
       "wall_path": "assets/wall/khu2/co_2008_hoi_thao_cnvc_10.jpg",
       "thumb_path": "assets/thumbs/khu2/co_2008_hoi_thao_cnvc_10.jpg",
       "full_path": "assets/full/khu2/co_2008_hoi_thao_cnvc_10.jpg"
@@ -4571,7 +4634,7 @@
       "item_type": "Cờ",
       "caption": "2008 • Cờ",
       "aspect_ratio": 0.793,
-      "treo": true,
+      "treo": false,
       "wall_path": "assets/wall/khu2/co_2008_hoi_thao_cnvc_06.jpg",
       "thumb_path": "assets/thumbs/khu2/co_2008_hoi_thao_cnvc_06.jpg",
       "full_path": "assets/full/khu2/co_2008_hoi_thao_cnvc_06.jpg"
@@ -4589,7 +4652,7 @@
       "item_type": "Cờ Lưu niệm",
       "caption": "2008 • Cờ Lưu niệm",
       "aspect_ratio": 0.802,
-      "treo": true,
+      "treo": false,
       "wall_path": "assets/wall/khu2/co_2008_pc2_05.jpg",
       "thumb_path": "assets/thumbs/khu2/co_2008_pc2_05.jpg",
       "full_path": "assets/full/khu2/co_2008_pc2_05.jpg"
@@ -4610,7 +4673,8 @@
       "treo": true,
       "wall_path": "assets/wall/khu2/co_2009_cd_evnspc_17.jpg",
       "thumb_path": "assets/thumbs/khu2/co_2009_cd_evnspc_17.jpg",
-      "full_path": "assets/full/khu2/co_2009_cd_evnspc_17.jpg"
+      "full_path": "assets/full/khu2/co_2009_cd_evnspc_17.jpg",
+      "tuong": "tay"
     },
     {
       "id": "co_2009_unknown_00",
@@ -4625,7 +4689,7 @@
       "item_type": "Cờ Hội thao / Hội thi",
       "caption": "2009 • Cờ Hội thao / Hội thi",
       "aspect_ratio": 0.771,
-      "treo": true,
+      "treo": false,
       "wall_path": "assets/wall/khu2/co_2009_unknown_00.jpg",
       "thumb_path": "assets/thumbs/khu2/co_2009_unknown_00.jpg",
       "full_path": "assets/full/khu2/co_2009_unknown_00.jpg"
@@ -4643,7 +4707,7 @@
       "item_type": "Cờ",
       "caption": "2009 • Cờ",
       "aspect_ratio": 0.723,
-      "treo": true,
+      "treo": false,
       "wall_path": "assets/wall/khu2/co_2009_hoi_thao_cnvc_09.jpg",
       "thumb_path": "assets/thumbs/khu2/co_2009_hoi_thao_cnvc_09.jpg",
       "full_path": "assets/full/khu2/co_2009_hoi_thao_cnvc_09.jpg"
@@ -4661,7 +4725,7 @@
       "item_type": "Cờ Hội thao / Hội thi",
       "caption": "2009 • Cờ Hội thao / Hội thi",
       "aspect_ratio": 0.847,
-      "treo": true,
+      "treo": false,
       "wall_path": "assets/wall/khu2/co_2009_unknown_00.jpg",
       "thumb_path": "assets/thumbs/khu2/co_2009_unknown_00.jpg",
       "full_path": "assets/full/khu2/co_2009_unknown_00.jpg"
@@ -4679,7 +4743,7 @@
       "item_type": "Cờ Hội thao / Hội thi",
       "caption": "2009 • Cờ Hội thao / Hội thi",
       "aspect_ratio": 0.672,
-      "treo": true,
+      "treo": false,
       "wall_path": "assets/wall/khu2/co_2009_unknown_00.jpg",
       "thumb_path": "assets/thumbs/khu2/co_2009_unknown_00.jpg",
       "full_path": "assets/full/khu2/co_2009_unknown_00.jpg"
@@ -4697,7 +4761,7 @@
       "item_type": "Cờ Thi đua",
       "caption": "2009 • Cờ Thi đua",
       "aspect_ratio": 1.514,
-      "treo": true,
+      "treo": false,
       "wall_path": "assets/wall/khu2/co_2009_ubnd_tinh_ba_ria_44.jpg",
       "thumb_path": "assets/thumbs/khu2/co_2009_ubnd_tinh_ba_ria_44.jpg",
       "full_path": "assets/full/khu2/co_2009_ubnd_tinh_ba_ria_44.jpg"
@@ -4715,7 +4779,7 @@
       "item_type": "Cờ",
       "caption": "2010 • Cờ",
       "aspect_ratio": 0.893,
-      "treo": true,
+      "treo": false,
       "wall_path": "assets/wall/khu2/co_2010_unknown_00.jpg",
       "thumb_path": "assets/thumbs/khu2/co_2010_unknown_00.jpg",
       "full_path": "assets/full/khu2/co_2010_unknown_00.jpg"
@@ -4733,7 +4797,7 @@
       "item_type": "Cờ Hội thao / Hội thi",
       "caption": "2010 • Cờ Hội thao / Hội thi",
       "aspect_ratio": 0.855,
-      "treo": true,
+      "treo": false,
       "wall_path": "assets/wall/khu2/co_2010_so_vh_tt_du_lich_tinh_ba_ria_75.jpg",
       "thumb_path": "assets/thumbs/khu2/co_2010_so_vh_tt_du_lich_tinh_ba_ria_75.jpg",
       "full_path": "assets/full/khu2/co_2010_so_vh_tt_du_lich_tinh_ba_ria_75.jpg"
@@ -4754,7 +4818,8 @@
       "treo": true,
       "wall_path": "assets/wall/khu2/co_2011_cd_evnspc_13.jpg",
       "thumb_path": "assets/thumbs/khu2/co_2011_cd_evnspc_13.jpg",
-      "full_path": "assets/full/khu2/co_2011_cd_evnspc_13.jpg"
+      "full_path": "assets/full/khu2/co_2011_cd_evnspc_13.jpg",
+      "tuong": "tay"
     },
     {
       "id": "co_2012_ubnd_tinh_ba_ria_46",
@@ -4769,7 +4834,7 @@
       "item_type": "Cờ Thi đua",
       "caption": "2012 • Cờ Thi đua",
       "aspect_ratio": 1.548,
-      "treo": true,
+      "treo": false,
       "wall_path": "assets/wall/khu2/co_2012_ubnd_tinh_ba_ria_46.jpg",
       "thumb_path": "assets/thumbs/khu2/co_2012_ubnd_tinh_ba_ria_46.jpg",
       "full_path": "assets/full/khu2/co_2012_ubnd_tinh_ba_ria_46.jpg"
@@ -4790,7 +4855,8 @@
       "treo": true,
       "wall_path": "assets/wall/khu2/co_2013_cd_evnspc_20.jpg",
       "thumb_path": "assets/thumbs/khu2/co_2013_cd_evnspc_20.jpg",
-      "full_path": "assets/full/khu2/co_2013_cd_evnspc_20.jpg"
+      "full_path": "assets/full/khu2/co_2013_cd_evnspc_20.jpg",
+      "tuong": "tay"
     },
     {
       "id": "co_2013_ubnd_tinh_ba_ria_52",
@@ -4805,7 +4871,7 @@
       "item_type": "Cờ Thi đua",
       "caption": "2013 • Cờ Thi đua",
       "aspect_ratio": 1.565,
-      "treo": true,
+      "treo": false,
       "wall_path": "assets/wall/khu2/co_2013_ubnd_tinh_ba_ria_52.jpg",
       "thumb_path": "assets/thumbs/khu2/co_2013_ubnd_tinh_ba_ria_52.jpg",
       "full_path": "assets/full/khu2/co_2013_ubnd_tinh_ba_ria_52.jpg"
@@ -4823,7 +4889,7 @@
       "item_type": "Cờ Hội thao / Hội thi",
       "caption": "2014 • Cờ Hội thao / Hội thi",
       "aspect_ratio": 0.728,
-      "treo": true,
+      "treo": false,
       "wall_path": "assets/wall/khu2/co_2014_unknown_00.jpg",
       "thumb_path": "assets/thumbs/khu2/co_2014_unknown_00.jpg",
       "full_path": "assets/full/khu2/co_2014_unknown_00.jpg"
@@ -4844,7 +4910,8 @@
       "treo": true,
       "wall_path": "assets/wall/khu2/co_2014_cd_evnspc_26.jpg",
       "thumb_path": "assets/thumbs/khu2/co_2014_cd_evnspc_26.jpg",
-      "full_path": "assets/full/khu2/co_2014_cd_evnspc_26.jpg"
+      "full_path": "assets/full/khu2/co_2014_cd_evnspc_26.jpg",
+      "tuong": "tay"
     },
     {
       "id": "co_2014_evnspc_60",
@@ -4862,7 +4929,8 @@
       "treo": true,
       "wall_path": "assets/wall/khu2/co_2014_evnspc_60.jpg",
       "thumb_path": "assets/thumbs/khu2/co_2014_evnspc_60.jpg",
-      "full_path": "assets/full/khu2/co_2014_evnspc_60.jpg"
+      "full_path": "assets/full/khu2/co_2014_evnspc_60.jpg",
+      "tuong": "dong"
     },
     {
       "id": "co_2014_evnspc_07",
@@ -4877,7 +4945,7 @@
       "item_type": "Cờ Lưu niệm",
       "caption": "2014 • Cờ Lưu niệm",
       "aspect_ratio": 0.965,
-      "treo": true,
+      "treo": false,
       "wall_path": "assets/wall/khu2/co_2014_evnspc_07.jpg",
       "thumb_path": "assets/thumbs/khu2/co_2014_evnspc_07.jpg",
       "full_path": "assets/full/khu2/co_2014_evnspc_07.jpg"
@@ -4895,7 +4963,7 @@
       "item_type": "Cờ Hội thao / Hội thi",
       "caption": "2014 • Cờ Hội thao / Hội thi",
       "aspect_ratio": 1.576,
-      "treo": true,
+      "treo": false,
       "wall_path": "assets/wall/khu2/co_2014_evnspc_11.jpg",
       "thumb_path": "assets/thumbs/khu2/co_2014_evnspc_11.jpg",
       "full_path": "assets/full/khu2/co_2014_evnspc_11.jpg"
@@ -4913,7 +4981,7 @@
       "item_type": "Cờ Thi đua",
       "caption": "2014 • Cờ Thi đua",
       "aspect_ratio": 1.407,
-      "treo": true,
+      "treo": false,
       "wall_path": "assets/wall/khu2/co_2014_ubnd_tinh_ba_ria_36.jpg",
       "thumb_path": "assets/thumbs/khu2/co_2014_ubnd_tinh_ba_ria_36.jpg",
       "full_path": "assets/full/khu2/co_2014_ubnd_tinh_ba_ria_36.jpg"
@@ -4934,7 +5002,8 @@
       "treo": true,
       "wall_path": "assets/wall/khu2/co_2015_bct_43.jpg",
       "thumb_path": "assets/thumbs/khu2/co_2015_bct_43.jpg",
-      "full_path": "assets/full/khu2/co_2015_bct_43.jpg"
+      "full_path": "assets/full/khu2/co_2015_bct_43.jpg",
+      "tuong": "giua"
     },
     {
       "id": "co_2015_cd_evnspc_12",
@@ -4952,7 +5021,8 @@
       "treo": true,
       "wall_path": "assets/wall/khu2/co_2015_cd_evnspc_12.jpg",
       "thumb_path": "assets/thumbs/khu2/co_2015_cd_evnspc_12.jpg",
-      "full_path": "assets/full/khu2/co_2015_cd_evnspc_12.jpg"
+      "full_path": "assets/full/khu2/co_2015_cd_evnspc_12.jpg",
+      "tuong": "dong"
     },
     {
       "id": "co_2015_ubnd_tinh_ba_ria_38",
@@ -4967,7 +5037,7 @@
       "item_type": "Cờ Thi đua",
       "caption": "2015 • Cờ Thi đua",
       "aspect_ratio": 1.348,
-      "treo": true,
+      "treo": false,
       "wall_path": "assets/wall/khu2/co_2015_ubnd_tinh_ba_ria_38.jpg",
       "thumb_path": "assets/thumbs/khu2/co_2015_ubnd_tinh_ba_ria_38.jpg",
       "full_path": "assets/full/khu2/co_2015_ubnd_tinh_ba_ria_38.jpg"
@@ -4985,7 +5055,7 @@
       "item_type": "Cờ",
       "caption": "2016 • Cờ",
       "aspect_ratio": 1.273,
-      "treo": true,
+      "treo": false,
       "wall_path": "assets/wall/khu2/co_2016_ban_thuong_vu_tinh_uy_ba_ria_49.jpg",
       "thumb_path": "assets/thumbs/khu2/co_2016_ban_thuong_vu_tinh_uy_ba_ria_49.jpg",
       "full_path": "assets/full/khu2/co_2016_ban_thuong_vu_tinh_uy_ba_ria_49.jpg"
@@ -5006,7 +5076,8 @@
       "treo": true,
       "wall_path": "assets/wall/khu2/co_2016_cd_evnspc_51.jpg",
       "thumb_path": "assets/thumbs/khu2/co_2016_cd_evnspc_51.jpg",
-      "full_path": "assets/full/khu2/co_2016_cd_evnspc_51.jpg"
+      "full_path": "assets/full/khu2/co_2016_cd_evnspc_51.jpg",
+      "tuong": "dong"
     },
     {
       "id": "co_2016_ubnd_tinh_ba_ria_53",
@@ -5021,7 +5092,7 @@
       "item_type": "Cờ Thi đua",
       "caption": "2016 • Cờ Thi đua",
       "aspect_ratio": 1.497,
-      "treo": true,
+      "treo": false,
       "wall_path": "assets/wall/khu2/co_2016_ubnd_tinh_ba_ria_53.jpg",
       "thumb_path": "assets/thumbs/khu2/co_2016_ubnd_tinh_ba_ria_53.jpg",
       "full_path": "assets/full/khu2/co_2016_ubnd_tinh_ba_ria_53.jpg"
@@ -5039,7 +5110,7 @@
       "item_type": "Cờ Thi đua",
       "caption": "2018 • Cờ Thi đua",
       "aspect_ratio": 1.618,
-      "treo": true,
+      "treo": false,
       "wall_path": "assets/wall/khu2/co_2018_ubnd_tinh_ba_ria_54.jpg",
       "thumb_path": "assets/thumbs/khu2/co_2018_ubnd_tinh_ba_ria_54.jpg",
       "full_path": "assets/full/khu2/co_2018_ubnd_tinh_ba_ria_54.jpg"
@@ -5060,7 +5131,8 @@
       "treo": true,
       "wall_path": "assets/wall/khu2/co_2020_cd_evnspc_37.jpg",
       "thumb_path": "assets/thumbs/khu2/co_2020_cd_evnspc_37.jpg",
-      "full_path": "assets/full/khu2/co_2020_cd_evnspc_37.jpg"
+      "full_path": "assets/full/khu2/co_2020_cd_evnspc_37.jpg",
+      "tuong": "dong"
     },
     {
       "id": "co_2020_evn_45",
@@ -5078,7 +5150,8 @@
       "treo": true,
       "wall_path": "assets/wall/khu2/co_2020_evn_45.jpg",
       "thumb_path": "assets/thumbs/khu2/co_2020_evn_45.jpg",
-      "full_path": "assets/full/khu2/co_2020_evn_45.jpg"
+      "full_path": "assets/full/khu2/co_2020_evn_45.jpg",
+      "tuong": "giua"
     },
     {
       "id": "co_2020_ubnd_tinh_ba_ria_30",
@@ -5093,7 +5166,7 @@
       "item_type": "Cờ Thi đua",
       "caption": "2020 • Cờ Thi đua",
       "aspect_ratio": 1.285,
-      "treo": true,
+      "treo": false,
       "wall_path": "assets/wall/khu2/co_2020_ubnd_tinh_ba_ria_30.jpg",
       "thumb_path": "assets/thumbs/khu2/co_2020_ubnd_tinh_ba_ria_30.jpg",
       "full_path": "assets/full/khu2/co_2020_ubnd_tinh_ba_ria_30.jpg"
@@ -5111,7 +5184,7 @@
       "item_type": "Cờ Thi đua",
       "caption": "2020 • Cờ Thi đua",
       "aspect_ratio": 1.728,
-      "treo": true,
+      "treo": false,
       "wall_path": "assets/wall/khu2/co_2020_ubnd_tinh_ba_ria_55.jpg",
       "thumb_path": "assets/thumbs/khu2/co_2020_ubnd_tinh_ba_ria_55.jpg",
       "full_path": "assets/full/khu2/co_2020_ubnd_tinh_ba_ria_55.jpg"
@@ -5132,7 +5205,8 @@
       "treo": true,
       "wall_path": "assets/wall/khu2/co_2021_cd_evnspc_32.jpg",
       "thumb_path": "assets/thumbs/khu2/co_2021_cd_evnspc_32.jpg",
-      "full_path": "assets/full/khu2/co_2021_cd_evnspc_32.jpg"
+      "full_path": "assets/full/khu2/co_2021_cd_evnspc_32.jpg",
+      "tuong": "dong"
     },
     {
       "id": "co_2022_cd_evnspc_14",
@@ -5150,7 +5224,8 @@
       "treo": true,
       "wall_path": "assets/wall/khu2/co_2022_cd_evnspc_14.jpg",
       "thumb_path": "assets/thumbs/khu2/co_2022_cd_evnspc_14.jpg",
-      "full_path": "assets/full/khu2/co_2022_cd_evnspc_14.jpg"
+      "full_path": "assets/full/khu2/co_2022_cd_evnspc_14.jpg",
+      "tuong": "dong"
     },
     {
       "id": "pcvt_001_2025-07-23",
@@ -6695,7 +6770,7 @@
       "item_type": "Pcvt",
       "caption": "[CHỜ XÁC NHẬN]",
       "aspect_ratio": 1.778,
-      "treo": true,
+      "treo": false,
       "wall_path": "assets/wall/khu3/pcvt_086_2026-07-19.jpg",
       "thumb_path": "assets/thumbs/khu3/pcvt_086_2026-07-19.jpg",
       "full_path": "assets/full/khu3/pcvt_086_2026-07-19.jpg"
@@ -6713,7 +6788,7 @@
       "item_type": "Pcvt",
       "caption": "[CHỜ XÁC NHẬN]",
       "aspect_ratio": 1.333,
-      "treo": true,
+      "treo": false,
       "wall_path": "assets/wall/khu3/pcvt_087_2026-08-04.jpg",
       "thumb_path": "assets/thumbs/khu3/pcvt_087_2026-08-04.jpg",
       "full_path": "assets/full/khu3/pcvt_087_2026-08-04.jpg"
@@ -6731,7 +6806,7 @@
       "item_type": "Pcvt",
       "caption": "[CHỜ XÁC NHẬN]",
       "aspect_ratio": 1.333,
-      "treo": true,
+      "treo": false,
       "wall_path": "assets/wall/khu3/pcvt_088_2026-08-04.jpg",
       "thumb_path": "assets/thumbs/khu3/pcvt_088_2026-08-04.jpg",
       "full_path": "assets/full/khu3/pcvt_088_2026-08-04.jpg"
@@ -6749,7 +6824,7 @@
       "item_type": "Pcvt",
       "caption": "[CHỜ XÁC NHẬN]",
       "aspect_ratio": 1.333,
-      "treo": true,
+      "treo": false,
       "wall_path": "assets/wall/khu3/pcvt_089_2026-08-04.jpg",
       "thumb_path": "assets/thumbs/khu3/pcvt_089_2026-08-04.jpg",
       "full_path": "assets/full/khu3/pcvt_089_2026-08-04.jpg"
@@ -6767,7 +6842,7 @@
       "item_type": "Pcvt",
       "caption": "[CHỜ XÁC NHẬN]",
       "aspect_ratio": 1.515,
-      "treo": true,
+      "treo": false,
       "wall_path": "assets/wall/khu3/pcvt_090_2026-08-09.jpg",
       "thumb_path": "assets/thumbs/khu3/pcvt_090_2026-08-09.jpg",
       "full_path": "assets/full/khu3/pcvt_090_2026-08-09.jpg"
@@ -6785,7 +6860,7 @@
       "item_type": "Pcvt",
       "caption": "[CHỜ XÁC NHẬN]",
       "aspect_ratio": 1.449,
-      "treo": true,
+      "treo": false,
       "wall_path": "assets/wall/khu3/pcvt_091_2026-08-09.jpg",
       "thumb_path": "assets/thumbs/khu3/pcvt_091_2026-08-09.jpg",
       "full_path": "assets/full/khu3/pcvt_091_2026-08-09.jpg"
@@ -6803,7 +6878,7 @@
       "item_type": "Pcvt",
       "caption": "[CHỜ XÁC NHẬN]",
       "aspect_ratio": 1.523,
-      "treo": true,
+      "treo": false,
       "wall_path": "assets/wall/khu3/pcvt_092_2026-08-09.jpg",
       "thumb_path": "assets/thumbs/khu3/pcvt_092_2026-08-09.jpg",
       "full_path": "assets/full/khu3/pcvt_092_2026-08-09.jpg"
@@ -6821,7 +6896,7 @@
       "item_type": "Pcvt",
       "caption": "Con dao cung buoc lan toa nang luong tich",
       "aspect_ratio": 1.75,
-      "treo": true,
+      "treo": false,
       "wall_path": "assets/wall/khu3/pcvt_093_2026-09-10.jpg",
       "thumb_path": "assets/thumbs/khu3/pcvt_093_2026-09-10.jpg",
       "full_path": "assets/full/khu3/pcvt_093_2026-09-10.jpg"
@@ -6839,7 +6914,7 @@
       "item_type": "Pcvt",
       "caption": "Con dao cung buoc lan toa nang luong tich",
       "aspect_ratio": 1.776,
-      "treo": true,
+      "treo": false,
       "wall_path": "assets/wall/khu3/pcvt_094_2026-09-10.jpg",
       "thumb_path": "assets/thumbs/khu3/pcvt_094_2026-09-10.jpg",
       "full_path": "assets/full/khu3/pcvt_094_2026-09-10.jpg"
@@ -6857,7 +6932,7 @@
       "item_type": "Pcvt",
       "caption": "Nang cao hieu qua van hanh qua khoa dao tao iso 9001 2015 tai cong ty",
       "aspect_ratio": 1.333,
-      "treo": true,
+      "treo": false,
       "wall_path": "assets/wall/khu3/pcvt_095_2026-09-15.jpg",
       "thumb_path": "assets/thumbs/khu3/pcvt_095_2026-09-15.jpg",
       "full_path": "assets/full/khu3/pcvt_095_2026-09-15.jpg"
@@ -6875,7 +6950,7 @@
       "item_type": "Pcvt",
       "caption": "Nang cao hieu qua van hanh qua khoa dao tao iso 9001 2015 tai cong ty",
       "aspect_ratio": 1.333,
-      "treo": true,
+      "treo": false,
       "wall_path": "assets/wall/khu3/pcvt_096_2026-09-15.jpg",
       "thumb_path": "assets/thumbs/khu3/pcvt_096_2026-09-15.jpg",
       "full_path": "assets/full/khu3/pcvt_096_2026-09-15.jpg"
@@ -6893,7 +6968,7 @@
       "item_type": "Pcvt",
       "caption": "Nang cao hieu qua van hanh qua khoa dao tao iso 9001 2015 tai cong ty",
       "aspect_ratio": 1.333,
-      "treo": true,
+      "treo": false,
       "wall_path": "assets/wall/khu3/pcvt_097_2026-09-15.jpg",
       "thumb_path": "assets/thumbs/khu3/pcvt_097_2026-09-15.jpg",
       "full_path": "assets/full/khu3/pcvt_097_2026-09-15.jpg"
@@ -6911,7 +6986,7 @@
       "item_type": "Pcvt",
       "caption": "Chu dong dam bao an toan luoi dien mua mua",
       "aspect_ratio": 1.333,
-      "treo": true,
+      "treo": false,
       "wall_path": "assets/wall/khu3/pcvt_098_2026-09-20.jpg",
       "thumb_path": "assets/thumbs/khu3/pcvt_098_2026-09-20.jpg",
       "full_path": "assets/full/khu3/pcvt_098_2026-09-20.jpg"
@@ -6929,7 +7004,7 @@
       "item_type": "Pcvt",
       "caption": "Chu dong dam bao an toan luoi dien mua mua",
       "aspect_ratio": 1.333,
-      "treo": true,
+      "treo": false,
       "wall_path": "assets/wall/khu3/pcvt_099_2026-09-20.jpg",
       "thumb_path": "assets/thumbs/khu3/pcvt_099_2026-09-20.jpg",
       "full_path": "assets/full/khu3/pcvt_099_2026-09-20.jpg"
@@ -6947,7 +7022,7 @@
       "item_type": "Pcvt",
       "caption": "Chu dong dam bao an toan luoi dien mua mua",
       "aspect_ratio": 1.333,
-      "treo": true,
+      "treo": false,
       "wall_path": "assets/wall/khu3/pcvt_100_2026-09-20.jpg",
       "thumb_path": "assets/thumbs/khu3/pcvt_100_2026-09-20.jpg",
       "full_path": "assets/full/khu3/pcvt_100_2026-09-20.jpg"
@@ -8225,7 +8300,7 @@
       "item_type": "Cong Doan",
       "caption": "Hoi thi nau an nhan dip quoc te phu nu 8",
       "aspect_ratio": 0.563,
-      "treo": true,
+      "treo": false,
       "wall_path": "assets/wall/khu6/cong_doan_012_2026-03-09.jpg",
       "thumb_path": "assets/thumbs/khu6/cong_doan_012_2026-03-09.jpg",
       "full_path": "assets/full/khu6/cong_doan_012_2026-03-09.jpg"
@@ -8261,7 +8336,7 @@
       "item_type": "Cong Doan",
       "caption": "Hoi thi nau an nhan dip quoc te phu nu 8",
       "aspect_ratio": 1.776,
-      "treo": true,
+      "treo": false,
       "wall_path": "assets/wall/khu6/cong_doan_013_2026-03-09.jpg",
       "thumb_path": "assets/thumbs/khu6/cong_doan_013_2026-03-09.jpg",
       "full_path": "assets/full/khu6/cong_doan_013_2026-03-09.jpg"
@@ -8297,7 +8372,7 @@
       "item_type": "Cong Doan",
       "caption": "Ron rang sac ao dai am ap ngay 8 3 tai cong ty dien luc vung",
       "aspect_ratio": 1.333,
-      "treo": true,
+      "treo": false,
       "wall_path": "assets/wall/khu6/cong_doan_014_2026-03-10.jpg",
       "thumb_path": "assets/thumbs/khu6/cong_doan_014_2026-03-10.jpg",
       "full_path": "assets/full/khu6/cong_doan_014_2026-03-10.jpg"
@@ -8333,7 +8408,7 @@
       "item_type": "Cong Doan",
       "caption": "Ron rang sac ao dai am ap ngay 8 3 tai cong ty dien luc vung",
       "aspect_ratio": 1.333,
-      "treo": true,
+      "treo": false,
       "wall_path": "assets/wall/khu6/cong_doan_015_2026-03-10.jpg",
       "thumb_path": "assets/thumbs/khu6/cong_doan_015_2026-03-10.jpg",
       "full_path": "assets/full/khu6/cong_doan_015_2026-03-10.jpg"
@@ -8369,7 +8444,7 @@
       "item_type": "Cong Doan",
       "caption": "Ron rang sac ao dai am ap ngay 8 3 tai cong ty dien luc vung",
       "aspect_ratio": 1.333,
-      "treo": true,
+      "treo": false,
       "wall_path": "assets/wall/khu6/cong_doan_016_2026-03-10.jpg",
       "thumb_path": "assets/thumbs/khu6/cong_doan_016_2026-03-10.jpg",
       "full_path": "assets/full/khu6/cong_doan_016_2026-03-10.jpg"
@@ -8387,7 +8462,7 @@
       "item_type": "Cong Doan",
       "caption": "Cong ty dien luc vung tau mo man bung no tran dau dai",
       "aspect_ratio": 1.778,
-      "treo": true,
+      "treo": false,
       "wall_path": "assets/wall/khu6/cong_doan_017_2026-04-11.jpg",
       "thumb_path": "assets/thumbs/khu6/cong_doan_017_2026-04-11.jpg",
       "full_path": "assets/full/khu6/cong_doan_017_2026-04-11.jpg"
@@ -8405,7 +8480,7 @@
       "item_type": "Cong Doan",
       "caption": "[CHỜ XÁC NHẬN]",
       "aspect_ratio": 1.667,
-      "treo": true,
+      "treo": false,
       "wall_path": "assets/wall/khu6/cong_doan_017_2026-08-24.jpg",
       "thumb_path": "assets/thumbs/khu6/cong_doan_017_2026-08-24.jpg",
       "full_path": "assets/full/khu6/cong_doan_017_2026-08-24.jpg"
@@ -8423,7 +8498,7 @@
       "item_type": "Cong Doan",
       "caption": "Cong ty dien luc vung tau mo man bung no tran dau dai",
       "aspect_ratio": 1.997,
-      "treo": true,
+      "treo": false,
       "wall_path": "assets/wall/khu6/cong_doan_018_2026-04-11.jpg",
       "thumb_path": "assets/thumbs/khu6/cong_doan_018_2026-04-11.jpg",
       "full_path": "assets/full/khu6/cong_doan_018_2026-04-11.jpg"
@@ -8441,7 +8516,7 @@
       "item_type": "Cong Doan",
       "caption": "[CHỜ XÁC NHẬN]",
       "aspect_ratio": 1.333,
-      "treo": true,
+      "treo": false,
       "wall_path": "assets/wall/khu6/cong_doan_018_2026-08-24.jpg",
       "thumb_path": "assets/thumbs/khu6/cong_doan_018_2026-08-24.jpg",
       "full_path": "assets/full/khu6/cong_doan_018_2026-08-24.jpg"
@@ -8459,7 +8534,7 @@
       "item_type": "Cong Doan",
       "caption": "Cong ty dien luc vung tau mo man bung no tran dau dai",
       "aspect_ratio": 1.446,
-      "treo": true,
+      "treo": false,
       "wall_path": "assets/wall/khu6/cong_doan_019_2026-04-11.jpg",
       "thumb_path": "assets/thumbs/khu6/cong_doan_019_2026-04-11.jpg",
       "full_path": "assets/full/khu6/cong_doan_019_2026-04-11.jpg"
@@ -8477,7 +8552,7 @@
       "item_type": "Cong Doan",
       "caption": "[CHỜ XÁC NHẬN]",
       "aspect_ratio": 1.333,
-      "treo": true,
+      "treo": false,
       "wall_path": "assets/wall/khu6/cong_doan_019_2026-08-24.jpg",
       "thumb_path": "assets/thumbs/khu6/cong_doan_019_2026-08-24.jpg",
       "full_path": "assets/full/khu6/cong_doan_019_2026-08-24.jpg"
@@ -8495,7 +8570,7 @@
       "item_type": "Cong Doan",
       "caption": "Tran dau dau tien cua doi bong nu cong ty dien luc vung tau da khep",
       "aspect_ratio": 1.31,
-      "treo": true,
+      "treo": false,
       "wall_path": "assets/wall/khu6/cong_doan_020_2026-05-12.jpg",
       "thumb_path": "assets/thumbs/khu6/cong_doan_020_2026-05-12.jpg",
       "full_path": "assets/full/khu6/cong_doan_020_2026-05-12.jpg"
@@ -8513,7 +8588,7 @@
       "item_type": "Cong Doan",
       "caption": "[CHỜ XÁC NHẬN]",
       "aspect_ratio": 1.333,
-      "treo": true,
+      "treo": false,
       "wall_path": "assets/wall/khu6/cong_doan_020_2026-08-24.jpg",
       "thumb_path": "assets/thumbs/khu6/cong_doan_020_2026-08-24.jpg",
       "full_path": "assets/full/khu6/cong_doan_020_2026-08-24.jpg"
@@ -8531,7 +8606,7 @@
       "item_type": "Cong Doan",
       "caption": "Tran dau dau tien cua doi bong nu cong ty dien luc vung tau da khep",
       "aspect_ratio": 1.266,
-      "treo": true,
+      "treo": false,
       "wall_path": "assets/wall/khu6/cong_doan_021_2026-05-12.jpg",
       "thumb_path": "assets/thumbs/khu6/cong_doan_021_2026-05-12.jpg",
       "full_path": "assets/full/khu6/cong_doan_021_2026-05-12.jpg"
@@ -8549,7 +8624,7 @@
       "item_type": "Cong Doan",
       "caption": "Dem hoi trang ram trao yeu thuong gan ket gia dinh",
       "aspect_ratio": 0.991,
-      "treo": true,
+      "treo": false,
       "wall_path": "assets/wall/khu6/cong_doan_021_2026-09-24.jpg",
       "thumb_path": "assets/thumbs/khu6/cong_doan_021_2026-09-24.jpg",
       "full_path": "assets/full/khu6/cong_doan_021_2026-09-24.jpg"
@@ -8567,7 +8642,7 @@
       "item_type": "Cong Doan",
       "caption": "[CHỜ XÁC NHẬN]",
       "aspect_ratio": 1.667,
-      "treo": true,
+      "treo": false,
       "wall_path": "assets/wall/khu6/cong_doan_022_2026-08-24.jpg",
       "thumb_path": "assets/thumbs/khu6/cong_doan_022_2026-08-24.jpg",
       "full_path": "assets/full/khu6/cong_doan_022_2026-08-24.jpg"
@@ -8585,7 +8660,7 @@
       "item_type": "Cong Doan",
       "caption": "Dem hoi trang ram trao yeu thuong gan ket gia dinh",
       "aspect_ratio": 1.333,
-      "treo": true,
+      "treo": false,
       "wall_path": "assets/wall/khu6/cong_doan_022_2026-09-24.jpg",
       "thumb_path": "assets/thumbs/khu6/cong_doan_022_2026-09-24.jpg",
       "full_path": "assets/full/khu6/cong_doan_022_2026-09-24.jpg"
@@ -8603,7 +8678,7 @@
       "item_type": "Cong Doan",
       "caption": "[CHỜ XÁC NHẬN]",
       "aspect_ratio": 1.333,
-      "treo": true,
+      "treo": false,
       "wall_path": "assets/wall/khu6/cong_doan_023_2026-08-24.jpg",
       "thumb_path": "assets/thumbs/khu6/cong_doan_023_2026-08-24.jpg",
       "full_path": "assets/full/khu6/cong_doan_023_2026-08-24.jpg"
@@ -8621,7 +8696,7 @@
       "item_type": "Cong Doan",
       "caption": "Dem hoi trang ram trao yeu thuong gan ket gia dinh",
       "aspect_ratio": 1.402,
-      "treo": true,
+      "treo": false,
       "wall_path": "assets/wall/khu6/cong_doan_023_2026-09-24.jpg",
       "thumb_path": "assets/thumbs/khu6/cong_doan_023_2026-09-24.jpg",
       "full_path": "assets/full/khu6/cong_doan_023_2026-09-24.jpg"
@@ -8639,7 +8714,7 @@
       "item_type": "Cong Doan",
       "caption": "Dem hoi trang ram trao yeu thuong gan ket gia dinh",
       "aspect_ratio": 1.402,
-      "treo": true,
+      "treo": false,
       "wall_path": "assets/wall/khu6/cong_doan_024_2026-09-24.jpg",
       "thumb_path": "assets/thumbs/khu6/cong_doan_024_2026-09-24.jpg",
       "full_path": "assets/full/khu6/cong_doan_024_2026-09-24.jpg"
@@ -8657,7 +8732,7 @@
       "item_type": "Cong Doan",
       "caption": "Dem hoi trang ram trao yeu thuong gan ket gia dinh",
       "aspect_ratio": 1.24,
-      "treo": true,
+      "treo": false,
       "wall_path": "assets/wall/khu6/cong_doan_025_2026-09-24.jpg",
       "thumb_path": "assets/thumbs/khu6/cong_doan_025_2026-09-24.jpg",
       "full_path": "assets/full/khu6/cong_doan_025_2026-09-24.jpg"

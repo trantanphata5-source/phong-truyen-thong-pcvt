@@ -1,21 +1,21 @@
 /**
  * Data Service for 3D Heritage Room
- * Loads, parses, filters, and manages all 205 awards & flags
+ * GĐ3-fix: chỉ dùng room_data.json, bỏ heritage_data.json
  */
 export class DataService {
   constructor() {
     this.raw = null;
+    /** items có treo === true (hiện vật trên tường) */
     this.items = [];
+    /** Tất cả items (cả treo và chỉ album) */
+    this.allItems = [];
     this.itemsById = new Map();
-    this.halls = {};
-    this.matchingCohorts = {};
     this.activeFilters = {
       search: '',
-      category: 'all',
+      source: 'all',
       org: 'all',
+      khu: 'all',
       period: 'all',
-      hall: 'all',
-      pairsOnly: false,
       year: null
     };
     this.filteredItems = [];
@@ -24,39 +24,15 @@ export class DataService {
 
   async load() {
     try {
-      const response = await fetch('assets/heritage_data.json');
-      if (!response.ok) {
-        throw new Error(`HTTP error ${response.status}`);
-      }
+      const response = await fetch('assets/room_data.json');
+      if (!response.ok) throw new Error(`HTTP error ${response.status}`);
       this.raw = await response.json();
-      this.items = this.raw.items || [];
-      this.halls = this.raw.halls || {};
-      this.matchingCohorts = this.raw.matching_cohorts || {};
-
-      this.items.forEach(item => {
-        this.itemsById.set(item.id, item);
-      });
-
+      this.allItems = this.raw.items || [];
+      this.items = this.allItems.filter(it => it.treo !== false);
+      this.allItems.forEach(item => this.itemsById.set(item.id, item));
       this.filteredItems = [...this.items];
       this.isLoaded = true;
       return this.raw;
-    } catch (err) {
-      console.error('Failed to load heritage_data.json:', err);
-      throw err;
-    }
-  }
-
-  /** GĐ3: Tải room_data.json (dữ liệu 539 hiện vật mới) */
-  async loadRoomData() {
-    try {
-      const response = await fetch('assets/room_data.json');
-      if (!response.ok) throw new Error(`HTTP error ${response.status}`);
-      this.roomData = await response.json();
-      // Cập nhật itemsById cho các item mới
-      for (const item of this.roomData.items) {
-        this.itemsById.set(item.id, item);
-      }
-      return this.roomData;
     } catch (err) {
       console.error('Failed to load room_data.json:', err);
       throw err;
@@ -69,18 +45,10 @@ export class DataService {
 
   getRelatedItems(item) {
     if (!item) return [];
-    // Find items in the same cohort (same year and same organization)
-    const cohortKey = `${item.year}_${item.org}`;
-    const cohort = this.matchingCohorts[cohortKey];
-    if (cohort) {
-      const allIds = [...cohort.bangkhen, ...cohort.co];
-      return allIds
-        .filter(id => id !== item.id)
-        .map(id => this.itemsById.get(id))
-        .filter(Boolean);
-    }
-    // Fallback: items in same year
-    return this.items.filter(it => it.year === item.year && it.id !== item.id).slice(0, 4);
+    // Cùng năm, cùng khu
+    return this.items
+      .filter(it => it.year === item.year && it.khu === item.khu && it.id !== item.id)
+      .slice(0, 4);
   }
 
   getSiblingItem(currentId, direction = 'next') {
@@ -95,55 +63,47 @@ export class DataService {
   }
 
   applyFilter(newFilters = {}) {
-    this.activeFilters = { ...this.activeFilters, ...newFilters };
-    const { search, category, org, period, hall, pairsOnly, year } = this.activeFilters;
+    // Map legacy keys if passed
+    if (newFilters.category !== undefined) {
+      const cat = newFilters.category;
+      if (cat === 'all') newFilters.source = 'all';
+      else if (cat === 'BẰNG KHEN' || cat === 'bang_khen') newFilters.source = 'bang_khen';
+      else if (cat === 'CỜ' || cat === 'co') newFilters.source = 'co';
+      else newFilters.source = cat;
+      delete newFilters.category;
+    }
+    if (newFilters.hall !== undefined) {
+      newFilters.khu = newFilters.hall;
+      delete newFilters.hall;
+    }
 
+    this.activeFilters = { ...this.activeFilters, ...newFilters };
+    const { search, source, org, khu, period, year } = this.activeFilters;
     const query = search.trim().toLowerCase();
 
     this.filteredItems = this.items.filter(item => {
-      // 1. Category (BẰNG KHEN / CỜ)
-      if (category !== 'all' && item.category !== category) {
-        return false;
-      }
+      // 1. Source (anh_tu_lieu / bang_khen / co / pcvt / …)
+      if (source && source !== 'all' && item.source !== source) return false;
 
       // 2. Org
-      if (org !== 'all') {
-        if (org === 'CTN' && !['CTN', 'TTCP'].includes(item.org)) return false;
-        else if (org !== 'CTN' && item.org !== org) return false;
-      }
+      if (org && org !== 'all' && item.org_code !== org && item.org_name !== org) return false;
 
-      // 3. Hall
-      if (hall !== 'all' && item.hall_id !== hall) {
-        return false;
-      }
+      // 3. Khu
+      if (khu && khu !== 'all' && item.khu !== khu) return false;
 
-      // 4. Period (Decades)
-      if (period !== 'all') {
+      // 4. Period
+      if (period && period !== 'all') {
         const [startY, endY] = period.split('-').map(Number);
-        if (item.year < startY || item.year > endY) {
-          return false;
-        }
+        if (item.year < startY || item.year > endY) return false;
       }
 
-      // 5. Specific Year (from timeline slider if set)
-      if (year !== null && item.year !== year) {
-        return false;
-      }
+      // 5. Year
+      if (year !== null && item.year !== year) return false;
 
-      // 6. Pairs only toggle (Matches requested by user: Bằng khen & Cờ cùng năm)
-      if (pairsOnly) {
-        const cohortKey = `${item.year}_${item.org}`;
-        if (!this.matchingCohorts[cohortKey]) {
-          return false;
-        }
-      }
-
-      // 7. Search Query
+      // 6. Search
       if (query) {
-        const fullText = `${item.title} ${item.year} ${item.org} ${item.org_name} ${item.item_type} ${item.hall_name}`.toLowerCase();
-        if (!fullText.includes(query)) {
-          return false;
-        }
+        const fullText = `${item.caption || ''} ${item.year} ${item.org_name || ''} ${item.source} ${item.khu}`.toLowerCase();
+        if (!fullText.includes(query)) return false;
       }
 
       return true;

@@ -327,30 +327,24 @@ export class UIController {
     if (!container) return;
     container.innerHTML = '';
 
-    // Group items by hall_id, maintaining order within each group
-    const hallOrder = ['hall_1', 'hall_2', 'hall_3'];
-    const hallLabels = {
-      'hall_1': 'KHU 1',
-      'hall_2': 'KHU 2',
-      'hall_3': 'KHU 3'
+    // Group items by khu (room_data.json)
+    const khuOrder = ['khu1', 'khu2', 'khu3', 'khu4', 'khu6'];
+    const khuLabels = {
+      khu1: 'KHU 1', khu2: 'KHU 2', khu3: 'KHU 3', khu4: 'KHU 4', khu6: 'KHU 6'
     };
-    const hallColors = {
-      'hall_1': '#eab308',
-      'hall_2': '#3b82f6',
-      'hall_3': '#22c55e'
+    const khuColors = {
+      khu1: '#8B6F47', khu2: '#8B1A1A', khu3: '#16a34a', khu4: '#C62828', khu6: '#1565C0'
     };
 
-    // Build grouped list: [ {hall, items[]} ]
     const grouped = [];
     let globalIdx = 0;
-    for (const hallId of hallOrder) {
-      const hallItems = items.filter(it => it.hall_id === hallId);
-      if (hallItems.length === 0) continue;
-      grouped.push({ hallId, label: hallLabels[hallId] || hallId, color: hallColors[hallId] || '#94a3b8', items: hallItems, startIdx: globalIdx });
-      globalIdx += hallItems.length;
+    for (const khu of khuOrder) {
+      const khuItems = items.filter(it => it.khu === khu);
+      if (khuItems.length === 0) continue;
+      grouped.push({ hallId: khu, label: khuLabels[khu] || khu, color: khuColors[khu] || '#94a3b8', items: khuItems, startIdx: globalIdx });
+      globalIdx += khuItems.length;
     }
-    // Any items without a hall
-    const unmatched = items.filter(it => !hallOrder.includes(it.hall_id));
+    const unmatched = items.filter(it => !khuOrder.includes(it.khu));
     if (unmatched.length > 0) {
       grouped.push({ hallId: 'other', label: 'KHÁC', color: '#94a3b8', items: unmatched, startIdx: globalIdx });
     }
@@ -380,7 +374,7 @@ export class UIController {
         card.dataset.index = currentIdx;
         card.dataset.id = item.id;
         card.innerHTML = `
-          <img src="${item.thumb_rel_path}" alt="${item.title}" loading="lazy" />
+          <img src="${item.thumb_path || item.wall_path}" alt="${item.caption || ''}" loading="lazy" />
           <span class="tour-thumb-badge">${item.year}</span>
         `;
 
@@ -447,20 +441,20 @@ export class UIController {
    */
   showExhibitCard(item) {
     this.currentExhibit = item;
-    this.dom.cardImg.src = item.thumb_rel_path;
-    this.dom.cardTitle.textContent = item.title;
-    this.dom.cardTypeTag.textContent = item.category;
+    this.dom.cardImg.src = item.thumb_path || item.wall_path;
+    this.dom.cardTitle.textContent = item.caption || item.new_name || '';
+    this.dom.cardTypeTag.textContent = item.source || '';
     this.dom.cardYearTag.textContent = `Năm ${item.year}`;
-    this.dom.cardOrgName.textContent = item.org_name || item.org;
-    this.dom.cardDescription.textContent = item.description || 'Thành tích xuất sắc đóng góp vào sự phát triển của Công ty Điện lực Vũng Tàu.';
-    this.dom.cardOrigLink.href = item.original_rel_path;
+    this.dom.cardOrgName.textContent = item.org_name || item.org_code || '';
+    this.dom.cardDescription.textContent = item.caption || '';
+    this.dom.cardOrigLink.href = item.full_path || item.wall_path || '';
 
     const icons = {
       CTN: '★', TTCP: '★', EVN: '⚡', EVNSPC: '⚡',
       UBND_BRVT: '🏛', UBND_TPVT: '🏛',
       CD_EVN: '🚩', CD_EVNSPC: '🚩', LDLD_BRVT: '🚩'
     };
-    this.dom.cardOrgIcon.textContent = icons[item.org] || '🎖';
+    this.dom.cardOrgIcon.textContent = icons[item.org_code] || '🎖';
 
     // Cohort items
     this.renderCohortItems(item);
@@ -484,8 +478,8 @@ export class UIController {
       const chip = document.createElement('div');
       chip.className = 'cohort-item-chip';
       chip.innerHTML = `
-        <img class="cohort-thumb" src="${rel.thumb_rel_path}" alt="${rel.title}" />
-        <span class="cohort-info">${rel.title} (${rel.category})</span>
+        <img class="cohort-thumb" src="${rel.thumb_path || rel.wall_path}" alt="${rel.caption || ''}" />
+        <span class="cohort-info">${rel.caption || rel.new_name} (${rel.source})</span>
       `;
       chip.addEventListener('click', () => {
         const idx = this.dataService.filteredItems.findIndex(it => it.id === rel.id);
@@ -505,12 +499,12 @@ export class UIController {
   }
 
   openLightbox(item) {
-    this.dom.lightboxImg.src = item.thumb_rel_path;
-    const categoryName = item.category === 'BẰNG KHEN' ? 'Bằng khen' : (item.category === 'CỜ' ? 'Cờ thi đua' : item.category);
-    const orgDisplay = item.org_name || item.org;
+    this.dom.lightboxImg.src = item.full_path || item.wall_path || item.thumb_path;
+    const sourceLabel = { bang_khen: 'Bằng khen', co: 'Cờ thi đua', anh_tu_lieu: 'Ảnh tư liệu', tranh_tang: 'Tranh tặng', pcvt: 'PCVT', dang_bo: 'Đảng bộ', cong_doan: 'Công đoàn', doan_tn: 'Đoàn TN' };
+    const orgDisplay = item.org_name || item.org_code || '';
     this.dom.lightboxCaption.innerHTML = `
-      <div style="font-family: var(--font-sans); font-size: 16px; font-weight: 700; color: #facc15; margin-bottom: 4px; letter-spacing: 0.2px;">${item.title}</div>
-      <div style="font-family: var(--font-sans); font-size: 13px; font-weight: 500; color: #cbd5e1;">${categoryName} • Năm ${item.year} • ${orgDisplay}</div>
+      <div style="font-family: var(--font-sans); font-size: 16px; font-weight: 700; color: #facc15; margin-bottom: 4px; letter-spacing: 0.2px;">${item.caption || item.new_name || ''}</div>
+      <div style="font-family: var(--font-sans); font-size: 13px; font-weight: 500; color: #cbd5e1;">${sourceLabel[item.source] || item.source} • Năm ${item.year} • ${orgDisplay}</div>
     `;
     this.dom.lightboxModal.classList.remove('hidden');
     this.audioService.playClickSound();
@@ -536,10 +530,10 @@ export class UIController {
       const el = document.createElement('div');
       el.className = 'catalog-item';
       el.innerHTML = `
-        <img class="catalog-thumb" src="${item.thumb_rel_path}" alt="${item.title}" loading="lazy" />
+        <img class="catalog-thumb" src="${item.thumb_path || item.wall_path}" alt="${item.caption || ''}" loading="lazy" />
         <div class="catalog-info">
-          <span class="catalog-item-title">${item.title}</span>
-          <span class="catalog-item-meta">${item.year} • ${item.org} • ${item.category}</span>
+          <span class="catalog-item-title">${item.caption || item.new_name || ''}</span>
+          <span class="catalog-item-meta">${item.year} • ${item.org_name || item.org_code || ''} • ${item.source}</span>
         </div>
       `;
       el.addEventListener('click', () => {

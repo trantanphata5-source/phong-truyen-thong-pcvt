@@ -141,9 +141,9 @@
 
 
     <div class="header-right">
-      <button id="btn-filter-toggle" class="header-icon-btn" title="Tìm kiếm & Danh mục (205 hiện vật)">
+      <button id="btn-filter-toggle" class="header-icon-btn" title="Tìm kiếm & Danh mục hiện vật">
         <i data-lucide="search"></i>
-        <span class="badge-count" id="filter-badge">205</span>
+        <span class="badge-count" id="filter-badge">0</span>
       </button>
       <button id="btn-minimap-toggle" class="header-icon-btn active" title="Bật/Tắt sơ đồ phòng">
         <i data-lucide="map"></i>
@@ -325,14 +325,14 @@
       </button>
 
       <div class="tour-step-counter">
-        <span class="step-num" id="tour-step-text">1 / 205</span>
+        <span class="step-num" id="tour-step-text">1 / ...</span>
         <span class="step-label">HIỆN VẬT</span>
       </div>
     </div>
 
     <!-- Scrollable Carousel Strip of Exhibit Thumbnails -->
     <div class="tour-carousel" id="tour-carousel">
-      <!-- Populated via JS with 205 mini cards -->
+      <!-- Populated via JS -->
     </div>
   </footer>
 
@@ -341,7 +341,7 @@
     <div class="drawer-header">
       <div class="drawer-title">
         <i data-lucide="sliders-horizontal"></i>
-        <span>DANH MỤC HIỆN VẬT (205)</span>
+        <span id="drawer-title-text">DANH MỤC HIỆN VẬT</span>
       </div>
       <button id="btn-close-drawer" class="btn-tiny"><i data-lucide="x"></i></button>
     </div>
@@ -356,7 +356,7 @@
 
       <!-- Quick Reset All Button -->
       <button id="btn-reset-all" class="btn-reset-all">
-        <i data-lucide="rotate-ccw"></i> Xem tất cả 205 hiện vật
+        <i data-lucide="rotate-ccw"></i> <span id="reset-all-text">Xem tất cả hiện vật</span>
       </button>
 
       <!-- Cohort Pairs Only Toggle -->
@@ -375,9 +375,9 @@
       <div class="filter-group">
         <span class="group-label">PHÂN LOẠI</span>
         <div class="chip-row">
-          <button class="chip active" data-category="all">Tất cả (205)</button>
-          <button class="chip" data-category="BẰNG KHEN">Bằng khen (129)</button>
-          <button class="chip" data-category="CỜ">Cờ thi đua (76)</button>
+          <button class="chip active" data-category="all" id="chip-cat-all">Tất cả</button>
+          <button class="chip" data-category="BẰNG KHEN">Bằng khen</button>
+          <button class="chip" data-category="CỜ">Cờ thi đua</button>
         </div>
       </div>
 
@@ -402,7 +402,7 @@
       <div class="filter-group">
         <div class="results-header">
           <span class="group-label">KẾT QUẢ TÌM KIẾM</span>
-          <span class="results-counter" id="results-count">205 hiện vật</span>
+          <span class="results-counter" id="results-count">...</span>
         </div>
         <div class="catalog-list" id="catalog-list">
           <!-- Populated by JS -->

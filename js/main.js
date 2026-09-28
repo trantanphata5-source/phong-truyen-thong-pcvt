@@ -73,10 +73,10 @@ class HeritageApp {
 
   async init() {
     try {
-      this.uiController.updateLoadingProgress(15, 'Đang đọc danh mục 205 Bằng khen & Cờ thi đua...');
+      this.uiController.updateLoadingProgress(15, 'Đang đọc danh mục hiện vật...');
       await this.dataService.load();
 
-      this.uiController.updateLoadingProgress(35, 'Đang dựng kiến trúc 3 sảnh bảo tàng...');
+      this.uiController.updateLoadingProgress(35, 'Đang dựng kiến trúc bảo tàng...');
       this.architect = new MuseumArchitect(this.scene);
       this.architect.buildMuseum();
 
@@ -93,9 +93,8 @@ class HeritageApp {
 
       this.uiController.updateLoadingProgress(55, 'Đang bố trí hiện vật lên các vách trưng bày...');
       this.exhibitBuilder = new ExhibitBuilder(this.scene);
-      // GĐ3: Tải room_data.json mới (539 hiện vật)
-      const roomData = await this.dataService.loadRoomData();
-      this.exhibitBuilder.buildAllExhibits(roomData, (done, total) => {
+      // GĐ3-fix: truyền raw data (chứa toàn bộ items), exhibitBuilder tự lọc treo
+      this.exhibitBuilder.buildAllExhibits(this.dataService.raw, (done, total) => {
         const pct = 55 + (done / total) * 30;
         this.uiController.updateLoadingProgress(pct, `Bố trí hiện vật: ${done}/${total}...`);
       });
@@ -127,9 +126,17 @@ class HeritageApp {
       if (this.uiController.dom.searchInput) {
         this.uiController.dom.searchInput.value = '';
       }
-      this.uiController.dom.filterBadge.textContent = this.dataService.items.length;
-      this.uiController.dom.resultsCount.textContent = `${this.dataService.items.length} hiện vật`;
-      this.uiController.dom.tourStepText.textContent = `1 / ${this.dataService.items.length}`;
+      // GĐ3-fix: dùng items mới (chỉ treo), không phải 205 cũ
+      const treoCount = this.dataService.items.length;
+      this.uiController.dom.filterBadge.textContent = treoCount;
+      this.uiController.dom.resultsCount.textContent = `${treoCount} hiện vật`;
+      this.uiController.dom.tourStepText.textContent = `1 / ${treoCount}`;
+      const drawerTitleEl = document.getElementById('drawer-title-text');
+      if (drawerTitleEl) drawerTitleEl.textContent = `DANH MỤC HIỆN VẬT (${treoCount})`;
+      const resetAllEl = document.getElementById('reset-all-text');
+      if (resetAllEl) resetAllEl.textContent = `Xem tất cả ${treoCount} hiện vật`;
+      const chipCatAll = document.getElementById('chip-cat-all');
+      if (chipCatAll) chipCatAll.textContent = `Tất cả (${treoCount})`;
       this.uiController.buildTourCarousel(this.dataService.items);
       this.uiController.renderCatalogList(this.dataService.items);
       this.updateExhibitVisibility(this.dataService.items);
