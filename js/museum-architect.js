@@ -146,6 +146,27 @@ export class MuseumArchitect {
       thickness: 0.03,
       depthWrite: false
     });
+
+    // 11. GĐ5: Khu 3 Smart Grid Materials (#0B1530 walls, cyan LED trim, #0A1224 epoxy floor)
+    this.matWallKhu3 = new THREE.MeshStandardMaterial({
+      color: 0x0B1530,
+      roughness: 0.35,
+      metalness: 0.25
+    });
+
+    this.matCyanLED = new THREE.MeshStandardMaterial({
+      color: 0x22D3EE,
+      emissive: new THREE.Color(0x22D3EE),
+      emissiveIntensity: 1.4,
+      roughness: 0.2,
+      metalness: 0.1
+    });
+
+    this.matEpoxyKhu3 = new THREE.MeshStandardMaterial({
+      color: 0x0A1224,
+      roughness: 0.20,
+      metalness: 0.35
+    });
   }
 
   buildMuseum() {
@@ -158,7 +179,7 @@ export class MuseumArchitect {
     // 2. All Walls from layout-config.js
     this.buildOuterWalls(museumGroup);
 
-    // 3. Partition Walls (chỉ còn vách khu 1)
+    // 3. Partition Walls (chỉ còn vách khu 1 và vách mốc son khu 3)
     this.buildPartitionWalls(museumGroup);
 
     // 4. Central Rotunda & PCVT Seal
@@ -179,7 +200,7 @@ export class MuseumArchitect {
     // 8. GĐ4: Two Album Cabinets (replacing single vitrine)
     this.buildAlbumCabinets(museumGroup);
 
-    // 9. Grand Lighting (bao gồm khu 4 & 6)
+    // 9. Grand Lighting (bao gồm khu 4 & 6 và đèn rọi sa bàn)
     this.setupLighting(museumGroup);
 
     // 10. Interactive Floor Target Marker for Artsteps Navigation
@@ -187,6 +208,9 @@ export class MuseumArchitect {
 
     // 11. Ho Chi Minh Cultural Zone (Khu 5)
     this.buildHCMCulturalZone(museumGroup);
+
+    // 12. GĐ5: Khu 3 Smart Grid (Sàn epoxy với vạch sáng, 3 trụ thông tin tự động hóa tại x=22)
+    this.buildZone3SmartGrid(museumGroup);
 
     this.scene.add(museumGroup);
     return museumGroup;
@@ -229,7 +253,7 @@ export class MuseumArchitect {
     parent.add(ceilMesh6);
   }
 
-  createWallMesh(w, h, d, x, y, z, rotY = 0, mat = this.matWall, name = '') {
+  createWallMesh(w, h, d, x, y, z, rotY = 0, mat = this.matWall, name = '', trimMat = this.matGold) {
     const group = new THREE.Group();
     group.position.set(x, y, z);
     group.rotation.y = rotY;
@@ -241,15 +265,15 @@ export class MuseumArchitect {
     mesh.receiveShadow = true;
     group.add(mesh);
 
-    // Gold baseboard
+    // Baseboard (gold or cyan LED for Khu 3)
     const baseboardGeo = new THREE.BoxGeometry(w, 0.35, d + 0.08);
-    const baseboardMesh = new THREE.Mesh(baseboardGeo, this.matGold);
+    const baseboardMesh = new THREE.Mesh(baseboardGeo, trimMat);
     baseboardMesh.position.y = -h / 2 + 0.175;
     group.add(baseboardMesh);
 
-    // Gold top cornice
+    // Top cornice (gold or cyan LED for Khu 3)
     const corniceGeo = new THREE.BoxGeometry(w, 0.25, d + 0.08);
-    const corniceMesh = new THREE.Mesh(corniceGeo, this.matGold);
+    const corniceMesh = new THREE.Mesh(corniceGeo, trimMat);
     corniceMesh.position.y = h / 2 - 0.125;
     group.add(corniceMesh);
 
@@ -261,10 +285,13 @@ export class MuseumArchitect {
     // Dựng tường từ layout-config.js
     for (const wall of WALLS) {
       const h = wall.h;
+      const isKhu3 = wall.zone === 'khu3';
+      const wallMat = isKhu3 ? this.matWallKhu3 : this.matWall;
+      const trimMat = isKhu3 ? this.matCyanLED : this.matGold;
       parent.add(this.createWallMesh(
         wall.w, h, wall.d,
         wall.x, h / 2, wall.z,
-        wall.rotY, this.matWall, wall.id
+        wall.rotY, wallMat, wall.id, trimMat
       ));
     }
   }
@@ -275,14 +302,15 @@ export class MuseumArchitect {
    */
   buildPartitionWalls(parent) {
     // Dựng vách ngăn từ layout-config.js
-    // GĐ2: Bỏ Partition_Hall1_Center (x=0) và Partition_Hall3_Center (x=35)
-    // Chỉ còn vách khu 1 (x=-35)
     for (const part of PARTITIONS) {
       const h = part.h;
+      const isKhu3 = part.zone === 'khu3';
+      const partMat = isKhu3 ? this.matWallKhu3 : this.matPartition;
+      const trimMat = isKhu3 ? this.matCyanLED : this.matGold;
       parent.add(this.createWallMesh(
         part.w, h, part.d,
         part.x, h / 2, part.z,
-        part.rotY, this.matPartition, part.id
+        part.rotY, partMat, part.id, trimMat
       ));
     }
   }
@@ -1230,10 +1258,17 @@ export class MuseumArchitect {
     createHallSpot(0xdcfce7, -35, 7.5, -12, -35, 3.0, 0);
     createHallSpot(0xdcfce7, -35, 7.5, 12, -35, 3.0, 0);
 
-    // East Hall
-    createHallSpot(0xfee2e2, 32, 7.5, 0, 49, 3.0, 0);
-    createHallSpot(0xfee2e2, 35, 7.5, -12, 35, 3.0, 0);
-    createHallSpot(0xfee2e2, 35, 7.5, 12, 35, 3.0, 0);
+    // East Hall (Khu 3: Smart Grid — 6500K cool white & Sa bàn spotlights)
+    createHallSpot(0xe0f2fe, 32, 7.5, 0, 49, 3.0, 0);
+    createHallSpot(0xe0f2fe, 35, 7.5, -12, 35, 3.0, 0);
+    createHallSpot(0xe0f2fe, 35, 7.5, 12, 35, 3.0, 0);
+
+    // Sa bàn lưới điện direct spotlight (43, 7.8, 0)
+    const tableSpot = new THREE.SpotLight(0xf0f9ff, 4.5, 25, Math.PI / 4, 0.4);
+    tableSpot.position.set(43, 7.8, 0);
+    tableSpot.target.position.set(43, 0.95, 0);
+    parent.add(tableSpot);
+    parent.add(tableSpot.target);
 
     // Khu 4 (Đảng bộ) — warm red accent
     const k4Light = new THREE.PointLight(0xfffaed, 3.0, 35);
@@ -2077,6 +2112,295 @@ export class MuseumArchitect {
     const entranceLight = new THREE.PointLight(0xffe0b2, 2.5, 15);
     entranceLight.position.set(0, 7.0, 42);
     parent.add(entranceLight);
+  }
+
+  /**
+   * GĐ5: Khu 3 Smart Grid Pavilion Architecture
+   * - Epoxy dark floor (#0A1224) with animated glowing cyan energy streams
+   * - 3 Sleek glass information totems at entrance (x = 22)
+   * - Linear recessed ceiling light tracks
+   */
+  buildZone3SmartGrid(parent) {
+    const k3Group = new THREE.Group();
+    k3Group.name = 'Zone3_SmartGrid_Architecture';
+
+    // 1. Epoxy floor overlay for Khu 3 (bounds: x 18..50, z -25..25 -> center 34, 0)
+    const floorGeo = new THREE.PlaneGeometry(32, 50);
+    const floorMesh = new THREE.Mesh(floorGeo, this.matEpoxyKhu3);
+    floorMesh.rotation.x = -Math.PI / 2;
+    floorMesh.position.set(34.0, 0.012, 0.0);
+    floorMesh.receiveShadow = true;
+    k3Group.add(floorMesh);
+
+    // 2. Animated luminous energy traces on the floor from entrance (x=18) to milestone wall (x=35)
+    const canvas = document.createElement('canvas');
+    canvas.width = 512;
+    canvas.height = 128;
+    const ctx = canvas.getContext('2d');
+    ctx.clearRect(0, 0, 512, 128);
+
+    // Dynamic glowing cyber pulse gradient
+    const grad = ctx.createLinearGradient(0, 0, 512, 0);
+    grad.addColorStop(0, 'rgba(34, 211, 238, 0.05)');
+    grad.addColorStop(0.3, 'rgba(34, 211, 238, 0.85)');
+    grad.addColorStop(0.5, 'rgba(255, 255, 255, 0.95)');
+    grad.addColorStop(0.7, 'rgba(34, 211, 238, 0.85)');
+    grad.addColorStop(1, 'rgba(34, 211, 238, 0.05)');
+    ctx.fillStyle = grad;
+    ctx.fillRect(0, 56, 512, 16);
+
+    // Outer glow
+    ctx.fillStyle = 'rgba(34, 211, 238, 0.25)';
+    ctx.fillRect(0, 40, 512, 48);
+
+    // Arrow chev-markers
+    ctx.fillStyle = '#22d3ee';
+    for (let bx = 60; bx < 512; bx += 128) {
+      ctx.beginPath();
+      ctx.moveTo(bx, 48);
+      ctx.lineTo(bx + 20, 64);
+      ctx.lineTo(bx, 80);
+      ctx.lineTo(bx + 8, 80);
+      ctx.lineTo(bx + 28, 64);
+      ctx.lineTo(bx + 8, 48);
+      ctx.closePath();
+      ctx.fill();
+    }
+
+    const pulseTex = new THREE.CanvasTexture(canvas);
+    pulseTex.wrapS = THREE.RepeatWrapping;
+    pulseTex.wrapT = THREE.ClampToEdgeWrapping;
+    pulseTex.repeat.set(4, 1);
+    this.smartGridFloorTexture = pulseTex;
+
+    const pulseMat = new THREE.MeshBasicMaterial({
+      map: pulseTex,
+      transparent: true,
+      opacity: 0.9,
+      blending: THREE.AdditiveBlending,
+      depthWrite: false
+    });
+
+    // 3 parallel pathways running along X from x=18 to x=35
+    const pathZList = [-5.0, 0.0, 5.0];
+    pathZList.forEach(pz => {
+      const pathGeo = new THREE.PlaneGeometry(16.8, 0.6);
+      const pathMesh = new THREE.Mesh(pathGeo, pulseMat);
+      pathMesh.rotation.x = -Math.PI / 2;
+      pathMesh.position.set(26.5, 0.02, pz);
+      k3Group.add(pathMesh);
+    });
+
+    // Additional branch connecting toward Sa bàn at x=43
+    const branchGeo = new THREE.PlaneGeometry(16.0, 0.6);
+    const branchMesh = new THREE.Mesh(branchGeo, pulseMat);
+    branchMesh.rotation.x = -Math.PI / 2;
+    branchMesh.position.set(38.0, 0.02, 0.0);
+    k3Group.add(branchMesh);
+
+    // 3. Ba trụ thông tin mỏng gần cửa (x = 22)
+    const totemsData = [
+      {
+        z: -6.0,
+        title: 'TỰ ĐỘNG HÓA LƯỚI ĐIỆN',
+        slogan: 'Hiện đại hóa và tự động hóa hệ thống điện phân phối',
+        sub: 'SMART GRID AUTOMATION'
+      },
+      {
+        z: 0.0,
+        title: 'TRUNG TÂM ĐIỀU KHIỂN',
+        slogan: 'Vận hành hệ thống điện thông minh, tin cậy và an toàn',
+        sub: 'SCADA / DMS CONTROL CENTER'
+      },
+      {
+        z: 6.0,
+        title: 'DỊCH VỤ KHÁCH HÀNG SỐ',
+        slogan: 'Chuyển đổi số toàn diện, nâng cao trải nghiệm khách hàng',
+        sub: 'DIGITAL CUSTOMER SERVICES'
+      }
+    ];
+
+    totemsData.forEach(td => {
+      const totem = this.createInformationTotem(td);
+      totem.position.set(22.0, 0, td.z);
+      k3Group.add(totem);
+    });
+
+    // 4. Khe đèn thẳng trên trần (linear LED tracks)
+    const ceilingZList = [-12.0, 0.0, 12.0];
+    const trackMat = new THREE.MeshStandardMaterial({
+      color: 0x22d3ee,
+      emissive: new THREE.Color(0x22d3ee),
+      emissiveIntensity: 1.2,
+      roughness: 0.2
+    });
+    ceilingZList.forEach(cz => {
+      const trackGeo = new THREE.BoxGeometry(26.0, 0.1, 0.25);
+      const trackMesh = new THREE.Mesh(trackGeo, trackMat);
+      trackMesh.position.set(34.0, 8.45, cz);
+      k3Group.add(trackMesh);
+    });
+
+    parent.add(k3Group);
+  }
+
+  createInformationTotem({ title, slogan, sub }) {
+    const group = new THREE.Group();
+    const w = 1.1;
+    const h = 2.4;
+    const d = 0.16;
+
+    // Chân đế kim loại màu titanium sẫm
+    const baseMat = new THREE.MeshStandardMaterial({
+      color: 0x0f172a,
+      roughness: 0.4,
+      metalness: 0.8
+    });
+    const baseMesh = new THREE.Mesh(new THREE.BoxGeometry(w + 0.15, 0.12, d + 0.2), baseMat);
+    baseMesh.position.y = 0.06;
+    group.add(baseMesh);
+
+    // Viền LED phát sáng quanh đế
+    const baseLed = new THREE.Mesh(new THREE.BoxGeometry(w + 0.18, 0.03, d + 0.22), this.matCyanLED);
+    baseLed.position.y = 0.015;
+    group.add(baseLed);
+
+    // Thân trụ thủy tinh đen obsidian
+    const bodyMat = new THREE.MeshStandardMaterial({
+      color: 0x070c18,
+      roughness: 0.25,
+      metalness: 0.85
+    });
+    const bodyMesh = new THREE.Mesh(new THREE.BoxGeometry(w, h, d), bodyMat);
+    bodyMesh.position.y = h / 2 + 0.12;
+    group.add(bodyMesh);
+
+    // Hai dải LED cyan đứng dọc 2 cạnh bên
+    const sideLedGeo = new THREE.BoxGeometry(0.025, h, d + 0.01);
+    const leftLed = new THREE.Mesh(sideLedGeo, this.matCyanLED);
+    leftLed.position.set(-w / 2, h / 2 + 0.12, 0);
+    group.add(leftLed);
+
+    const rightLed = new THREE.Mesh(sideLedGeo, this.matCyanLED);
+    rightLed.position.set(w / 2, h / 2 + 0.12, 0);
+    group.add(rightLed);
+
+    // Canvas hiển thị khẩu hiệu và thông tin
+    const c = document.createElement('canvas');
+    c.width = 800;
+    c.height = 1400;
+    const ctx = c.getContext('2d');
+
+    // Nền gradient sẫm hi-tech
+    const bgGrad = ctx.createLinearGradient(0, 0, 0, 1400);
+    bgGrad.addColorStop(0, '#060a14');
+    bgGrad.addColorStop(0.5, '#0b1329');
+    bgGrad.addColorStop(1, '#060a14');
+    ctx.fillStyle = bgGrad;
+    ctx.fillRect(0, 0, 800, 1400);
+
+    // Khung viền thanh lịch
+    ctx.strokeStyle = 'rgba(34, 211, 238, 0.4)';
+    ctx.lineWidth = 4;
+    ctx.strokeRect(24, 24, 752, 1352);
+
+    ctx.strokeStyle = 'rgba(34, 211, 238, 0.15)';
+    ctx.lineWidth = 1.5;
+    ctx.strokeRect(36, 36, 728, 1328);
+
+    // Header EVNHCMC
+    ctx.fillStyle = '#22d3ee';
+    ctx.font = '700 28px "Be Vietnam Pro", sans-serif';
+    ctx.textAlign = 'center';
+    ctx.fillText('EVNHCMC • PC VŨNG TÀU', 400, 140);
+
+    ctx.fillStyle = 'rgba(255, 255, 255, 0.6)';
+    ctx.font = '500 20px "Be Vietnam Pro", sans-serif';
+    ctx.letterSpacing = '2px';
+    ctx.fillText(sub, 400, 180);
+
+    // Đường kẻ phân cách
+    const sepGrad = ctx.createLinearGradient(100, 0, 700, 0);
+    sepGrad.addColorStop(0, 'rgba(34, 211, 238, 0)');
+    sepGrad.addColorStop(0.5, 'rgba(34, 211, 238, 0.8)');
+    sepGrad.addColorStop(1, 'rgba(34, 211, 238, 0)');
+    ctx.strokeStyle = sepGrad;
+    ctx.lineWidth = 3;
+    ctx.beginPath();
+    ctx.moveTo(100, 220);
+    ctx.lineTo(700, 220);
+    ctx.stroke();
+
+    // Biểu tượng công nghệ ở giữa
+    ctx.fillStyle = 'rgba(34, 211, 238, 0.12)';
+    ctx.beginPath();
+    ctx.arc(400, 480, 120, 0, Math.PI * 2);
+    ctx.fill();
+
+    ctx.strokeStyle = '#22d3ee';
+    ctx.lineWidth = 4;
+    ctx.beginPath();
+    ctx.arc(400, 480, 100, 0, Math.PI * 2);
+    ctx.stroke();
+
+    ctx.fillStyle = '#ffffff';
+    ctx.font = '900 80px "Be Vietnam Pro", sans-serif';
+    ctx.fillText('⚡', 400, 510);
+
+    // Tiêu đề trụ (Font Be Vietnam Pro 900)
+    ctx.fillStyle = '#ffffff';
+    ctx.font = '900 46px "Be Vietnam Pro", sans-serif';
+    ctx.fillText(title, 400, 740);
+
+    // Khẩu hiệu chính thức
+    ctx.fillStyle = '#cbd5e1';
+    ctx.font = '500 30px "Be Vietnam Pro", sans-serif';
+    const words = slogan.split(' ');
+    let line = '';
+    let y = 840;
+    for (let n = 0; n < words.length; n++) {
+      const testLine = line + words[n] + ' ';
+      const metrics = ctx.measureText(testLine);
+      if (metrics.width > 640 && n > 0) {
+        ctx.fillText(line.trim(), 400, y);
+        line = words[n] + ' ';
+        y += 50;
+      } else {
+        line = testLine;
+      }
+    }
+    ctx.fillText(line.trim(), 400, y);
+
+    // Footer
+    ctx.fillStyle = 'rgba(34, 211, 238, 0.7)';
+    ctx.font = '600 22px "Be Vietnam Pro", sans-serif';
+    ctx.fillText('CHUYỂN ĐỔI SỐ • LƯỚI ĐIỆN THÔNG MINH', 400, 1260);
+
+    const faceTex = new THREE.CanvasTexture(c);
+    faceTex.colorSpace = THREE.SRGBColorSpace;
+    const faceMat = new THREE.MeshBasicMaterial({ map: faceTex });
+
+    // Mặt trước (hướng Tây: rotY = -Math.PI / 2)
+    const facePlaneGeo = new THREE.PlaneGeometry(w - 0.04, h - 0.1);
+    const frontMesh = new THREE.Mesh(facePlaneGeo, faceMat);
+    frontMesh.position.set(0, h / 2 + 0.12, d / 2 + 0.002);
+    group.add(frontMesh);
+
+    // Mặt sau
+    const backMesh = new THREE.Mesh(facePlaneGeo, faceMat);
+    backMesh.position.set(0, h / 2 + 0.12, -d / 2 - 0.002);
+    backMesh.rotation.y = Math.PI;
+    group.add(backMesh);
+
+    // Hướng mặt chính về phía lối vào (hướng Tây nhìn sang Đông, hoặc quay mặt nhìn sang Tây)
+    group.rotation.y = -Math.PI / 2;
+    return group;
+  }
+
+  animate(delta, time) {
+    if (this.smartGridFloorTexture) {
+      this.smartGridFloorTexture.offset.x -= delta * 0.35;
+    }
   }
 }
 

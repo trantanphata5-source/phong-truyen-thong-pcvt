@@ -164,9 +164,10 @@
   <div class="pills-bar collapsed" id="pills-bar">
     <nav class="hall-pills">
       <button class="pill-btn active" data-hall="all">Toàn cảnh</button>
-      <button class="pill-btn" data-hall="hall_1">Khu 1: Nhà Nước &amp; EVN</button>
-      <button class="pill-btn" data-hall="hall_2">Khu 2: Tỉnh BR-VT</button>
-      <button class="pill-btn" data-hall="hall_3">Khu 3: Công Đoàn</button>
+      <button class="pill-btn" data-hall="khu1">Khu 1: Ký ức &amp; Tranh tặng</button>
+      <button class="pill-btn" data-hall="khu2">Khu 2: Bằng khen &amp; Cờ</button>
+      <button class="pill-btn" data-hall="khu3">Khu 3: Hiện tại</button>
+      <button class="pill-btn pill-btn-cyan" id="btn-nav-saban" title="Sa bàn lưới điện 3D"><i data-lucide="zap"></i> Sa bàn Lưới điện</button>
       <button class="pill-btn pill-btn-red" id="btn-nav-hcm" data-hall="hcm" title="Không gian Văn hóa Hồ Chí Minh"><i data-lucide="star"></i> Văn Hóa HCM</button>
       <button class="pill-btn pill-btn-gold" id="btn-nav-albums" title="Tủ Album Kỷ Niệm"><i data-lucide="book-open"></i> Album (4 cuốn)</button>
     </nav>
@@ -516,6 +517,157 @@
     </div>
   </div>
 
+  <!-- GĐ5: Sa bàn Lưới điện 3D Floating HUD Toolbar -->
+  <aside class="grid-table-hud hidden" id="grid-table-hud">
+    <div class="hud-panel-header">
+      <div class="hud-panel-title">
+        <i data-lucide="zap" class="text-cyan"></i>
+        <span>SA BÀN LƯỚI ĐIỆN PCVT</span>
+      </div>
+      <button class="btn-tiny" id="btn-close-grid-hud" title="Ẩn bảng điều khiển"><i data-lucide="x"></i></button>
+    </div>
+    <div class="hud-panel-body">
+      <div class="grid-filter-title">LỌC LỚP TRUYỀN TẢI & PHÂN PHỐI</div>
+      <div class="grid-filter-switches">
+        <label class="grid-switch-label">
+          <input type="checkbox" id="chk-layer-500" checked />
+          <span class="grid-color-dot dot-500"></span>
+          <span>Đường dây &amp; TBA 500kV (1 trạm)</span>
+        </label>
+        <label class="grid-switch-label">
+          <input type="checkbox" id="chk-layer-220" checked />
+          <span class="grid-color-dot dot-220"></span>
+          <span>Đường dây &amp; TBA 220kV (6 trạm)</span>
+        </label>
+        <label class="grid-switch-label">
+          <input type="checkbox" id="chk-layer-110" checked />
+          <span class="grid-color-dot dot-110"></span>
+          <span>Đường dây &amp; TBA 110kV Lưới (19 trạm)</span>
+        </label>
+        <label class="grid-switch-label">
+          <input type="checkbox" id="chk-layer-kh" checked />
+          <span class="grid-color-dot dot-kh"></span>
+          <span>TBA 110kV Khách hàng (15 trạm)</span>
+        </label>
+        <label class="grid-switch-label">
+          <input type="checkbox" id="chk-layer-qh" checked />
+          <span class="grid-color-dot dot-qh"></span>
+          <span>Quy hoạch (Nét đứt)</span>
+        </label>
+        <label class="grid-switch-label">
+          <input type="checkbox" id="chk-layer-dbgt" checked />
+          <span class="grid-color-dot dot-dbgt"></span>
+          <span>Công trình ĐBGT (12 công trình)</span>
+        </label>
+        <label class="grid-switch-label">
+          <input type="checkbox" id="chk-layer-labels" checked />
+          <span class="grid-color-dot dot-label"></span>
+          <span>Tên trạm &amp; Phường hành chính</span>
+        </label>
+      </div>
+
+      <div class="grid-hud-actions">
+        <button class="btn-grid-action primary" id="btn-open-grid-2d">
+          <i data-lucide="map"></i>
+          <span>XEM 2D TOÀN MÀN HÌNH</span>
+        </button>
+        <button class="btn-grid-action secondary" id="btn-focus-grid-table">
+          <i data-lucide="eye"></i>
+          <span>Góc nhìn Sa bàn</span>
+        </button>
+      </div>
+    </div>
+  </aside>
+
+  <!-- GĐ5: Thẻ thông tin Trạm / Công trình ĐBGT khi click vào Sa bàn -->
+  <aside class="grid-info-card hidden" id="grid-info-card">
+    <button class="card-close-btn" id="btn-close-grid-info" title="Đóng"><i data-lucide="x"></i></button>
+    <div class="grid-info-header">
+      <span class="grid-info-badge" id="grid-info-badge">500kV</span>
+      <h3 class="grid-info-title" id="grid-info-title">Trạm Biến Áp</h3>
+    </div>
+    <div class="grid-info-body">
+      <div class="grid-info-row">
+        <span class="info-label">Cấp điện áp:</span>
+        <span class="info-val font-bold" id="grid-info-cap">500kV</span>
+      </div>
+      <div class="grid-info-row">
+        <span class="info-label">Phân loại:</span>
+        <span class="info-val" id="grid-info-loai">Trạm biến áp lưới</span>
+      </div>
+      <div class="grid-info-row">
+        <span class="info-label">Trạng thái:</span>
+        <span class="info-val" id="grid-info-trangthai">Hiện trạng</span>
+      </div>
+      <div class="grid-info-row">
+        <span class="info-label">Địa bàn:</span>
+        <span class="info-val" id="grid-info-phuong">P. Phú Mỹ</span>
+      </div>
+      <div class="grid-info-row" id="grid-info-extra-row">
+        <span class="info-label">Ghi chú:</span>
+        <span class="info-val" id="grid-info-extra">Trực thuộc lưới truyền tải điện</span>
+      </div>
+    </div>
+    <div class="grid-info-actions">
+      <button class="card-btn primary" id="btn-grid-info-view2d">
+        <i data-lucide="search"></i> Xem trên bản đồ 2D
+      </button>
+    </div>
+  </aside>
+
+  <!-- GĐ5: Modal Bản đồ Địa dư 2D Toàn màn hình (Pan & Zoom) -->
+  <div class="grid-map-2d-modal hidden" id="grid-map-2d-modal">
+    <div class="grid-2d-header">
+      <div class="grid-2d-title-group">
+        <div class="grid-2d-badge"><i data-lucide="zap"></i></div>
+        <div>
+          <h2>BẢN ĐỒ ĐỊA DƯ LƯỚI ĐIỆN CÔNG TY ĐIỆN LỰC VŨNG TÀU</h2>
+          <p>Trục chính – Phường – Bản vẽ kỹ thuật số hóa vector AutoCAD 29/06/2026</p>
+        </div>
+      </div>
+      
+      <!-- Quick station search -->
+      <div class="grid-2d-search-wrap">
+        <i data-lucide="search"></i>
+        <input type="text" id="grid-2d-search" placeholder="Tìm nhanh trạm (Mỹ Xuân, Phú Mỹ, Vũng Tàu...)" />
+        <div class="grid-2d-search-results hidden" id="grid-2d-search-results"></div>
+      </div>
+
+      <!-- Controls -->
+      <div class="grid-2d-controls">
+        <button id="btn-grid-zoom-in" class="btn-grid-tool" title="Phóng to (+)"><i data-lucide="zoom-in"></i></button>
+        <span class="zoom-level-text" id="grid-zoom-level">100%</span>
+        <button id="btn-grid-zoom-out" class="btn-grid-tool" title="Thu nhỏ (-)"><i data-lucide="zoom-out"></i></button>
+        <button id="btn-grid-zoom-reset" class="btn-grid-tool" title="Khôi phục kích thước"><i data-lucide="maximize-2"></i></button>
+        <button id="btn-close-grid-2d" class="btn-grid-close" title="Đóng bản đồ (ESC)"><i data-lucide="x"></i></button>
+      </div>
+    </div>
+
+    <!-- Map Viewport with mouse pan and wheel zoom -->
+    <div class="grid-2d-viewport" id="grid-2d-viewport">
+      <div class="grid-2d-stage" id="grid-2d-stage">
+        <img src="assets/grid/preview.png" alt="Bản đồ địa dư lưới điện PCVT" class="grid-2d-image" id="grid-2d-image" />
+        <div class="grid-2d-markers" id="grid-2d-markers"></div>
+      </div>
+    </div>
+
+    <!-- Footer Status / Legend Bar -->
+    <div class="grid-2d-footer">
+      <div class="grid-2d-legend">
+        <span><span class="legend-color dot-500"></span> 500kV</span>
+        <span><span class="legend-color dot-220"></span> 220kV</span>
+        <span><span class="legend-color dot-110"></span> 110kV Lưới</span>
+        <span><span class="legend-color dot-kh"></span> 110kV Khách hàng</span>
+        <span><span class="legend-color dot-co-so"></span> Cơ sở PCVT</span>
+        <span><span class="legend-color dot-dbgt-green"></span> ĐBGT Đã có ý kiến HSTK</span>
+        <span><span class="legend-color dot-dbgt-orange"></span> ĐBGT Thẩm định bồi thường</span>
+      </div>
+      <div class="grid-2d-tip">
+        <i data-lucide="info"></i> Kéo chuột để di chuyển • Cuộn bánh xe để phóng to / thu nhỏ
+      </div>
+    </div>
+  </div>
+
   <!-- Help / Guide Modal -->
   <div class="help-modal hidden" id="help-modal">
     <div class="help-card">
@@ -558,6 +710,6 @@
   </div>
 
   <!-- App Entry -->
-  <script type="module" src="js/main.js?v=gd4-fix1"></script>
+  <script type="module" src="js/main.js?v=gd5"></script>
 </body>
 </html>

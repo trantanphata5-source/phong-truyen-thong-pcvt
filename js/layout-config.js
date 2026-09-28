@@ -218,6 +218,15 @@ export function buildCollisionBoxes() {
   boxes.push({ id: 'wall_hcm_east', minX: 21, maxX: 23, minZ: 38, maxZ: 82 });
   boxes.push({ id: 'wall_hcm_south', minX: -22, maxX: 22, minZ: 81, maxZ: 83 });
 
+  // Sa bàn lưới điện (4.2m x 6.0m tại x=43, z=0)
+  boxes.push({
+    id: 'grid_table',
+    minX: GRID_TABLE.position.x - GRID_TABLE.width / 2,
+    maxX: GRID_TABLE.position.x + GRID_TABLE.width / 2,
+    minZ: GRID_TABLE.position.z - GRID_TABLE.depth / 2,
+    maxZ: GRID_TABLE.position.z + GRID_TABLE.depth / 2,
+  });
+
   return boxes;
 }
 

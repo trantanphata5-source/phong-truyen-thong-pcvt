@@ -2892,3 +2892,566 @@ html, body {
     display: flex !important;
   }
 }
+
+/* ==========================================================================
+   GĐ5: SA BÀN LƯỚI ĐIỆN 3D — HUD, INFO CARD & MODAL 2D TOÀN MÀN HÌNH
+   ========================================================================== */
+.pill-btn-cyan {
+  background: rgba(34, 211, 238, 0.15) !important;
+  border-color: rgba(34, 211, 238, 0.5) !important;
+  color: #22d3ee !important;
+  font-weight: 600 !important;
+}
+
+.pill-btn-cyan:hover, .pill-btn-cyan.active {
+  background: #0891b2 !important;
+  color: #ffffff !important;
+  box-shadow: 0 0 16px rgba(34, 211, 238, 0.6) !important;
+}
+
+/* 1. Floating Sa bàn HUD Toolbar */
+.grid-table-hud {
+  position: fixed;
+  bottom: 80px;
+  right: 20px;
+  width: 320px;
+  max-width: calc(100vw - 32px);
+  background: rgba(7, 15, 38, 0.92);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(34, 211, 238, 0.35);
+  border-radius: 14px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.6), 0 0 20px rgba(34, 211, 238, 0.15);
+  z-index: 105;
+  color: #f1f5f9;
+  font-family: var(--font-family, '"Be Vietnam Pro", sans-serif');
+  overflow: hidden;
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.grid-table-hud.hidden {
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(16px);
+}
+
+.hud-panel-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 14px;
+  background: rgba(11, 21, 48, 0.9);
+  border-bottom: 1px solid rgba(34, 211, 238, 0.2);
+}
+
+.hud-panel-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  font-weight: 800;
+  letter-spacing: 0.5px;
+  color: #22d3ee;
+}
+
+.hud-panel-title svg {
+  width: 16px;
+  height: 16px;
+}
+
+.hud-panel-body {
+  padding: 14px;
+}
+
+.grid-filter-title {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  color: rgba(255, 255, 255, 0.55);
+  margin-bottom: 10px;
+  text-transform: uppercase;
+}
+
+.grid-filter-switches {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 14px;
+}
+
+.grid-switch-label {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  font-size: 12px;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.88);
+  cursor: pointer;
+  user-select: none;
+}
+
+.grid-switch-label input[type="checkbox"] {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 16px;
+  height: 16px;
+  border-radius: 4px;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  outline: none;
+  cursor: pointer;
+  position: relative;
+  transition: all 0.2s ease;
+}
+
+.grid-switch-label input[type="checkbox"]:checked {
+  background: #0284c7;
+  border-color: #22d3ee;
+}
+
+.grid-switch-label input[type="checkbox"]:checked::after {
+  content: '✓';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 11px;
+  font-weight: 900;
+  color: #ffffff;
+}
+
+.grid-color-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.dot-500 { background: #e879f9; box-shadow: 0 0 6px #e879f9; }
+.dot-220 { background: #f87171; box-shadow: 0 0 6px #f87171; }
+.dot-110 { background: #22d3ee; box-shadow: 0 0 6px #22d3ee; }
+.dot-kh { background: #cbd5e1; border: 1px solid rgba(255, 255, 255, 0.4); }
+.dot-qh { background: transparent; border: 1.5px dashed #94a3b8; }
+.dot-dbgt { background: #22c55e; }
+.dot-label { background: #facc15; }
+.dot-co-so { background: #1e40a0; border: 1px solid #facc15; }
+.dot-dbgt-green { background: #22c55e; }
+.dot-dbgt-orange { background: #f97316; }
+
+.grid-hud-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.btn-grid-action {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 8px 12px;
+  border-radius: 8px;
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border: none;
+}
+
+.btn-grid-action svg {
+  width: 15px;
+  height: 15px;
+}
+
+.btn-grid-action.primary {
+  background: linear-gradient(135deg, #0284c7 0%, #0891b2 100%);
+  color: #ffffff;
+  box-shadow: 0 2px 8px rgba(2, 132, 199, 0.4);
+}
+
+.btn-grid-action.primary:hover {
+  background: linear-gradient(135deg, #0369a1 0%, #0e7490 100%);
+  transform: translateY(-1px);
+}
+
+.btn-grid-action.secondary {
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  color: #cbd5e1;
+}
+
+.btn-grid-action.secondary:hover {
+  background: rgba(255, 255, 255, 0.14);
+  color: #ffffff;
+}
+
+/* 2. Floating Substation Info Card */
+.grid-info-card {
+  position: fixed;
+  top: 90px;
+  right: 20px;
+  width: 320px;
+  max-width: calc(100vw - 32px);
+  background: rgba(7, 15, 38, 0.95);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(34, 211, 238, 0.45);
+  border-radius: 14px;
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.7), 0 0 24px rgba(34, 211, 238, 0.2);
+  z-index: 110;
+  padding: 16px;
+  color: #f1f5f9;
+  font-family: var(--font-family, '"Be Vietnam Pro", sans-serif');
+  animation: slideInRight 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.grid-info-card.hidden {
+  display: none;
+}
+
+@keyframes slideInRight {
+  from { opacity: 0; transform: translateX(20px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+
+.grid-info-header {
+  margin-bottom: 12px;
+  padding-right: 24px;
+}
+
+.grid-info-badge {
+  display: inline-block;
+  padding: 3px 8px;
+  border-radius: 4px;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  margin-bottom: 6px;
+}
+
+.badge-500 { background: rgba(232, 121, 249, 0.2); color: #e879f9; border: 1px solid #e879f9; }
+.badge-220 { background: rgba(248, 113, 113, 0.2); color: #f87171; border: 1px solid #f87171; }
+.badge-110 { background: rgba(34, 211, 238, 0.2); color: #22d3ee; border: 1px solid #22d3ee; }
+.badge-kh { background: rgba(203, 213, 225, 0.2); color: #cbd5e1; border: 1px solid #cbd5e1; }
+.badge-coso { background: rgba(30, 64, 160, 0.3); color: #facc15; border: 1px solid #facc15; }
+.badge-dbgt { background: rgba(34, 197, 94, 0.2); color: #22c55e; border: 1px solid #22c55e; }
+
+.grid-info-title {
+  font-size: 16px;
+  font-weight: 800;
+  color: #ffffff;
+  line-height: 1.3;
+  margin: 0;
+}
+
+.grid-info-body {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  font-size: 12px;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  padding-top: 10px;
+  margin-bottom: 14px;
+}
+
+.grid-info-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.info-label {
+  color: rgba(255, 255, 255, 0.6);
+  flex-shrink: 0;
+}
+
+.info-val {
+  color: #f1f5f9;
+  text-align: right;
+  word-break: break-word;
+}
+
+.grid-info-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.grid-info-actions .card-btn {
+  width: 100%;
+  padding: 8px 12px;
+  font-size: 12px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  background: #0284c7;
+  color: #ffffff;
+  transition: background 0.2s;
+}
+
+.grid-info-actions .card-btn:hover {
+  background: #0369a1;
+}
+
+/* 3. Fullscreen 2D Interactive Map Modal */
+.grid-map-2d-modal {
+  position: fixed;
+  inset: 0;
+  background: rgba(4, 9, 23, 0.96);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  z-index: 1200;
+  display: flex;
+  flex-direction: column;
+  color: #f1f5f9;
+  font-family: var(--font-family, '"Be Vietnam Pro", sans-serif');
+  user-select: none;
+}
+
+.grid-map-2d-modal.hidden {
+  display: none !important;
+}
+
+.grid-2d-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 20px;
+  background: rgba(11, 21, 48, 0.95);
+  border-bottom: 1px solid rgba(34, 211, 238, 0.3);
+  flex-shrink: 0;
+  gap: 16px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+}
+
+.grid-2d-title-group {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.grid-2d-badge {
+  width: 36px;
+  height: 36px;
+  border-radius: 8px;
+  background: rgba(34, 211, 238, 0.15);
+  border: 1px solid rgba(34, 211, 238, 0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #22d3ee;
+  flex-shrink: 0;
+}
+
+.grid-2d-badge svg {
+  width: 20px;
+  height: 20px;
+}
+
+.grid-2d-title-group h2 {
+  font-size: 15px;
+  font-weight: 800;
+  color: #ffffff;
+  margin: 0;
+  letter-spacing: 0.5px;
+}
+
+.grid-2d-title-group p {
+  font-size: 11px;
+  color: rgba(255, 255, 255, 0.6);
+  margin: 2px 0 0 0;
+}
+
+.grid-2d-search-wrap {
+  position: relative;
+  width: 260px;
+}
+
+.grid-2d-search-wrap svg {
+  position: absolute;
+  left: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 14px;
+  height: 14px;
+  color: rgba(255, 255, 255, 0.5);
+}
+
+.grid-2d-search-wrap input {
+  width: 100%;
+  padding: 6px 10px 6px 32px;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: #ffffff;
+  font-size: 12px;
+  outline: none;
+}
+
+.grid-2d-search-wrap input:focus {
+  border-color: #22d3ee;
+  background: rgba(255, 255, 255, 0.12);
+}
+
+.grid-2d-search-results {
+  position: absolute;
+  top: calc(100% + 4px);
+  left: 0;
+  right: 0;
+  max-height: 240px;
+  overflow-y: auto;
+  background: #0b1530;
+  border: 1px solid #22d3ee;
+  border-radius: 8px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.6);
+  z-index: 10;
+}
+
+.grid-2d-search-item {
+  padding: 8px 12px;
+  font-size: 12px;
+  cursor: pointer;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  display: flex;
+  justify-content: space-between;
+}
+
+.grid-2d-search-item:hover {
+  background: rgba(34, 211, 238, 0.2);
+}
+
+.grid-2d-controls {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+.btn-grid-tool {
+  width: 32px;
+  height: 32px;
+  border-radius: 6px;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: #cbd5e1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.btn-grid-tool:hover {
+  background: rgba(255, 255, 255, 0.18);
+  color: #ffffff;
+}
+
+.btn-grid-tool svg {
+  width: 16px;
+  height: 16px;
+}
+
+.zoom-level-text {
+  font-size: 12px;
+  font-weight: 700;
+  color: #22d3ee;
+  min-width: 44px;
+  text-align: center;
+}
+
+.btn-grid-close {
+  width: 34px;
+  height: 34px;
+  border-radius: 8px;
+  background: rgba(239, 68, 68, 0.2);
+  border: 1px solid rgba(239, 68, 68, 0.5);
+  color: #f87171;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  margin-left: 8px;
+}
+
+.btn-grid-close:hover {
+  background: #ef4444;
+  color: #ffffff;
+}
+
+/* Viewport with pan and zoom */
+.grid-2d-viewport {
+  flex: 1;
+  position: relative;
+  overflow: hidden;
+  cursor: grab;
+  background: #060b18;
+}
+
+.grid-2d-viewport.grabbing {
+  cursor: grabbing;
+}
+
+.grid-2d-stage {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform-origin: 0 0;
+  will-change: transform;
+}
+
+.grid-2d-image {
+  display: block;
+  max-width: none;
+  user-select: none;
+  pointer-events: none;
+  box-shadow: 0 0 50px rgba(0, 0, 0, 0.8);
+}
+
+.grid-2d-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 20px;
+  background: rgba(11, 21, 48, 0.95);
+  border-top: 1px solid rgba(34, 211, 238, 0.2);
+  font-size: 11px;
+  color: rgba(255, 255, 255, 0.7);
+  flex-shrink: 0;
+}
+
+.grid-2d-legend {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.grid-2d-legend span {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.legend-color {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+.grid-2d-tip {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: #22d3ee;
+}
+
+.grid-2d-tip svg {
+  width: 13px;
+  height: 13px;
+}

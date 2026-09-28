@@ -413,6 +413,32 @@ export class ControlsManager {
     this.audioService?.playClickSound();
   }
 
+  glideToGridTable(onComplete = null) {
+    this.resetKeys();
+    // Sa bàn tại (43, 0.95, 0). Tiếp cận từ phía Nam bàn (z = 4.2), độ cao 2.75m, nhìn xuống bàn góc cúi -42°
+    const targetPos = new THREE.Vector3(43.0, 2.75, 4.2);
+    const endYaw = 0.0; // Nhìn thẳng hướng Bắc (-Z) về phía sa bàn
+    const endPitch = -42 * Math.PI / 180; // Cúi -42° xuống trung tâm sa bàn
+
+    this.startGlide(this.camera.position.clone(), targetPos, this.currentYaw, endYaw, this.currentPitch, endPitch, 1.4, onComplete);
+    this.audioService?.playClickSound();
+  }
+
+  teleportToGridTable() {
+    this.resetKeys();
+    const targetPos = new THREE.Vector3(43.0, 2.75, 4.2);
+    const endYaw = 0.0;
+    const endPitch = -42 * Math.PI / 180;
+    this.camera.position.copy(targetPos);
+    this.currentYaw = this.targetYaw = endYaw;
+    this.currentPitch = this.targetPitch = endPitch;
+    const euler = new THREE.Euler(endPitch, endYaw, 0, 'YXZ');
+    this.camera.quaternion.setFromEuler(euler);
+    this.isGliding = false;
+    this.glideTween = null;
+    this.audioService?.playTeleportSound();
+  }
+
   startGlide(startPos, endPos, startYaw, endYaw, startPitch, endPitch, duration, onComplete) {
     this.resetKeys(); // Clear any pressed or stuck movement keys
 

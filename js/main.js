@@ -8,6 +8,7 @@ import { UIController } from './ui-controller.js?v=gd4-fix1';
 import { AlbumViewer } from './album-viewer.js?v=gd4-fix1';
 import { HCMExhibitBuilder } from './hcm-exhibit-builder.js?v=gd4-fix1';
 import { HCMTimelineBuilder } from './hcm-timeline-builder.js?v=gd4-fix1';
+import { GridMapTable } from './grid-map-table.js?v=gd5';
 
 /**
  * Main Application Orchestrator (Artsteps Standard)
@@ -63,10 +64,24 @@ class HeritageApp {
     this.hoveredHCMExhibit = null;
     this.hoveredTimelineEvent = null;
     this.hoveredHCMScreen = null;
+    this.hoveredGridItem = null;
+    this.hoveredGridTable = null;
     this.floorHitPoint = null;
     this.albumViewer = null;
     this.hcmExhibitBuilder = null;
     this.hcmTimelineBuilder = null;
+    this.gridMapTable = null;
+
+    // GĐ5: Sa bàn UI state
+    this.gridHudManualClosed = false;
+    this.grid2dState = {
+      scale: 1.0,
+      panX: 0,
+      panY: 0,
+      isDragging: false,
+      startX: 0,
+      startY: 0
+    };
 
     this.init();
   }
@@ -120,6 +135,16 @@ class HeritageApp {
           this.uiController.updateLoadingProgress(pct, `Dựng timeline: ${done}/${total}...`);
         });
       }
+
+      // GĐ5: Load & Build 3D Power Grid Table (Sa bàn lưới điện 3D)
+      this.uiController.updateLoadingProgress(96, 'Đang dựng sa bàn lưới điện 3D...');
+      this.gridMapTable = new GridMapTable(this.scene);
+      const gridData = await this.gridMapTable.loadData();
+      if (gridData) {
+        this.gridMapTable.build(gridData);
+      }
+      this.initGridMapUI();
+
       this.uiController.updateLoadingProgress(100, 'Phòng truyền thống đã sẵn sàng!');
 
       // Clear any cached search input value on start
@@ -196,6 +221,34 @@ class HeritageApp {
         this.hoveredAlbum = null;
       }
     }
+
+    // 0b. GĐ5: Check Sa bàn Lưới điện 3D (Trạm, Cơ sở, ĐBGT, hoặc Mặt bàn)
+    if (this.gridMapTable && this.gridMapTable.interactiveObjects.length > 0) {
+      const gridHits = this.raycaster.intersectObjects(this.gridMapTable.interactiveObjects, false);
+      if (gridHits.length > 0 && gridHits[0].distance < 38.0) {
+        const hitObj = gridHits[0].object;
+        if (hitObj.userData?.isGridTram || hitObj.userData?.isGridCoSo || hitObj.userData?.isGridDBGT) {
+          if (this.hoveredGridItem !== hitObj) {
+            this.hoveredGridItem = hitObj;
+            this.container.style.cursor = 'pointer';
+            this.audioService.playHoverSound();
+          }
+          this.hoveredGridTable = null;
+          if (this.architect.floorMarker) this.architect.floorMarker.visible = false;
+          return;
+        } else if (hitObj.userData?.isGridTableSurface) {
+          if (this.hoveredGridTable !== hitObj) {
+            this.hoveredGridTable = hitObj;
+            this.container.style.cursor = 'pointer';
+          }
+          this.hoveredGridItem = null;
+          if (this.architect.floorMarker) this.architect.floorMarker.visible = false;
+          return;
+        }
+      }
+    }
+    this.hoveredGridItem = null;
+    this.hoveredGridTable = null;
 
     // 1. Check Exhibits first
     const exhibitHits = this.raycaster.intersectObjects(this.exhibitBuilder.exhibitMeshes, false);
@@ -305,6 +358,20 @@ class HeritageApp {
     if (this.hoveredAlbum && this.hoveredAlbum.userData?.isAlbum) {
       const albumId = this.hoveredAlbum.userData.albumId;
       this.openAlbum(albumId);
+      return;
+    }
+
+    // 0b. GĐ5: Clicked a Substation / PCVT Facility / DBGT Project on Sa bàn
+    if (this.hoveredGridItem && this.hoveredGridItem.userData) {
+      this.showGridItemCard(this.hoveredGridItem.userData);
+      this.audioService.playClickSound();
+      return;
+    }
+
+    // 0c. GĐ5: Clicked Sa bàn table surface -> Glide camera to South of table, pitch -50°
+    if (this.hoveredGridTable) {
+      this.controlsManager.glideToGridTable();
+      this.showGridHud(true);
       return;
     }
 
@@ -614,16 +681,364 @@ class HeritageApp {
     window.addEventListener('keydown', escHandler);
   }
 
+  // ===========================================================================
+  // GĐ5: SA BÀN LƯỚI ĐIỆN 3D & 2D MODAL UI
+  // ===========================================================================
+  initGridMapUI() {
+    // 1. Layer filter checkboxes
+    const bindCheck = (id, key) => {
+      const el = document.getElementById(id);
+      if (el) {
+        el.addEventListener('change', (e) => {
+          if (this.gridMapTable) this.gridMapTable.setLayerVisibility(key, e.target.checked);
+        });
+      }
+    };
+
+    bindCheck('chk-layer-500', 'line500');
+    bindCheck('chk-layer-220', 'line220');
+    bindCheck('chk-layer-110', 'line110');
+    bindCheck('chk-layer-kh', 'khachHang');
+    bindCheck('chk-layer-qh', 'quyHoach');
+    bindCheck('chk-layer-dbgt', 'dbgt');
+
+    const chkLabels = document.getElementById('chk-layer-labels');
+    if (chkLabels) {
+      chkLabels.addEventListener('change', (e) => {
+        if (this.gridMapTable) {
+          this.gridMapTable.setLayerVisibility('labels', e.target.checked);
+          this.gridMapTable.setLayerVisibility('phuong', e.target.checked);
+        }
+      });
+    }
+
+    // 2. Action buttons
+    const btnNavSaBan = document.getElementById('btn-nav-saban');
+    if (btnNavSaBan) {
+      btnNavSaBan.addEventListener('click', () => {
+        this.controlsManager.glideToGridTable();
+        this.showGridHud(true);
+        this.gridHudManualClosed = false;
+      });
+    }
+
+    const btnFocusGrid = document.getElementById('btn-focus-grid-table');
+    if (btnFocusGrid) {
+      btnFocusGrid.addEventListener('click', () => {
+        this.controlsManager.glideToGridTable();
+      });
+    }
+
+    const btnOpen2D = document.getElementById('btn-open-grid-2d');
+    if (btnOpen2D) {
+      btnOpen2D.addEventListener('click', () => {
+        this.openGridMap2D();
+      });
+    }
+
+    const btnCloseHud = document.getElementById('btn-close-grid-hud');
+    if (btnCloseHud) {
+      btnCloseHud.addEventListener('click', () => {
+        this.showGridHud(false);
+        this.gridHudManualClosed = true;
+      });
+    }
+
+    // 3. Station info card buttons
+    const btnCloseInfo = document.getElementById('btn-close-grid-info');
+    if (btnCloseInfo) {
+      btnCloseInfo.addEventListener('click', () => {
+        this.hideGridItemCard();
+      });
+    }
+
+    const btnView2DFromInfo = document.getElementById('btn-grid-info-view2d');
+    if (btnView2DFromInfo) {
+      btnView2DFromInfo.addEventListener('click', () => {
+        if (this._currentGridItemData) {
+          this.openGridMap2D(this._currentGridItemData);
+        } else {
+          this.openGridMap2D();
+        }
+      });
+    }
+
+    // 4. 2D Map Modal interactive Pan & Zoom
+    this.init2DMapViewer();
+
+    if (window.lucide) window.lucide.createIcons();
+  }
+
+  showGridHud(show) {
+    const hud = document.getElementById('grid-table-hud');
+    if (hud) hud.classList.toggle('hidden', !show);
+  }
+
+  updateGridHudProximity() {
+    if (this.gridHudManualClosed) return;
+    const hud = document.getElementById('grid-table-hud');
+    if (!hud) return;
+
+    // Khoảng cách camera tới tâm sa bàn (43, 0)
+    const distToTable = Math.hypot(this.camera.position.x - 43.0, this.camera.position.z - 0.0);
+    const inRange = distToTable < 14.0;
+    hud.classList.toggle('hidden', !inRange);
+  }
+
+  showGridItemCard(userData) {
+    const card = document.getElementById('grid-info-card');
+    if (!card) return;
+
+    this._currentGridItemData = userData;
+
+    const badgeEl = document.getElementById('grid-info-badge');
+    const titleEl = document.getElementById('grid-info-title');
+    const capEl = document.getElementById('grid-info-cap');
+    const loaiEl = document.getElementById('grid-info-loai');
+    const trangthaiEl = document.getElementById('grid-info-trangthai');
+    const phuongEl = document.getElementById('grid-info-phuong');
+    const extraEl = document.getElementById('grid-info-extra');
+
+    if (userData.isGridTram && userData.tramData) {
+      const t = userData.tramData;
+      titleEl.textContent = t.ten;
+      capEl.textContent = t.cap;
+      loaiEl.textContent = t.loai === 'khach_hang' ? '110kV Khách hàng' : (t.loai === 'lan_can' ? 'Trạm lân cận' : 'Trạm lưới truyền tải');
+      trangthaiEl.textContent = t.trang_thai === 'quy_hoach' ? 'Quy hoạch' : 'Hiện trạng';
+      phuongEl.textContent = t.phuong || 'Tỉnh Bà Rịa – Vũng Tàu';
+      extraEl.textContent = `Tọa độ bản vẽ CAD: (${t.pt ? t.pt[0].toFixed(1) : ''}, ${t.pt ? t.pt[1].toFixed(1) : ''})`;
+
+      badgeEl.className = 'grid-info-badge';
+      if (t.cap === '500kV') badgeEl.classList.add('badge-500');
+      else if (t.cap === '220kV') badgeEl.classList.add('badge-220');
+      else if (t.loai === 'khach_hang') badgeEl.classList.add('badge-kh');
+      else badgeEl.classList.add('badge-110');
+      badgeEl.textContent = t.cap;
+    } else if (userData.isGridCoSo && userData.coSoData) {
+      const cs = userData.coSoData;
+      titleEl.textContent = cs.ten;
+      capEl.textContent = 'Cơ sở PCVT';
+      loaiEl.textContent = 'Trụ sở / Đơn vị trực thuộc';
+      trangthaiEl.textContent = 'Đang hoạt động';
+      phuongEl.textContent = cs.phuong || 'P. Vũng Tàu';
+      extraEl.textContent = cs.dia_chi || 'Cơ sở Công ty Điện lực Vũng Tàu';
+
+      badgeEl.className = 'grid-info-badge badge-coso';
+      badgeEl.textContent = 'PCVT';
+    } else if (userData.isGridDBGT && userData.dbgtData) {
+      const d = userData.dbgtData;
+      titleEl.textContent = d.ten;
+      capEl.textContent = 'Công trình ĐBGT';
+      loaiEl.textContent = 'Đồng bộ giao thông';
+
+      const statusMap = {
+        da_co_y_kien_hstk: 'Đã có ý kiến HSTK',
+        dang_tham_dinh_boi_thuong: 'UBND đang thẩm định bồi thường',
+        chua_khao_sat: 'Chưa khảo sát hiện trạng'
+      };
+      trangthaiEl.textContent = statusMap[d.trang_thai] || d.trang_thai;
+      phuongEl.textContent = 'Địa bàn đồng bộ giao thông';
+      extraEl.textContent = 'Phối hợp đồng bộ hạ tầng lưới điện';
+
+      badgeEl.className = 'grid-info-badge badge-dbgt';
+      badgeEl.textContent = 'ĐBGT';
+    }
+
+    card.classList.remove('hidden');
+    if (window.lucide) window.lucide.createIcons();
+  }
+
+  hideGridItemCard() {
+    const card = document.getElementById('grid-info-card');
+    if (card) card.classList.add('hidden');
+    this._currentGridItemData = null;
+  }
+
+  init2DMapViewer() {
+    const modal = document.getElementById('grid-map-2d-modal');
+    const viewport = document.getElementById('grid-2d-viewport');
+    const stage = document.getElementById('grid-2d-stage');
+    const btnClose = document.getElementById('btn-close-grid-2d');
+    const btnIn = document.getElementById('btn-grid-zoom-in');
+    const btnOut = document.getElementById('btn-grid-zoom-out');
+    const btnReset = document.getElementById('btn-grid-zoom-reset');
+    const searchInput = document.getElementById('grid-2d-search');
+    const searchResults = document.getElementById('grid-2d-search-results');
+
+    if (!modal || !viewport || !stage) return;
+
+    // Close button & ESC
+    btnClose?.addEventListener('click', () => this.closeGridMap2D());
+    window.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && !modal.classList.contains('hidden')) {
+        this.closeGridMap2D();
+      }
+    });
+
+    // Zoom buttons
+    btnIn?.addEventListener('click', () => {
+      this.grid2dState.scale = Math.min(this.grid2dState.scale * 1.3, 4.0);
+      this.update2DMapTransform();
+    });
+
+    btnOut?.addEventListener('click', () => {
+      this.grid2dState.scale = Math.max(this.grid2dState.scale / 1.3, 0.4);
+      this.update2DMapTransform();
+    });
+
+    btnReset?.addEventListener('click', () => {
+      this.grid2dState.scale = 1.0;
+      this.grid2dState.panX = 0;
+      this.grid2dState.panY = 0;
+      this.update2DMapTransform();
+    });
+
+    // Mouse drag to pan
+    viewport.addEventListener('mousedown', (e) => {
+      this.grid2dState.isDragging = true;
+      this.grid2dState.startX = e.clientX - this.grid2dState.panX;
+      this.grid2dState.startY = e.clientY - this.grid2dState.panY;
+      viewport.classList.add('grabbing');
+    });
+
+    window.addEventListener('mousemove', (e) => {
+      if (!this.grid2dState.isDragging) return;
+      this.grid2dState.panX = e.clientX - this.grid2dState.startX;
+      this.grid2dState.panY = e.clientY - this.grid2dState.startY;
+      this.update2DMapTransform();
+    });
+
+    window.addEventListener('mouseup', () => {
+      if (this.grid2dState.isDragging) {
+        this.grid2dState.isDragging = false;
+        viewport.classList.remove('grabbing');
+      }
+    });
+
+    // Wheel zoom
+    viewport.addEventListener('wheel', (e) => {
+      e.preventDefault();
+      const zoomFactor = e.deltaY < 0 ? 1.15 : 0.87;
+      this.grid2dState.scale = Math.max(0.4, Math.min(4.0, this.grid2dState.scale * zoomFactor));
+      this.update2DMapTransform();
+    }, { passive: false });
+
+    // Search input for 44 substations
+    if (searchInput && searchResults) {
+      searchInput.addEventListener('input', (e) => {
+        const query = (e.target.value || '').trim().toLowerCase();
+        if (!query || !this.gridMapTable?.gridData?.tram) {
+          searchResults.classList.add('hidden');
+          searchResults.innerHTML = '';
+          return;
+        }
+
+        const hits = this.gridMapTable.gridData.tram.filter(t =>
+          t.ten.toLowerCase().includes(query) || (t.phuong && t.phuong.toLowerCase().includes(query))
+        );
+
+        if (hits.length === 0) {
+          searchResults.innerHTML = '<div style="padding: 10px; color: #94a3b8; font-size: 12px;">Không tìm thấy trạm phù hợp</div>';
+          searchResults.classList.remove('hidden');
+          return;
+        }
+
+        searchResults.innerHTML = hits.slice(0, 8).map(t => `
+          <div class="grid-2d-search-item" data-id="${t.id}" data-x="${t.x}" data-y="${t.y}">
+            <span style="font-weight: 700; color: #fff;">${t.ten}</span>
+            <span style="color: #22d3ee; font-size: 11px;">${t.cap} • ${t.phuong || ''}</span>
+          </div>
+        `).join('');
+        searchResults.classList.remove('hidden');
+
+        // Click search item
+        searchResults.querySelectorAll('.grid-2d-search-item').forEach(item => {
+          item.addEventListener('click', () => {
+            const x = parseFloat(item.dataset.x);
+            const y = parseFloat(item.dataset.y);
+            this.center2DMapOn(x, y);
+            searchResults.classList.add('hidden');
+            searchInput.value = item.querySelector('span').textContent;
+          });
+        });
+      });
+    }
+  }
+
+  openGridMap2D(targetItem = null) {
+    const modal = document.getElementById('grid-map-2d-modal');
+    if (!modal) return;
+    modal.classList.remove('hidden');
+
+    const viewport = document.getElementById('grid-2d-viewport');
+    const img = document.getElementById('grid-2d-image');
+
+    const vw = viewport?.clientWidth || window.innerWidth;
+    const vh = viewport?.clientHeight || (window.innerHeight - 100);
+    const imgW = img?.naturalWidth || 2048;
+    const imgH = img?.naturalHeight || 2896;
+
+    if (targetItem && typeof targetItem.x === 'number' && typeof targetItem.y === 'number') {
+      this.center2DMapOn(targetItem.x, targetItem.y, 1.8);
+    } else {
+      const fitScale = Math.min((vw * 0.92) / imgW, (vh * 0.92) / imgH, 1.0);
+      this.grid2dState.scale = Math.max(0.25, fitScale);
+      this.grid2dState.panX = - (imgW / 2) * this.grid2dState.scale;
+      this.grid2dState.panY = - (imgH / 2) * this.grid2dState.scale;
+      this.update2DMapTransform();
+    }
+    if (window.lucide) window.lucide.createIcons();
+  }
+
+  closeGridMap2D() {
+    const modal = document.getElementById('grid-map-2d-modal');
+    if (modal) modal.classList.add('hidden');
+  }
+
+  center2DMapOn(nx, ny, targetScale = 2.0) {
+    const img = document.getElementById('grid-2d-image');
+    if (!img) return;
+
+    const imgW = img.naturalWidth || img.offsetWidth || 2048;
+    const imgH = img.naturalHeight || img.offsetHeight || 2896;
+
+    this.grid2dState.scale = targetScale;
+    this.grid2dState.panX = - (nx * imgW) * targetScale;
+    this.grid2dState.panY = - (ny * imgH) * targetScale;
+    this.update2DMapTransform();
+  }
+
+  update2DMapTransform() {
+    const stage = document.getElementById('grid-2d-stage');
+    const zoomText = document.getElementById('grid-zoom-level');
+    if (stage) {
+      stage.style.transform = `translate(${this.grid2dState.panX}px, ${this.grid2dState.panY}px) scale(${this.grid2dState.scale})`;
+    }
+    if (zoomText) {
+      zoomText.textContent = `${Math.round(this.grid2dState.scale * 100)}%`;
+    }
+  }
+
   animate() {
     requestAnimationFrame(() => this.animate());
 
     const delta = Math.min(this.clock.getDelta(), 0.1);
+    const time = this.clock.getElapsedTime();
 
     // Update Controls
     this.controlsManager.update(delta);
 
     // Update Minimap
     this.uiController.updateMinimap(this.camera.position, this.controlsManager.currentYaw);
+
+    // GĐ5: Animate smart grid floor and power grid table
+    if (this.architect && this.architect.animate) {
+      this.architect.animate(delta, time);
+    }
+    if (this.gridMapTable && this.gridMapTable.animate) {
+      this.gridMapTable.animate(delta, time);
+    }
+    this.updateGridHudProximity();
 
     // Render Scene
     this.renderer.render(this.scene, this.camera);
