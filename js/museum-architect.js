@@ -176,8 +176,8 @@ export class MuseumArchitect {
     // 7. Architectural Ceiling Light Fixtures
     this.buildCeilingLightFixtures(museumGroup);
 
-    // 8. Luxury Showcase Vitrine for Historical Albums (Matching Reference Photo)
-    this.buildLuxuryShowcaseVitrine(museumGroup);
+    // 8. GĐ4: Two Album Cabinets (replacing single vitrine)
+    this.buildAlbumCabinets(museumGroup);
 
     // 9. Grand Lighting (bao gồm khu 4 & 6)
     this.setupLighting(museumGroup);
@@ -314,8 +314,12 @@ export class MuseumArchitect {
     const renderSeal = (logoImg = null) => {
       sctx.clearRect(0, 0, 1024, 1024);
 
-      // Dark navy background disc
-      sctx.fillStyle = '#080d1a';
+      // GĐ4: Blue radial gradient background disc (#2D55C8 → #1E40A0 → #172F7A)
+      const bgGrad = sctx.createRadialGradient(512, 512, 30, 512, 512, 490);
+      bgGrad.addColorStop(0, '#2D55C8');
+      bgGrad.addColorStop(0.5, '#1E40A0');
+      bgGrad.addColorStop(1, '#172F7A');
+      sctx.fillStyle = bgGrad;
       sctx.beginPath();
       sctx.arc(512, 512, 490, 0, Math.PI * 2);
       sctx.fill();
@@ -337,7 +341,8 @@ export class MuseumArchitect {
       sctx.arc(512, 512, 260, 0, Math.PI * 2);
       sctx.fill();
 
-      sctx.strokeStyle = '#0284c7';
+      // GĐ4: Inner disc border changed to #1E40A0
+      sctx.strokeStyle = '#1E40A0';
       sctx.lineWidth = 8;
       sctx.stroke();
 
@@ -355,7 +360,6 @@ export class MuseumArchitect {
       // Curved text helper with proportional kerning (letters never collide or stick)
       const drawArcText = (str, radius, centerAngle, extraSpacing = 4, inward = true) => {
         const len = str.length;
-        // 1. Measure each character's width
         const charWidths = [];
         let totalArcLen = 0;
         for (let i = 0; i < len; i++) {
@@ -386,22 +390,24 @@ export class MuseumArchitect {
         }
       };
 
+      // GĐ4: Font updated to Be Vietnam Pro 800, letter-spacing 0.08em via extraSpacing
       // Top outer arc: TỔNG CÔNG TY ĐIỆN LỰC THÀNH PHỐ HỒ CHÍ MINH
-      sctx.fillStyle = '#facc15';
-      sctx.font = 'bold 24px "Playfair Display", "Inter", serif';
+      sctx.fillStyle = '#ffffff';
+      sctx.font = '800 24px "Be Vietnam Pro", sans-serif';
       sctx.textAlign = 'center';
       sctx.textBaseline = 'middle';
-      drawArcText('TỔNG CÔNG TY ĐIỆN LỰC THÀNH PHỐ HỒ CHÍ MINH', 395, 0, 5, true);
+      sctx.letterSpacing = '0.08em';
+      drawArcText('TỔNG CÔNG TY ĐIỆN LỰC THÀNH PHỐ HỒ CHÍ MINH', 395, 0, 6, true);
 
       // Top inner arc: CÔNG TY ĐIỆN LỰC VŨNG TÀU
       sctx.fillStyle = '#ffffff';
-      sctx.font = 'bold 23px "Inter", sans-serif';
-      drawArcText('CÔNG TY ĐIỆN LỰC VŨNG TÀU', 338, 0, 6, true);
+      sctx.font = '800 23px "Be Vietnam Pro", sans-serif';
+      drawArcText('CÔNG TY ĐIỆN LỰC VŨNG TÀU', 338, 0, 7, true);
 
-      // Bottom arc: 1985 - 2025 • 40 NĂM PHÁT TRIỂN
+      // Bottom arc: 1985 - 2025 • 40 NĂM PHÁT TRIỂN [CHỜ XÁC NHẬN]
       sctx.fillStyle = '#facc15';
-      sctx.font = 'bold 24px "Playfair Display", "Inter", serif';
-      drawArcText('1985 - 2025 • 40 NĂM PHÁT TRIỂN', 368, Math.PI, 6, false);
+      sctx.font = '800 24px "Be Vietnam Pro", sans-serif';
+      drawArcText('1985 - 2025 • 40 NĂM PHÁT TRIỂN', 368, Math.PI, 7, false);
 
       sealTexture.needsUpdate = true;
     };
@@ -430,6 +436,20 @@ export class MuseumArchitect {
 
     // 4 Display Pedestals on the Rotunda
     this.buildFlagPedestals(rotundaGroup);
+
+    // GĐ4: LED ring around octagonal dais
+    const ledRingGeo = new THREE.CylinderGeometry(12.15, 12.15, 0.08, 8, 1, true);
+    const ledRingMat = new THREE.MeshStandardMaterial({
+      color: 0x1E40A0,
+      emissive: new THREE.Color(0x1E40A0),
+      emissiveIntensity: 1.2,
+      transparent: true,
+      opacity: 0.85,
+      side: THREE.DoubleSide
+    });
+    const ledRing = new THREE.Mesh(ledRingGeo, ledRingMat);
+    ledRing.position.y = 0.04;
+    rotundaGroup.add(ledRing);
 
     parent.add(rotundaGroup);
   }
@@ -1231,304 +1251,203 @@ export class MuseumArchitect {
   }
 
   /**
-   * Luxury Museum Showcase Vitrine for Historical Albums
-   * Modeled directly from the user's reference photograph:
-   * - Slender champagne gold legs with interlocking Greek-key fretwork (hồi văn)
-   * - Drawer apron box with gold pull knob
-   * - 5-sided crystal-clear glass hood (depthWrite: false)
-   * - Sloped tiered ivory velvet presentation stands
-   * - 2 Luxury 3D hardbound leather albums (Bordeaux & Royal Navy)
-   * - Engraved solid brass nameplates
-   * - Under-table marble/slate blue runner rug
-   * - Internal warm jewelry illumination spotlight
+   * GĐ4: Two Album Cabinets replacing single vitrine.
+   * Cabinet 1 at (-6.5, -6.5) rotY=+π/4, Cabinet 2 at (6.5, -6.5) rotY=-π/4.
+   * Each: 2.2m wide × 0.9m deep, walnut legs 1.05m, glass lid 0.35m, LED warm interior.
+   * 4 albums total: souvenir + awards_flags (cabinet 1), pcvt + doan_the (cabinet 2).
    */
-  buildLuxuryShowcaseVitrine(parent) {
-    const vitrineGroup = new THREE.Group();
-    vitrineGroup.name = 'LuxuryShowcaseVitrine';
-    // Position at central rotunda, north of the EVNHCMC seal (Z = -8.2, X = 0, on dais Y = 0.35)
-    vitrineGroup.position.set(0, 0.35, -8.2);
-
-    // 1. Under-table Luxury Artistic Rug / Runner (Matching Reference Image)
-    const rugCanvas = document.createElement('canvas');
-    rugCanvas.width = 1024;
-    rugCanvas.height = 512;
-    const rctx = rugCanvas.getContext('2d');
-    const grad = rctx.createLinearGradient(0, 0, 1024, 512);
-    grad.addColorStop(0, '#64748b');
-    grad.addColorStop(0.3, '#334155');
-    grad.addColorStop(0.7, '#94a3b8');
-    grad.addColorStop(1, '#475569');
-    rctx.fillStyle = grad;
-    rctx.fillRect(0, 0, 1024, 512);
-
-    // Subtle marble veining
-    rctx.fillStyle = 'rgba(255, 255, 255, 0.12)';
-    for (let i = 0; i < 24; i++) {
-      rctx.beginPath();
-      rctx.arc(Math.random() * 1024, Math.random() * 512, Math.random() * 140 + 40, 0, Math.PI * 2);
-      rctx.fill();
-    }
-    // Gold ornamental rim border
-    rctx.strokeStyle = 'rgba(212, 175, 55, 0.85)';
-    rctx.lineWidth = 14;
-    rctx.strokeRect(16, 16, 992, 480);
-    rctx.strokeStyle = 'rgba(212, 175, 55, 0.4)';
-    rctx.lineWidth = 6;
-    rctx.strokeRect(36, 36, 952, 440);
-
-    const rugTexture = new THREE.CanvasTexture(rugCanvas);
-    const rugGeo = new THREE.PlaneGeometry(2.8, 1.6);
-    const rugMat = new THREE.MeshStandardMaterial({
-      map: rugTexture,
-      roughness: 0.8,
-      metalness: 0.1,
-      polygonOffset: true,
-      polygonOffsetFactor: -2,
-      polygonOffsetUnits: -2
+  buildAlbumCabinets(parent) {
+    // Walnut wood material for cabinet legs/body
+    const matWalnut = new THREE.MeshStandardMaterial({
+      color: 0x5C3317, roughness: 0.55, metalness: 0.05
     });
-    const rugMesh = new THREE.Mesh(rugGeo, rugMat);
-    rugMesh.rotation.x = -Math.PI / 2;
-    rugMesh.position.y = 0.005;
-    rugMesh.receiveShadow = true;
-    vitrineGroup.add(rugMesh);
-
-    // 2. Slender Gold Metal Stand & Framework
-    const legH = 0.76;
-    const legSize = 0.035;
-    const legGeo = new THREE.BoxGeometry(legSize, legH, legSize);
-    const legPositions = [
-      [-0.98, legH / 2, -0.36],
-      [0.98, legH / 2, -0.36],
-      [-0.98, legH / 2, 0.36],
-      [0.98, legH / 2, 0.36]
-    ];
-    legPositions.forEach(pos => {
-      const leg = new THREE.Mesh(legGeo, this.matGoldShowcase);
-      leg.position.set(...pos);
-      leg.castShadow = true;
-      vitrineGroup.add(leg);
+    // Dark walnut for apron
+    const matWalnutDark = new THREE.MeshStandardMaterial({
+      color: 0x3B1F0B, roughness: 0.5, metalness: 0.08
     });
 
-    // Lower perimeter stretchers connecting legs at Y = 0.05m
-    const stretchZGeo = new THREE.BoxGeometry(legSize, 0.025, 0.72);
-    const stretchL = new THREE.Mesh(stretchZGeo, this.matGoldShowcase);
-    stretchL.position.set(-0.98, 0.05, 0);
-    vitrineGroup.add(stretchL);
-
-    const stretchR = new THREE.Mesh(stretchZGeo, this.matGoldShowcase);
-    stretchR.position.set(0.98, 0.05, 0);
-    vitrineGroup.add(stretchR);
-
-    const stretchXGeo = new THREE.BoxGeometry(1.96, 0.025, legSize);
-    const stretchBack = new THREE.Mesh(stretchXGeo, this.matGoldShowcase);
-    stretchBack.position.set(0, 0.05, -0.36);
-    vitrineGroup.add(stretchBack);
-
-    // 3. Greek-key / Rectangular Interlocking Fretwork Ornament (Matching Reference Photo)
-    this.createSideFretwork(vitrineGroup, -0.98, legH);
-    this.createSideFretwork(vitrineGroup, 0.98, legH);
-    this.createFrontFretwork(vitrineGroup, legH);
-
-    // 4. Main Table Apron / Base Box (Drawer Box with Gold Molding)
-    const boxW = 2.12;
-    const boxH = 0.16;
-    const boxD = 0.86;
-    const boxY = legH + boxH / 2; // 0.76 + 0.08 = 0.84m
-    const boxGeo = new THREE.BoxGeometry(boxW, boxH, boxD);
-    const boxMesh = new THREE.Mesh(boxGeo, this.matGoldShowcase);
-    boxMesh.position.set(0, boxY, 0);
-    boxMesh.castShadow = true;
-    vitrineGroup.add(boxMesh);
-
-    // Front Drawer accent & pull knob
-    const drawerFront = new THREE.Mesh(
-      new THREE.BoxGeometry(boxW * 0.85, boxH * 0.65, 0.01),
-      new THREE.MeshStandardMaterial({ color: 0xc9a444, metalness: 0.9, roughness: 0.2 })
-    );
-    drawerFront.position.set(0, boxY, boxD / 2 + 0.006);
-    vitrineGroup.add(drawerFront);
-
-    const knobGeo = new THREE.SphereGeometry(0.018, 16, 16);
-    const knob = new THREE.Mesh(knobGeo, this.matGoldShowcase);
-    knob.position.set(0, boxY, boxD / 2 + 0.025);
-    vitrineGroup.add(knob);
-
-    // 5. Interior Display Deck & Tiered Velvet Stands (Inside Vitrine)
-    const deckY = legH + boxH; // 0.92m
-    const deckGeo = new THREE.BoxGeometry(boxW - 0.06, 0.04, boxD - 0.06);
-    const deckMesh = new THREE.Mesh(deckGeo, this.matVelvetIvory);
-    deckMesh.position.set(0, deckY + 0.02, 0);
-    deckMesh.receiveShadow = true;
-    vitrineGroup.add(deckMesh);
-
-    // 2 Sloped Reading Cushions / Stands for the Albums
-    const standW = 0.68;
-    const standD = 0.48;
-    const standH = 0.06;
-    const standTilt = 0.30; // ~17 degrees tilted forward toward visitor (+Z)
-
-    // Left Stand Group (for Souvenir Photos)
-    const leftStandGroup = new THREE.Group();
-    leftStandGroup.position.set(-0.52, deckY + 0.06, 0.02);
-    leftStandGroup.rotation.x = standTilt;
-
-    const standGeo = new THREE.BoxGeometry(standW, standH, standD);
-    const leftStandMesh = new THREE.Mesh(standGeo, this.matVelvetIvory);
-    leftStandMesh.castShadow = true;
-    leftStandMesh.receiveShadow = true;
-    leftStandGroup.add(leftStandMesh);
-
-    // Right Stand Group (for Gift Paintings)
-    const rightStandGroup = new THREE.Group();
-    rightStandGroup.position.set(0.52, deckY + 0.06, 0.02);
-    rightStandGroup.rotation.x = standTilt;
-
-    const rightStandMesh = new THREE.Mesh(standGeo, this.matVelvetIvory);
-    rightStandMesh.castShadow = true;
-    rightStandMesh.receiveShadow = true;
-    rightStandGroup.add(rightStandMesh);
-
-    // 6. Two 3D Hardbound Archival Albums
-    const albumW = 0.54;
-    const albumH = 0.065;
-    const albumD = 0.40;
-
-    // Album 1: Souvenir Photos (Bordeaux Red Leather + Gold Filigree)
-    const album1Texture = this.createAlbumCoverCanvas(
-      'souvenir',
-      'TẬP ẢNH TƯ LIỆU & LƯU NIỆM',
-      'CÔNG TY ĐIỆN LỰC VŨNG TÀU',
-      '1985 - 2025 • 40 NĂM PHÁT TRIỂN',
-      '#6b1515', '#450a0a', '#facc15'
-    );
-    const album1Mat = [
-      new THREE.MeshStandardMaterial({ color: 0x500d0d, roughness: 0.4 }), // right edge
-      new THREE.MeshStandardMaterial({ color: 0x500d0d, roughness: 0.4 }), // left spine
-      new THREE.MeshStandardMaterial({ map: album1Texture, roughness: 0.35, metalness: 0.3 }), // top cover
-      new THREE.MeshStandardMaterial({ color: 0x3d0a0a, roughness: 0.5 }), // bottom back
-      new THREE.MeshStandardMaterial({ color: 0xd4af37, roughness: 0.3, metalness: 0.8 }), // gold gilded pages front
-      new THREE.MeshStandardMaterial({ color: 0xd4af37, roughness: 0.3, metalness: 0.8 })  // gold gilded pages back
+    const cabinetConfigs = [
+      {
+        pos: [-6.5, -6.5], rotY: Math.PI / 4,
+        label: 'KÝ ỨC & VINH DANH',
+        albums: [
+          { id: 'souvenir', title: 'Ảnh Lưu Niệm', subtitle: 'Ký ức 1985–2009 & Tranh tặng',
+            coverType: 'souvenir', c1: '#6b1515', c2: '#450a0a', gold: '#facc15',
+            coverTitle: 'TẬP ẢNH TƯ LIỆU & LƯU NIỆM', coverOrg: 'CÔNG TY ĐIỆN LỰC VŨNG TÀU', coverSub: '1985 - 2025 • 40 NĂM PHÁT TRIỂN' },
+          { id: 'awards_flags', title: 'Bằng khen & Cờ lưu niệm', subtitle: 'Huân chương, Bằng khen, Cờ thi đua',
+            coverType: 'awards', c1: '#8B1A1A', c2: '#4A0E0E', gold: '#F6D26B',
+            coverTitle: 'BẰNG KHEN & CỜ LƯU NIỆM', coverOrg: 'CÔNG TY ĐIỆN LỰC VŨNG TÀU', coverSub: 'HUÂN CHƯƠNG • BẰNG KHEN • CỜ THI ĐUA' }
+        ]
+      },
+      {
+        pos: [6.5, -6.5], rotY: -Math.PI / 4,
+        label: 'HÔM NAY & ĐOÀN THỂ',
+        albums: [
+          { id: 'pcvt', title: 'Công ty Điện lực Vũng Tàu', subtitle: 'Hoạt động 7/2025 – 9/2026',
+            coverType: 'pcvt', c1: '#0d253f', c2: '#061321', gold: '#38bdf8',
+            coverTitle: 'CÔNG TY ĐIỆN LỰC VŨNG TÀU', coverOrg: 'HOẠT ĐỘNG GIAI ĐOẠN MỚI', coverSub: '07/2025 – 09/2026' },
+          { id: 'doan_the', title: 'Đảng bộ – Công đoàn – Đoàn TN', subtitle: 'Đảng bộ, Công đoàn, Đoàn Thanh niên',
+            coverType: 'doan_the', c1: '#1E3A5F', c2: '#0F1D30', gold: '#22D3EE',
+            coverTitle: 'ĐẢNG BỘ – CÔNG ĐOÀN – ĐOÀN TN', coverOrg: 'CÔNG TY ĐIỆN LỰC VŨNG TÀU', coverSub: 'ĐOÀN KẾT • SÁNG TẠO • XUNG KÍCH' }
+        ]
+      }
     ];
-    const album1Geo = new THREE.BoxGeometry(albumW, albumH, albumD);
-    const album1Mesh = new THREE.Mesh(album1Geo, album1Mat);
-    album1Mesh.position.set(0, standH / 2 + albumH / 2 + 0.005, 0);
-    album1Mesh.castShadow = true;
-    album1Mesh.name = 'Album_Souvenir_Photos';
-    album1Mesh.userData = {
-      isAlbum: true,
-      albumId: 'souvenir_photos',
-      title: 'Album Ảnh Tư Liệu & Lưu Niệm (58 Ảnh)',
-      hint: 'Nhấp để mở & lật từng trang'
-    };
-    leftStandGroup.add(album1Mesh);
-    this.albumMeshes.push(album1Mesh);
 
-    // Album 2: Gift Paintings (Royal Navy Leather + Gold Filigree)
-    const album2Texture = this.createAlbumCoverCanvas(
-      'paintings',
-      'BỘ SƯU TẬP TRANH KỶ NIỆM',
-      'CÁC ĐƠN VỊ & ĐỐI TÁC TRAO TẶNG',
-      'CÔNG TY ĐIỆN LỰC VŨNG TÀU',
-      '#0d253f', '#061321', '#38bdf8'
-    );
-    const album2Mat = [
-      new THREE.MeshStandardMaterial({ color: 0x091b2e, roughness: 0.4 }),
-      new THREE.MeshStandardMaterial({ color: 0x091b2e, roughness: 0.4 }),
-      new THREE.MeshStandardMaterial({ map: album2Texture, roughness: 0.35, metalness: 0.3 }),
-      new THREE.MeshStandardMaterial({ color: 0x050f1a, roughness: 0.5 }),
-      new THREE.MeshStandardMaterial({ color: 0xd4af37, roughness: 0.3, metalness: 0.8 }),
-      new THREE.MeshStandardMaterial({ color: 0xd4af37, roughness: 0.3, metalness: 0.8 })
-    ];
-    const album2Geo = new THREE.BoxGeometry(albumW, albumH, albumD);
-    const album2Mesh = new THREE.Mesh(album2Geo, album2Mat);
-    album2Mesh.position.set(0, standH / 2 + albumH / 2 + 0.005, 0);
-    album2Mesh.castShadow = true;
-    album2Mesh.name = 'Album_Gift_Paintings';
-    album2Mesh.userData = {
-      isAlbum: true,
-      albumId: 'gift_paintings',
-      title: 'Album Tranh Kỷ Niệm & Tranh Tặng (49 Tranh)',
-      hint: 'Nhấp để mở & lật từng trang'
-    };
-    rightStandGroup.add(album2Mesh);
-    this.albumMeshes.push(album2Mesh);
+    const cabW = 2.2, cabD = 0.9, legH = 1.05, glassH = 0.35;
 
-    vitrineGroup.add(leftStandGroup);
-    vitrineGroup.add(rightStandGroup);
+    cabinetConfigs.forEach((cfg, cabIdx) => {
+      const cabGroup = new THREE.Group();
+      cabGroup.name = `AlbumCabinet_${cabIdx + 1}`;
+      cabGroup.position.set(cfg.pos[0], 0.35, cfg.pos[1]);
+      cabGroup.rotation.y = cfg.rotY;
 
-    // 7. Solid Brass Engraved Nameplates in Front of Each Stand
-    const plateGeo = new THREE.BoxGeometry(0.52, 0.025, 0.06);
-    const plate1Texture = this.createPlacardCanvas('ẢNH LƯU NIỆM (58 TƯ LIỆU)');
-    const plate1Mat = new THREE.MeshStandardMaterial({ map: plate1Texture, metalness: 0.85, roughness: 0.25 });
-    const plate1Mesh = new THREE.Mesh(plateGeo, plate1Mat);
-    plate1Mesh.position.set(-0.52, deckY + 0.035, 0.32);
-    plate1Mesh.rotation.x = -0.25;
-    vitrineGroup.add(plate1Mesh);
+      // --- Legs (4 walnut legs) ---
+      const legSize = 0.06;
+      const legGeo = new THREE.BoxGeometry(legSize, legH, legSize);
+      const legPositions = [
+        [-cabW/2 + 0.06, legH/2, -cabD/2 + 0.06],
+        [ cabW/2 - 0.06, legH/2, -cabD/2 + 0.06],
+        [-cabW/2 + 0.06, legH/2,  cabD/2 - 0.06],
+        [ cabW/2 - 0.06, legH/2,  cabD/2 - 0.06]
+      ];
+      legPositions.forEach(pos => {
+        const leg = new THREE.Mesh(legGeo, matWalnut);
+        leg.position.set(...pos);
+        cabGroup.add(leg);
+      });
 
-    const plate2Texture = this.createPlacardCanvas('TRANH KỶ NIỆM (49 TÁC PHẨM)');
-    const plate2Mat = new THREE.MeshStandardMaterial({ map: plate2Texture, metalness: 0.85, roughness: 0.25 });
-    const plate2Mesh = new THREE.Mesh(plateGeo, plate2Mat);
-    plate2Mesh.position.set(0.52, deckY + 0.035, 0.32);
-    plate2Mesh.rotation.x = -0.25;
-    vitrineGroup.add(plate2Mesh);
+      // --- Table top / apron ---
+      const apronH = 0.10;
+      const apronY = legH + apronH / 2;
+      const apronGeo = new THREE.BoxGeometry(cabW, apronH, cabD);
+      const apronMesh = new THREE.Mesh(apronGeo, matWalnutDark);
+      apronMesh.position.y = apronY;
+      cabGroup.add(apronMesh);
 
-    // 8. Crystal Glass Vitrine Hood (5-sided casing, depthWrite: false)
-    const glassW = boxW - 0.04;
-    const glassD = boxD - 0.04;
-    const glassH = 0.44;
-    const glassY = deckY + glassH / 2 + 0.01;
+      // --- Display deck (ivory velvet top) ---
+      const deckY = legH + apronH;
+      const deckGeo = new THREE.BoxGeometry(cabW - 0.04, 0.03, cabD - 0.04);
+      const deckMesh = new THREE.Mesh(deckGeo, this.matVelvetIvory);
+      deckMesh.position.y = deckY + 0.015;
+      cabGroup.add(deckMesh);
 
-    // Top glass
-    const topGlass = new THREE.Mesh(new THREE.BoxGeometry(glassW, 0.01, glassD), this.matGlassShowcase);
-    topGlass.position.set(0, deckY + glassH + 0.01, 0);
-    vitrineGroup.add(topGlass);
+      // --- Glass lid ---
+      const glassLidGeo = new THREE.BoxGeometry(cabW - 0.06, glassH, cabD - 0.06);
+      const glassLid = new THREE.Mesh(glassLidGeo, this.matGlassShowcase);
+      glassLid.position.y = deckY + 0.03 + glassH / 2;
+      cabGroup.add(glassLid);
 
-    // Front glass
-    const frontGlass = new THREE.Mesh(new THREE.BoxGeometry(glassW, glassH, 0.01), this.matGlassShowcase);
-    frontGlass.position.set(0, glassY, glassD / 2);
-    vitrineGroup.add(frontGlass);
+      // Gold rim on top of glass
+      const rimThick = 0.02;
+      const rimMat = this.matGoldShowcase;
+      const rimTopY = deckY + 0.03 + glassH + rimThick / 2;
+      const rimF = new THREE.Mesh(new THREE.BoxGeometry(cabW - 0.04, rimThick, rimThick), rimMat);
+      rimF.position.set(0, rimTopY, cabD / 2 - 0.03);
+      cabGroup.add(rimF);
+      const rimB = new THREE.Mesh(new THREE.BoxGeometry(cabW - 0.04, rimThick, rimThick), rimMat);
+      rimB.position.set(0, rimTopY, -cabD / 2 + 0.03);
+      cabGroup.add(rimB);
+      const rimL = new THREE.Mesh(new THREE.BoxGeometry(rimThick, rimThick, cabD - 0.04), rimMat);
+      rimL.position.set(-cabW / 2 + 0.03, rimTopY, 0);
+      cabGroup.add(rimL);
+      const rimR = new THREE.Mesh(new THREE.BoxGeometry(rimThick, rimThick, cabD - 0.04), rimMat);
+      rimR.position.set(cabW / 2 - 0.03, rimTopY, 0);
+      cabGroup.add(rimR);
 
-    // Back glass
-    const backGlass = new THREE.Mesh(new THREE.BoxGeometry(glassW, glassH, 0.01), this.matGlassShowcase);
-    backGlass.position.set(0, glassY, -glassD / 2);
-    vitrineGroup.add(backGlass);
+      // --- Warm LED interior light ---
+      const cabinetGlow = new THREE.PointLight(0xfffaed, 2.0, 4.0);
+      cabinetGlow.position.set(0, deckY + glassH + 0.2, 0);
+      cabGroup.add(cabinetGlow);
 
-    // Left glass
-    const leftGlass = new THREE.Mesh(new THREE.BoxGeometry(0.01, glassH, glassD), this.matGlassShowcase);
-    leftGlass.position.set(-glassW / 2, glassY, 0);
-    vitrineGroup.add(leftGlass);
+      // --- Brass nameplate (label on front) ---
+      const plateTexture = this.createPlacardCanvas(cfg.label);
+      const plateMat = new THREE.MeshStandardMaterial({ map: plateTexture, metalness: 0.85, roughness: 0.25 });
+      const plateMesh = new THREE.Mesh(new THREE.BoxGeometry(1.0, 0.04, 0.08), plateMat);
+      plateMesh.position.set(0, apronY, cabD / 2 + 0.005);
+      cabGroup.add(plateMesh);
 
-    // Right glass
-    const rightGlass = new THREE.Mesh(new THREE.BoxGeometry(0.01, glassH, glassD), this.matGlassShowcase);
-    rightGlass.position.set(glassW / 2, glassY, 0);
-    vitrineGroup.add(rightGlass);
+      // --- Two album stands with tilted books ---
+      const standTilt = 0.26; // ~15°
+      const albumW = 0.54, albumH = 0.065, albumD = 0.40;
+      const standW = 0.68, standD = 0.48, standH = 0.06;
+      const standGeo = new THREE.BoxGeometry(standW, standH, standD);
 
-    // Gold Top Rim Frame for Glass Vitrine
-    const rimThick = 0.018;
-    const rimMat = this.matGoldShowcase;
-    const topRimF = new THREE.Mesh(new THREE.BoxGeometry(glassW, rimThick, rimThick), rimMat);
-    topRimF.position.set(0, deckY + glassH + 0.015, glassD / 2);
-    vitrineGroup.add(topRimF);
+      cfg.albums.forEach((albumCfg, aIdx) => {
+        const xOff = aIdx === 0 ? -0.52 : 0.52;
+        const standGroup = new THREE.Group();
+        standGroup.position.set(xOff, deckY + 0.06, 0.02);
+        standGroup.rotation.x = standTilt;
 
-    const topRimB = new THREE.Mesh(new THREE.BoxGeometry(glassW, rimThick, rimThick), rimMat);
-    topRimB.position.set(0, deckY + glassH + 0.015, -glassD / 2);
-    vitrineGroup.add(topRimB);
+        const standMesh = new THREE.Mesh(standGeo, this.matVelvetIvory);
+        standGroup.add(standMesh);
 
-    const topRimL = new THREE.Mesh(new THREE.BoxGeometry(rimThick, rimThick, glassD), rimMat);
-    topRimL.position.set(-glassW / 2, deckY + glassH + 0.015, 0);
-    vitrineGroup.add(topRimL);
+        // Album book
+        const coverTex = this.createAlbumCoverCanvas(
+          albumCfg.coverType, albumCfg.coverTitle, albumCfg.coverOrg, albumCfg.coverSub,
+          albumCfg.c1, albumCfg.c2, albumCfg.gold
+        );
+        const c1Hex = parseInt(albumCfg.c1.replace('#', ''), 16);
+        const c2Hex = parseInt(albumCfg.c2.replace('#', ''), 16);
+        const goldHex = parseInt(albumCfg.gold.replace('#', ''), 16);
+        const albumMat = [
+          new THREE.MeshStandardMaterial({ color: c2Hex, roughness: 0.4 }),
+          new THREE.MeshStandardMaterial({ color: c2Hex, roughness: 0.4 }),
+          new THREE.MeshStandardMaterial({ map: coverTex, roughness: 0.35, metalness: 0.3 }),
+          new THREE.MeshStandardMaterial({ color: c2Hex, roughness: 0.5 }),
+          new THREE.MeshStandardMaterial({ color: 0xd4af37, roughness: 0.3, metalness: 0.8 }),
+          new THREE.MeshStandardMaterial({ color: 0xd4af37, roughness: 0.3, metalness: 0.8 })
+        ];
+        const albumGeo = new THREE.BoxGeometry(albumW, albumH, albumD);
+        const albumMesh = new THREE.Mesh(albumGeo, albumMat);
+        albumMesh.position.set(0, standH / 2 + albumH / 2 + 0.005, 0);
+        albumMesh.castShadow = true;
+        albumMesh.name = `Album_${albumCfg.id}`;
+        albumMesh.userData = {
+          isAlbum: true,
+          albumId: albumCfg.id,
+          cabinetIndex: cabIdx,
+          title: albumCfg.title,
+          hint: 'Nhấp để mở & lật từng trang'
+        };
+        standGroup.add(albumMesh);
+        this.albumMeshes.push(albumMesh);
 
-    const topRimR = new THREE.Mesh(new THREE.BoxGeometry(rimThick, rimThick, glassD), rimMat);
-    topRimR.position.set(glassW / 2, deckY + glassH + 0.015, 0);
-    vitrineGroup.add(topRimR);
+        cabGroup.add(standGroup);
+      });
 
-    // 9. Single warm light for showcase (replaces SpotLight + PointLight combo)
-    const vitrineGlow = new THREE.PointLight(0xfffaed, 2.5, 5.0);
-    vitrineGlow.position.set(0, deckY + glassH + 0.3, 0);
-    vitrineGroup.add(vitrineGlow);
+      // GĐ4: Two dedicated half-cabinet hit boxes (one for left album, one for right album)
+      // Each box covers the entire half of the cabinet (glass, stand, book) for easy, foolproof clicking
+      cfg.albums.forEach((albumCfg, aIdx) => {
+        const xCenter = aIdx === 0 ? -cabW / 4 : cabW / 4;
+        const boxW = cabW / 2 - 0.02; // ~1.08m
+        const boxH = glassH + 0.35;    // ~0.70m
+        const boxD = cabD + 0.10;      // ~1.00m
+        const hitMat = new THREE.MeshBasicMaterial({
+          transparent: true,
+          opacity: 0,
+          depthWrite: false
+        });
+        const halfBox = new THREE.Mesh(new THREE.BoxGeometry(boxW, boxH, boxD), hitMat);
+        halfBox.position.set(xCenter, deckY + boxH / 2, 0);
+        halfBox.name = `AlbumHitZone_${albumCfg.id}`;
+        halfBox.userData = {
+          isAlbum: true,
+          albumId: albumCfg.id,
+          cabinetIndex: cabIdx,
+          title: albumCfg.title,
+          hint: 'Nhấp để mở album'
+        };
+        cabGroup.add(halfBox);
+        this.albumMeshes.push(halfBox);
+      });
 
-    parent.add(vitrineGroup);
-    this.showcaseVitrineGroup = vitrineGroup;
+      parent.add(cabGroup);
+    });
+
+    // Store cabinet positions for glide calculations
+    this.cabinetPositions = cabinetConfigs.map(cfg => ({
+      x: cfg.pos[0], z: cfg.pos[1], rotY: cfg.rotY
+    }));
   }
 
   createSideFretwork(parent, xPos, legH) {

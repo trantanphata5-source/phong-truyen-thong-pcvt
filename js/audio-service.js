@@ -1,6 +1,7 @@
 /**
  * Audio Service using Web Audio API & HTML5 Audio
- * Plays soothing museum background music (from MP3) and delicate UI SFX (chimes, clicks, footsteps, book pages)
+ * GĐ4: File-based page-flip sound (page-flip.mp3) with random pitch variation.
+ * BGM ducks 30% during page flip. Open/close book uses same file at rate 0.85.
  */
 export class AudioService {
   constructor() {
@@ -14,6 +15,10 @@ export class AudioService {
     this.bgmVolume = 0.3; // 30% volume - gentle, elegant background atmosphere
     this.fadeTimer = null;
     this.wasPlayingBeforeHidden = false;
+
+    // Page-flip AudioBuffer (loaded once from file)
+    this.pageFlipBuffer = null;
+    this._pageFlipLoadAttempted = false;
 
     // Visibility change listener to pause music when tab is hidden
     if (typeof document !== 'undefined') {
@@ -47,9 +52,27 @@ export class AudioService {
       // Initialize Background Music (HTML5 Audio for smooth streaming & looping)
       this.initBgm();
 
+      // Load page-flip.mp3 into AudioBuffer
+      this._loadPageFlipBuffer();
+
       this.isInitialized = true;
     } catch (e) {
       console.warn('Web Audio not supported or blocked:', e);
+    }
+  }
+
+  async _loadPageFlipBuffer() {
+    if (this._pageFlipLoadAttempted || !this.ctx) return;
+    this._pageFlipLoadAttempted = true;
+    try {
+      const resp = await fetch('assets/audio/page-flip.mp3');
+      if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
+      const arrayBuf = await resp.arrayBuffer();
+      this.pageFlipBuffer = await this.ctx.decodeAudioData(arrayBuf);
+      console.log('Page-flip audio buffer loaded successfully');
+    } catch (e) {
+      console.warn('Failed to load page-flip.mp3, will use synthesized fallback:', e);
+      this.pageFlipBuffer = null;
     }
   }
 
@@ -112,6 +135,19 @@ export class AudioService {
         if (onComplete) onComplete();
       }
     }, 25);
+  }
+
+  /**
+   * Duck BGM volume by 30% for 0.4s then restore
+   */
+  _duckBgm() {
+    if (!this.bgm || !this.enabled) return;
+    const duckedVol = this.bgmVolume * 0.7;
+    this.fadeBgm(duckedVol, 0.1, () => {
+      setTimeout(() => {
+        this.fadeBgm(this.bgmVolume, 0.3);
+      }, 300);
+    });
   }
 
   toggleAudio() {
@@ -232,26 +268,64 @@ export class AudioService {
     } catch (e) {}
   }
 
-  playBookOpenSound() {
+  /**
+   * Play page-flip.mp3 from AudioBuffer with random pitch variation.
+   * Falls back to synthesized white noise if file failed to load.
+   */
+  _playFlipBuffer(rate = null) {
     if (!this.enabled || !this.ctx) return;
     try {
+      if (this.pageFlipBuffer) {
+        const src = this.ctx.createBufferSource();
+        src.buffer = this.pageFlipBuffer;
+        src.playbackRate.value = rate ?? (0.95 + Math.random() * 0.10); // 0.95–1.05
+        const gain = this.ctx.createGain();
+        gain.gain.value = 0.35;
+        src.connect(gain);
+        gain.connect(this.sfxGain);
+        src.start(0);
+      } else {
+        // Fallback: synthesized white noise rustle
+        this._playSynthPageFlip();
+      }
+    } catch (e) {}
+  }
+
+  /** Synthesized fallback when page-flip.mp3 is unavailable */
+  _playSynthPageFlip() {
+    if (!this.ctx) return;
+    try {
       const now = this.ctx.currentTime;
-      // 1. Leather creak / whoosh
-      const osc = this.ctx.createOscillator();
+      const bufferSize = this.ctx.sampleRate * 0.18;
+      const buffer = this.ctx.createBuffer(1, bufferSize, this.ctx.sampleRate);
+      const data = buffer.getChannelData(0);
+      for (let i = 0; i < bufferSize; i++) {
+        data[i] = Math.random() * 2 - 1;
+      }
+      const noise = this.ctx.createBufferSource();
+      noise.buffer = buffer;
+      const filter = this.ctx.createBiquadFilter();
+      filter.type = 'bandpass';
+      filter.frequency.setValueAtTime(1800, now);
+      filter.frequency.exponentialRampToValueAtTime(3200, now + 0.1);
+      filter.Q.value = 1.2;
       const gain = this.ctx.createGain();
-      osc.type = 'triangle';
-      osc.frequency.setValueAtTime(140, now);
-      osc.frequency.exponentialRampToValueAtTime(320, now + 0.35);
-
-      gain.gain.setValueAtTime(0.06, now);
-      gain.gain.exponentialRampToValueAtTime(0.001, now + 0.35);
-
-      osc.connect(gain);
+      gain.gain.setValueAtTime(0.08, now);
+      gain.gain.exponentialRampToValueAtTime(0.001, now + 0.18);
+      noise.connect(filter);
+      filter.connect(gain);
       gain.connect(this.sfxGain);
-      osc.start(now);
-      osc.stop(now + 0.38);
+      noise.start(now);
+    } catch (e) {}
+  }
 
-      // 2. Chime flourish
+  playBookOpenSound() {
+    if (!this.enabled || !this.ctx) return;
+    // Play page-flip at slower rate for open creak + chime flourish
+    this._playFlipBuffer(0.85);
+    try {
+      const now = this.ctx.currentTime;
+      // Chime flourish
       const freqs = [523.25, 659.25, 783.99, 1046.5];
       freqs.forEach((f, i) => {
         const o = this.ctx.createOscillator();
@@ -270,56 +344,14 @@ export class AudioService {
 
   playPageTurnSound() {
     if (!this.enabled || !this.ctx) return;
-    try {
-      const now = this.ctx.currentTime;
-      // White noise buffer burst for realistic crisp paper rustle
-      const bufferSize = this.ctx.sampleRate * 0.18;
-      const buffer = this.ctx.createBuffer(1, bufferSize, this.ctx.sampleRate);
-      const data = buffer.getChannelData(0);
-      for (let i = 0; i < bufferSize; i++) {
-        data[i] = Math.random() * 2 - 1;
-      }
-
-      const noise = this.ctx.createBufferSource();
-      noise.buffer = buffer;
-
-      const filter = this.ctx.createBiquadFilter();
-      filter.type = 'bandpass';
-      filter.frequency.setValueAtTime(1800, now);
-      filter.frequency.exponentialRampToValueAtTime(3200, now + 0.1);
-      filter.Q.value = 1.2;
-
-      const gain = this.ctx.createGain();
-      gain.gain.setValueAtTime(0.08, now);
-      gain.gain.exponentialRampToValueAtTime(0.001, now + 0.18);
-
-      noise.connect(filter);
-      filter.connect(gain);
-      gain.connect(this.sfxGain);
-
-      noise.start(now);
-    } catch (e) {}
+    this._playFlipBuffer(); // random rate 0.95–1.05
+    this._duckBgm(); // BGM ducks 30% for 0.4s
   }
 
   playBookCloseSound() {
     if (!this.enabled || !this.ctx) return;
-    try {
-      const now = this.ctx.currentTime;
-      // Soft muffled leather thud
-      const osc = this.ctx.createOscillator();
-      const gain = this.ctx.createGain();
-      osc.type = 'sine';
-      osc.frequency.setValueAtTime(120, now);
-      osc.frequency.exponentialRampToValueAtTime(45, now + 0.15);
-
-      gain.gain.setValueAtTime(0.09, now);
-      gain.gain.exponentialRampToValueAtTime(0.001, now + 0.15);
-
-      osc.connect(gain);
-      gain.connect(this.sfxGain);
-      osc.start(now);
-      osc.stop(now + 0.16);
-    } catch (e) {}
+    // Play page-flip at slower rate for thud
+    this._playFlipBuffer(0.85);
   }
 }
 

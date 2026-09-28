@@ -1,23 +1,25 @@
 /**
- * Album Viewer Module (Realistic 3D Page Turn Experience)
+ * Album Viewer Module (GĐ4 – 4 Albums with Tabs & Chapters)
  * Supports:
- * - Album 1: Ảnh Tư Liệu & Lưu Niệm (58 tư liệu lịch sử 1985 - 2025)
- * - Album 2: Tranh Kỷ Niệm & Tranh Tặng (49 tác phẩm nghệ thuật)
- * - 3D Pick-up animation from the Showcase Vitrine
- * - Realistic dual-page flip with paper sound
+ * - 4 albums: souvenir, awards_flags, pcvt, doan_the
+ * - Full 4-tab quick switcher inside the modal header
+ * - Robust caching prevention (?v=timestamp)
+ * - Chapter navigation from albums_data.json
+ * - Realistic dual-page flip with real page-flip.mp3 sound
  * - Individual photo zoom lightbox
- * - Put-down album back to vitrine
  */
 export class AlbumViewer {
   constructor(app) {
     this.app = app;
     this.audio = app.audioService;
-    this.data = null;
+    this.data = [];           // full album data array
+    this.albumMap = {};       // id -> album object
     this.activeAlbumId = null;
     this.activeAlbum = null;
-    this.currentSpread = 0; // Each spread shows 2 pages (Left & Right)
+    this.currentSpread = 0;
     this.isOpen = false;
     this.isFlipping = false;
+    this._closeTimeout = null;
 
     this.dom = {
       modal: document.getElementById('album-modal'),
@@ -35,7 +37,7 @@ export class AlbumViewer {
       btnPrev: document.getElementById('btn-album-prev'),
       btnNext: document.getElementById('btn-album-next'),
       btnClose: document.getElementById('btn-album-put-down'),
-      btnSwitch: document.getElementById('btn-album-switch'),
+      tabsNav: document.getElementById('album-tabs-nav'),
       filterChips: document.getElementById('album-period-chips'),
       // Photo Lightbox
       photoModal: document.getElementById('album-photo-modal'),
@@ -59,10 +61,30 @@ export class AlbumViewer {
 
   async init() {
     try {
-      const resp = await fetch('assets/albums_data.json');
+      // Force cache-busting so browser always loads latest 4 albums
+      const resp = await fetch('assets/albums_data.json?v=' + Date.now());
       if (resp.ok) {
-        this.data = await resp.json();
-        console.log('Albums data loaded successfully:', this.data);
+        const raw = await resp.json();
+        this.albumMap = {};
+
+        if (Array.isArray(raw)) {
+          this.data = raw;
+          raw.forEach(a => {
+            this.albumMap[a.id] = a;
+            // Legacy aliases
+            if (a.id === 'souvenir') this.albumMap['souvenir_photos'] = a;
+            if (a.id === 'awards_flags') this.albumMap['gift_paintings'] = a;
+          });
+        } else if (raw.albums) {
+          this.data = Object.values(raw.albums);
+          this.albumMap = { ...raw.albums };
+          if (raw.albums['souvenir_photos']) this.albumMap['souvenir'] = raw.albums['souvenir_photos'];
+          if (raw.albums['gift_paintings']) this.albumMap['awards_flags'] = raw.albums['gift_paintings'];
+        }
+
+        console.log('✅ Albums data loaded successfully:', Object.keys(this.albumMap));
+      } else {
+        console.error('Failed to fetch albums_data.json, status:', resp.status);
       }
     } catch (e) {
       console.error('Failed to load albums_data.json:', e);
@@ -83,14 +105,6 @@ export class AlbumViewer {
     }
     if (this.dom.btnNext) {
       this.dom.btnNext.addEventListener('click', () => this.nextSpread());
-    }
-
-    // Switch between the 2 albums
-    if (this.dom.btnSwitch) {
-      this.dom.btnSwitch.addEventListener('click', () => {
-        const nextId = this.activeAlbumId === 'souvenir_photos' ? 'gift_paintings' : 'souvenir_photos';
-        this.openAlbum(nextId);
-      });
     }
 
     // Page Scrubber Slider
@@ -131,13 +145,69 @@ export class AlbumViewer {
   }
 
   /**
-   * Open the Album Viewer with 3D pick-up animation
+   * Build Top Tabs for all 4 Albums
    */
-  openAlbum(albumId = 'souvenir_photos') {
-    if (!this.data || !this.data.albums[albumId]) return;
+  buildAlbumTabs() {
+    if (!this.dom.tabsNav) return;
+    this.dom.tabsNav.innerHTML = '';
+
+    const tabConfigs = [
+      { id: 'souvenir', icon: '📖', label: 'Ảnh Lưu Niệm', pages: 108 },
+      { id: 'awards_flags', icon: '🏅', label: 'Bằng Khen & Cờ', pages: 211 },
+      { id: 'pcvt', icon: '⚡', label: 'ĐL Vũng Tàu', pages: 100 },
+      { id: 'doan_the', icon: '🚩', label: 'Đoàn Thể', pages: 120 }
+    ];
+
+    tabConfigs.forEach(cfg => {
+      const btn = document.createElement('button');
+      btn.className = `album-nav-tab ${cfg.id === this.activeAlbumId ? 'active' : ''}`;
+      btn.innerHTML = `
+        <span class="tab-icon">${cfg.icon}</span>
+        <span class="tab-label">${cfg.label}</span>
+        <span class="tab-badge">(${cfg.pages})</span>
+      `;
+      btn.title = `Xem ${cfg.label} (${cfg.pages} trang)`;
+      btn.addEventListener('click', () => {
+        if (cfg.id !== this.activeAlbumId) {
+          this.openAlbum(cfg.id);
+        }
+      });
+      this.dom.tabsNav.appendChild(btn);
+    });
+  }
+
+  /**
+   * Open the Album Viewer
+   * Accepts new album IDs: souvenir, awards_flags, pcvt, doan_the
+   * Also accepts legacy IDs: souvenir_photos, gift_paintings
+   */
+  openAlbum(albumId = 'souvenir') {
+    if (this._closeTimeout) {
+      clearTimeout(this._closeTimeout);
+      this._closeTimeout = null;
+    }
+
+    // Resolve legacy IDs
+    const legacyMap = { 'souvenir_photos': 'souvenir', 'gift_paintings': 'awards_flags' };
+    const normalizedId = legacyMap[albumId] || albumId;
+
+    let album = this.albumMap[normalizedId] || this.albumMap[albumId];
+    if (!album) {
+      // Fallback to first available album
+      const keys = Object.keys(this.albumMap);
+      if (keys.length > 0) {
+        album = this.albumMap[keys[0]];
+        albumId = album.id || keys[0];
+      } else {
+        console.warn(`Album "${albumId}" not found and no data loaded yet`);
+        return;
+      }
+    } else {
+      albumId = normalizedId;
+    }
 
     this.activeAlbumId = albumId;
-    this.activeAlbum = this.data.albums[albumId];
+    this.activeAlbum = album;
     this.currentSpread = 0;
     this.isOpen = true;
 
@@ -150,28 +220,26 @@ export class AlbumViewer {
     // Play pickup audio
     this.playSound('playBookOpenSound');
 
-    // Update Header Text & Colors
+    // Update Header Text
     if (this.dom.titleText) {
-      this.dom.titleText.textContent = this.activeAlbum.title.toUpperCase();
+      this.dom.titleText.textContent = (album.title || albumId).toUpperCase();
     }
     if (this.dom.subtitleText) {
-      this.dom.subtitleText.textContent = this.activeAlbum.subtitle;
+      this.dom.subtitleText.textContent = album.subtitle || '';
     }
-    if (this.dom.btnSwitch) {
-      const otherName = albumId === 'souvenir_photos' ? 'Tranh Tặng (49 Tranh)' : 'Ảnh Lưu Niệm (58 Ảnh)';
-      this.dom.btnSwitch.innerHTML = `<i data-lucide="book-open"></i> <span>Chuyển sang: ${otherName}</span>`;
-      if (window.lucide) window.lucide.createIcons();
-    }
+
+    // Build/Update the 4-album switcher tabs
+    this.buildAlbumTabs();
 
     // Set cover theme
     if (this.dom.bookStage) {
       this.dom.bookStage.dataset.theme = albumId;
     }
 
-    // Total Spreads: Each spread holds 2 pages (Left & Right)
-    // Page 0: Intro (Left) & Page 1: First photo (Right)
-    const totalPages = this.activeAlbum.pages.length;
-    this.totalSpreads = Math.ceil(totalPages / 2);
+    // Total pages – album.pages is an array of page objects
+    const pages = album.pages || [];
+    const totalPages = pages.length;
+    this.totalSpreads = Math.max(1, Math.ceil(totalPages / 2));
 
     if (this.dom.pageScrubber) {
       this.dom.pageScrubber.min = 0;
@@ -179,45 +247,54 @@ export class AlbumViewer {
       this.dom.pageScrubber.value = 0;
     }
 
-    // Build Category / Period Chips
-    this.buildPeriodChips();
+    // Build Chapter Chips (from album.chapters)
+    this.buildChapterChips();
 
     // Render First Spread
     this.renderSpread(this.currentSpread);
 
-    // Show modal with smooth scale & fade in
+    // Show modal immediately
     if (this.dom.modal) {
       this.dom.modal.classList.remove('hidden');
+      // Small reflow to guarantee CSS transition triggers
+      void this.dom.modal.offsetWidth;
       this.dom.modal.classList.add('album-active');
     }
   }
 
-  buildPeriodChips() {
+  /**
+   * Build chapter navigation chips from album.chapters
+   */
+  buildChapterChips() {
     if (!this.dom.filterChips) return;
     this.dom.filterChips.innerHTML = '';
 
-    const periods = this.activeAlbumId === 'souvenir_photos' ? [
-      { label: 'Tất cả (58)', spread: 0 },
-      { label: '1985 - 1999', spread: 0 },
-      { label: '2000 - 2005', spread: 7 },
-      { label: '2006 - 2009', spread: 16 },
-      { label: 'Trạm & Đội ngũ', spread: 21 }
-    ] : [
-      { label: 'Tất cả (49)', spread: 0 },
-      { label: 'Thủy điện & Công trình', spread: 0 },
-      { label: 'Người thợ đường dây', spread: 6 },
-      { label: 'Hải đảo & Biển đảo', spread: 13 },
-      { label: 'Nông thôn & Vùng cao', spread: 19 }
-    ];
+    const chapters = this.activeAlbum?.chapters || [];
+    if (chapters.length === 0) return;
 
-    periods.forEach((p, idx) => {
+    // "All" button first
+    const totalPages = (this.activeAlbum.pages || []).length;
+    const allBtn = document.createElement('button');
+    allBtn.className = 'album-chip active';
+    allBtn.textContent = `Tất cả (${totalPages})`;
+    allBtn.addEventListener('click', () => {
+      this.dom.filterChips.querySelectorAll('.album-chip').forEach(c => c.classList.remove('active'));
+      allBtn.classList.add('active');
+      this.goToSpread(0);
+    });
+    this.dom.filterChips.appendChild(allBtn);
+
+    // Chapter buttons
+    chapters.forEach(ch => {
       const btn = document.createElement('button');
-      btn.className = `album-chip ${idx === 0 ? 'active' : ''}`;
-      btn.textContent = p.label;
+      btn.className = 'album-chip';
+      btn.textContent = ch.title;
       btn.addEventListener('click', () => {
         this.dom.filterChips.querySelectorAll('.album-chip').forEach(c => c.classList.remove('active'));
         btn.classList.add('active');
-        this.goToSpread(p.spread);
+        // Jump to the spread containing the chapter start page
+        const spreadIdx = Math.floor((ch.start || 0) / 2);
+        this.goToSpread(spreadIdx);
       });
       this.dom.filterChips.appendChild(btn);
     });
@@ -225,12 +302,13 @@ export class AlbumViewer {
 
   renderSpread(spreadIdx) {
     if (!this.activeAlbum) return;
+    const pages = this.activeAlbum.pages || [];
 
     const leftPageIdx = spreadIdx * 2;
     const rightPageIdx = leftPageIdx + 1;
 
-    const leftPageData = this.activeAlbum.pages[leftPageIdx];
-    const rightPageData = this.activeAlbum.pages[rightPageIdx];
+    const leftPageData = pages[leftPageIdx];
+    const rightPageData = pages[rightPageIdx];
 
     // Render Left Page
     this.renderPageContent(this.dom.leftPage, leftPageData, leftPageIdx + 1, 'left');
@@ -243,7 +321,8 @@ export class AlbumViewer {
 
   updateSpreadUI(spreadIdx) {
     if (!this.activeAlbum) return;
-    const totalPages = this.activeAlbum.pages.length;
+    const pages = this.activeAlbum.pages || [];
+    const totalPages = pages.length;
     const leftPageIdx = spreadIdx * 2;
     const rightPageIdx = leftPageIdx + 1;
 
@@ -282,23 +361,19 @@ export class AlbumViewer {
       return;
     }
 
+    // GĐ4: New format pages have: { full, thumb, caption, date }
+    // Legacy format pages have: { type: 'intro'|'photo'|'painting', item: {...} }
     if (pageData.type === 'intro') {
-      // Elegant Frontispiece / Introduction Page
-      const isSouvenir = this.activeAlbumId === 'souvenir_photos';
       container.innerHTML = `
         <div class="page-inner page-intro">
           <div class="intro-ornament-top">❖ ❖ ❖</div>
           <div class="intro-badge">
-            <span class="intro-icon">${isSouvenir ? '⚡' : '🎨'}</span>
+            <span class="intro-icon">⚡</span>
           </div>
-          <h2 class="intro-title">${pageData.title}</h2>
-          <h3 class="intro-subtitle">${pageData.subtitle}</h3>
+          <h2 class="intro-title">${pageData.title || ''}</h2>
+          <h3 class="intro-subtitle">${pageData.subtitle || ''}</h3>
           <div class="intro-divider"></div>
-          <p class="intro-desc">${pageData.desc}</p>
-          <div class="intro-meta">
-            <span>TỔNG SỐ LƯỢNG: <b>${this.activeAlbum.total_items} ${isSouvenir ? 'TƯ LIỆU' : 'TÁC PHẨM'}</b></span>
-            <span>GIAI ĐOẠN: <b>1985 - 2025</b></span>
-          </div>
+          <p class="intro-desc">${pageData.desc || ''}</p>
           <div class="intro-seal-box">
             <img src="assets/logo.png" alt="EVNHCMC Logo" class="intro-seal-img" />
             <div class="intro-seal-text">
@@ -312,18 +387,31 @@ export class AlbumViewer {
       return;
     }
 
-    // Photo or Painting Page
-    const item = pageData.item;
-    if (!item) return;
+    // Determine image source and caption
+    let imgSrc, title, year, isPainting;
+    if (pageData.full) {
+      imgSrc = pageData.thumb || pageData.full;
+      title = pageData.caption || '';
+      year = pageData.date && pageData.date !== '0' ? pageData.date : '';
+      isPainting = false;
+    } else if (pageData.item) {
+      const item = pageData.item;
+      imgSrc = item.src;
+      title = item.title || '';
+      year = item.year || '';
+      isPainting = pageData.type === 'painting';
+    } else {
+      container.innerHTML = `<div class="page-blank"><div class="page-footer-num">${pageNum}</div></div>`;
+      return;
+    }
 
-    const isPainting = pageData.type === 'painting';
-    const yearBadge = item.year ? `<span class="photo-badge-year">NĂM ${item.year}</span>` : '';
+    const yearBadge = year ? `<span class="photo-badge-year">${year}</span>` : '';
 
     container.innerHTML = `
       <div class="page-inner page-photo-layout">
         <div class="photo-header">
           ${yearBadge}
-          <span class="photo-category">${isPainting ? 'TRANH KỶ NIỆM' : 'ẢNH TƯ LIỆU'}</span>
+          <span class="photo-category">${isPainting ? 'TRANH KỶ NIỆM' : this.activeAlbum?.title || 'ẢNH TƯ LIỆU'}</span>
         </div>
 
         <div class="photo-frame-wrapper" title="Nhấp vào để phóng to xem chi tiết">
@@ -332,7 +420,7 @@ export class AlbumViewer {
           <div class="photo-corner corner-bl"></div>
           <div class="photo-corner corner-br"></div>
           
-          <img src="${item.src}" alt="${item.title}" class="album-photo-img-tag" loading="lazy" />
+          <img src="${imgSrc}" alt="${title}" class="album-photo-img-tag" loading="lazy" />
           
           <div class="photo-zoom-hint">
             <i data-lucide="maximize-2"></i>
@@ -341,8 +429,7 @@ export class AlbumViewer {
         </div>
 
         <div class="photo-caption-box">
-          <h4 class="photo-title">${item.title}</h4>
-          <p class="photo-sub">${isPainting ? 'Tác phẩm nghệ thuật & Tranh tặng kỷ niệm' : 'Ảnh tư liệu ghi lại hoạt động & sự kiện tiêu biểu'}</p>
+          <h4 class="photo-title">${title}</h4>
         </div>
 
         <div class="page-footer-num">${pageNum}</div>
@@ -353,7 +440,12 @@ export class AlbumViewer {
     const frame = container.querySelector('.photo-frame-wrapper');
     if (frame) {
       frame.addEventListener('click', () => {
-        this.openPhotoLightbox(item);
+        this.openPhotoLightbox({
+          src: pageData.full || (pageData.item && pageData.item.src) || imgSrc,
+          title: title,
+          year: year,
+          original_filename: (pageData.item && pageData.item.original_filename) || ''
+        });
       });
     }
 
@@ -363,41 +455,31 @@ export class AlbumViewer {
   nextSpread() {
     if (this.isFlipping || this.currentSpread >= this.totalSpreads - 1 || !this.activeAlbum) return;
     this.isFlipping = true;
+    const pages = this.activeAlbum.pages || [];
 
     const currentSpread = this.currentSpread;
     const nextSpread = currentSpread + 1;
 
-    const curLeftIdx = currentSpread * 2;
-    const curRightIdx = curLeftIdx + 1;
+    const curRightIdx = currentSpread * 2 + 1;
     const nextLeftIdx = nextSpread * 2;
     const nextRightIdx = nextLeftIdx + 1;
 
-    const curRightData = this.activeAlbum.pages[curRightIdx];
-    const nextLeftData = this.activeAlbum.pages[nextLeftIdx];
-    const nextRightData = this.activeAlbum.pages[nextRightIdx];
+    const curRightData = pages[curRightIdx];
+    const nextLeftData = pages[nextLeftIdx];
+    const nextRightData = pages[nextRightIdx];
 
-    // 1. Render turning leaf faces:
-    // Front face = current right page (lifting up from right side)
-    // Back face = next left page (landing down on left side)
     if (this.dom.flipLeaf && this.dom.flipFront && this.dom.flipBack) {
       this.renderPageContent(this.dom.flipFront, curRightData, curRightIdx + 1, 'right');
       this.renderPageContent(this.dom.flipBack, nextLeftData, nextLeftIdx + 1, 'left');
-
-      // 2. Underlying static right page immediately shows next right page
       this.renderPageContent(this.dom.rightPage, nextRightData, nextRightIdx + 1, 'right');
-
-      // 3. Trigger 3D turn animation
       this.dom.flipLeaf.className = 'album-flip-leaf leaf-forward turning-forward';
     }
 
-    // 4. Realistic paper rustle sound
     this.playSound('playPageTurnSound');
 
-    // 5. Update indicators immediately for responsive feedback
     this.currentSpread = nextSpread;
     this.updateSpreadUI(nextSpread);
 
-    // 6. Complete after animation finishes (620ms)
     setTimeout(() => {
       this.renderPageContent(this.dom.leftPage, nextLeftData, nextLeftIdx + 1, 'left');
       if (this.dom.flipLeaf) {
@@ -410,41 +492,31 @@ export class AlbumViewer {
   prevSpread() {
     if (this.isFlipping || this.currentSpread <= 0 || !this.activeAlbum) return;
     this.isFlipping = true;
+    const pages = this.activeAlbum.pages || [];
 
     const currentSpread = this.currentSpread;
     const prevSpread = currentSpread - 1;
 
     const curLeftIdx = currentSpread * 2;
-    const curRightIdx = curLeftIdx + 1;
     const prevLeftIdx = prevSpread * 2;
     const prevRightIdx = prevLeftIdx + 1;
 
-    const curLeftData = this.activeAlbum.pages[curLeftIdx];
-    const prevLeftData = this.activeAlbum.pages[prevLeftIdx];
-    const prevRightData = this.activeAlbum.pages[prevRightIdx];
+    const curLeftData = pages[curLeftIdx];
+    const prevLeftData = pages[prevLeftIdx];
+    const prevRightData = pages[prevRightIdx];
 
-    // 1. Render turning leaf faces:
-    // Front face = current left page (lifting up from left side)
-    // Back face = previous right page (landing down on right side)
     if (this.dom.flipLeaf && this.dom.flipFront && this.dom.flipBack) {
       this.renderPageContent(this.dom.flipFront, curLeftData, curLeftIdx + 1, 'left');
       this.renderPageContent(this.dom.flipBack, prevRightData, prevRightIdx + 1, 'right');
-
-      // 2. Underlying static left page immediately shows previous left page
       this.renderPageContent(this.dom.leftPage, prevLeftData, prevLeftIdx + 1, 'left');
-
-      // 3. Trigger 3D turn animation
       this.dom.flipLeaf.className = 'album-flip-leaf leaf-backward turning-backward';
     }
 
-    // 4. Realistic paper rustle sound
     this.playSound('playPageTurnSound');
 
-    // 5. Update indicators
     this.currentSpread = prevSpread;
     this.updateSpreadUI(prevSpread);
 
-    // 6. Complete after animation finishes (620ms)
     setTimeout(() => {
       this.renderPageContent(this.dom.rightPage, prevRightData, prevRightIdx + 1, 'right');
       if (this.dom.flipLeaf) {
@@ -462,7 +534,7 @@ export class AlbumViewer {
   }
 
   /**
-   * Photo Zoom Lightbox (Bấm vào mỗi ảnh sẽ mở to ra)
+   * Photo Zoom Lightbox
    */
   openPhotoLightbox(item) {
     if (!this.dom.photoModal || !item) return;
@@ -476,13 +548,10 @@ export class AlbumViewer {
       this.dom.photoTitle.textContent = item.title;
     }
     if (this.dom.photoYear) {
-      this.dom.photoYear.textContent = item.year ? `NĂM ${item.year}` : 'ẢNH TƯ LIỆU';
+      this.dom.photoYear.textContent = item.year ? `${item.year}` : '';
     }
     if (this.dom.photoDesc) {
-      const isPainting = this.activeAlbumId === 'gift_paintings';
-      this.dom.photoDesc.textContent = isPainting
-        ? `Tác phẩm kỷ niệm do các đơn vị bạn trao tặng Công ty Điện lực Vũng Tàu. Định dạng gốc: ${item.original_filename}.`
-        : `Tư liệu lưu trữ lịch sử 40 năm hình thành và phát triển Công ty Điện lực Vũng Tàu. Tệp gốc: ${item.original_filename}.`;
+      this.dom.photoDesc.textContent = `Tư liệu Phòng Truyền Thống – Công ty Điện lực Vũng Tàu.`;
     }
 
     this.dom.photoModal.classList.remove('hidden');
@@ -496,7 +565,7 @@ export class AlbumViewer {
   }
 
   /**
-   * Put down album button ("nút đặt album xuống")
+   * Put down album (close viewer)
    */
   closeAlbum() {
     if (!this.isOpen) return;
@@ -511,8 +580,10 @@ export class AlbumViewer {
 
     if (this.dom.modal) {
       this.dom.modal.classList.remove('album-active');
-      setTimeout(() => {
-        this.dom.modal.classList.add('hidden');
+      this._closeTimeout = setTimeout(() => {
+        if (!this.isOpen) {
+          this.dom.modal.classList.add('hidden');
+        }
       }, 350);
     }
 

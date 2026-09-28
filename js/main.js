@@ -1,13 +1,13 @@
 import * as THREE from 'three';
-import { AudioService } from './audio-service.js?v=gd3';
-import { DataService } from './data-service.js?v=gd3';
-import { MuseumArchitect } from './museum-architect.js?v=gd3';
-import { ExhibitBuilder } from './exhibit-builder.js?v=gd3';
-import { ControlsManager } from './controls-manager.js?v=gd3';
-import { UIController } from './ui-controller.js?v=gd3';
-import { AlbumViewer } from './album-viewer.js?v=gd3';
-import { HCMExhibitBuilder } from './hcm-exhibit-builder.js?v=gd3';
-import { HCMTimelineBuilder } from './hcm-timeline-builder.js?v=gd3';
+import { AudioService } from './audio-service.js?v=gd4-fix1';
+import { DataService } from './data-service.js?v=gd4-fix1';
+import { MuseumArchitect } from './museum-architect.js?v=gd4-fix1';
+import { ExhibitBuilder } from './exhibit-builder.js?v=gd4-fix1';
+import { ControlsManager } from './controls-manager.js?v=gd4-fix1';
+import { UIController } from './ui-controller.js?v=gd4-fix1';
+import { AlbumViewer } from './album-viewer.js?v=gd4-fix1';
+import { HCMExhibitBuilder } from './hcm-exhibit-builder.js?v=gd4-fix1';
+import { HCMTimelineBuilder } from './hcm-timeline-builder.js?v=gd4-fix1';
 
 /**
  * Main Application Orchestrator (Artsteps Standard)
@@ -87,7 +87,7 @@ class HeritageApp {
       const btnNavAlbums = document.getElementById('btn-nav-albums');
       if (btnNavAlbums) {
         btnNavAlbums.addEventListener('click', () => {
-          this.openAlbum('souvenir_photos');
+          this.openAlbum('souvenir');
         });
       }
 
@@ -183,7 +183,7 @@ class HeritageApp {
     // 0. Check Interactive Albums in Vitrine
     if (this.architect && this.architect.albumMeshes && this.architect.albumMeshes.length > 0) {
       const albumHits = this.raycaster.intersectObjects(this.architect.albumMeshes, false);
-      if (albumHits.length > 0 && albumHits[0].distance < 16.0) {
+      if (albumHits.length > 0 && albumHits[0].distance < 60.0) {
         const hit = albumHits[0].object;
         if (this.hoveredAlbum !== hit) {
           this.hoveredAlbum = hit;
@@ -348,12 +348,15 @@ class HeritageApp {
     }
   }
 
-  openAlbum(albumId = 'souvenir_photos') {
+  openAlbum(albumId = 'souvenir') {
     if (!this.albumViewer) return;
     this.uiController.hideExhibitCard();
-    this.controlsManager.glideToShowcase(albumId, () => {
-      this.albumViewer.openAlbum(albumId);
-    });
+    // 1. Open album modal immediately for snappy responsiveness
+    this.albumViewer.openAlbum(albumId);
+    // 2. Concurrently glide camera to stand in front of that cabinet
+    if (this.controlsManager) {
+      this.controlsManager.glideToShowcase(albumId);
+    }
   }
 
   focusOnExhibit(item) {

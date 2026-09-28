@@ -1855,6 +1855,54 @@ html, body {
   gap: 12px;
 }
 
+.album-tabs-nav {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(15, 23, 42, 0.65);
+  padding: 4px;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.album-nav-tab {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  border-radius: 8px;
+  border: 1px solid transparent;
+  background: transparent;
+  color: #94a3b8;
+  font-size: 12.5px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  white-space: nowrap;
+}
+
+.album-nav-tab:hover {
+  color: #f8fafc;
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.album-nav-tab.active {
+  background: linear-gradient(135deg, rgba(234, 179, 8, 0.28), rgba(202, 138, 4, 0.18));
+  border-color: rgba(234, 179, 8, 0.65);
+  color: #fef08a;
+  box-shadow: 0 0 14px rgba(234, 179, 8, 0.22);
+}
+
+.album-nav-tab .tab-icon {
+  font-size: 14px;
+}
+
+.album-nav-tab .tab-badge {
+  font-size: 11px;
+  opacity: 0.75;
+  font-weight: 500;
+}
+
 .btn-album-switch {
   display: flex;
   align-items: center;

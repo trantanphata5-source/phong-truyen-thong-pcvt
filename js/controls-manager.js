@@ -50,9 +50,14 @@ export class ControlsManager {
     // Museum Wall & Partition Collision Boxes (generated from layout-config.js)
     this.collisionWalls = buildCollisionBoxes();
 
-    // Showcase Vitrine in Central Rotunda
+    // GĐ4: Two Album Cabinets (rotated ±45°) — approximate AABB
+    // Cabinet 1 at (-6.5, -6.5), rotated +45°, 2.2×0.9 → AABB ~1.8×1.8
     this.collisionWalls.push(
-      { id: 'Showcase_Album_Vitrine', minX: -1.25, maxX: 1.25, minZ: -8.9, maxZ: -7.5 }
+      { id: 'AlbumCabinet_1', minX: -7.5, maxX: -5.5, minZ: -7.5, maxZ: -5.5 }
+    );
+    // Cabinet 2 at (6.5, -6.5), rotated -45°, same AABB
+    this.collisionWalls.push(
+      { id: 'AlbumCabinet_2', minX: 5.5, maxX: 7.5, minZ: -7.5, maxZ: -5.5 }
     );
 
     // Player collision radius (50cm)
@@ -129,6 +134,7 @@ export class ControlsManager {
         this.isDragging = true;
         this.dragMoved = false;
         this.prevMousePos = { x: e.clientX, y: e.clientY };
+        this.mouseDownPos = { x: e.clientX, y: e.clientY };
       }
     });
 
@@ -139,8 +145,12 @@ export class ControlsManager {
       const deltaX = e.clientX - this.prevMousePos.x;
       const deltaY = e.clientY - this.prevMousePos.y;
 
-      if (Math.abs(deltaX) > 2 || Math.abs(deltaY) > 2) {
-        this.dragMoved = true;
+      // Cumulative drag distance threshold (6px) to avoid accidental jitter cancelling clicks
+      if (this.mouseDownPos) {
+        const totalDist = Math.hypot(e.clientX - this.mouseDownPos.x, e.clientY - this.mouseDownPos.y);
+        if (totalDist > 6) {
+          this.dragMoved = true;
+        }
       }
 
       this.prevMousePos = { x: e.clientX, y: e.clientY };
@@ -165,6 +175,7 @@ export class ControlsManager {
         this.isDragging = true;
         this.dragMoved = false;
         this.prevMousePos = { x: e.touches[0].clientX, y: e.touches[0].clientY };
+        this.mouseDownPos = { x: e.touches[0].clientX, y: e.touches[0].clientY };
       }
     }, { passive: true });
 
@@ -173,8 +184,11 @@ export class ControlsManager {
       const deltaX = e.touches[0].clientX - this.prevMousePos.x;
       const deltaY = e.touches[0].clientY - this.prevMousePos.y;
 
-      if (Math.abs(deltaX) > 3 || Math.abs(deltaY) > 3) {
-        this.dragMoved = true;
+      if (this.mouseDownPos) {
+        const totalDist = Math.hypot(e.touches[0].clientX - this.mouseDownPos.x, e.touches[0].clientY - this.mouseDownPos.y);
+        if (totalDist > 8) {
+          this.dragMoved = true;
+        }
       }
 
       this.prevMousePos = { x: e.touches[0].clientX, y: e.touches[0].clientY };
@@ -369,13 +383,28 @@ export class ControlsManager {
 
   glideToShowcase(albumId, onComplete = null) {
     this.resetKeys();
-    const targetX = albumId === 'souvenir_photos' ? -0.45 : 0.45;
-    // Elevated adult eye-level perspective standing in front of showcase (dais floor Y = 0.35m)
-    // Standing at Y = 2.40m (2.05m eye-level) looking down at the albums at Y = 1.28m
-    // Distance Z = -6.45m to showcase center Z = -8.2m provides an optimal ~34 degree downward angle
-    const targetPos = new THREE.Vector3(targetX * 0.3, 2.40, -6.45);
-    const lookTarget = new THREE.Vector3(targetX * 0.55, 1.28, -8.15);
+    // GĐ4: Two cabinets at (±6.5, -6.5) rotated ±π/4 (on dais y=0.35)
+    // Determine which cabinet based on albumId
+    const cabinetConfigs = [
+      { cx: -6.5, cz: -6.5, rotY: Math.PI / 4,  albums: ['souvenir', 'awards_flags'] },
+      { cx:  6.5, cz: -6.5, rotY: -Math.PI / 4, albums: ['pcvt', 'doan_the'] }
+    ];
+    let cab = cabinetConfigs[0];
+    for (const c of cabinetConfigs) {
+      if (c.albums.includes(albumId)) { cab = c; break; }
+    }
 
+    // Approach from front face of cabinet (1.8m along normal direction)
+    const dist = 1.8;
+    // Cabinet front face normal points at +Z in local space, rotated by rotY
+    const normalX = Math.sin(cab.rotY);
+    const normalZ = Math.cos(cab.rotY);
+    const targetX = cab.cx + normalX * dist;
+    const targetZ = cab.cz + normalZ * dist;
+    const targetPos = new THREE.Vector3(targetX, 2.40, targetZ);
+
+    // Look at center of cabinet (album height ~1.55m on dais + 0.35)
+    const lookTarget = new THREE.Vector3(cab.cx, 1.55, cab.cz);
     const lookDir = new THREE.Vector3().subVectors(lookTarget, targetPos).normalize();
     const endYaw = Math.atan2(-lookDir.x, -lookDir.z);
     const endPitch = Math.asin(lookDir.y);
