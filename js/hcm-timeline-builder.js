@@ -106,6 +106,7 @@ export class HCMTimelineBuilder {
       });
     });
 
+    this.group = group;
     this.scene.add(group);
     console.log(`Timeline: mounted ${created}/${total} standardized photos on East wall (3 rows)`);
     return group;
@@ -127,10 +128,10 @@ export class HCMTimelineBuilder {
 
     // Star
     ctx.fillStyle = '#facc15';
-    ctx.font = 'bold 44px serif';
+    ctx.font = 'bold 44px "Be Vietnam Pro", sans-serif';
     ctx.textAlign = 'center';
     ctx.textBaseline = 'middle';
-    ctx.fillText('★ ★ ★', 1024, 60);
+    ctx.fillText('• • •', 1024, 60);
 
     // Title
     ctx.fillStyle = '#ffffff';

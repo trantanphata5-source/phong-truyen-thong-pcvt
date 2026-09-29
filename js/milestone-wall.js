@@ -4,8 +4,10 @@ const FONT_FAMILY = '"Be Vietnam Pro", system-ui, sans-serif';
 
 /**
  * MilestoneWallBuilder (Vách mốc son Khu 3)
- * Theo SUA_LOI_GD3_LAN2.md (Mục D):
- * - Vách partition_k3: tâm (35, 0), dài 24m (z từ -12 đến 12), dày 0.6m, cao 6.8m
+ * Theo SUA_LOI_GD5.md (Mục A):
+ * - Vách partition_k3: nền trắng sáng, dải đầu vách màu gradient #1E40A0 → #2D55C8, chữ trắng (không còn ngôi sao)
+ * - Đường dòng thời gian xanh EVN #1E40A0
+ * - Bảng thông tin mốc son: nền trắng, viền xanh EVN, chữ tương phản rõ nét
  * - Mặt Tây (rotY = -π/2, nhìn từ sảnh/lối vào): 3 mốc son lịch sử
  * - Mặt Đông (rotY = +π/2): 7 sự kiện trọng đại, ảnh khổ lớn 1 tầng ở y = 2.6m
  */
@@ -16,23 +18,23 @@ export class MilestoneWallBuilder {
 
     // Materials
     this.matGold = new THREE.MeshStandardMaterial({
-      color: 0xfacc15,
-      metalness: 0.85,
+      color: 0x1e40a0,
+      metalness: 0.8,
       roughness: 0.25
     });
 
-    this.matCyanLED = new THREE.MeshStandardMaterial({
-      color: 0x22d3ee,
-      emissive: new THREE.Color(0x22d3ee),
-      emissiveIntensity: 1.2,
-      roughness: 0.2,
-      metalness: 0.1
+    this.matEvnTimeline = new THREE.MeshStandardMaterial({
+      color: 0x1e40a0,
+      emissive: new THREE.Color(0x1e40a0),
+      emissiveIntensity: 0.35,
+      roughness: 0.3,
+      metalness: 0.4
     });
 
     this.matDarkPanel = new THREE.MeshStandardMaterial({
-      color: 0x090e1a,
-      roughness: 0.7,
-      metalness: 0.2
+      color: 0xf4f7fb,
+      roughness: 0.6,
+      metalness: 0.1
     });
   }
 
@@ -51,10 +53,10 @@ export class MilestoneWallBuilder {
     // 1.1 Dòng đầu "CHẶNG ĐƯỜNG MỚI" ở y = 5.2
     this.addHeaderBanner(westGroup, xWest, 5.2, 0, rotYWest, 'CHẶNG ĐƯỜNG MỚI');
 
-    // 1.2 Đường LED dòng thời gian ở y = 2.25, chạy từ z = -10.5 đến +10.5
+    // 1.2 Đường dòng thời gian xanh EVN ở y = 2.25, chạy từ z = -10.5 đến +10.5
     const ledLength = 21.0;
     const ledGeo = new THREE.CylinderGeometry(0.035, 0.035, ledLength, 16);
-    const ledMesh = new THREE.Mesh(ledGeo, this.matCyanLED);
+    const ledMesh = new THREE.Mesh(ledGeo, this.matEvnTimeline);
     ledMesh.rotation.x = Math.PI / 2;
     ledMesh.position.set(xWest, 2.25, 0);
     westGroup.add(ledMesh);
@@ -103,14 +105,14 @@ export class MilestoneWallBuilder {
     ];
 
     milestones.forEach(m => {
-      // Node LED trên đường timeline (y = 2.25)
+      // Node trên đường timeline (y = 2.25)
       const nodeGeo = new THREE.CylinderGeometry(0.18, 0.18, 0.08, 24);
-      const nodeMesh = new THREE.Mesh(nodeGeo, this.matGold);
+      const nodeMesh = new THREE.Mesh(nodeGeo, this.matEvnTimeline);
       nodeMesh.rotation.z = Math.PI / 2;
       nodeMesh.position.set(xWest - 0.01, 2.25, m.z);
       westGroup.add(nodeMesh);
 
-      const nodeCore = new THREE.Mesh(new THREE.CylinderGeometry(0.12, 0.12, 0.09, 24), this.matCyanLED);
+      const nodeCore = new THREE.Mesh(new THREE.CylinderGeometry(0.12, 0.12, 0.09, 24), this.matEvnTimeline);
       nodeCore.rotation.z = Math.PI / 2;
       nodeCore.position.set(xWest - 0.015, 2.25, m.z);
       westGroup.add(nodeCore);
@@ -159,13 +161,13 @@ export class MilestoneWallBuilder {
         } else {
           // 2 ảnh nhỏ xếp chồng tại y = 4.15 và y = 3.05
           const yOffsets = [4.15, 3.05];
-          m.smallIds.forEach((smId, idx) => {
+          m.smallIds.slice(0, 2).forEach((smId, idx) => {
             const smItem = itemsById.get(smId) || {
               id: smId,
               source: 'pcvt',
               khu: 'khu3',
               new_name: `${smId}.jpg`,
-              caption: `${m.date} • ${m.title}`,
+              caption: m.title,
               wall_path: `assets/wall/khu3/${smId}.jpg`,
               aspect_ratio: 1.333
             };
@@ -181,8 +183,7 @@ export class MilestoneWallBuilder {
         }
       }
 
-      // Bảng thông tin mốc son tích hợp (y = 1.35, cao 1.30m: từ 0.70m đến 2.00m)
-      // Không còn z-fighting, không chồng chéo, ngày tháng nổi bật ở đỉnh card
+      // Bảng thông tin mốc son tích hợp (y = 1.35, cao 1.30m)
       this.addMilestoneCard(westGroup, xWest, 1.35, m.z, rotYWest, m);
     });
 
@@ -241,28 +242,33 @@ export class MilestoneWallBuilder {
     canvas.height = 160;
     const ctx = canvas.getContext('2d');
 
-    ctx.fillStyle = '#090e1a';
+    // Nền gradient xanh EVN #1E40A0 → #2D55C8
+    const grad = ctx.createLinearGradient(0, 0, 1200, 0);
+    grad.addColorStop(0, '#1E40A0');
+    grad.addColorStop(1, '#2D55C8');
+    ctx.fillStyle = grad;
     ctx.fillRect(0, 0, 1200, 160);
 
-    // Viền vàng và hoa văn
-    ctx.strokeStyle = '#facc15';
+    // Viền xanh nhạt
+    ctx.strokeStyle = '#38bdf8';
     ctx.lineWidth = 4;
     ctx.strokeRect(6, 6, 1188, 148);
 
-    ctx.fillStyle = '#facc15';
+    ctx.fillStyle = '#ffffff';
     ctx.font = `900 48px ${FONT_FAMILY}`;
     ctx.textAlign = 'center';
     ctx.textBaseline = 'middle';
     ctx.letterSpacing = '8px';
-    ctx.fillText(`★  ${text}  ★`, 600, 80);
+    // Thay thế bằng •
+    ctx.fillText(`•  ${text}  •`, 600, 80);
 
     const tex = new THREE.CanvasTexture(canvas);
     tex.colorSpace = THREE.SRGBColorSpace;
     const mat = new THREE.MeshStandardMaterial({
       map: tex,
-      metalness: 0.6,
+      metalness: 0.3,
       roughness: 0.3,
-      emissive: new THREE.Color(0xfacc15),
+      emissive: new THREE.Color(0x1e40a0),
       emissiveIntensity: 0.2
     });
 
@@ -278,20 +284,20 @@ export class MilestoneWallBuilder {
     canvas.height = 420;
     const ctx = canvas.getContext('2d');
 
-    // 1. Nền card bo góc sang trọng
-    ctx.fillStyle = '#080d1a';
+    // 1. Nền card bo góc sang trọng - Tông sáng trắng thanh lịch
+    ctx.fillStyle = '#ffffff';
     ctx.beginPath();
     ctx.roundRect(8, 8, 1184, 404, 16);
     ctx.fill();
 
-    // Viền vàng kim loại sang trọng
-    ctx.strokeStyle = 'rgba(250, 204, 21, 0.75)';
-    ctx.lineWidth = 3.5;
+    // Viền xanh EVN #1E40A0
+    ctx.strokeStyle = '#1e40a0';
+    ctx.lineWidth = 4;
     ctx.stroke();
 
-    // Viền trong cyan neon nhẹ
-    ctx.strokeStyle = 'rgba(34, 211, 238, 0.25)';
-    ctx.lineWidth = 1.5;
+    // Viền trong mảnh xanh cyan #38BDF8
+    ctx.strokeStyle = 'rgba(56, 189, 248, 0.4)';
+    ctx.lineWidth = 2;
     ctx.beginPath();
     ctx.roundRect(18, 18, 1164, 384, 12);
     ctx.stroke();
@@ -303,63 +309,50 @@ export class MilestoneWallBuilder {
     const badgeY = 28;
 
     const grad = ctx.createLinearGradient(badgeX, badgeY, badgeX + badgeW, badgeY + badgeH);
-    grad.addColorStop(0, '#0369a1');
-    grad.addColorStop(0.5, '#0891b2');
-    grad.addColorStop(1, '#0369a1');
+    grad.addColorStop(0, '#1E40A0');
+    grad.addColorStop(1, '#2D55C8');
 
     ctx.fillStyle = grad;
     ctx.beginPath();
     ctx.roundRect(badgeX, badgeY, badgeW, badgeH, 32);
     ctx.fill();
 
-    ctx.strokeStyle = '#22d3ee';
-    ctx.lineWidth = 3;
+    ctx.strokeStyle = '#38bdf8';
+    ctx.lineWidth = 2.5;
     ctx.stroke();
 
-    // Chữ ngày tháng nổi bật (font 900, glow cyan)
+    // Chữ ngày tháng màu trắng nổi bật
     ctx.fillStyle = '#ffffff';
-    ctx.font = `900 40px ${FONT_FAMILY}`;
+    ctx.font = `900 38px ${FONT_FAMILY}`;
     ctx.textAlign = 'center';
     ctx.textBaseline = 'middle';
-    ctx.shadowColor = '#22d3ee';
-    ctx.shadowBlur = 10;
     ctx.fillText(m.date, 600, badgeY + badgeH / 2);
-    ctx.shadowBlur = 0; // reset shadow
 
     // 3. Đường kẻ trang trí ngăn cách
-    const divGrad = ctx.createLinearGradient(200, 118, 1000, 118);
-    divGrad.addColorStop(0, 'rgba(250, 204, 21, 0)');
-    divGrad.addColorStop(0.5, 'rgba(250, 204, 21, 0.6)');
-    divGrad.addColorStop(1, 'rgba(250, 204, 21, 0)');
-    ctx.strokeStyle = divGrad;
+    ctx.strokeStyle = 'rgba(30, 64, 160, 0.25)';
     ctx.lineWidth = 2;
     ctx.beginPath();
     ctx.moveTo(200, 118);
     ctx.lineTo(1000, 118);
     ctx.stroke();
 
-    // 4. Tiêu đề chính (Màu vàng kim sang trọng, font 800 36px)
-    ctx.fillStyle = '#fde047';
+    // 4. Tiêu đề chính (Xanh EVN đậm, font 800 36px)
+    ctx.fillStyle = '#1e40a0';
     ctx.font = `800 36px ${FONT_FAMILY}`;
     ctx.textAlign = 'center';
     ctx.textBaseline = 'middle';
-    ctx.shadowColor = 'rgba(0, 0, 0, 0.9)';
-    ctx.shadowOffsetY = 2;
-    ctx.shadowBlur = 4;
     ctx.fillText(m.title, 600, 172);
-    ctx.shadowOffsetY = 0;
-    ctx.shadowBlur = 0;
 
-    // 5. Phụ đề (Màu trắng sáng, font 600 28px)
+    // 5. Phụ đề (Màu xanh đậm #0f172a, font 600 28px)
     if (m.subtitle) {
-      ctx.fillStyle = '#f8fafc';
+      ctx.fillStyle = '#0f172a';
       ctx.font = `600 28px ${FONT_FAMILY}`;
       ctx.fillText(m.subtitle, 600, 240);
     }
 
-    // 6. Ghi chú sự kiện / chi tiết (Màu bạc sáng, font 500 22px)
+    // 6. Ghi chú sự kiện / chi tiết (Màu xám đậm #475569, font 500 22px)
     if (m.descExtra) {
-      ctx.fillStyle = '#94a3b8';
+      ctx.fillStyle = '#475569';
       ctx.font = `500 22px ${FONT_FAMILY}`;
       ctx.fillText(m.descExtra, 600, 315);
     }
@@ -368,7 +361,7 @@ export class MilestoneWallBuilder {
     tex.colorSpace = THREE.SRGBColorSpace;
     const mat = new THREE.MeshStandardMaterial({
       map: tex,
-      metalness: 0.5,
+      metalness: 0.2,
       roughness: 0.35
     });
 
@@ -378,13 +371,13 @@ export class MilestoneWallBuilder {
     mesh.rotation.y = rotY;
     parent.add(mesh);
 
-    // Thanh liên kết đứng từ Node LED (y=2.25) xuống đỉnh Card (y + 1.30/2 = y + 0.65)
+    // Thanh liên kết đứng từ Node timeline (y=2.25) xuống đỉnh Card
     const cardTopY = y + 1.30 / 2;
     const nodeY = 2.25;
     const pinH = nodeY - cardTopY;
     if (pinH > 0.05) {
       const pinGeo = new THREE.CylinderGeometry(0.02, 0.02, pinH, 16);
-      const pinMesh = new THREE.Mesh(pinGeo, this.matCyanLED);
+      const pinMesh = new THREE.Mesh(pinGeo, this.matEvnTimeline);
       pinMesh.position.set(x - 0.01, cardTopY + pinH / 2, z);
       parent.add(pinMesh);
     }

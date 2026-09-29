@@ -354,7 +354,7 @@ export class AlbumViewer {
       // Blank end page
       container.innerHTML = `
         <div class="page-blank">
-          <div class="page-watermark">★ CÔNG TY ĐIỆN LỰC VŨNG TÀU ★</div>
+          <div class="page-watermark">• CÔNG TY ĐIỆN LỰC VŨNG TÀU •</div>
         </div>
         <div class="page-footer-num">${pageNum}</div>
       `;

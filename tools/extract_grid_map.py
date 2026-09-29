@@ -394,32 +394,9 @@ def main():
         qh_cnt = sum(1 for l in llist if l['quy_hoach'])
         print(f"Đường dây {v}: {len(llist)} đoạn (Hiện trạng: {ht_cnt}, Quy hoạch: {qh_cnt})")
 
-    # 5. CÔNG TRÌNH ĐỒNG BỘ GIAO THÔNG (ĐBGT)
-    print("\n--- BƯỚC 5: CÔNG TRÌNH ĐỒNG BỘ GIAO THÔNG (ĐBGT) ---")
-    dbgt_projects = [
-        { 'ten': 'Đường D22', 'trang_thai': 'da_co_y_kien_hstk', 'pattern': r'Đường D22', 'pt': (578.8, 706.1) },
-        { 'ten': 'Đường 81', 'trang_thai': 'da_co_y_kien_hstk', 'pattern': r'Đường 81', 'pt': (791.9, 918.2) },
-        { 'ten': 'Đường D14 dân cư số 9', 'trang_thai': 'da_co_y_kien_hstk', 'pattern': r'Đường D14', 'pt': (760.9, 1235.6) },
-        { 'ten': 'Đường tái định cư Tân Hải', 'trang_thai': 'ubnd_dang_tham_dinh', 'pattern': r'Đường tái định cư Tân Hải', 'pt': (849.2, 1492.0) },
-        { 'ten': 'Đường nối vào cao tốc Biên Hòa', 'trang_thai': 'ubnd_dang_tham_dinh', 'pattern': r'cao tốc Biên Hòa', 'pt': (1429.6, 1726.9) },
-        { 'ten': 'Đường 991 từ QL51 đến cảng Cái Mép', 'trang_thai': 'da_co_y_kien_hstk', 'pattern': r'Đường 991', 'pt': (431.4, 871.4) },
-        { 'ten': 'Đường vào sân vận động Châu Pha', 'trang_thai': 'chua_khao_sat', 'pattern': r'sân vận động Châu Pha', 'pt': (1185.5, 1028.3) },
-        { 'ten': 'Đường quy hoạch N6', 'trang_thai': 'chua_khao_sat', 'pattern': r'Đường quy hoạch N6', 'pt': (1253.3, 1377.1) },
-        { 'ten': 'Đường số 82 xã Long Phước', 'trang_thai': 'da_co_y_kien_hstk', 'pattern': r'Đường số 82', 'pt': (1647.4, 1339.9) },
-        { 'ten': 'Đường số 84 xã Long Phước', 'trang_thai': 'da_co_y_kien_hstk', 'pattern': r'Đường số 84', 'pt': (1624.2, 1371.4) },
-        { 'ten': 'Đường Hàng Điều 4', 'trang_thai': 'ubnd_dang_tham_dinh', 'pattern': r'Đường Hàng Điều', 'pt': (1039.3, 2043.1) },
-        { 'ten': 'Đường Láng Cát Long Sơn', 'trang_thai': 'da_co_y_kien_hstk', 'pattern': r'Láng Cát Long Sơn', 'pt': (877.7, 1617.8) }
-    ]
-
+    # 5. CÔNG TRÌNH ĐỒNG BỘ GIAO THÔNG (ĐBGT) — Đã loại bỏ theo yêu cầu GĐ5-fix (Mục B2)
+    print("\n--- BƯỚC 5: CÔNG TRÌNH ĐỒNG BỘ GIAO THÔNG (ĐBGT) (LOẠI BỎ THEO MỤC B2) ---")
     dbgt_output = []
-    for prj in dbgt_projects:
-        px, py = prj['pt']
-        dbgt_output.append({
-            'ten': prj['ten'],
-            'trang_thai': prj['trang_thai'],
-            'x': round(norm_x(px), 5),
-            'y': round(norm_y(py), 5)
-        })
 
     # 6. XUẤT FILE JSON TỔNG HỢP: assets/grid/pcvt_grid.json
     print("\n--- BƯỚC 6: XUẤT FILE JSON assets/grid/pcvt_grid.json ---")
@@ -433,7 +410,7 @@ def main():
         'co_so': all_coso_output,
         'phuong': all_admin_output,
         'duong_day': lines_by_voltage,
-        'dbgt': dbgt_output,
+        'dbgt': [],
         'nhan_ngoai': [
             { 'ten': 'Đi trạm Long Thành', 'x': 0.15, 'y': 0.05 },
             { 'ten': 'Đi trạm Nhơn Trạch', 'x': 0.08, 'y': 0.12 },
@@ -447,8 +424,14 @@ def main():
         json.dump(grid_data, f, ensure_ascii=False, indent=2)
     print(f"Đã lưu thành công: {json_path} ({os.path.getsize(json_path) / 1024:.1f} KB)")
 
-    # 7. RENDER BASE MAP TILES & LOW-RES WEBP
-    print("\n--- BƯỚC 7: RENDER BASE MAP TILES (4096px, 6 TILES WEBP) ---")
+    # 7. RENDER BASE MAP TILES & LOW-RES WEBP (TẮT LỚP ĐBGT)
+    print("\n--- BƯỚC 7: RENDER BASE MAP TILES (4096px, 6 TILES WEBP, KHÔNG CÓ ĐBGT) ---")
+    try:
+        doc.set_layer(-1, off=[333])
+        print("Đã tắt lớp OCG 333 (CT Đồng bộ giao thông) trước khi render!")
+    except Exception as e:
+        print("Cảnh báo set_layer OCG 333:", e)
+
     target_w = 4096.0
     scale = target_w / page.rect.width  # ~1.718
     mat = fitz.Matrix(scale, scale)

@@ -147,25 +147,39 @@ export class MuseumArchitect {
       depthWrite: false
     });
 
-    // 11. GĐ5: Khu 3 Smart Grid Materials (#0B1530 walls, cyan LED trim, #0A1224 epoxy floor)
+    // 11. GĐ5: Khu 3 Tông sáng hiện đại (#F4F7FB walls, chân tường #1E40A0, phào 3cm #38BDF8, sàn #DCE3EC)
     this.matWallKhu3 = new THREE.MeshStandardMaterial({
-      color: 0x0B1530,
-      roughness: 0.35,
-      metalness: 0.25
+      color: 0xF4F7FB,
+      roughness: 0.60,
+      metalness: 0.05
+    });
+
+    this.matBaseboardKhu3 = new THREE.MeshStandardMaterial({
+      color: 0x1E40A0,
+      roughness: 0.30,
+      metalness: 0.10
+    });
+
+    this.matCorniceKhu3 = new THREE.MeshStandardMaterial({
+      color: 0x38BDF8,
+      emissive: new THREE.Color(0x38BDF8),
+      emissiveIntensity: 0.4,
+      roughness: 0.25,
+      metalness: 0.10
     });
 
     this.matCyanLED = new THREE.MeshStandardMaterial({
       color: 0x22D3EE,
       emissive: new THREE.Color(0x22D3EE),
-      emissiveIntensity: 1.4,
+      emissiveIntensity: 0.8,
       roughness: 0.2,
       metalness: 0.1
     });
 
     this.matEpoxyKhu3 = new THREE.MeshStandardMaterial({
-      color: 0x0A1224,
-      roughness: 0.20,
-      metalness: 0.35
+      color: 0xDCE3EC,
+      roughness: 0.30,
+      metalness: 0.25
     });
   }
 
@@ -209,8 +223,11 @@ export class MuseumArchitect {
     // 11. Ho Chi Minh Cultural Zone (Khu 5)
     this.buildHCMCulturalZone(museumGroup);
 
-    // 12. GĐ5: Khu 3 Smart Grid (Sàn epoxy với vạch sáng, 3 trụ thông tin tự động hóa tại x=22)
+    // 12. GĐ5: Khu 3 Smart Grid (Sàn epoxy với vạch sáng, 3 trụ thông tin tự động hóa)
     this.buildZone3SmartGrid(museumGroup);
+
+    // 13. GĐ5: Khu 4 & Khu 6 Large LED Screens & Standing Flags (Mục C)
+    this.buildZone4And6Screens(museumGroup);
 
     this.scene.add(museumGroup);
     return museumGroup;
@@ -253,7 +270,7 @@ export class MuseumArchitect {
     parent.add(ceilMesh6);
   }
 
-  createWallMesh(w, h, d, x, y, z, rotY = 0, mat = this.matWall, name = '', trimMat = this.matGold) {
+  createWallMesh(w, h, d, x, y, z, rotY = 0, mat = this.matWall, name = '', trimMat = this.matGold, isKhu3 = false) {
     const group = new THREE.Group();
     group.position.set(x, y, z);
     group.rotation.y = rotY;
@@ -265,17 +282,31 @@ export class MuseumArchitect {
     mesh.receiveShadow = true;
     group.add(mesh);
 
-    // Baseboard (gold or cyan LED for Khu 3)
-    const baseboardGeo = new THREE.BoxGeometry(w, 0.35, d + 0.08);
-    const baseboardMesh = new THREE.Mesh(baseboardGeo, trimMat);
-    baseboardMesh.position.y = -h / 2 + 0.175;
-    group.add(baseboardMesh);
+    if (isKhu3) {
+      // Dải chân tường xanh EVN #1E40A0 cao 0-0.5m (0.45m), không phát sáng (Mục A.15)
+      const baseboardGeo = new THREE.BoxGeometry(w, 0.45, d + 0.06);
+      const baseboardMesh = new THREE.Mesh(baseboardGeo, this.matBaseboardKhu3);
+      baseboardMesh.position.y = -h / 2 + 0.225;
+      group.add(baseboardMesh);
 
-    // Top cornice (gold or cyan LED for Khu 3)
-    const corniceGeo = new THREE.BoxGeometry(w, 0.25, d + 0.08);
-    const corniceMesh = new THREE.Mesh(corniceGeo, trimMat);
-    corniceMesh.position.y = h / 2 - 0.125;
-    group.add(corniceMesh);
+      // Phào trần vạch mảnh 3cm màu #38BDF8, emissiveIntensity 0.4 (Mục A.16)
+      const corniceGeo = new THREE.BoxGeometry(w, 0.03, d + 0.06);
+      const corniceMesh = new THREE.Mesh(corniceGeo, this.matCorniceKhu3);
+      corniceMesh.position.y = h / 2 - 0.015;
+      group.add(corniceMesh);
+    } else {
+      // Baseboard gold
+      const baseboardGeo = new THREE.BoxGeometry(w, 0.35, d + 0.08);
+      const baseboardMesh = new THREE.Mesh(baseboardGeo, trimMat);
+      baseboardMesh.position.y = -h / 2 + 0.175;
+      group.add(baseboardMesh);
+
+      // Top cornice gold
+      const corniceGeo = new THREE.BoxGeometry(w, 0.25, d + 0.08);
+      const corniceMesh = new THREE.Mesh(corniceGeo, trimMat);
+      corniceMesh.position.y = h / 2 - 0.125;
+      group.add(corniceMesh);
+    }
 
     group.name = name;
     return group;
@@ -287,11 +318,11 @@ export class MuseumArchitect {
       const h = wall.h;
       const isKhu3 = wall.zone === 'khu3';
       const wallMat = isKhu3 ? this.matWallKhu3 : this.matWall;
-      const trimMat = isKhu3 ? this.matCyanLED : this.matGold;
+      const trimMat = isKhu3 ? this.matBaseboardKhu3 : this.matGold;
       parent.add(this.createWallMesh(
         wall.w, h, wall.d,
         wall.x, h / 2, wall.z,
-        wall.rotY, wallMat, wall.id, trimMat
+        wall.rotY, wallMat, wall.id, trimMat, isKhu3
       ));
     }
   }
@@ -306,11 +337,11 @@ export class MuseumArchitect {
       const h = part.h;
       const isKhu3 = part.zone === 'khu3';
       const partMat = isKhu3 ? this.matWallKhu3 : this.matPartition;
-      const trimMat = isKhu3 ? this.matCyanLED : this.matGold;
+      const trimMat = isKhu3 ? this.matBaseboardKhu3 : this.matGold;
       parent.add(this.createWallMesh(
         part.w, h, part.d,
         part.x, h / 2, part.z,
-        part.rotY, partMat, part.id, trimMat
+        part.rotY, partMat, part.id, trimMat, isKhu3
       ));
     }
   }
@@ -531,35 +562,34 @@ export class MuseumArchitect {
   }
 
   buildSignage(parent) {
-    const createSignBanner = (title, subtitle, color, x, y, z, rotY = 0) => {
+    const createSignBanner = (title, subtitle, color, x, y, z, rotY = 0, bgColor = '#0a0f1d') => {
       const canvas = document.createElement('canvas');
       canvas.width = 2048;
       canvas.height = 512;
       const ctx = canvas.getContext('2d');
 
       // Background plate
-      ctx.fillStyle = '#0a0f1d';
+      ctx.fillStyle = bgColor;
       ctx.fillRect(0, 0, 2048, 512);
 
-      // Gold border
+      // Border
       ctx.strokeStyle = color;
       ctx.lineWidth = 14;
       ctx.strokeRect(20, 20, 2008, 472);
 
-      // Inner subtle gold border
-      ctx.strokeStyle = 'rgba(212, 175, 55, 0.35)';
+      // Inner subtle border
+      ctx.strokeStyle = (bgColor === '#0a0f1d') ? 'rgba(212, 175, 55, 0.35)' : 'rgba(255, 255, 255, 0.35)';
       ctx.lineWidth = 4;
       ctx.strokeRect(36, 36, 1976, 440);
 
-      // Max allowable width for text to guarantee NO horizontal overflow
       const maxTextWidth = 1860;
 
       // Dynamic Auto-fit for Title Font Size
       let titleSize = 70;
-      ctx.font = `bold ${titleSize}px "Playfair Display", "Inter", serif`;
+      ctx.font = `bold ${titleSize}px "Be Vietnam Pro", sans-serif`;
       while (ctx.measureText(title).width > maxTextWidth && titleSize > 24) {
         titleSize -= 2;
-        ctx.font = `bold ${titleSize}px "Playfair Display", "Inter", serif`;
+        ctx.font = `bold ${titleSize}px "Be Vietnam Pro", sans-serif`;
       }
       ctx.fillStyle = '#ffffff';
       ctx.textAlign = 'center';
@@ -568,12 +598,12 @@ export class MuseumArchitect {
 
       // Dynamic Auto-fit for Subtitle Font Size
       let subSize = 36;
-      ctx.font = `bold ${subSize}px "Inter", sans-serif`;
+      ctx.font = `bold ${subSize}px "Be Vietnam Pro", sans-serif`;
       while (ctx.measureText(subtitle).width > maxTextWidth && subSize > 18) {
         subSize -= 2;
-        ctx.font = `bold ${subSize}px "Inter", sans-serif`;
+        ctx.font = `bold ${subSize}px "Be Vietnam Pro", sans-serif`;
       }
-      ctx.fillStyle = color;
+      ctx.fillStyle = (bgColor === '#1E40A0' || bgColor === '#991B1B') ? '#fde047' : color;
       ctx.fillText(subtitle, 1024, 335);
 
       const texture = new THREE.CanvasTexture(canvas);
@@ -581,7 +611,7 @@ export class MuseumArchitect {
       const mat = new THREE.MeshStandardMaterial({
         map: texture,
         emissive: new THREE.Color(color),
-        emissiveIntensity: 0.25,
+        emissiveIntensity: 0.20,
         roughness: 0.3
       });
 
@@ -591,7 +621,8 @@ export class MuseumArchitect {
       mesh.position.set(x + nx * 0.08, y, z + nz * 0.08);
       mesh.rotation.y = rotY;
 
-      const frameMesh = new THREE.Mesh(new THREE.BoxGeometry(8.2, 2.2, 0.15), this.matGold);
+      const frameMat = (bgColor === '#1E40A0') ? this.matBaseboardKhu3 : this.matGold;
+      const frameMesh = new THREE.Mesh(new THREE.BoxGeometry(8.2, 2.2, 0.15), frameMat);
       frameMesh.position.set(x, y, z);
       frameMesh.rotation.y = rotY;
 
@@ -599,18 +630,16 @@ export class MuseumArchitect {
       parent.add(mesh);
     };
 
-    // Entrance Sign - Removed: was blocking HCM zone entrance view
-    // (Previously: createSignBanner at Z=37.0, Math.PI)
     // Khu 1 Sign (Tây) — Ký ức & Tranh tặng
     createSignBanner('KHU 1: KÝ ỨC & TRANH TẶNG', 'ẢNH TƯ LIỆU 1985–2009 • TRANH TẶNG CÁC ĐƠN VỊ', '#8B6F47', -18.0, 6.2, 0, Math.PI / 2);
     // Khu 2 Sign (Bắc) — Bằng khen & Cờ lưu niệm
     createSignBanner('KHU 2: BẰNG KHEN & CỜ LƯU NIỆM', 'HUÂN CHƯƠNG • THỦ TƯỚNG • BỘ CÔNG THƯƠNG • UBND • EVN • EVNSPC', '#8B1A1A', 0, 6.2, -17.0, 0);
-    // Khu 3 Sign (Đông) — Vững bước kỷ nguyên mới (gắn phía trên mặt Tây vách mốc son x=35, y=6.2)
-    createSignBanner('VỮNG BƯỚC KỶ NGUYÊN MỚI', 'CÔNG TY ĐIỆN LỰC VŨNG TÀU', '#22D3EE', 34.65, 6.2, 0, -Math.PI / 2);
-    // Khu 4 Sign (Đông Nam) — Đảng bộ
-    createSignBanner('KHU 4: ĐẢNG BỘ CÔNG TY', 'ĐẢNG BỘ CÔNG TY ĐIỆN LỰC VŨNG TÀU', '#C62828', 36, 6.2, 39.0, 0);
-    // Khu 6 Sign (Tây Nam) — Công đoàn & Đoàn TN
-    createSignBanner('KHU 6: CÔNG ĐOÀN & ĐOÀN THANH NIÊN', 'CÔNG ĐOÀN • ĐOÀN THANH NIÊN CÔNG TY', '#1565C0', -36, 6.2, 39.0, 0);
+    // Khu 3 Sign (Đông) — Vững bước kỷ nguyên mới (Mục A.21: Nền #1E40A0, chữ trắng, viền #38BDF8)
+    createSignBanner('VỮNG BƯỚC KỶ NGUYÊN MỚI', 'CÔNG TY ĐIỆN LỰC VŨNG TÀU', '#38BDF8', 34.65, 6.2, 0, -Math.PI / 2, '#1E40A0');
+    // Khu 4 Sign (Đông Nam) — Đảng bộ (Mục C.79: Dời lên y = 6.4, phía trên màn hình tường Nam z=82)
+    createSignBanner('KHU 4: ĐẢNG BỘ CÔNG TY', 'ĐẢNG BỘ CÔNG TY ĐIỆN LỰC VŨNG TÀU', '#FACC15', 36.0, 6.4, 81.3, Math.PI, '#991B1B');
+    // Khu 6 Sign (Tây Nam) — Công đoàn & Đoàn TN (Mục C.79: Dời lên y = 6.4, phía trên màn hình tường Nam z=82)
+    createSignBanner('KHU 6: CÔNG ĐOÀN & ĐOÀN THANH NIÊN', 'CÔNG ĐOÀN • ĐOÀN THANH NIÊN CÔNG TY', '#38BDF8', -36.0, 6.4, 81.3, Math.PI, '#1E3A8A');
   }
 
   /**
@@ -659,12 +688,12 @@ export class MuseumArchitect {
 
       // 4. Milestone Title (Auto-fit font size to NEVER overflow)
       let titleFontSize = 46;
-      ctx.font = `bold ${titleFontSize}px "Playfair Display", "Inter", serif`;
+      ctx.font = `bold ${titleFontSize}px "Be Vietnam Pro", sans-serif`;
       let titleWidth = ctx.measureText(title).width;
       const maxTitleWidth = 1550;
       while (titleWidth > maxTitleWidth && titleFontSize > 24) {
         titleFontSize -= 2;
-        ctx.font = `bold ${titleFontSize}px "Playfair Display", "Inter", serif`;
+        ctx.font = `bold ${titleFontSize}px "Be Vietnam Pro", sans-serif`;
         titleWidth = ctx.measureText(title).width;
       }
       ctx.fillStyle = '#ffffff';
@@ -836,26 +865,24 @@ export class MuseumArchitect {
    * Positioned flush against wall baseboards and corners ("sát mép tường")
    */
   buildPottedPlants(parent) {
-    const plantsGroup = new THREE.Group();
-    plantsGroup.name = 'PottedPlants';
+    this.plantZoneGroups = {
+      khu1: new THREE.Group(),
+      khu2: new THREE.Group(),
+      khu3: new THREE.Group(),
+      khu4: new THREE.Group(),
+      khu6: new THREE.Group()
+    };
+    this.plantZoneGroups.khu1.name = 'PottedPlants_Khu1';
+    this.plantZoneGroups.khu2.name = 'PottedPlants_Khu2';
+    this.plantZoneGroups.khu3.name = 'PottedPlants_Khu3';
+    this.plantZoneGroups.khu4.name = 'PottedPlants_Khu4';
+    this.plantZoneGroups.khu6.name = 'PottedPlants_Khu6';
 
     // Premium Materials
     const potMat = new THREE.MeshStandardMaterial({
       color: 0x111827,
-      roughness: 0.22,
-      metalness: 0.15
-    });
-
-    const soilMat = new THREE.MeshStandardMaterial({
-      color: 0x1c1917,
-      roughness: 0.95,
-      metalness: 0.0
-    });
-
-    const pebbleMat = new THREE.MeshStandardMaterial({
-      color: 0x334155,
       roughness: 0.25,
-      metalness: 0.1
+      metalness: 0.15
     });
 
     const stemMat = new THREE.MeshStandardMaterial({
@@ -878,14 +905,7 @@ export class MuseumArchitect {
       side: THREE.DoubleSide
     });
 
-    const leafMatHighlight = new THREE.MeshStandardMaterial({
-      color: 0x22c55e,
-      roughness: 0.30,
-      metalness: 0.05,
-      side: THREE.DoubleSide
-    });
-
-    // Helper: 3D Arching Leaf Geometry with V-crease (authentic non-flat 3D foliage)
+    // Helper: 3D Arching Leaf Geometry with V-crease
     const createCurvedLeafGeometry = (length = 0.72, maxWidth = 0.17, archCurve = 0.22, crease = 0.035) => {
       const segments = 6;
       const positions = [];
@@ -927,181 +947,220 @@ export class MuseumArchitect {
       return geo;
     };
 
-    // Shared Geometries for ultra-high performance (instanced across all 19 plants)
+    // BufferGeometry merger helper (reduces 41 meshes per pot down to 5 meshes shared across all pots)
+    const mergeBufferGeometries = (items) => {
+      let totalVerts = 0;
+      let totalIndices = 0;
+      for (const item of items) {
+        totalVerts += item.geometry.attributes.position.count;
+        if (item.geometry.index) totalIndices += item.geometry.index.count;
+      }
+      const pos = new Float32Array(totalVerts * 3);
+      const norm = new Float32Array(totalVerts * 3);
+      const uv = new Float32Array(totalVerts * 2);
+      const idx = new (totalVerts > 65535 ? Uint32Array : Uint16Array)(totalIndices);
+
+      let vOff = 0;
+      let iOff = 0;
+      const v = new THREE.Vector3();
+      const n = new THREE.Vector3();
+      const nMat = new THREE.Matrix3();
+
+      for (const item of items) {
+        const geo = item.geometry;
+        const m = item.matrix || new THREE.Matrix4();
+        nMat.getNormalMatrix(m);
+
+        const posAttr = geo.attributes.position;
+        const normAttr = geo.attributes.normal;
+        const uvAttr = geo.attributes.uv;
+        const count = posAttr.count;
+
+        for (let i = 0; i < count; i++) {
+          v.fromBufferAttribute(posAttr, i).applyMatrix4(m);
+          pos[(vOff + i) * 3] = v.x;
+          pos[(vOff + i) * 3 + 1] = v.y;
+          pos[(vOff + i) * 3 + 2] = v.z;
+
+          if (normAttr) {
+            n.fromBufferAttribute(normAttr, i).applyMatrix3(nMat).normalize();
+            norm[(vOff + i) * 3] = n.x;
+            norm[(vOff + i) * 3 + 1] = n.y;
+            norm[(vOff + i) * 3 + 2] = n.z;
+          }
+
+          if (uvAttr) {
+            uv[(vOff + i) * 2] = uvAttr.getX(i);
+            uv[(vOff + i) * 2 + 1] = uvAttr.getY(i);
+          }
+        }
+
+        if (geo.index) {
+          const idxAttr = geo.index;
+          for (let i = 0; i < idxAttr.count; i++) {
+            idx[iOff + i] = idxAttr.getX(i) + vOff;
+          }
+          iOff += idxAttr.count;
+        }
+        vOff += count;
+      }
+
+      const merged = new THREE.BufferGeometry();
+      merged.setAttribute('position', new THREE.BufferAttribute(pos, 3));
+      merged.setAttribute('normal', new THREE.BufferAttribute(norm, 3));
+      merged.setAttribute('uv', new THREE.BufferAttribute(uv, 2));
+      merged.setIndex(new THREE.BufferAttribute(idx, 1));
+      return merged;
+    };
+
+    // 1. Pot Body & Soil (Merged into 1 geometry)
+    const geoPot = new THREE.CylinderGeometry(0.38, 0.27, 0.86, 20);
+    const mPot = new THREE.Matrix4().makeTranslation(0, 0.44, 0);
+    const geoSoil = new THREE.CylinderGeometry(0.36, 0.36, 0.04, 20);
+    const mSoil = new THREE.Matrix4().makeTranslation(0, 0.85, 0);
+    const geoPotBody = mergeBufferGeometries([
+      { geometry: geoPot, matrix: mPot },
+      { geometry: geoSoil, matrix: mSoil }
+    ]);
+
+    // 2. Gold Trim Accents (Base, Waist, Rim merged into 1 geometry)
+    const geoBase = new THREE.CylinderGeometry(0.29, 0.31, 0.06, 20);
+    const mBase = new THREE.Matrix4().makeTranslation(0, 0.03, 0);
+    const geoWaist = new THREE.CylinderGeometry(0.342, 0.342, 0.025, 20);
+    const mWaist = new THREE.Matrix4().makeTranslation(0, 0.48, 0);
+    const geoRim = new THREE.CylinderGeometry(0.40, 0.40, 0.06, 20);
+    const mRim = new THREE.Matrix4().makeTranslation(0, 0.86, 0);
+    const geoGoldTrim = mergeBufferGeometries([
+      { geometry: geoBase, matrix: mBase },
+      { geometry: geoWaist, matrix: mWaist },
+      { geometry: geoRim, matrix: mRim }
+    ]);
+
+    // 3. Stems (Center trunk + 4 upright outer bamboo stems merged into 1 geometry)
+    const stemItems = [];
+    const geoStemCenter = new THREE.CylinderGeometry(0.028, 0.038, 1.40, 8);
+    const mCenter = new THREE.Matrix4().makeTranslation(0, 0.85 + 0.70, 0);
+    stemItems.push({ geometry: geoStemCenter, matrix: mCenter });
+
+    const caneRadius = 0.065;
+    for (let c = 0; c < 4; c++) {
+      const cAngle = c * (Math.PI / 2);
+      const cx = Math.cos(cAngle) * caneRadius;
+      const cz = Math.sin(cAngle) * caneRadius;
+      const geoStemOuter = new THREE.CylinderGeometry(0.018, 0.026, 1.05, 8);
+      const mOuter = new THREE.Matrix4().makeTranslation(cx, 0.85 + 0.525, cz);
+      stemItems.push({ geometry: geoStemOuter, matrix: mOuter });
+    }
+    const geoStems = mergeBufferGeometries(stemItems);
+
+    // 4. Foliage - Deep Green Leaves (Tier 1: 6 leaves + Tier 2: 4 leaves merged)
     const geoLeafLarge = createCurvedLeafGeometry(0.72, 0.17, 0.24, 0.038);
     const geoLeafMid = createCurvedLeafGeometry(0.58, 0.14, 0.18, 0.030);
     const geoLeafCrown = createCurvedLeafGeometry(0.44, 0.11, 0.12, 0.022);
 
-    const geoPot = new THREE.CylinderGeometry(0.38, 0.27, 0.86, 24);
-    const geoRim = new THREE.CylinderGeometry(0.40, 0.40, 0.06, 24);
-    const geoBase = new THREE.CylinderGeometry(0.29, 0.31, 0.06, 24);
-    const geoWaist = new THREE.CylinderGeometry(0.342, 0.342, 0.025, 24);
-    const geoSoil = new THREE.CylinderGeometry(0.36, 0.36, 0.04, 24);
-    const geoStemCenter = new THREE.CylinderGeometry(0.028, 0.038, 1.40, 12);
-    const geoStemOuter = new THREE.CylinderGeometry(0.018, 0.026, 1.05, 10);
-    const geoPebble = new THREE.SphereGeometry(0.045, 8, 8);
-    geoPebble.scale(1, 0.45, 1);
+    const darkLeafItems = [];
+    const tier1Count = 6;
+    for (let i = 0; i < tier1Count; i++) {
+      const angle = i * ((Math.PI * 2) / tier1Count);
+      const m = new THREE.Matrix4();
+      m.makeRotationFromEuler(new THREE.Euler(-0.48, Math.PI / 2 - angle, 0, 'YXZ'));
+      m.setPosition(Math.cos(angle) * 0.08, 1.25, Math.sin(angle) * 0.08);
+      darkLeafItems.push({ geometry: geoLeafLarge, matrix: m });
+    }
+    const tier2Count = 8;
+    for (let i = 0; i < tier2Count; i += 2) {
+      const angle = (i + 0.5) * ((Math.PI * 2) / tier2Count);
+      const m = new THREE.Matrix4();
+      m.makeRotationFromEuler(new THREE.Euler(-0.35, Math.PI / 2 - angle, 0, 'YXZ'));
+      m.setPosition(Math.cos(angle) * 0.06, 1.55, Math.sin(angle) * 0.06);
+      darkLeafItems.push({ geometry: geoLeafLarge, matrix: m });
+    }
+    const geoFoliageDark = mergeBufferGeometries(darkLeafItems);
+
+    // 5. Foliage - Vibrant/Highlight Leaves (Tier 2: 4 leaves + Tier 3: 6 leaves + Tier 4: 3 spires merged)
+    const vibrantLeafItems = [];
+    for (let i = 1; i < tier2Count; i += 2) {
+      const angle = (i + 0.5) * ((Math.PI * 2) / tier2Count);
+      const m = new THREE.Matrix4();
+      m.makeRotationFromEuler(new THREE.Euler(-0.35, Math.PI / 2 - angle, 0, 'YXZ'));
+      m.setPosition(Math.cos(angle) * 0.06, 1.55, Math.sin(angle) * 0.06);
+      vibrantLeafItems.push({ geometry: geoLeafLarge, matrix: m });
+    }
+    const tier3Count = 6;
+    for (let i = 0; i < tier3Count; i++) {
+      const angle = i * ((Math.PI * 2) / tier3Count);
+      const m = new THREE.Matrix4();
+      m.makeRotationFromEuler(new THREE.Euler(-0.22, Math.PI / 2 - angle, 0, 'YXZ'));
+      m.setPosition(Math.cos(angle) * 0.04, 1.85, Math.sin(angle) * 0.04);
+      vibrantLeafItems.push({ geometry: geoLeafMid, matrix: m });
+    }
+    const tier4Count = 3;
+    for (let i = 0; i < tier4Count; i++) {
+      const angle = (i * ((Math.PI * 2) / tier4Count)) + 0.3;
+      const m = new THREE.Matrix4();
+      m.makeRotationFromEuler(new THREE.Euler(-0.08, Math.PI / 2 - angle, 0, 'YXZ'));
+      m.setPosition(Math.cos(angle) * 0.02, 2.10, Math.sin(angle) * 0.02);
+      vibrantLeafItems.push({ geometry: geoLeafCrown, matrix: m });
+    }
+    const geoFoliageVibrant = mergeBufferGeometries(vibrantLeafItems);
 
     const createPlant = (x, z) => {
       const p = new THREE.Group();
       p.position.set(x, 0, z);
 
-      // 1. Luxury Planter Body
-      const potMesh = new THREE.Mesh(geoPot, potMat);
-      potMesh.position.y = 0.44;
+      const potMesh = new THREE.Mesh(geoPotBody, potMat);
       potMesh.castShadow = true;
       potMesh.receiveShadow = true;
       p.add(potMesh);
 
-      // 2. Gold Base Plinth
-      const baseMesh = new THREE.Mesh(geoBase, this.matGold);
-      baseMesh.position.y = 0.03;
-      p.add(baseMesh);
+      const goldMesh = new THREE.Mesh(geoGoldTrim, this.matGold);
+      p.add(goldMesh);
 
-      // 3. Gold Waist Accent Inlay
-      const waistMesh = new THREE.Mesh(geoWaist, this.matGold);
-      waistMesh.position.y = 0.48;
-      p.add(waistMesh);
+      const stemMesh = new THREE.Mesh(geoStems, stemMat);
+      stemMesh.castShadow = true;
+      p.add(stemMesh);
 
-      // 4. Gold Top Rim Collar
-      const rimMesh = new THREE.Mesh(geoRim, this.matGold);
-      rimMesh.position.y = 0.86;
-      p.add(rimMesh);
+      const folDarkMesh = new THREE.Mesh(geoFoliageDark, leafMatDark);
+      folDarkMesh.castShadow = true;
+      p.add(folDarkMesh);
 
-      // 5. Dark Soil Bed
-      const soilMesh = new THREE.Mesh(geoSoil, soilMat);
-      soilMesh.position.y = 0.85;
-      p.add(soilMesh);
+      const folVibrantMesh = new THREE.Mesh(geoFoliageVibrant, leafMatVibrant);
+      folVibrantMesh.castShadow = true;
+      p.add(folVibrantMesh);
 
-      // 6. Polished River Pebbles on Soil
-      const pebbleOffsets = [
-        [0.15, 0.12], [-0.14, 0.14], [0.16, -0.11], [-0.15, -0.13],
-        [0.0, 0.19], [0.0, -0.19], [0.20, 0.0], [-0.20, 0.0]
-      ];
-      pebbleOffsets.forEach(([px, pz]) => {
-        const pebble = new THREE.Mesh(geoPebble, pebbleMat);
-        pebble.position.set(px, 0.87, pz);
-        pebble.rotation.y = Math.random() * Math.PI;
-        p.add(pebble);
-      });
-
-      // 7. Central Upright Trunk (Strictly vertical, NO tilt)
-      const stemCenter = new THREE.Mesh(geoStemCenter, stemMat);
-      stemCenter.position.set(0, 0.85 + 0.70, 0);
-      stemCenter.castShadow = true;
-      p.add(stemCenter);
-
-      // 8. Outer Balanced Bamboo Canes (4 cardinal directions, strictly upright and symmetrical)
-      const caneRadius = 0.065;
-      for (let c = 0; c < 4; c++) {
-        const cAngle = c * (Math.PI / 2);
-        const cx = Math.cos(cAngle) * caneRadius;
-        const cz = Math.sin(cAngle) * caneRadius;
-        const stemOuter = new THREE.Mesh(geoStemOuter, stemMat);
-        stemOuter.position.set(cx, 0.85 + 0.525, cz);
-        stemOuter.castShadow = true;
-        p.add(stemOuter);
-      }
-
-      // 9. Structured Multi-Tiered Foliage (Strict 360-degree radial balance, upright and graceful)
-      // Tier 1: Lower tier arching fronds (6 leaves at 60 deg, arching outward gracefully)
-      const tier1Count = 6;
-      for (let i = 0; i < tier1Count; i++) {
-        const angle = i * ((Math.PI * 2) / tier1Count);
-        const leaf = new THREE.Mesh(geoLeafLarge, leafMatDark);
-        leaf.position.set(Math.cos(angle) * 0.08, 1.25, Math.sin(angle) * 0.08);
-        leaf.rotation.order = 'YXZ';
-        leaf.rotation.y = Math.PI / 2 - angle;
-        leaf.rotation.x = -0.48; // ~27 deg upward arch
-        leaf.rotation.z = 0;
-        leaf.castShadow = true;
-        p.add(leaf);
-      }
-
-      // Tier 2: Mid tier lush foliage (8 leaves at 45 deg, staggered by 22.5 deg)
-      const tier2Count = 8;
-      for (let i = 0; i < tier2Count; i++) {
-        const angle = (i + 0.5) * ((Math.PI * 2) / tier2Count);
-        const mat = i % 2 === 0 ? leafMatDark : leafMatVibrant;
-        const leaf = new THREE.Mesh(geoLeafLarge, mat);
-        leaf.position.set(Math.cos(angle) * 0.06, 1.55, Math.sin(angle) * 0.06);
-        leaf.rotation.order = 'YXZ';
-        leaf.rotation.y = Math.PI / 2 - angle;
-        leaf.rotation.x = -0.35; // ~20 deg upward arch
-        leaf.rotation.z = 0;
-        leaf.castShadow = true;
-        p.add(leaf);
-      }
-
-      // Tier 3: Upper tier crown fronds (6 leaves at 60 deg)
-      const tier3Count = 6;
-      for (let i = 0; i < tier3Count; i++) {
-        const angle = i * ((Math.PI * 2) / tier3Count);
-        const mat = i % 2 === 0 ? leafMatVibrant : leafMatHighlight;
-        const leaf = new THREE.Mesh(geoLeafMid, mat);
-        leaf.position.set(Math.cos(angle) * 0.04, 1.85, Math.sin(angle) * 0.04);
-        leaf.rotation.order = 'YXZ';
-        leaf.rotation.y = Math.PI / 2 - angle;
-        leaf.rotation.x = -0.22; // ~12 deg upright reach
-        leaf.rotation.z = 0;
-        leaf.castShadow = true;
-        p.add(leaf);
-      }
-
-      // Tier 4: Top center spires (3 young erect shoot leaves pointing almost straight up)
-      const tier4Count = 3;
-      for (let i = 0; i < tier4Count; i++) {
-        const angle = (i * ((Math.PI * 2) / tier4Count)) + 0.3;
-        const leaf = new THREE.Mesh(geoLeafCrown, leafMatHighlight);
-        leaf.position.set(Math.cos(angle) * 0.02, 2.10, Math.sin(angle) * 0.02);
-        leaf.rotation.order = 'YXZ';
-        leaf.rotation.y = Math.PI / 2 - angle;
-        leaf.rotation.x = -0.08; // ~5 deg upright spire
-        leaf.rotation.z = 0;
-        leaf.castShadow = true;
-        p.add(leaf);
-      }
-
-      plantsGroup.add(p);
+      return p;
     };
 
-    // Plant Coordinates - Exactly flush against wall baseboards and corners (3cm clearance)
-    const plantCoords = [
-      // 1. Khu 2 (North Hall) - Back corners, Portal side walls
-      [-16.93, -53.93], // Back wall North-West corner (z adjusted for z=-55)
-      [ 16.93, -53.93], // Back wall North-East corner
-      [-16.93, -15.00], // Entrance Portal West wall
-      [ 16.93, -15.00], // Entrance Portal East wall
+    // Plant coordinates per zone
+    const zoneCoords = {
+      khu2: [
+        [-16.93, -53.93], [16.93, -53.93],
+        [-16.93, -15.00], [16.93, -15.00]
+      ],
+      khu1: [
+        [-48.93, -23.93], [-48.93, 23.93],
+        [-19.00, -23.93], [-19.00, 23.93],
+        [-35.00, -12.43], [-35.00, 12.43]
+      ],
+      khu3: [
+        [48.93, -23.93], [48.93, 23.93],
+        [19.00, -23.93], [19.00, 23.93]
+      ],
+      khu4: [
+        [48.93, 39.00], [48.93, 80.93],
+        [23.00, 80.93], [23.00, 39.00]
+      ],
+      khu6: [
+        [-48.93, 39.00], [-48.93, 80.93],
+        [-23.00, 80.93], [-23.00, 39.00]
+      ]
+    };
 
-      // 2. Khu 1 (West Hall) - Far corners, Partition ends, Portal corners
-      [-48.93, -23.93], // Far North-West corner
-      [-48.93,  23.93], // Far South-West corner
-      [-19.00, -23.93], // East Portal North wall
-      [-19.00,  23.93], // East Portal South wall
-      [-35.00, -12.43], // Center Partition North end
-      [-35.00,  12.43], // Center Partition South end
-
-      // 3. Khu 3 (East Hall) - Far corners, Portal corners (partition removed)
-      [ 48.93, -23.93], // Far North-East corner
-      [ 48.93,  23.93], // Far South-East corner
-      [ 19.00, -23.93], // West Portal North wall
-      [ 19.00,  23.93], // West Portal South wall
-
-      // 4. Khu 4 (Đảng bộ - SE) corners
-      [ 48.93,  39.00], // NE corner
-      [ 48.93,  80.93], // SE corner
-      [ 23.00,  80.93], // SW corner
-      [ 23.00,  39.00], // NW corner
-
-      // 5. Khu 6 (CĐ+ĐTN - SW) corners
-      [-48.93,  39.00], // NW corner
-      [-48.93,  80.93], // SW corner
-      [-23.00,  80.93], // SE corner
-      [-23.00,  39.00], // NE corner
-    ];
-
-    plantCoords.forEach(([x, z]) => createPlant(x, z));
-    parent.add(plantsGroup);
+    for (const [zoneKey, coords] of Object.entries(zoneCoords)) {
+      const grp = this.plantZoneGroups[zoneKey];
+      coords.forEach(([x, z]) => grp.add(createPlant(x, z)));
+      parent.add(grp);
+    }
   }
 
   /**
@@ -1608,7 +1667,7 @@ export class MuseumArchitect {
     ctx.fill();
 
     ctx.fillStyle = gold;
-    ctx.font = 'bold 54px serif';
+    ctx.font = 'bold 54px "Be Vietnam Pro", sans-serif';
     ctx.textAlign = 'center';
     ctx.textBaseline = 'middle';
     ctx.fillText(type === 'souvenir' ? '⚡' : '🎨', 512, 250);
@@ -1619,7 +1678,7 @@ export class MuseumArchitect {
     ctx.shadowOffsetY = 4;
 
     ctx.fillStyle = gold;
-    ctx.font = 'bold 46px "Playfair Display", "Inter", serif';
+    ctx.font = 'bold 46px "Be Vietnam Pro", sans-serif';
     ctx.fillText(title, 512, 390);
 
     ctx.fillStyle = '#ffffff';
@@ -1632,7 +1691,7 @@ export class MuseumArchitect {
 
     ctx.fillStyle = 'rgba(250, 204, 21, 0.75)';
     ctx.font = 'italic 18px "Inter", sans-serif';
-    ctx.fillText('★ KHÔNG GIAN SỐ HÓA TRUYỀN THỐNG 3D ★', 512, 630);
+    ctx.fillText('• KHÔNG GIAN SỐ HÓA TRUYỀN THỐNG 3D •', 512, 630);
 
     const texture = new THREE.CanvasTexture(canvas);
     texture.anisotropy = 4;
@@ -1661,7 +1720,7 @@ export class MuseumArchitect {
 
     // Engraved dark text
     ctx.fillStyle = '#2d1f05';
-    ctx.font = 'bold 40px "Playfair Display", "Inter", serif';
+    ctx.font = 'bold 40px "Be Vietnam Pro", sans-serif';
     ctx.textAlign = 'center';
     ctx.textBaseline = 'middle';
     ctx.shadowColor = 'rgba(255, 255, 255, 0.6)';
@@ -1684,6 +1743,7 @@ export class MuseumArchitect {
   buildHCMCulturalZone(parent) {
     const hcmGroup = new THREE.Group();
     hcmGroup.name = 'HCMCulturalZone';
+    this.hcmGroup = hcmGroup;
     const h = 8.0;
 
     // Deep crimson red wall material (Truyền thống Hồ Chí Minh)
@@ -1865,30 +1925,117 @@ export class MuseumArchitect {
     drawCorner(80, 1120);
     drawCorner(1968, 1120);
 
-    // Central Gold Star
-    pctx.fillStyle = '#facc15';
-    pctx.shadowColor = 'rgba(250, 204, 21, 0.6)';
-    pctx.shadowBlur = 25;
-    pctx.font = 'bold 150px serif';
-    pctx.textAlign = 'center';
-    pctx.textBaseline = 'middle';
-    pctx.fillText('★', 1024, 220);
+    // Central Flags: Cờ Đảng (trái) và Quốc kỳ (phải) (Mục D)
+    const flagW = 300;
+    const flagH = 200;
+    const flagGap = 40;
+    const centerY = 220;
 
-    pctx.shadowBlur = 0; // Reset shadow
+    // Cán cờ vàng cắm chéo nhẹ ±12°
+    pctx.save();
+    pctx.strokeStyle = '#facc15';
+    pctx.lineWidth = 10;
+    pctx.lineCap = 'round';
+    // Cán cờ trái (+12°)
+    pctx.beginPath();
+    pctx.moveTo(1024 - flagGap / 2 - flagW - 10, centerY - flagH / 2 - 20);
+    pctx.lineTo(1024 - flagGap / 2 + 30, centerY + flagH / 2 + 80);
+    pctx.stroke();
+    // Cán cờ phải (-12°)
+    pctx.beginPath();
+    pctx.moveTo(1024 + flagGap / 2 + flagW + 10, centerY - flagH / 2 - 20);
+    pctx.lineTo(1024 + flagGap / 2 - 30, centerY + flagH / 2 + 80);
+    pctx.stroke();
+    pctx.restore();
+
+    // Vị trí cờ Đảng (trái)
+    const leftX = 1024 - flagGap / 2 - flagW;
+    const leftY = centerY - flagH / 2;
+    // Vị trí Quốc kỳ (phải)
+    const rightX = 1024 + flagGap / 2;
+    const rightY = centerY - flagH / 2;
+
+    // Vẽ nền đỏ chuẩn cho 2 lá cờ
+    pctx.fillStyle = '#da251d';
+    pctx.fillRect(leftX, leftY, flagW, flagH);
+    pctx.fillRect(rightX, rightY, flagW, flagH);
+
+    pctx.strokeStyle = '#facc15';
+    pctx.lineWidth = 2;
+    pctx.strokeRect(leftX, leftY, flagW, flagH);
+    pctx.strokeRect(rightX, rightY, flagW, flagH);
+
+    // Vẽ biểu tượng dự phòng sắc nét
+    // 1. Ngôi sao vàng năm cánh cờ Tổ quốc
+    const drawStar5 = (ctx, cx, cy, r) => {
+      ctx.save();
+      ctx.fillStyle = '#ffff00';
+      ctx.beginPath();
+      for (let i = 0; i < 5; i++) {
+        const aOuter = -Math.PI / 2 + (i * 2 * Math.PI) / 5;
+        const aInner = aOuter + Math.PI / 5;
+        const xO = cx + r * Math.cos(aOuter);
+        const yO = cy + r * Math.sin(aOuter);
+        const xI = cx + (r * 0.382) * Math.cos(aInner);
+        const yI = cy + (r * 0.382) * Math.sin(aInner);
+        if (i === 0) ctx.moveTo(xO, yO);
+        else ctx.lineTo(xO, yO);
+        ctx.lineTo(xI, yI);
+      }
+      ctx.closePath();
+      ctx.fill();
+      ctx.restore();
+    };
+    drawStar5(pctx, rightX + flagW / 2, rightY + flagH / 2, 60);
+
+    // 2. Búa liềm cờ Đảng
+    const drawSickleHammer = (ctx, cx, cy, sz) => {
+      ctx.save();
+      ctx.translate(cx, cy);
+      ctx.strokeStyle = '#ffff00';
+      ctx.fillStyle = '#ffff00';
+      ctx.lineWidth = 14;
+      ctx.lineCap = 'round';
+      ctx.beginPath();
+      ctx.arc(0, 0, sz * 0.7, -Math.PI * 0.8, Math.PI * 0.3, false);
+      ctx.stroke();
+      ctx.beginPath();
+      ctx.moveTo(-sz * 0.6, sz * 0.6);
+      ctx.lineTo(sz * 0.5, -sz * 0.5);
+      ctx.stroke();
+      ctx.fillRect(sz * 0.3, -sz * 0.7, sz * 0.4, sz * 0.25);
+      ctx.restore();
+    };
+    drawSickleHammer(pctx, leftX + flagW / 2, leftY + flagH / 2, 50);
+
+    // Load file logo cờ chính thức
+    const imgDang = new Image();
+    imgDang.onload = () => {
+      pctx.drawImage(imgDang, leftX, leftY, flagW, flagH);
+      portraitTex.needsUpdate = true;
+    };
+    imgDang.src = 'assets/logo/co_dang.png';
+
+    const imgQuocKy = new Image();
+    imgQuocKy.onload = () => {
+      pctx.drawImage(imgQuocKy, rightX, rightY, flagW, flagH);
+      portraitTex.needsUpdate = true;
+    };
+    imgQuocKy.src = 'assets/logo/co_to_quoc.png';
 
     // Title: KHÔNG GIAN VĂN HÓA
     pctx.fillStyle = '#ffffff';
-    pctx.font = 'bold 64px "Playfair Display", "Inter", serif';
+    pctx.font = 'bold 64px "Be Vietnam Pro", sans-serif';
     pctx.fillText('KHÔNG GIAN VĂN HÓA', 1024, 420);
 
     // Title: HỒ CHÍ MINH
     pctx.fillStyle = '#facc15';
-    pctx.font = 'bold 105px "Playfair Display", "Inter", serif';
+    pctx.font = 'bold 105px "Be Vietnam Pro", sans-serif';
     pctx.fillText('HỒ CHÍ MINH', 1024, 550);
 
     // Dates
     pctx.fillStyle = 'rgba(255, 255, 255, 0.9)';
-    pctx.font = '600 42px "Inter", sans-serif';
+    pctx.font = '600 42px "Be Vietnam Pro", sans-serif';
     pctx.fillText('19/05/1890  —  02/09/1969', 1024, 690);
 
     // Divider with central lotus diamond
@@ -1905,23 +2052,23 @@ export class MuseumArchitect {
     pctx.stroke();
 
     pctx.fillStyle = '#facc15';
-    pctx.font = 'bold 32px serif';
+    pctx.font = 'bold 32px "Be Vietnam Pro", sans-serif';
     pctx.fillText('◆', 1024, 770);
 
     // Iconic quote
     pctx.fillStyle = '#ffffff';
-    pctx.font = 'italic 500 44px "Playfair Display", "Inter", serif';
+    pctx.font = 'italic 500 44px "Be Vietnam Pro", sans-serif';
     pctx.fillText('"Không có gì quý hơn Độc lập, Tự do"', 1024, 870);
 
     // Secondary guidance quote
     pctx.fillStyle = '#fbbf24';
-    pctx.font = '500 30px "Inter", sans-serif';
+    pctx.font = '500 30px "Be Vietnam Pro", sans-serif';
     pctx.fillText('Học tập và làm theo tư tưởng, đạo đức, phong cách Hồ Chí Minh', 1024, 950);
 
-    // Footer signature
+    // Footer signature (thay sao bằng •)
     pctx.fillStyle = 'rgba(212, 175, 55, 0.85)';
-    pctx.font = 'bold 26px "Inter", sans-serif';
-    pctx.fillText('★ CÔNG TY ĐIỆN LỰC VŨNG TÀU — PHÒNG TRUYỀN THỐNG SỐ HÓA ★', 1024, 1070);
+    pctx.font = 'bold 26px "Be Vietnam Pro", sans-serif';
+    pctx.fillText('• CÔNG TY ĐIỆN LỰC VŨNG TÀU — PHÒNG TRUYỀN THỐNG SỐ HÓA •', 1024, 1070);
 
     const portraitTex = new THREE.CanvasTexture(portraitCanvas);
     portraitTex.colorSpace = THREE.SRGBColorSpace;
@@ -1993,7 +2140,7 @@ export class MuseumArchitect {
 
     // Title
     ctx.fillStyle = '#ffffff';
-    ctx.font = 'bold 64px "Playfair Display", "Inter", serif';
+    ctx.font = 'bold 64px "Be Vietnam Pro", sans-serif';
     ctx.textAlign = 'center';
     ctx.textBaseline = 'middle';
     ctx.fillText('KHU VỰC 4: KHÔNG GIAN VĂN HÓA HỒ CHÍ MINH', 1024, 195);
@@ -2059,7 +2206,7 @@ export class MuseumArchitect {
 
       // Title
       ctx.fillStyle = '#ffffff';
-      ctx.font = 'bold 48px "Playfair Display", serif';
+      ctx.font = 'bold 48px "Be Vietnam Pro", sans-serif';
       ctx.fillText(p.title, 512, 340);
 
       const tex = new THREE.CanvasTexture(canvas);
@@ -2123,6 +2270,7 @@ export class MuseumArchitect {
   buildZone3SmartGrid(parent) {
     const k3Group = new THREE.Group();
     k3Group.name = 'Zone3_SmartGrid_Architecture';
+    this.k3SmartGridGroup = k3Group;
 
     // 1. Epoxy floor overlay for Khu 3 (bounds: x 18..50, z -25..25 -> center 34, 0)
     const floorGeo = new THREE.PlaneGeometry(32, 50);
@@ -2132,37 +2280,32 @@ export class MuseumArchitect {
     floorMesh.receiveShadow = true;
     k3Group.add(floorMesh);
 
-    // 2. Animated luminous energy traces on the floor from entrance (x=18) to milestone wall (x=35)
+    // 2. Vạch dẫn đường màu #1E40A0 với độ trong 0.5, chạy chậm (Mục A.17)
     const canvas = document.createElement('canvas');
     canvas.width = 512;
     canvas.height = 128;
     const ctx = canvas.getContext('2d');
     ctx.clearRect(0, 0, 512, 128);
 
-    // Dynamic glowing cyber pulse gradient
+    // Vạch xanh EVN với gradient nhẹ
     const grad = ctx.createLinearGradient(0, 0, 512, 0);
-    grad.addColorStop(0, 'rgba(34, 211, 238, 0.05)');
-    grad.addColorStop(0.3, 'rgba(34, 211, 238, 0.85)');
-    grad.addColorStop(0.5, 'rgba(255, 255, 255, 0.95)');
-    grad.addColorStop(0.7, 'rgba(34, 211, 238, 0.85)');
-    grad.addColorStop(1, 'rgba(34, 211, 238, 0.05)');
+    grad.addColorStop(0, 'rgba(30, 64, 160, 0.1)');
+    grad.addColorStop(0.3, 'rgba(30, 64, 160, 0.5)');
+    grad.addColorStop(0.5, 'rgba(45, 85, 200, 0.6)');
+    grad.addColorStop(0.7, 'rgba(30, 64, 160, 0.5)');
+    grad.addColorStop(1, 'rgba(30, 64, 160, 0.1)');
     ctx.fillStyle = grad;
     ctx.fillRect(0, 56, 512, 16);
 
-    // Outer glow
-    ctx.fillStyle = 'rgba(34, 211, 238, 0.25)';
-    ctx.fillRect(0, 40, 512, 48);
-
-    // Arrow chev-markers
-    ctx.fillStyle = '#22d3ee';
+    ctx.fillStyle = 'rgba(30, 64, 160, 0.5)';
     for (let bx = 60; bx < 512; bx += 128) {
       ctx.beginPath();
-      ctx.moveTo(bx, 48);
-      ctx.lineTo(bx + 20, 64);
-      ctx.lineTo(bx, 80);
-      ctx.lineTo(bx + 8, 80);
-      ctx.lineTo(bx + 28, 64);
-      ctx.lineTo(bx + 8, 48);
+      ctx.moveTo(bx, 50);
+      ctx.lineTo(bx + 18, 64);
+      ctx.lineTo(bx, 78);
+      ctx.lineTo(bx + 8, 78);
+      ctx.lineTo(bx + 26, 64);
+      ctx.lineTo(bx + 8, 50);
       ctx.closePath();
       ctx.fill();
     }
@@ -2176,44 +2319,36 @@ export class MuseumArchitect {
     const pulseMat = new THREE.MeshBasicMaterial({
       map: pulseTex,
       transparent: true,
-      opacity: 0.9,
-      blending: THREE.AdditiveBlending,
+      opacity: 0.5,
       depthWrite: false
     });
 
-    // 3 parallel pathways running along X from x=18 to x=35
-    const pathZList = [-5.0, 0.0, 5.0];
+    // 2 đường chạy dọc hai bên hành lang (z = -6.5 và z = 6.5) tránh chắn sa bàn (26, 0)
+    const pathZList = [-6.5, 6.5];
     pathZList.forEach(pz => {
-      const pathGeo = new THREE.PlaneGeometry(16.8, 0.6);
+      const pathGeo = new THREE.PlaneGeometry(16.8, 0.5);
       const pathMesh = new THREE.Mesh(pathGeo, pulseMat);
       pathMesh.rotation.x = -Math.PI / 2;
-      pathMesh.position.set(26.5, 0.02, pz);
+      pathMesh.position.set(26.5, 0.018, pz);
       k3Group.add(pathMesh);
     });
 
-    // Additional branch connecting toward Sa bàn at x=43
-    const branchGeo = new THREE.PlaneGeometry(16.0, 0.6);
-    const branchMesh = new THREE.Mesh(branchGeo, pulseMat);
-    branchMesh.rotation.x = -Math.PI / 2;
-    branchMesh.position.set(38.0, 0.02, 0.0);
-    k3Group.add(branchMesh);
-
-    // 3. Ba trụ thông tin mỏng gần cửa (x = 22)
+    // 3. Ba trụ thông tin nền trắng viền xanh EVN, dời sang bên (x=21.5, z=-7.0, -9.5, 7.0) (Mục A.22)
     const totemsData = [
       {
-        z: -6.0,
+        z: -7.0,
         title: 'TỰ ĐỘNG HÓA LƯỚI ĐIỆN',
         slogan: 'Hiện đại hóa và tự động hóa hệ thống điện phân phối',
         sub: 'SMART GRID AUTOMATION'
       },
       {
-        z: 0.0,
+        z: -9.5,
         title: 'TRUNG TÂM ĐIỀU KHIỂN',
         slogan: 'Vận hành hệ thống điện thông minh, tin cậy và an toàn',
         sub: 'SCADA / DMS CONTROL CENTER'
       },
       {
-        z: 6.0,
+        z: 7.0,
         title: 'DỊCH VỤ KHÁCH HÀNG SỐ',
         slogan: 'Chuyển đổi số toàn diện, nâng cao trải nghiệm khách hàng',
         sub: 'DIGITAL CUSTOMER SERVICES'
@@ -2222,17 +2357,17 @@ export class MuseumArchitect {
 
     totemsData.forEach(td => {
       const totem = this.createInformationTotem(td);
-      totem.position.set(22.0, 0, td.z);
+      totem.position.set(21.5, 0, td.z);
       k3Group.add(totem);
     });
 
-    // 4. Khe đèn thẳng trên trần (linear LED tracks)
+    // 4. Phào trần vạch mảnh 3cm màu #38BDF8, emissiveIntensity 0.4
     const ceilingZList = [-12.0, 0.0, 12.0];
     const trackMat = new THREE.MeshStandardMaterial({
-      color: 0x22d3ee,
-      emissive: new THREE.Color(0x22d3ee),
-      emissiveIntensity: 1.2,
-      roughness: 0.2
+      color: 0x38bdf8,
+      emissive: new THREE.Color(0x38bdf8),
+      emissiveIntensity: 0.4,
+      roughness: 0.3
     });
     ceilingZList.forEach(cz => {
       const trackGeo = new THREE.BoxGeometry(26.0, 0.1, 0.25);
@@ -2250,81 +2385,73 @@ export class MuseumArchitect {
     const h = 2.4;
     const d = 0.16;
 
-    // Chân đế kim loại màu titanium sẫm
+    // Chân đế kim loại màu xanh EVN
     const baseMat = new THREE.MeshStandardMaterial({
-      color: 0x0f172a,
-      roughness: 0.4,
-      metalness: 0.8
+      color: 0x1e40a0,
+      roughness: 0.3,
+      metalness: 0.5
     });
     const baseMesh = new THREE.Mesh(new THREE.BoxGeometry(w + 0.15, 0.12, d + 0.2), baseMat);
     baseMesh.position.y = 0.06;
     group.add(baseMesh);
 
-    // Viền LED phát sáng quanh đế
-    const baseLed = new THREE.Mesh(new THREE.BoxGeometry(w + 0.18, 0.03, d + 0.22), this.matCyanLED);
+    // Viền xanh cyan mảnh quanh đế
+    const baseLed = new THREE.Mesh(new THREE.BoxGeometry(w + 0.18, 0.03, d + 0.22), this.matCorniceKhu3);
     baseLed.position.y = 0.015;
     group.add(baseLed);
 
-    // Thân trụ thủy tinh đen obsidian
+    // Thân trụ nền trắng (Mục A.22)
     const bodyMat = new THREE.MeshStandardMaterial({
-      color: 0x070c18,
-      roughness: 0.25,
-      metalness: 0.85
+      color: 0xffffff,
+      roughness: 0.35,
+      metalness: 0.10
     });
     const bodyMesh = new THREE.Mesh(new THREE.BoxGeometry(w, h, d), bodyMat);
     bodyMesh.position.y = h / 2 + 0.12;
     group.add(bodyMesh);
 
-    // Hai dải LED cyan đứng dọc 2 cạnh bên
+    // Hai dải viền xanh EVN dọc 2 cạnh bên
     const sideLedGeo = new THREE.BoxGeometry(0.025, h, d + 0.01);
-    const leftLed = new THREE.Mesh(sideLedGeo, this.matCyanLED);
+    const leftLed = new THREE.Mesh(sideLedGeo, this.matBaseboardKhu3);
     leftLed.position.set(-w / 2, h / 2 + 0.12, 0);
     group.add(leftLed);
 
-    const rightLed = new THREE.Mesh(sideLedGeo, this.matCyanLED);
+    const rightLed = new THREE.Mesh(sideLedGeo, this.matBaseboardKhu3);
     rightLed.position.set(w / 2, h / 2 + 0.12, 0);
     group.add(rightLed);
 
-    // Canvas hiển thị khẩu hiệu và thông tin
+    // Canvas hiển thị thông tin nền trắng, viền xanh EVN
     const c = document.createElement('canvas');
     c.width = 800;
     c.height = 1400;
     const ctx = c.getContext('2d');
 
-    // Nền gradient sẫm hi-tech
-    const bgGrad = ctx.createLinearGradient(0, 0, 0, 1400);
-    bgGrad.addColorStop(0, '#060a14');
-    bgGrad.addColorStop(0.5, '#0b1329');
-    bgGrad.addColorStop(1, '#060a14');
-    ctx.fillStyle = bgGrad;
+    // Nền trắng tinh khiết
+    ctx.fillStyle = '#ffffff';
     ctx.fillRect(0, 0, 800, 1400);
 
-    // Khung viền thanh lịch
-    ctx.strokeStyle = 'rgba(34, 211, 238, 0.4)';
-    ctx.lineWidth = 4;
+    // Khung viền xanh EVN
+    ctx.strokeStyle = '#1e40a0';
+    ctx.lineWidth = 6;
     ctx.strokeRect(24, 24, 752, 1352);
 
-    ctx.strokeStyle = 'rgba(34, 211, 238, 0.15)';
-    ctx.lineWidth = 1.5;
+    ctx.strokeStyle = 'rgba(56, 189, 248, 0.4)';
+    ctx.lineWidth = 2;
     ctx.strokeRect(36, 36, 728, 1328);
 
     // Header EVNHCMC
-    ctx.fillStyle = '#22d3ee';
+    ctx.fillStyle = '#1e40a0';
     ctx.font = '700 28px "Be Vietnam Pro", sans-serif';
     ctx.textAlign = 'center';
     ctx.fillText('EVNHCMC • PC VŨNG TÀU', 400, 140);
 
-    ctx.fillStyle = 'rgba(255, 255, 255, 0.6)';
+    ctx.fillStyle = '#64748b';
     ctx.font = '500 20px "Be Vietnam Pro", sans-serif';
     ctx.letterSpacing = '2px';
     ctx.fillText(sub, 400, 180);
 
     // Đường kẻ phân cách
-    const sepGrad = ctx.createLinearGradient(100, 0, 700, 0);
-    sepGrad.addColorStop(0, 'rgba(34, 211, 238, 0)');
-    sepGrad.addColorStop(0.5, 'rgba(34, 211, 238, 0.8)');
-    sepGrad.addColorStop(1, 'rgba(34, 211, 238, 0)');
-    ctx.strokeStyle = sepGrad;
+    ctx.strokeStyle = '#1e40a0';
     ctx.lineWidth = 3;
     ctx.beginPath();
     ctx.moveTo(100, 220);
@@ -2332,28 +2459,28 @@ export class MuseumArchitect {
     ctx.stroke();
 
     // Biểu tượng công nghệ ở giữa
-    ctx.fillStyle = 'rgba(34, 211, 238, 0.12)';
+    ctx.fillStyle = 'rgba(30, 64, 160, 0.08)';
     ctx.beginPath();
-    ctx.arc(400, 480, 120, 0, Math.PI * 2);
+    ctx.arc(400, 480, 110, 0, Math.PI * 2);
     ctx.fill();
 
-    ctx.strokeStyle = '#22d3ee';
+    ctx.strokeStyle = '#1e40a0';
     ctx.lineWidth = 4;
     ctx.beginPath();
-    ctx.arc(400, 480, 100, 0, Math.PI * 2);
+    ctx.arc(400, 480, 95, 0, Math.PI * 2);
     ctx.stroke();
 
-    ctx.fillStyle = '#ffffff';
+    ctx.fillStyle = '#1e40a0';
     ctx.font = '900 80px "Be Vietnam Pro", sans-serif';
     ctx.fillText('⚡', 400, 510);
 
-    // Tiêu đề trụ (Font Be Vietnam Pro 900)
-    ctx.fillStyle = '#ffffff';
+    // Tiêu đề trụ
+    ctx.fillStyle = '#1e40a0';
     ctx.font = '900 46px "Be Vietnam Pro", sans-serif';
     ctx.fillText(title, 400, 740);
 
     // Khẩu hiệu chính thức
-    ctx.fillStyle = '#cbd5e1';
+    ctx.fillStyle = '#0f172a';
     ctx.font = '500 30px "Be Vietnam Pro", sans-serif';
     const words = slogan.split(' ');
     let line = '';
@@ -2372,7 +2499,7 @@ export class MuseumArchitect {
     ctx.fillText(line.trim(), 400, y);
 
     // Footer
-    ctx.fillStyle = 'rgba(34, 211, 238, 0.7)';
+    ctx.fillStyle = '#475569';
     ctx.font = '600 22px "Be Vietnam Pro", sans-serif';
     ctx.fillText('CHUYỂN ĐỔI SỐ • LƯỚI ĐIỆN THÔNG MINH', 400, 1260);
 
@@ -2399,8 +2526,190 @@ export class MuseumArchitect {
 
   animate(delta, time) {
     if (this.smartGridFloorTexture) {
-      this.smartGridFloorTexture.offset.x -= delta * 0.35;
+      this.smartGridFloorTexture.offset.x -= delta * 0.08;
     }
   }
-}
 
+  // ===========================================================================
+  // 13. MÀN HÌNH LED LỚN VÀ CỜ ĐỨNG KHU 4 & KHU 6 (MỤC C)
+  // ===========================================================================
+  buildZone4And6Screens(parent) {
+    const screensGroup = new THREE.Group();
+    screensGroup.name = 'Zone4And6_Screens_Group';
+    this.screensGroup = screensGroup;
+
+    const screenW = 9.0;
+    const screenH = 5.06;
+    const screenY = 3.0;
+    const screenZ = 81.3;
+
+    const bezelMat = new THREE.MeshStandardMaterial({
+      color: 0x1e293b,
+      roughness: 0.3,
+      metalness: 0.85
+    });
+
+    const standMat = new THREE.MeshStandardMaterial({
+      color: 0x0f172a,
+      roughness: 0.4,
+      metalness: 0.8
+    });
+
+    // Helper dựng 1 cụm màn hình LED
+    const buildScreenUnit = (zoneId, posX, headerTitle, headerSubtitle) => {
+      const unit = new THREE.Group();
+      unit.position.set(posX, 0, screenZ);
+
+      // 1. Bệ đỡ bên dưới
+      const standH = screenY - screenH / 2; // 0.47m
+      const standGeo = new THREE.BoxGeometry(screenW + 0.4, standH, 0.45);
+      const standMesh = new THREE.Mesh(standGeo, standMat);
+      standMesh.position.y = standH / 2;
+      unit.add(standMesh);
+
+      // 2. Viền kim loại 0.12m
+      const bezelGeo = new THREE.BoxGeometry(screenW + 0.24, screenH + 0.24, 0.12);
+      const bezelMesh = new THREE.Mesh(bezelGeo, bezelMat);
+      bezelMesh.position.y = screenY;
+      unit.add(bezelMesh);
+
+      // 3. Canvas hiển thị (2048 x 1152)
+      const canvas = document.createElement('canvas');
+      canvas.width = 2048;
+      canvas.height = 1152;
+      const ctx = canvas.getContext('2d');
+
+      const tex = new THREE.CanvasTexture(canvas);
+      tex.colorSpace = THREE.SRGBColorSpace;
+      tex.generateMipmaps = true;
+      tex.minFilter = THREE.LinearMipmapLinearFilter;
+
+      const screenMat = new THREE.MeshBasicMaterial({
+        map: tex,
+        side: THREE.DoubleSide
+      });
+      const screenGeo = new THREE.PlaneGeometry(screenW, screenH);
+      const screenMesh = new THREE.Mesh(screenGeo, screenMat);
+      screenMesh.position.set(0, screenY, -0.07);
+      screenMesh.rotation.y = Math.PI;
+      screenMesh.name = `LED_Screen_${zoneId}`;
+      screenMesh.userData = {
+        isZoneScreen: true,
+        zone: zoneId
+      };
+      unit.add(screenMesh);
+
+      return { unit, canvas, ctx, tex, screenMesh };
+    };
+
+    // Dựng màn hình Khu 4 tại (36, 3.0, 81.3)
+    this.screenKhu4 = buildScreenUnit('khu4', 36.0, 'ĐẢNG BỘ CÔNG TY ĐIỆN LỰC VŨNG TÀU', 'VỮNG BƯỚC DƯỚI CỜ ĐẢNG QUANG VINH');
+    screensGroup.add(this.screenKhu4.unit);
+    this.screenKhu4Mesh = this.screenKhu4.screenMesh;
+    this.screenKhu4Canvas = this.screenKhu4.canvas;
+    this.screenKhu4Tex = this.screenKhu4.tex;
+
+    // Dựng màn hình Khu 6 tại (-36, 3.0, 81.3)
+    this.screenKhu6 = buildScreenUnit('khu6', -36.0, 'CÔNG ĐOÀN – ĐOÀN THANH NIÊN', 'CÔNG TY ĐIỆN LỰC VŨNG TÀU');
+    screensGroup.add(this.screenKhu6.unit);
+    this.screenKhu6Mesh = this.screenKhu6.screenMesh;
+    this.screenKhu6Canvas = this.screenKhu6.canvas;
+    this.screenKhu6Tex = this.screenKhu6.tex;
+
+    // Helper tạo cờ đứng cao 3m
+    const goldPoleMat = new THREE.MeshStandardMaterial({
+      color: 0xfacc15,
+      roughness: 0.25,
+      metalness: 0.85
+    });
+
+    const createFlagStandTexture = (bgColor, logoPath, titleText) => {
+      const c = document.createElement('canvas');
+      c.width = 512;
+      c.height = 1024;
+      const ctx = c.getContext('2d');
+
+      ctx.fillStyle = bgColor;
+      ctx.fillRect(0, 0, 512, 1024);
+
+      // Viền vàng trang trí cờ
+      ctx.strokeStyle = '#facc15';
+      ctx.lineWidth = 8;
+      ctx.strokeRect(12, 12, 488, 1000);
+
+      // Tua rua vàng đáy cờ
+      ctx.fillStyle = '#fde047';
+      for (let tx = 16; tx < 496; tx += 20) {
+        ctx.fillRect(tx, 990, 12, 22);
+      }
+
+      const img = new Image();
+      img.onload = () => {
+        ctx.drawImage(img, 106, 260, 300, 300);
+        tex.needsUpdate = true;
+      };
+      img.src = logoPath;
+
+      const tex = new THREE.CanvasTexture(c);
+      tex.colorSpace = THREE.SRGBColorSpace;
+      return tex;
+    };
+
+    const flagDangTex = createFlagStandTexture('#b91c1c', 'assets/logo/co_dang.png', 'CỜ ĐẢNG');
+    const flagQuocKyTex = createFlagStandTexture('#da251d', 'assets/logo/co_to_quoc.png', 'QUỐC KỲ');
+    const flagCongDoanTex = createFlagStandTexture('#004b93', 'assets/logo/logo_cong_doan.png', 'CÔNG ĐOÀN');
+    const flagDoanTnTex = createFlagStandTexture('#0284c7', 'assets/logo/logo_doan_tn.png', 'ĐOÀN TN');
+
+    const buildStandingFlag = (x, z, flagTexture, inwardDir = 1) => {
+      const flagGroup = new THREE.Group();
+      flagGroup.position.set(x, 0, z);
+
+      // Chân đế cột cờ
+      const baseMesh = new THREE.Mesh(new THREE.CylinderGeometry(0.22, 0.26, 0.08, 16), goldPoleMat);
+      baseMesh.position.y = 0.04;
+      flagGroup.add(baseMesh);
+
+      // Cột cờ đứng cao 3m
+      const poleMesh = new THREE.Mesh(new THREE.CylinderGeometry(0.022, 0.022, 3.0, 16), goldPoleMat);
+      poleMesh.position.y = 1.5;
+      flagGroup.add(poleMesh);
+
+      // Đỉnh búp sen / mũi giáo vàng
+      const finial = new THREE.Mesh(new THREE.ConeGeometry(0.045, 0.12, 16), goldPoleMat);
+      finial.position.y = 3.06;
+      flagGroup.add(finial);
+
+      // Tay treo cờ ngang (hướng vào phía màn hình)
+      const crossbar = new THREE.Mesh(new THREE.CylinderGeometry(0.012, 0.012, 1.1, 16), goldPoleMat);
+      crossbar.rotation.z = Math.PI / 2;
+      crossbar.position.set(0.48 * inwardDir, 2.9, 0);
+      flagGroup.add(crossbar);
+
+      // Lá cờ treo đứng (1.0m x 2.2m)
+      const bannerGeo = new THREE.PlaneGeometry(1.0, 2.2);
+      const bannerMat = new THREE.MeshStandardMaterial({
+        map: flagTexture,
+        roughness: 0.6,
+        metalness: 0.05,
+        side: THREE.DoubleSide
+      });
+      const bannerMesh = new THREE.Mesh(bannerGeo, bannerMat);
+      bannerMesh.position.set(0.48 * inwardDir, 1.8, -0.01);
+      bannerMesh.rotation.y = Math.PI;
+      flagGroup.add(bannerMesh);
+
+      return flagGroup;
+    };
+
+    // Khu 4: cờ Đảng bên trái (viewer left = x: 41.5), cờ Quốc kỳ bên phải (viewer right = x: 30.5)
+    screensGroup.add(buildStandingFlag(41.5, screenZ - 0.25, flagDangTex, -1));
+    screensGroup.add(buildStandingFlag(30.5, screenZ - 0.25, flagQuocKyTex, 1));
+
+    // Khu 6: cờ Công đoàn bên trái (viewer left = x: -30.5), cờ Đoàn bên phải (viewer right = x: -41.5)
+    screensGroup.add(buildStandingFlag(-30.5, screenZ - 0.25, flagCongDoanTex, -1));
+    screensGroup.add(buildStandingFlag(-41.5, screenZ - 0.25, flagDoanTnTex, 1));
+
+    parent.add(screensGroup);
+  }
+
+}

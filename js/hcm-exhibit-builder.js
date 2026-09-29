@@ -146,6 +146,7 @@ export class HCMExhibitBuilder {
       itemDone();
     });
 
+    this.group = group;
     this.scene.add(group);
     console.log(`Mounted all ${totalCreated}/${totalCount} authentic HCM historical photos successfully!`);
     return group;
@@ -287,7 +288,7 @@ export class HCMExhibitBuilder {
     pctx.textAlign = 'center';
     pctx.textBaseline = 'middle';
     pctx.font = 'bold 36px "Inter", sans-serif';
-    pctx.fillText(`★ ${date || year} ★`, 600, 52);
+    pctx.fillText(`• ${date || year} •`, 600, 52);
 
     // Main Title (Auto-scaling for perfect fit)
     let fontSize = 38;

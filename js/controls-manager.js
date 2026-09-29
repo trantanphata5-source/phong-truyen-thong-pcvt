@@ -415,10 +415,10 @@ export class ControlsManager {
 
   glideToGridTable(onComplete = null) {
     this.resetKeys();
-    // Sa bàn tại (43, 0.95, 0). Tiếp cận từ phía Nam bàn (z = 4.2), độ cao 2.75m, nhìn xuống bàn góc cúi -42°
-    const targetPos = new THREE.Vector3(43.0, 2.75, 4.2);
-    const endYaw = 0.0; // Nhìn thẳng hướng Bắc (-Z) về phía sa bàn
-    const endPitch = -42 * Math.PI / 180; // Cúi -42° xuống trung tâm sa bàn
+    // B1: Sa bàn tại (26, 0.95, 0). Tiếp cận từ cửa khu x=20.5, y=2.85, z=0. Nhìn về (26, 0.95, 0) góc yaw -π/2, pitch -35°
+    const targetPos = new THREE.Vector3(20.5, 2.85, 0.0);
+    const endYaw = -Math.PI / 2; // Nhìn sang hướng Đông (+X)
+    const endPitch = -35 * Math.PI / 180; // Cúi -35°
 
     this.startGlide(this.camera.position.clone(), targetPos, this.currentYaw, endYaw, this.currentPitch, endPitch, 1.4, onComplete);
     this.audioService?.playClickSound();
@@ -426,9 +426,9 @@ export class ControlsManager {
 
   teleportToGridTable() {
     this.resetKeys();
-    const targetPos = new THREE.Vector3(43.0, 2.75, 4.2);
-    const endYaw = 0.0;
-    const endPitch = -42 * Math.PI / 180;
+    const targetPos = new THREE.Vector3(20.5, 2.85, 0.0);
+    const endYaw = -Math.PI / 2;
+    const endPitch = -35 * Math.PI / 180;
     this.camera.position.copy(targetPos);
     this.currentYaw = this.targetYaw = endYaw;
     this.currentPitch = this.targetPitch = endPitch;

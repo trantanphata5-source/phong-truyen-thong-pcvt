@@ -485,7 +485,7 @@ export class UIController {
       if (orgSubEl) orgSubEl.textContent = 'ĐƠN VỊ TRAO TẶNG';
       this.dom.cardOrgName.textContent = item.org_name || item.org_code || '';
       const icons = {
-        CTN: '★', TTCP: '★', EVN: '⚡', EVNSPC: '⚡',
+        CTN: '•', TTCP: '•', EVN: '⚡', EVNSPC: '⚡',
         UBND_BRVT: '🏛', UBND_TPVT: '🏛',
         CD_EVN: '🚩', CD_EVNSPC: '🚩', LDLD_BRVT: '🚩'
       };

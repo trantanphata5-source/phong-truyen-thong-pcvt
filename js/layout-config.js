@@ -54,7 +54,7 @@ export const ZONES = {
     id: 'khu3',
     name: 'Khu 3 · Hiện tại',
     nameShort: 'KHU 3',
-    theme: { primary: '#0B1530', text: '#FFFFFF', accent: '#22D3EE' },
+    theme: { primary: '#F4F7FB', text: '#0F172A', accent: '#1E40A0' },
     bounds: { minX: 18, maxX: 50, minZ: -25, maxZ: 25 },
   },
 
@@ -218,13 +218,13 @@ export function buildCollisionBoxes() {
   boxes.push({ id: 'wall_hcm_east', minX: 21, maxX: 23, minZ: 38, maxZ: 82 });
   boxes.push({ id: 'wall_hcm_south', minX: -22, maxX: 22, minZ: 81, maxZ: 83 });
 
-  // Sa bàn lưới điện (4.2m x 6.0m tại x=43, z=0)
+  // Sa bàn lưới điện (dài 6.0m dọc x: 23..29, rộng 4.2m dọc z: -2.1..2.1 tại tâm (26, 0))
   boxes.push({
     id: 'grid_table',
-    minX: GRID_TABLE.position.x - GRID_TABLE.width / 2,
-    maxX: GRID_TABLE.position.x + GRID_TABLE.width / 2,
-    minZ: GRID_TABLE.position.z - GRID_TABLE.depth / 2,
-    maxZ: GRID_TABLE.position.z + GRID_TABLE.depth / 2,
+    minX: 22.8,
+    maxX: 29.2,
+    minZ: -2.3,
+    maxZ: 2.3,
   });
 
   return boxes;
@@ -290,9 +290,9 @@ export const ALBUM_CABINETS = [
 // 10. SA BÀN LƯỚI ĐIỆN
 // ============================================================================
 export const GRID_TABLE = {
-  position: { x: 43, z: 0 },
-  width: 4.2,
-  depth: 6.0,
+  position: { x: 26, z: 0 },
+  width: 4.2,   // Rộng trong hệ cục bộ của bàn (thành trục z sau xoay -π/2)
+  depth: 6.0,   // Dài trong hệ cục bộ của bàn (thành trục x sau xoay -π/2)
   height: 0.95,
   tiltDeg: 8,
 };
@@ -310,3 +310,18 @@ export const FLOORS = {
   // Trần khu 6
   ceiling_khu6: { width: 28, depth: 44, cx: -36, cz: 60, y: 8.5 },
 };
+
+// ============================================================================
+// 12. ZONE VISIBILITY (ZONE CULLING - MỤC E)
+// ============================================================================
+export const VISIBLE_ZONES = {
+  lobby:   ['khu1', 'khu2', 'khu3', 'lobby'],
+  khu1:    ['khu1', 'lobby'],
+  khu2:    ['khu2', 'lobby'],
+  khu3:    ['khu3', 'lobby'],
+  hallway: ['khu4', 'khu5', 'khu6', 'lobby', 'hallway'],
+  khu4:    ['khu4', 'hallway'],
+  khu5:    ['khu5', 'hallway'],
+  khu6:    ['khu6', 'hallway'],
+};
+

@@ -9,6 +9,8 @@ import { AlbumViewer } from './album-viewer.js?v=gd4-fix1';
 import { HCMExhibitBuilder } from './hcm-exhibit-builder.js?v=gd4-fix1';
 import { HCMTimelineBuilder } from './hcm-timeline-builder.js?v=gd4-fix1';
 import { GridMapTable } from './grid-map-table.js?v=gd5';
+import { VISIBLE_ZONES } from './layout-config.js';
+import { ZoneScreenSlideshow } from './zone-screens.js?v=gd5';
 
 /**
  * Main Application Orchestrator (Artsteps Standard)
@@ -17,6 +19,14 @@ import { GridMapTable } from './grid-map-table.js?v=gd5';
 class HeritageApp {
   constructor() {
     this.container = document.getElementById('canvas-container');
+
+    // GĐ5: Zone culling & Screen slideshow state
+    this.hoveredZoneScreen = null;
+    this.slideshowKhu4 = null;
+    this.slideshowKhu6 = null;
+    this.currentZone = 'lobby';
+    this.debugOverlay = null;
+    this._lastZoneCheckTime = 0;
 
     // 1. Scene, Camera, Renderer
     this.scene = new THREE.Scene();
@@ -145,6 +155,43 @@ class HeritageApp {
       }
       this.initGridMapUI();
 
+      // GĐ5: Initialize Large LED Screens Slideshow in Zone 4 & 6 (Mục C)
+      if (this.architect && this.architect.screenKhu4Canvas && this.architect.screenKhu6Canvas) {
+        const k4Items = this.dataService.allItems.filter(it => it.khu === 'khu4');
+        this.slideshowKhu4 = new ZoneScreenSlideshow(
+          'khu4',
+          this.architect.screenKhu4Canvas,
+          this.architect.screenKhu4Tex,
+          k4Items
+        );
+
+        // Zone 6: alternate 25 Trade Union items and 25 Youth Union items
+        const k6Items = this.dataService.allItems.filter(it => it.khu === 'khu6');
+        const k6Cd = k6Items.filter(it => it.source === 'cong_doan').slice(0, 25);
+        const k6Dtn = k6Items.filter(it => it.source === 'doan_tn').slice(0, 25);
+        const k6Alternated = [];
+        const maxLen = Math.max(k6Cd.length, k6Dtn.length);
+        for (let i = 0; i < maxLen; i++) {
+          if (i < k6Cd.length) k6Alternated.push(k6Cd[i]);
+          if (i < k6Dtn.length) k6Alternated.push(k6Dtn[i]);
+        }
+        this.slideshowKhu6 = new ZoneScreenSlideshow(
+          'khu6',
+          this.architect.screenKhu6Canvas,
+          this.architect.screenKhu6Tex,
+          k6Alternated
+        );
+      }
+
+      // GĐ5: Debug Overlay (Mục E.4)
+      const urlParams = new URLSearchParams(window.location.search);
+      if (urlParams.get('debug') === '1') {
+        this.initDebugOverlay();
+      }
+
+      // Initial zone culling pass
+      this.updateZoneCulling(0);
+
       this.uiController.updateLoadingProgress(100, 'Phòng truyền thống đã sẵn sàng!');
 
       // Clear any cached search input value on start
@@ -222,14 +269,29 @@ class HeritageApp {
       }
     }
 
-    // 0b. GĐ5: Check Sa bàn Lưới điện 3D (Trạm, Cơ sở, ĐBGT, hoặc Mặt bàn)
+    // 0b. GĐ5: Check Sa bàn Lưới điện 3D (Trạm InstancedMesh, Cơ sở InstancedMesh, hoặc Mặt bàn)
     if (this.gridMapTable && this.gridMapTable.interactiveObjects.length > 0) {
       const gridHits = this.raycaster.intersectObjects(this.gridMapTable.interactiveObjects, false);
       if (gridHits.length > 0 && gridHits[0].distance < 38.0) {
-        const hitObj = gridHits[0].object;
-        if (hitObj.userData?.isGridTram || hitObj.userData?.isGridCoSo || hitObj.userData?.isGridDBGT) {
-          if (this.hoveredGridItem !== hitObj) {
-            this.hoveredGridItem = hitObj;
+        const hit = gridHits[0];
+        const hitObj = hit.object;
+
+        if (hitObj.userData?.isGridTramInstanced && typeof hit.instanceId === 'number' && hitObj.userData.tramList) {
+          const tram = hitObj.userData.tramList[hit.instanceId];
+          const itemData = { isGridTram: true, tramData: tram };
+          if (this.hoveredGridItem?.tramData !== tram) {
+            this.hoveredGridItem = itemData;
+            this.container.style.cursor = 'pointer';
+            this.audioService.playHoverSound();
+          }
+          this.hoveredGridTable = null;
+          if (this.architect.floorMarker) this.architect.floorMarker.visible = false;
+          return;
+        } else if (hitObj.userData?.isGridCoSoInstanced && typeof hit.instanceId === 'number' && hitObj.userData.coSoList) {
+          const coSo = hitObj.userData.coSoList[hit.instanceId];
+          const itemData = { isGridCoSo: true, coSoData: coSo };
+          if (this.hoveredGridItem?.coSoData !== coSo) {
+            this.hoveredGridItem = itemData;
             this.container.style.cursor = 'pointer';
             this.audioService.playHoverSound();
           }
@@ -250,24 +312,46 @@ class HeritageApp {
     this.hoveredGridItem = null;
     this.hoveredGridTable = null;
 
-    // 1. Check Exhibits first
-    const exhibitHits = this.raycaster.intersectObjects(this.exhibitBuilder.exhibitMeshes, false);
-
-    if (exhibitHits.length > 0 && exhibitHits[0].distance < 16.0) {
-      const hit = exhibitHits[0].object;
-      if (this.hoveredExhibit !== hit) {
-        this.hoveredExhibit = hit;
-        this.container.style.cursor = 'pointer';
-        this.audioService.playHoverSound();
+    // 0c. GĐ5: Check Zone 4 & 6 LED screens
+    if (this.architect && (this.architect.screenKhu4Mesh || this.architect.screenKhu6Mesh)) {
+      const screens = [];
+      if (this.architect.screenKhu4Mesh && this.architect.screenKhu4Mesh.parent?.visible !== false) screens.push(this.architect.screenKhu4Mesh);
+      if (this.architect.screenKhu6Mesh && this.architect.screenKhu6Mesh.parent?.visible !== false) screens.push(this.architect.screenKhu6Mesh);
+      const screenHits = this.raycaster.intersectObjects(screens, false);
+      if (screenHits.length > 0 && screenHits[0].distance < 38.0) {
+        const hit = screenHits[0].object;
+        if (this.hoveredZoneScreen !== hit) {
+          this.hoveredZoneScreen = hit;
+          this.container.style.cursor = 'pointer';
+          this.audioService.playHoverSound();
+        }
+        if (this.architect.floorMarker) this.architect.floorMarker.visible = false;
+        return;
       }
-      if (this.architect.floorMarker) this.architect.floorMarker.visible = false;
-      return;
-    } else {
-      this.hoveredExhibit = null;
+    }
+    this.hoveredZoneScreen = null;
+
+    // 1. Check Exhibits first (chỉ raycast các tranh thuộc khu đang hiển thị)
+    if (this.exhibitBuilder && this.exhibitBuilder.exhibitMeshes.length > 0) {
+      const visibleExhibits = this.exhibitBuilder.exhibitMeshes.filter(m => m.parent && m.parent.visible !== false && m.parent.parent && m.parent.parent.visible !== false);
+      const exhibitHits = this.raycaster.intersectObjects(visibleExhibits, false);
+
+      if (exhibitHits.length > 0 && exhibitHits[0].distance < 16.0) {
+        const hit = exhibitHits[0].object;
+        if (this.hoveredExhibit !== hit) {
+          this.hoveredExhibit = hit;
+          this.container.style.cursor = 'pointer';
+          this.audioService.playHoverSound();
+        }
+        if (this.architect.floorMarker) this.architect.floorMarker.visible = false;
+        return;
+      } else {
+        this.hoveredExhibit = null;
+      }
     }
 
     // 1b. Check HCM Central Screen
-    if (this.architect && this.architect.hcmScreenMesh) {
+    if (this.architect && this.architect.hcmScreenMesh && this.architect.hcmScreenMesh.visible !== false) {
       const screenHits = this.raycaster.intersectObject(this.architect.hcmScreenMesh, false);
       if (screenHits.length > 0 && screenHits[0].distance < 38.0) {
         if (!this.hoveredHCMScreen) {
@@ -282,7 +366,7 @@ class HeritageApp {
     this.hoveredHCMScreen = null;
 
     // 1c. Check HCM Exhibits
-    if (this.hcmExhibitBuilder && this.hcmExhibitBuilder.hcmMeshes.length > 0) {
+    if (this.hcmExhibitBuilder && this.hcmExhibitBuilder.hcmMeshes.length > 0 && this.hcmExhibitBuilder.group?.visible !== false) {
       const hcmHits = this.raycaster.intersectObjects(this.hcmExhibitBuilder.hcmMeshes, true);
       if (hcmHits.length > 0 && hcmHits[0].distance < 38.0) {
         let hitObj = hcmHits[0].object;
@@ -303,7 +387,7 @@ class HeritageApp {
     this.hoveredHCMExhibit = null;
 
     // 1d. Check Timeline Events
-    if (this.hcmTimelineBuilder && this.hcmTimelineBuilder.timelineMeshes.length > 0) {
+    if (this.hcmTimelineBuilder && this.hcmTimelineBuilder.timelineMeshes.length > 0 && this.hcmTimelineBuilder.group?.visible !== false) {
       const tlHits = this.raycaster.intersectObjects(this.hcmTimelineBuilder.timelineMeshes, true);
       if (tlHits.length > 0 && tlHits[0].distance < 38.0) {
         let hitObj = tlHits[0].object;
@@ -361,17 +445,28 @@ class HeritageApp {
       return;
     }
 
-    // 0b. GĐ5: Clicked a Substation / PCVT Facility / DBGT Project on Sa bàn
-    if (this.hoveredGridItem && this.hoveredGridItem.userData) {
-      this.showGridItemCard(this.hoveredGridItem.userData);
+    // 0b. GĐ5: Clicked a Substation / PCVT Facility on Sa bàn
+    if (this.hoveredGridItem && (this.hoveredGridItem.userData || this.hoveredGridItem.tramData || this.hoveredGridItem.coSoData)) {
+      this.showGridItemCard(this.hoveredGridItem.userData || this.hoveredGridItem);
       this.audioService.playClickSound();
       return;
     }
 
-    // 0c. GĐ5: Clicked Sa bàn table surface -> Glide camera to South of table, pitch -50°
+    // 0c. GĐ5: Clicked Sa bàn table surface -> Glide camera
     if (this.hoveredGridTable) {
       this.controlsManager.glideToGridTable();
       this.showGridHud(true);
+      return;
+    }
+
+    // 0d. GĐ5: Clicked Zone 4 / Zone 6 LED Screen -> Open Lightbox
+    if (this.hoveredZoneScreen && this.hoveredZoneScreen.userData?.isZoneScreen) {
+      const zone = this.hoveredZoneScreen.userData.zone;
+      const currentItem = this.getScreenCurrentItem(zone);
+      if (currentItem) {
+        this.uiController.openLightbox(currentItem);
+        this.audioService.playClickSound();
+      }
       return;
     }
 
@@ -485,7 +580,7 @@ class HeritageApp {
     const yearBadge = displayDate ? `<span style="
       background: #eab308; color: #1a0505; padding: 5px 14px;
       border-radius: 20px; font-weight: bold; font-size: 15px; margin-right: 10px;
-    ">★ ${displayDate}</span>` : '';
+    ">• ${displayDate}</span>` : '';
 
     const categoryBadge = data.category ? `<span style="
       background: rgba(255,255,255,0.12); color: #facc15; padding: 5px 14px;
@@ -504,7 +599,7 @@ class HeritageApp {
       <div style="margin-bottom: 14px; display: flex; align-items: center; flex-wrap: wrap; gap: 8px;">
         ${yearBadge}${categoryBadge}
       </div>
-      <h2 style="color: #facc15; margin: 0 0 12px 0; font-size: 24px; font-family: 'Playfair Display', serif; line-height: 1.4;">
+      <h2 style="color: #facc15; margin: 0 0 12px 0; font-size: 24px; font-family: 'Be Vietnam Pro', sans-serif; line-height: 1.4;">
         ${data.title || ''}
       </h2>
       <p style="color: rgba(255,255,255,0.9); line-height: 1.75; font-size: 15px; margin: 0 0 16px 0;">
@@ -572,7 +667,7 @@ class HeritageApp {
     const yearBadge = `<span style="
       background: ${pColor}; color: #fff; padding: 5px 14px;
       border-radius: 20px; font-weight: bold; font-size: 15px; margin-right: 10px;
-    ">★ ${data.date || data.year}</span>`;
+    ">• ${data.date || data.year}</span>`;
 
     const periodBadge = data.period ? `<span style="
       background: rgba(255,255,255,0.12); color: ${pColor}; padding: 5px 14px;
@@ -591,7 +686,7 @@ class HeritageApp {
       <div style="margin-bottom: 14px; display: flex; align-items: center; flex-wrap: wrap; gap: 8px;">
         ${yearBadge}${periodBadge}
       </div>
-      <h2 style="color: #facc15; margin: 0 0 12px 0; font-size: 24px; font-family: 'Playfair Display', serif; line-height: 1.4;">
+      <h2 style="color: #facc15; margin: 0 0 12px 0; font-size: 24px; font-family: 'Be Vietnam Pro', sans-serif; line-height: 1.4;">
         ${data.title || ''}
       </h2>
       <p style="color: rgba(255,255,255,0.9); line-height: 1.75; font-size: 15px; margin: 0 0 16px 0;">
@@ -643,7 +738,7 @@ class HeritageApp {
     `;
     header.innerHTML = `
       <div style="display: flex; align-items: center; gap: 12px;">
-        <span style="color: #facc15; font-size: 20px;">★</span>
+        <span style="color: #facc15; font-size: 20px;">•</span>
         <span style="color: #fff; font-size: 16px; font-weight: 600; font-family: 'Inter', sans-serif;">Lược sử cuộc đời Chủ tịch Hồ Chí Minh — Trình chiếu tương tác</span>
       </div>
     `;
@@ -779,8 +874,8 @@ class HeritageApp {
     const hud = document.getElementById('grid-table-hud');
     if (!hud) return;
 
-    // Khoảng cách camera tới tâm sa bàn (43, 0)
-    const distToTable = Math.hypot(this.camera.position.x - 43.0, this.camera.position.z - 0.0);
+    // Khoảng cách camera tới tâm sa bàn (26, 0)
+    const distToTable = Math.hypot(this.camera.position.x - 26.0, this.camera.position.z - 0.0);
     const inRange = distToTable < 14.0;
     hud.classList.toggle('hidden', !inRange);
   }
@@ -1019,6 +1114,127 @@ class HeritageApp {
     }
   }
 
+  initDebugOverlay() {
+    this.debugOverlay = document.createElement('div');
+    this.debugOverlay.id = 'debug-perf-overlay';
+    this.debugOverlay.style.cssText = `
+      position: fixed; top: 12px; left: 12px; z-index: 99999;
+      background: rgba(15, 23, 42, 0.90); backdrop-filter: blur(8px);
+      border: 1px solid rgba(56, 189, 248, 0.5); border-radius: 8px;
+      padding: 10px 14px; font-family: 'SF Mono', Monaco, Consolas, monospace;
+      font-size: 13px; color: #f8fafc; pointer-events: none;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.5); line-height: 1.5;
+    `;
+    document.body.appendChild(this.debugOverlay);
+  }
+
+  getZoneAt(x, z) {
+    if (z >= 38) {
+      if (x > 22) return 'khu4';
+      if (x < -22) return 'khu6';
+      return 'khu5';
+    }
+    if (z > 25) return 'hallway';
+    if (z < -17 && x >= -18 && x <= 18) return 'khu2';
+    if (x > 18) return 'khu3';
+    if (x < -18) return 'khu1';
+    return 'lobby';
+  }
+
+  getVisibleZones(currentZone, yaw) {
+    if (currentZone === 'lobby') {
+      let y = yaw;
+      while (y > Math.PI) y -= Math.PI * 2;
+      while (y < -Math.PI) y += Math.PI * 2;
+
+      const visible = ['lobby'];
+
+      // Nhìn sang Đông (Khu 3): yaw trong khoảng [-0.85π, -0.15π]
+      if (y < -0.15 * Math.PI && y > -0.85 * Math.PI) {
+        visible.push('khu3');
+        if (y > -0.45 * Math.PI) visible.push('khu2');
+      }
+      // Nhìn sang Tây (Khu 1): yaw trong khoảng [0.15π, 0.85π]
+      else if (y > 0.15 * Math.PI && y < 0.85 * Math.PI) {
+        visible.push('khu1');
+        if (y < 0.45 * Math.PI) visible.push('khu2');
+      }
+      // Nhìn sang Bắc (Khu 2): |yaw| <= 0.35π
+      else if (Math.abs(y) <= 0.35 * Math.PI) {
+        visible.push('khu2');
+        if (y < 0) visible.push('khu3');
+        else visible.push('khu1');
+      }
+      // Nhìn sang Nam (Hành lang / Khu 4, 5, 6): |yaw| >= 0.65π
+      else {
+        visible.push('hallway');
+      }
+      return visible;
+    }
+
+    return VISIBLE_ZONES[currentZone] || ['lobby', 'khu1', 'khu2', 'khu3', 'khu4', 'khu5', 'khu6', 'hallway'];
+  }
+
+  updateZoneCulling(time, force = false) {
+    if (force || !this._lastZoneCheckTime || time - this._lastZoneCheckTime >= 0.5) {
+      this._lastZoneCheckTime = time;
+      const currentZone = this.getZoneAt(this.camera.position.x, this.camera.position.z);
+      this.currentZone = currentZone;
+      const visibleList = this.getVisibleZones(currentZone, this.controlsManager?.currentYaw || 0);
+
+      // 1. Cull exhibit groups (Mục E.1)
+      if (this.exhibitBuilder && this.exhibitBuilder.zoneGroups) {
+        for (const [k, grp] of Object.entries(this.exhibitBuilder.zoneGroups)) {
+          if (grp) {
+            grp.visible = visibleList.includes(k);
+          }
+        }
+      }
+
+      // 1b. Cull potted plant groups per zone (Mục E.1)
+      if (this.architect && this.architect.plantZoneGroups) {
+        for (const [k, grp] of Object.entries(this.architect.plantZoneGroups)) {
+          if (grp) {
+            grp.visible = visibleList.includes(k);
+          }
+        }
+      }
+
+      // 1c. Cull Khu 3 Smart Grid & Sa bàn lưới điện (Mục E.1)
+      const isKhu3Visible = visibleList.includes('khu3');
+      if (this.architect?.k3SmartGridGroup) this.architect.k3SmartGridGroup.visible = isKhu3Visible;
+      if (this.gridMapTable?.tableGroup) this.gridMapTable.tableGroup.visible = isKhu3Visible;
+
+      // 2. Cull HCM zone (Mục E.1)
+      const isHcmVisible = visibleList.includes('khu5');
+      if (this.hcmExhibitBuilder?.group) this.hcmExhibitBuilder.group.visible = isHcmVisible;
+      if (this.hcmTimelineBuilder?.group) this.hcmTimelineBuilder.group.visible = isHcmVisible;
+      if (this.architect?.hcmScreenMesh) this.architect.hcmScreenMesh.visible = isHcmVisible;
+      if (this.architect?.hcmGroup) this.architect.hcmGroup.visible = isHcmVisible;
+
+      // 3. Cull Zone 4 & 6 LED screens and standing flags (Mục E.1)
+      const isKhu4Visible = visibleList.includes('khu4');
+      const isKhu6Visible = visibleList.includes('khu6');
+      if (this.architect?.screensGroup) this.architect.screensGroup.visible = isKhu4Visible || isKhu6Visible;
+
+      // 4. Control slideshow activity per zone (Mục C)
+      const isKhu4Active = currentZone === 'khu4';
+      const isKhu6Active = currentZone === 'khu6';
+      if (this.slideshowKhu4) this.slideshowKhu4.setActive(isKhu4Active);
+      if (this.slideshowKhu6) this.slideshowKhu6.setActive(isKhu6Active);
+    }
+  }
+
+  getScreenCurrentItem(zone) {
+    if (zone === 'khu4' && this.slideshowKhu4) {
+      return this.slideshowKhu4.getCurrentItem();
+    }
+    if (zone === 'khu6' && this.slideshowKhu6) {
+      return this.slideshowKhu6.getCurrentItem();
+    }
+    return null;
+  }
+
   animate() {
     requestAnimationFrame(() => this.animate());
 
@@ -1040,8 +1256,36 @@ class HeritageApp {
     }
     this.updateGridHudProximity();
 
+    // GĐ5: Zone culling and Zone screens slideshow
+    this.updateZoneCulling(time);
+    if (this.slideshowKhu4) this.slideshowKhu4.update(delta);
+    if (this.slideshowKhu6) this.slideshowKhu6.update(delta);
+
     // Render Scene
     this.renderer.render(this.scene, this.camera);
+
+    // GĐ5: Debug Overlay (Mục E.4)
+    if (this.debugOverlay) {
+      this.frameCount = (this.frameCount || 0) + 1;
+      const now = performance.now();
+      if (!this.lastFpsUpdate || now - this.lastFpsUpdate >= 500) {
+        this.currentFps = Math.round((this.frameCount * 1000) / (now - (this.lastFpsUpdate || now)));
+        this.frameCount = 0;
+        this.lastFpsUpdate = now;
+      }
+      const calls = this.renderer.info.render.calls;
+      const triangles = this.renderer.info.render.triangles;
+      const geoms = this.renderer.info.memory.geometries;
+      const texs = this.renderer.info.memory.textures;
+      this.debugOverlay.innerHTML = `
+        <div style="font-weight: bold; color: #38bdf8; margin-bottom: 4px;">⚡ PCVT 3D HERITAGE DEBUG</div>
+        <div>FPS: <span style="font-weight: bold; color: ${this.currentFps >= 50 ? '#4ade80' : '#f87171'}">${this.currentFps || 60}</span></div>
+        <div>Draw calls: <span style="font-weight: bold; color: ${calls <= 800 ? '#4ade80' : '#f87171'}">${calls}</span></div>
+        <div>Triangles: ${triangles.toLocaleString()}</div>
+        <div>Geometries: ${geoms} | Textures: ${texs}</div>
+        <div>Khu hiện tại: <span style="color: #facc15;">${this.currentZone || 'lobby'}</span></div>
+      `;
+    }
   }
 }
 
