@@ -449,6 +449,38 @@ export class MuseumArchitect {
         }
       };
 
+      // Cung dưới: vẽ ngược chiều kim đồng hồ, đọc từ trái sang phải (Mục G)
+      const drawBottomArcText = (str, radius, centerAngle, extraSpacing = 4) => {
+        const len = str.length;
+        const charWidths = [];
+        let totalArcLen = 0;
+        for (let i = 0; i < len; i++) {
+          const w = sctx.measureText(str[i]).width + extraSpacing;
+          charWidths.push(w);
+          totalArcLen += w;
+        }
+
+        const totalAngle = totalArcLen / radius;
+        // Đặt góc bắt đầu ở bên trái, rồi giảm dần góc ngược chiều kim đồng hồ
+        let currentAngle = centerAngle + totalAngle / 2;
+
+        for (let i = 0; i < len; i++) {
+          const char = str[i];
+          const charAngle = charWidths[i] / radius;
+          const midAngle = currentAngle - charAngle / 2;
+
+          sctx.save();
+          sctx.translate(512, 512);
+          sctx.rotate(midAngle);
+          sctx.translate(0, -radius);
+          sctx.rotate(Math.PI);
+          sctx.fillText(char, 0, 0);
+          sctx.restore();
+
+          currentAngle -= charAngle;
+        }
+      };
+
       // GĐ4: Font updated to Be Vietnam Pro 800, letter-spacing 0.08em via extraSpacing
       // Top outer arc: TỔNG CÔNG TY ĐIỆN LỰC THÀNH PHỐ HỒ CHÍ MINH
       sctx.fillStyle = '#ffffff';
@@ -463,10 +495,10 @@ export class MuseumArchitect {
       sctx.font = '800 23px "Be Vietnam Pro", sans-serif';
       drawArcText('CÔNG TY ĐIỆN LỰC VŨNG TÀU', 338, 0, 7, true);
 
-      // Bottom arc: 1985 - 2025 • 40 NĂM PHÁT TRIỂN [CHỜ XÁC NHẬN]
+      // Bottom arc: 1985 - 2025 • 40 NĂM PHÁT TRIỂN (Mục G: vẽ thuận chiều nhìn từ sảnh)
       sctx.fillStyle = '#facc15';
       sctx.font = '800 24px "Be Vietnam Pro", sans-serif';
-      drawArcText('1985 - 2025 • 40 NĂM PHÁT TRIỂN', 368, Math.PI, 7, false);
+      drawBottomArcText('1985 - 2025 • 40 NĂM PHÁT TRIỂN', 368, Math.PI, 7);
 
       sealTexture.needsUpdate = true;
     };
@@ -562,6 +594,7 @@ export class MuseumArchitect {
   }
 
   buildSignage(parent) {
+    this.signBanners = [];
     const createSignBanner = (title, subtitle, color, x, y, z, rotY = 0, bgColor = '#0a0f1d') => {
       const canvas = document.createElement('canvas');
       canvas.width = 2048;
@@ -628,6 +661,7 @@ export class MuseumArchitect {
 
       parent.add(frameMesh);
       parent.add(mesh);
+      this.signBanners.push({ title, frameMesh, mesh, x, y, z, rotY });
     };
 
     // Khu 1 Sign (Tây) — Ký ức & Tranh tặng
@@ -636,10 +670,10 @@ export class MuseumArchitect {
     createSignBanner('KHU 2: BẰNG KHEN & CỜ LƯU NIỆM', 'HUÂN CHƯƠNG • THỦ TƯỚNG • BỘ CÔNG THƯƠNG • UBND • EVN • EVNSPC', '#8B1A1A', 0, 6.2, -17.0, 0);
     // Khu 3 Sign (Đông) — Vững bước kỷ nguyên mới (Mục A.21: Nền #1E40A0, chữ trắng, viền #38BDF8)
     createSignBanner('VỮNG BƯỚC KỶ NGUYÊN MỚI', 'CÔNG TY ĐIỆN LỰC VŨNG TÀU', '#38BDF8', 34.65, 6.2, 0, -Math.PI / 2, '#1E40A0');
-    // Khu 4 Sign (Đông Nam) — Đảng bộ (Mục C.79: Dời lên y = 6.4, phía trên màn hình tường Nam z=82)
-    createSignBanner('KHU 4: ĐẢNG BỘ CÔNG TY', 'ĐẢNG BỘ CÔNG TY ĐIỆN LỰC VŨNG TÀU', '#FACC15', 36.0, 6.4, 81.3, Math.PI, '#991B1B');
-    // Khu 6 Sign (Tây Nam) — Công đoàn & Đoàn TN (Mục C.79: Dời lên y = 6.4, phía trên màn hình tường Nam z=82)
-    createSignBanner('KHU 6: CÔNG ĐOÀN & ĐOÀN THANH NIÊN', 'CÔNG ĐOÀN • ĐOÀN THANH NIÊN CÔNG TY', '#38BDF8', -36.0, 6.4, 81.3, Math.PI, '#1E3A8A');
+    // Khu 4 Sign (Đông Nam) — Đảng bộ (Mục C.2: Dời lên y = 6.85 để cách mép trên màn hình 5.65 an toàn)
+    createSignBanner('KHU 4: ĐẢNG BỘ CÔNG TY', 'ĐẢNG BỘ CÔNG TY ĐIỆN LỰC VŨNG TÀU', '#FACC15', 36.0, 6.85, 81.3, Math.PI, '#991B1B');
+    // Khu 6 Sign (Tây Nam) — Công đoàn & Đoàn TN (Mục C.2: Dời lên y = 6.85)
+    createSignBanner('KHU 6: CÔNG ĐOÀN & ĐOÀN THANH NIÊN', 'CÔNG ĐOÀN • ĐOÀN THANH NIÊN CÔNG TY', '#38BDF8', -36.0, 6.85, 81.3, Math.PI, '#1E3A8A');
   }
 
   /**
@@ -649,6 +683,7 @@ export class MuseumArchitect {
   buildTimelineMilestonePlaques(parent) {
     const milestonesGroup = new THREE.Group();
     milestonesGroup.name = 'TimelineMilestonePlaques';
+    this.milestonesGroup = milestonesGroup;
 
     const createMilestonePlaque = (badge, title, subtitle, themeColor, w, h, x, y, z, rotY) => {
       const canvas = document.createElement('canvas');
@@ -819,40 +854,6 @@ export class MuseumArchitect {
       '#16a34a',
       10.0, 1.3,
       -35.0, 5.75, 24.25,
-      Math.PI
-    );
-
-    // --- KHU 3: CÔNG ĐOÀN & PHONG TRÀO THI ĐUA ---
-    // 7. Tường Bắc Khu 3 (1985 - 2005)
-    createMilestonePlaque(
-      'GIAI ĐOẠN 1985 - 2005',
-      'XÂY DỰNG TỔ CHỨC CÔNG ĐOÀN VỮNG MẠNH, ĐOÀN KẾT VÌ NGƯỜI LAO ĐỘNG',
-      'Chăm lo đời sống vật chất tinh thần cho CBCNV • Phát huy tinh thần trách nhiệm của người thợ điện miền duyên hải',
-      '#dc2626',
-      10.0, 1.3,
-      35.0, 5.75, -24.25,
-      0
-    );
-
-    // 8. Tường Đông Khu 3 (2006 - 2016)
-    createMilestonePlaque(
-      'GIAI ĐOẠN 2006 - 2016',
-      'PHONG TRÀO THI ĐUA "LAO ĐỘNG GIỎI - LAO ĐỘNG SÁNG TẠO"',
-      'Hàng trăm sáng kiến cải tiến kỹ thuật làm lợi hàng chục tỷ đồng • Bảo đảm tuyệt đối an toàn vệ sinh lao động',
-      '#dc2626',
-      12.0, 1.3,
-      49.25, 5.75, 0,
-      -Math.PI / 2
-    );
-
-    // 9. Tường Nam Khu 3 (2017 - 2025)
-    createMilestonePlaque(
-      'GIAI ĐOẠN 2017 - 2025',
-      'VĂN HÓA DOANH NGHIỆP, NGHĨA TÌNH & HỘI NHẬP CHUYỂN ĐỔI SỐ',
-      'Tập thể vững mạnh, nhận nhiều Cờ thi đua xuất sắc của Tổng LĐLĐ Việt Nam, Công đoàn Điện lực và LĐLĐ Tỉnh',
-      '#dc2626',
-      10.0, 1.3,
-      35.0, 5.75, 24.25,
       Math.PI
     );
 
@@ -1317,15 +1318,24 @@ export class MuseumArchitect {
     createHallSpot(0xdcfce7, -35, 7.5, -12, -35, 3.0, 0);
     createHallSpot(0xdcfce7, -35, 7.5, 12, -35, 3.0, 0);
 
-    // East Hall (Khu 3: Smart Grid — 6500K cool white & Sa bàn spotlights)
-    createHallSpot(0xe0f2fe, 32, 7.5, 0, 49, 3.0, 0);
-    createHallSpot(0xe0f2fe, 35, 7.5, -12, 35, 3.0, 0);
-    createHallSpot(0xe0f2fe, 35, 7.5, 12, 35, 3.0, 0);
+    // East Hall (Khu 3: Smart Grid — giảm cường độ xuống 1.8 theo Mục F.3)
+    const createK3Spot = (color, x, y, z, tx, ty, tz) => {
+      const spot = new THREE.SpotLight(color, 1.8, 35, Math.PI / 4, 0.5);
+      spot.position.set(x, y, z);
+      spot.target.position.set(tx, ty, tz);
+      spot.castShadow = false;
+      parent.add(spot);
+      parent.add(spot.target);
+    };
+    createK3Spot(0xe0f2fe, 32, 7.5, 0, 49, 3.0, 0);
+    createK3Spot(0xe0f2fe, 35, 7.5, -12, 35, 3.0, 0);
+    createK3Spot(0xe0f2fe, 35, 7.5, 12, 35, 3.0, 0);
 
-    // Sa bàn lưới điện direct spotlight (43, 7.8, 0)
-    const tableSpot = new THREE.SpotLight(0xf0f9ff, 4.5, 25, Math.PI / 4, 0.4);
-    tableSpot.position.set(43, 7.8, 0);
-    tableSpot.target.position.set(43, 0.95, 0);
+    // Sa bàn lưới điện direct spotlight: dời từ (43; 7.8; 0) về (26; 7.5; 0) chiếu thẳng xuống bàn, cường độ 2.0 không đổ bóng (Mục B.0c & B.4)
+    const tableSpot = new THREE.SpotLight(0xffffff, 2.0, 20, Math.PI / 4, 0.5);
+    tableSpot.position.set(26, 7.5, 0);
+    tableSpot.target.position.set(26, 0.95, 0);
+    tableSpot.castShadow = false;
     parent.add(tableSpot);
     parent.add(tableSpot.target);
 
@@ -1741,9 +1751,16 @@ export class MuseumArchitect {
    *   - Central partition with timeline milestone markers
    */
   buildHCMCulturalZone(parent) {
-    const hcmGroup = new THREE.Group();
-    hcmGroup.name = 'HCMCulturalZone';
-    this.hcmGroup = hcmGroup;
+    // Tách hcmArchitecture (tường, sàn, trần, đèn; luôn hiện) và hcmContent (màn hình) theo Mục A.2
+    const hcmArch = new THREE.Group();
+    hcmArch.name = 'HCM_Architecture';
+    this.hcmArchitecture = hcmArch;
+    this.hcmGroup = hcmArch; // Tương thích ngược
+
+    const hcmContent = new THREE.Group();
+    hcmContent.name = 'HCM_Content';
+    this.hcmContent = hcmContent;
+
     const h = 8.0;
 
     // Deep crimson red wall material (Truyền thống Hồ Chí Minh)
@@ -1761,8 +1778,6 @@ export class MuseumArchitect {
     });
 
     // --- FLOOR for HCM Zone — same marble style, matching tile size of main museum ---
-    // Main floor: repeat(14,14) on 140x140 = 10m per tile
-    // HCM floor: 44x44, so repeat = 44/10 = 4.4 to match tile size
     const hcmFloorTex = this.matFloor.map.clone();
     hcmFloorTex.needsUpdate = true;
     hcmFloorTex.repeat.set(4.4, 4.4);
@@ -1776,51 +1791,45 @@ export class MuseumArchitect {
     hcmFloor.rotation.x = -Math.PI / 2;
     hcmFloor.position.set(0, 0.01, 60);
     hcmFloor.receiveShadow = true;
-    hcmGroup.add(hcmFloor);
+    hcmArch.add(hcmFloor);
 
-    // Ceiling for HCM Zone — wide enough to cover full museum width at transition
-    // This prevents the main museum ceiling edge from being visible inside the HCM zone
+    // Ceiling for HCM Zone
     const hcmCeil = new THREE.Mesh(new THREE.PlaneGeometry(140, 44), this.matCeiling);
     hcmCeil.position.set(0, 8.5, 60);
     hcmCeil.rotation.x = Math.PI / 2;
-    hcmGroup.add(hcmCeil);
+    hcmArch.add(hcmCeil);
 
-    // Entrance ceiling beam — seals the transition between main museum ceiling and HCM zone
+    // Entrance ceiling beam
     const beamGeo = new THREE.BoxGeometry(44, 1.0, 1.5);
     const beamMesh = new THREE.Mesh(beamGeo, this.matHCMWall);
     beamMesh.position.set(0, 8.0, 38.5);
-    hcmGroup.add(beamMesh);
+    hcmArch.add(beamMesh);
 
     // Gold trim on beam
     const beamTrimGeo = new THREE.BoxGeometry(44.2, 0.12, 1.6);
     const beamTrimMesh = new THREE.Mesh(beamTrimGeo, this.matGold);
     beamTrimMesh.position.set(0, 7.45, 38.5);
-    hcmGroup.add(beamTrimMesh);
+    hcmArch.add(beamTrimMesh);
 
-    // --- OUTER WALLS ---
-    // West wall (X = -22)
-    hcmGroup.add(this.createWallMesh(44, h, 1.2, -22, h/2, 60, Math.PI/2, this.matHCMWall, 'Wall_HCM_West'));
-    // East wall (X = 22)
-    hcmGroup.add(this.createWallMesh(44, h, 1.2, 22, h/2, 60, -Math.PI/2, this.matHCMWall, 'Wall_HCM_East'));
+    // --- OUTER WALLS (Kiến trúc không bao giờ bị ẩn, dùng chung với Khu 4 & 6) ---
+    // West wall (X = -22, chung với Khu 6)
+    hcmArch.add(this.createWallMesh(44, h, 1.2, -22, h/2, 60, Math.PI/2, this.matHCMWall, 'Wall_HCM_West'));
+    // East wall (X = 22, chung với Khu 4)
+    hcmArch.add(this.createWallMesh(44, h, 1.2, 22, h/2, 60, -Math.PI/2, this.matHCMWall, 'Wall_HCM_East'));
     // Far South wall (Z = 82)
-    hcmGroup.add(this.createWallMesh(44, h, 1.2, 0, h/2, 82, 0, this.matHCMWall, 'Wall_HCM_South'));
+    hcmArch.add(this.createWallMesh(44, h, 1.2, 0, h/2, 82, 0, this.matHCMWall, 'Wall_HCM_South'));
 
-    // --- CENTRAL PARTITION REMOVED per user request ---
-    // Photos now distributed across walls (West + South for real photos, East for timeline)
-
-    // --- GRAND PORTRAIT on SOUTH WALL (Z=81.3, facing north into the hall) ---
-    this.buildHCMPortraitWall(hcmGroup);
+    // --- GRAND PORTRAIT on SOUTH WALL -> HCM_Content ---
+    this.buildHCMPortraitWall(hcmContent);
 
     // --- ENTRANCE ARCHWAY SIGN ---
-    this.buildHCMEntranceSign(hcmGroup);
-
-    // --- PERIOD MILESTONE PLAQUES — removed per user request ---
-    // this.buildHCMPeriodPlaques(hcmGroup);
+    this.buildHCMEntranceSign(hcmArch);
 
     // --- SPOTLIGHTS & WARM LIGHTING ---
-    this.buildHCMLighting(hcmGroup);
+    this.buildHCMLighting(hcmArch);
 
-    parent.add(hcmGroup);
+    parent.add(hcmArch);
+    parent.add(hcmContent);
   }
 
   /**
@@ -1955,7 +1964,7 @@ export class MuseumArchitect {
     const rightX = 1024 + flagGap / 2;
     const rightY = centerY - flagH / 2;
 
-    // Vẽ nền đỏ chuẩn cho 2 lá cờ
+    // Vẽ khung cờ đỏ chuẩn bị sẵn
     pctx.fillStyle = '#da251d';
     pctx.fillRect(leftX, leftY, flagW, flagH);
     pctx.fillRect(rightX, rightY, flagW, flagH);
@@ -1965,63 +1974,51 @@ export class MuseumArchitect {
     pctx.strokeRect(leftX, leftY, flagW, flagH);
     pctx.strokeRect(rightX, rightY, flagW, flagH);
 
-    // Vẽ biểu tượng dự phòng sắc nét
-    // 1. Ngôi sao vàng năm cánh cờ Tổ quốc
-    const drawStar5 = (ctx, cx, cy, r) => {
-      ctx.save();
-      ctx.fillStyle = '#ffff00';
-      ctx.beginPath();
-      for (let i = 0; i < 5; i++) {
-        const aOuter = -Math.PI / 2 + (i * 2 * Math.PI) / 5;
-        const aInner = aOuter + Math.PI / 5;
-        const xO = cx + r * Math.cos(aOuter);
-        const yO = cy + r * Math.sin(aOuter);
-        const xI = cx + (r * 0.382) * Math.cos(aInner);
-        const yI = cy + (r * 0.382) * Math.sin(aInner);
-        if (i === 0) ctx.moveTo(xO, yO);
-        else ctx.lineTo(xO, yO);
-        ctx.lineTo(xI, yI);
+    // Vẽ cờ theo đúng tỷ lệ gốc của file (fit trong ô 300x200, không kéo giãn - Mục D.3)
+    const drawFlagFitted = (img, x, y, maxW, maxH) => {
+      const imgAspect = (img.naturalWidth || img.width) / (img.naturalHeight || img.height);
+      const boxAspect = maxW / maxH;
+      let drawW, drawH;
+      if (imgAspect > boxAspect) {
+        drawW = maxW;
+        drawH = maxW / imgAspect;
+      } else {
+        drawH = maxH;
+        drawW = maxH * imgAspect;
       }
-      ctx.closePath();
-      ctx.fill();
-      ctx.restore();
+      const drawX = x + (maxW - drawW) / 2;
+      const drawY = y + (maxH - drawH) / 2;
+      pctx.drawImage(img, drawX, drawY, drawW, drawH);
     };
-    drawStar5(pctx, rightX + flagW / 2, rightY + flagH / 2, 60);
 
-    // 2. Búa liềm cờ Đảng
-    const drawSickleHammer = (ctx, cx, cy, sz) => {
-      ctx.save();
-      ctx.translate(cx, cy);
-      ctx.strokeStyle = '#ffff00';
-      ctx.fillStyle = '#ffff00';
-      ctx.lineWidth = 14;
-      ctx.lineCap = 'round';
-      ctx.beginPath();
-      ctx.arc(0, 0, sz * 0.7, -Math.PI * 0.8, Math.PI * 0.3, false);
-      ctx.stroke();
-      ctx.beginPath();
-      ctx.moveTo(-sz * 0.6, sz * 0.6);
-      ctx.lineTo(sz * 0.5, -sz * 0.5);
-      ctx.stroke();
-      ctx.fillRect(sz * 0.3, -sz * 0.7, sz * 0.4, sz * 0.25);
-      ctx.restore();
-    };
-    drawSickleHammer(pctx, leftX + flagW / 2, leftY + flagH / 2, 50);
-
-    // Load file logo cờ chính thức
+    // Load file logo cờ chính thức (Mục D.2: bỏ vẽ dự phòng lộ viền)
     const imgDang = new Image();
     imgDang.onload = () => {
-      pctx.drawImage(imgDang, leftX, leftY, flagW, flagH);
+      pctx.fillStyle = '#da251d';
+      pctx.fillRect(leftX, leftY, flagW, flagH);
+      drawFlagFitted(imgDang, leftX, leftY, flagW, flagH);
+      pctx.strokeStyle = '#facc15';
+      pctx.lineWidth = 2;
+      pctx.strokeRect(leftX, leftY, flagW, flagH);
       portraitTex.needsUpdate = true;
     };
     imgDang.src = 'assets/logo/co_dang.png';
 
     const imgQuocKy = new Image();
     imgQuocKy.onload = () => {
-      pctx.drawImage(imgQuocKy, rightX, rightY, flagW, flagH);
+      pctx.fillStyle = '#da251d';
+      pctx.fillRect(rightX, rightY, flagW, flagH);
+      drawFlagFitted(imgQuocKy, rightX, rightY, flagW, flagH);
+      pctx.strokeStyle = '#facc15';
+      pctx.lineWidth = 2;
+      pctx.strokeRect(rightX, rightY, flagW, flagH);
       portraitTex.needsUpdate = true;
     };
     imgQuocKy.src = 'assets/logo/co_to_quoc.png';
+
+    // Căn giữa chữ toàn bộ màn hình HCM (Mục D.1)
+    pctx.textAlign = 'center';
+    pctx.textBaseline = 'middle';
 
     // Title: KHÔNG GIAN VĂN HÓA
     pctx.fillStyle = '#ffffff';
@@ -2268,69 +2265,44 @@ export class MuseumArchitect {
    * - Linear recessed ceiling light tracks
    */
   buildZone3SmartGrid(parent) {
-    const k3Group = new THREE.Group();
-    k3Group.name = 'Zone3_SmartGrid_Architecture';
-    this.k3SmartGridGroup = k3Group;
+    // Tách k3Architecture (ngưỡng sàn, trần, đèn; luôn hiện) và k3Content (trụ thông tin, vạch dẫn đường) theo Mục A.2
+    const k3Arch = new THREE.Group();
+    k3Arch.name = 'Zone3_SmartGrid_Architecture';
+    this.k3Architecture = k3Arch;
 
-    // 1. Epoxy floor overlay for Khu 3 (bounds: x 18..50, z -25..25 -> center 34, 0)
-    const floorGeo = new THREE.PlaneGeometry(32, 50);
-    const floorMesh = new THREE.Mesh(floorGeo, this.matEpoxyKhu3);
-    floorMesh.rotation.x = -Math.PI / 2;
-    floorMesh.position.set(34.0, 0.012, 0.0);
-    floorMesh.receiveShadow = true;
-    k3Group.add(floorMesh);
+    const k3Content = new THREE.Group();
+    k3Content.name = 'Zone3_SmartGrid_Content';
+    this.k3Content = k3Content;
+    this.k3SmartGridGroup = k3Content; // Tương thích ngược
 
-    // 2. Vạch dẫn đường màu #1E40A0 với độ trong 0.5, chạy chậm (Mục A.17)
-    const canvas = document.createElement('canvas');
-    canvas.width = 512;
-    canvas.height = 128;
-    const ctx = canvas.getContext('2d');
-    ctx.clearRect(0, 0, 512, 128);
+    // 1. Dải viền kim loại xanh EVN #1E40A0 rộng 8cm chạy ngang sàn tại ranh giới x = 18 làm ngưỡng vào khu (Mục F.2)
+    // Sàn Khu 3 dùng chung WalkableFloor đá navy kẻ ô vàng với toàn phòng (Mục F.1: bỏ sàn riêng DCE3EC)
+    const thresholdGeo = new THREE.BoxGeometry(0.08, 0.006, 25.0);
+    const thresholdMat = new THREE.MeshStandardMaterial({
+      color: 0x1e40a0,
+      roughness: 0.25,
+      metalness: 0.85
+    });
+    const thresholdMesh = new THREE.Mesh(thresholdGeo, thresholdMat);
+    thresholdMesh.position.set(18.0, 0.003, 0.0);
+    thresholdMesh.receiveShadow = true;
+    k3Arch.add(thresholdMesh);
 
-    // Vạch xanh EVN với gradient nhẹ
-    const grad = ctx.createLinearGradient(0, 0, 512, 0);
-    grad.addColorStop(0, 'rgba(30, 64, 160, 0.1)');
-    grad.addColorStop(0.3, 'rgba(30, 64, 160, 0.5)');
-    grad.addColorStop(0.5, 'rgba(45, 85, 200, 0.6)');
-    grad.addColorStop(0.7, 'rgba(30, 64, 160, 0.5)');
-    grad.addColorStop(1, 'rgba(30, 64, 160, 0.1)');
-    ctx.fillStyle = grad;
-    ctx.fillRect(0, 56, 512, 16);
-
-    ctx.fillStyle = 'rgba(30, 64, 160, 0.5)';
-    for (let bx = 60; bx < 512; bx += 128) {
-      ctx.beginPath();
-      ctx.moveTo(bx, 50);
-      ctx.lineTo(bx + 18, 64);
-      ctx.lineTo(bx, 78);
-      ctx.lineTo(bx + 8, 78);
-      ctx.lineTo(bx + 26, 64);
-      ctx.lineTo(bx + 8, 50);
-      ctx.closePath();
-      ctx.fill();
-    }
-
-    const pulseTex = new THREE.CanvasTexture(canvas);
-    pulseTex.wrapS = THREE.RepeatWrapping;
-    pulseTex.wrapT = THREE.ClampToEdgeWrapping;
-    pulseTex.repeat.set(4, 1);
-    this.smartGridFloorTexture = pulseTex;
-
-    const pulseMat = new THREE.MeshBasicMaterial({
-      map: pulseTex,
+    // 2. Vạch dẫn đường màu #38BDF8, độ trong 0.35, rộng 4cm, decal cao hơn sàn 3mm (Mục F.2)
+    // Vạch chạy từ ngưỡng vào sa bàn rồi tới vách mốc son (x: 18 -> 44)
+    const decalMat = new THREE.MeshBasicMaterial({
+      color: 0x38bdf8,
       transparent: true,
-      opacity: 0.5,
+      opacity: 0.35,
       depthWrite: false
     });
 
-    // 2 đường chạy dọc hai bên hành lang (z = -6.5 và z = 6.5) tránh chắn sa bàn (26, 0)
-    const pathZList = [-6.5, 6.5];
-    pathZList.forEach(pz => {
-      const pathGeo = new THREE.PlaneGeometry(16.8, 0.5);
-      const pathMesh = new THREE.Mesh(pathGeo, pulseMat);
-      pathMesh.rotation.x = -Math.PI / 2;
-      pathMesh.position.set(26.5, 0.018, pz);
-      k3Group.add(pathMesh);
+    [-6.5, 6.5].forEach(pz => {
+      const decalGeo = new THREE.PlaneGeometry(26.0, 0.04);
+      const decalMesh = new THREE.Mesh(decalGeo, decalMat);
+      decalMesh.rotation.x = -Math.PI / 2;
+      decalMesh.position.set(31.0, 0.003, pz);
+      k3Content.add(decalMesh);
     });
 
     // 3. Ba trụ thông tin nền trắng viền xanh EVN, dời sang bên (x=21.5, z=-7.0, -9.5, 7.0) (Mục A.22)
@@ -2358,7 +2330,7 @@ export class MuseumArchitect {
     totemsData.forEach(td => {
       const totem = this.createInformationTotem(td);
       totem.position.set(21.5, 0, td.z);
-      k3Group.add(totem);
+      k3Content.add(totem);
     });
 
     // 4. Phào trần vạch mảnh 3cm màu #38BDF8, emissiveIntensity 0.4
@@ -2373,10 +2345,11 @@ export class MuseumArchitect {
       const trackGeo = new THREE.BoxGeometry(26.0, 0.1, 0.25);
       const trackMesh = new THREE.Mesh(trackGeo, trackMat);
       trackMesh.position.set(34.0, 8.45, cz);
-      k3Group.add(trackMesh);
+      k3Arch.add(trackMesh);
     });
 
-    parent.add(k3Group);
+    parent.add(k3Arch);
+    parent.add(k3Content);
   }
 
   createInformationTotem({ title, slogan, sub }) {
@@ -2586,11 +2559,15 @@ export class MuseumArchitect {
 
       const screenMat = new THREE.MeshBasicMaterial({
         map: tex,
-        side: THREE.DoubleSide
+        side: THREE.FrontSide,
+        polygonOffset: true,
+        polygonOffsetFactor: -2,
+        polygonOffsetUnits: -2
       });
       const screenGeo = new THREE.PlaneGeometry(screenW, screenH);
       const screenMesh = new THREE.Mesh(screenGeo, screenMat);
-      screenMesh.position.set(0, screenY, -0.07);
+      // Đặt ở z = mặt trước viền (-0.06) - 0.03 = -0.09 (Mục C.1)
+      screenMesh.position.set(0, screenY, -0.09);
       screenMesh.rotation.y = Math.PI;
       screenMesh.name = `LED_Screen_${zoneId}`;
       screenMesh.userData = {
@@ -2701,13 +2678,13 @@ export class MuseumArchitect {
       return flagGroup;
     };
 
-    // Khu 4: cờ Đảng bên trái (viewer left = x: 41.5), cờ Quốc kỳ bên phải (viewer right = x: 30.5)
-    screensGroup.add(buildStandingFlag(41.5, screenZ - 0.25, flagDangTex, -1));
-    screensGroup.add(buildStandingFlag(30.5, screenZ - 0.25, flagQuocKyTex, 1));
+    // Khu 4: cờ Đảng bên trái (viewer left = x: 42.6, mép cờ 41.62 cách màn hình 1.0m), cờ Quốc kỳ bên phải (viewer right = x: 29.4, mép cờ 30.38 cách màn hình 1.0m) (Mục C.3)
+    screensGroup.add(buildStandingFlag(42.6, screenZ - 0.25, flagDangTex, -1));
+    screensGroup.add(buildStandingFlag(29.4, screenZ - 0.25, flagQuocKyTex, 1));
 
-    // Khu 6: cờ Công đoàn bên trái (viewer left = x: -30.5), cờ Đoàn bên phải (viewer right = x: -41.5)
-    screensGroup.add(buildStandingFlag(-30.5, screenZ - 0.25, flagCongDoanTex, -1));
-    screensGroup.add(buildStandingFlag(-41.5, screenZ - 0.25, flagDoanTnTex, 1));
+    // Khu 6: cờ Công đoàn bên trái (viewer left = x: -29.4), cờ Đoàn bên phải (viewer right = x: -42.6) (Mục C.3)
+    screensGroup.add(buildStandingFlag(-29.4, screenZ - 0.25, flagCongDoanTex, -1));
+    screensGroup.add(buildStandingFlag(-42.6, screenZ - 0.25, flagDoanTnTex, 1));
 
     parent.add(screensGroup);
   }

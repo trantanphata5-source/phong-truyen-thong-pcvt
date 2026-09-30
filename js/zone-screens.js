@@ -214,6 +214,11 @@ export class ZoneScreenSlideshow {
     const drawY = areaY + (areaH - drawH) / 2;
 
     ctx.save();
+    // Clip strictly within the photo area to prevent spilling onto header or footer (Mục C.4)
+    ctx.beginPath();
+    ctx.rect(0, areaY, 2048, areaH);
+    ctx.clip();
+
     ctx.globalAlpha = Math.max(0, Math.min(1, alpha));
 
     // Shadow nhẹ phía sau ảnh

@@ -9,8 +9,9 @@ import { AlbumViewer } from './album-viewer.js?v=gd4-fix1';
 import { HCMExhibitBuilder } from './hcm-exhibit-builder.js?v=gd4-fix1';
 import { HCMTimelineBuilder } from './hcm-timeline-builder.js?v=gd4-fix1';
 import { GridMapTable } from './grid-map-table.js?v=gd5';
-import { VISIBLE_ZONES } from './layout-config.js';
 import { ZoneScreenSlideshow } from './zone-screens.js?v=gd5';
+
+window.THREE = THREE;
 
 /**
  * Main Application Orchestrator (Artsteps Standard)
@@ -189,8 +190,10 @@ class HeritageApp {
         this.initDebugOverlay();
       }
 
-      // Initial zone culling pass
-      this.updateZoneCulling(0);
+      // GĐ5-fix2: Dựng bounding boxes cho culling & kiểm tra không chồng khung
+      this.initZoneCullingBoxes();
+      this.assertNoOverlapOnWalls();
+      this.updateZoneCulling();
 
       this.uiController.updateLoadingProgress(100, 'Phòng truyền thống đã sẵn sàng!');
 
@@ -524,6 +527,9 @@ class HeritageApp {
   focusOnExhibit(item) {
     const exhibitGroup = this.exhibitBuilder.exhibitMap.get(item.id);
     if (!exhibitGroup) return;
+    if (item.khu && this.exhibitBuilder.zoneGroups[item.khu]) {
+      this.exhibitBuilder.zoneGroups[item.khu].visible = true;
+    }
     this.controlsManager.glideToExhibit(exhibitGroup, 1.5);
   }
 
@@ -796,6 +802,7 @@ class HeritageApp {
     bindCheck('chk-layer-kh', 'khachHang');
     bindCheck('chk-layer-qh', 'quyHoach');
     bindCheck('chk-layer-dbgt', 'dbgt');
+    bindCheck('chk-layer-ranh-gioi', 'ranhGioiMoi');
 
     const chkLabels = document.getElementById('chk-layer-labels');
     if (chkLabels) {
@@ -1141,88 +1148,202 @@ class HeritageApp {
     return 'lobby';
   }
 
-  getVisibleZones(currentZone, yaw) {
-    if (currentZone === 'lobby') {
-      let y = yaw;
-      while (y > Math.PI) y -= Math.PI * 2;
-      while (y < -Math.PI) y += Math.PI * 2;
+  initZoneCullingBoxes() {
+    this._cullableGroups = [];
+    this._cullProjScreenMatrix = new THREE.Matrix4();
+    this._cullFrustum = new THREE.Frustum();
 
-      const visible = ['lobby'];
+    const registerGroup = (grp, name) => {
+      if (!grp) return;
+      grp.updateMatrixWorld(true);
+      const box = new THREE.Box3().setFromObject(grp);
+      if (!box.isEmpty()) {
+        this._cullableGroups.push({ group: grp, box, name });
+      }
+    };
 
-      // Nhìn sang Đông (Khu 3): yaw trong khoảng [-0.85π, -0.15π]
-      if (y < -0.15 * Math.PI && y > -0.85 * Math.PI) {
-        visible.push('khu3');
-        if (y > -0.45 * Math.PI) visible.push('khu2');
+    // 1. Nhóm hiện vật treo tường các khu (Mục A.3)
+    if (this.exhibitBuilder?.zoneGroups) {
+      for (const [k, grp] of Object.entries(this.exhibitBuilder.zoneGroups)) {
+        registerGroup(grp, `exhibits_${k}`);
       }
-      // Nhìn sang Tây (Khu 1): yaw trong khoảng [0.15π, 0.85π]
-      else if (y > 0.15 * Math.PI && y < 0.85 * Math.PI) {
-        visible.push('khu1');
-        if (y < 0.45 * Math.PI) visible.push('khu2');
-      }
-      // Nhìn sang Bắc (Khu 2): |yaw| <= 0.35π
-      else if (Math.abs(y) <= 0.35 * Math.PI) {
-        visible.push('khu2');
-        if (y < 0) visible.push('khu3');
-        else visible.push('khu1');
-      }
-      // Nhìn sang Nam (Hành lang / Khu 4, 5, 6): |yaw| >= 0.65π
-      else {
-        visible.push('hallway');
-      }
-      return visible;
     }
 
-    return VISIBLE_ZONES[currentZone] || ['lobby', 'khu1', 'khu2', 'khu3', 'khu4', 'khu5', 'khu6', 'hallway'];
+    // 2. Nhóm cây cảnh từng khu (Mục A.3)
+    if (this.architect?.plantZoneGroups) {
+      for (const [k, grp] of Object.entries(this.architect.plantZoneGroups)) {
+        registerGroup(grp, `plant_${k}`);
+      }
+    }
+
+    // 3. Nội dung Khu 3 (trụ thông tin, vạch dẫn đường - kiến trúc luôn hiện)
+    if (this.architect?.k3Content) {
+      registerGroup(this.architect.k3Content, 'k3Content');
+    }
+
+    // 4. Sa bàn lưới điện 3D
+    if (this.gridMapTable?.rootGroup) {
+      registerGroup(this.gridMapTable.rootGroup, 'gridMapTable');
+    }
+
+    // 5. Nội dung Khu HCM (ảnh, timeline, màn hình trung tâm - tường/sàn/trần kiến trúc luôn hiện)
+    if (this.architect?.hcmContent) {
+      registerGroup(this.architect.hcmContent, 'hcmContent');
+    }
+    if (this.hcmExhibitBuilder?.group) {
+      registerGroup(this.hcmExhibitBuilder.group, 'hcmExhibits');
+    }
+    if (this.hcmTimelineBuilder?.group) {
+      registerGroup(this.hcmTimelineBuilder.group, 'hcmTimeline');
+    }
+
+    // 6. Màn hình LED lớn và cờ đứng Khu 4 & 6 (Mục A.3)
+    if (this.architect?.screensGroup) {
+      registerGroup(this.architect.screensGroup, 'screensGroup');
+    }
   }
 
-  updateZoneCulling(time, force = false) {
-    if (force || !this._lastZoneCheckTime || time - this._lastZoneCheckTime >= 0.5) {
-      this._lastZoneCheckTime = time;
-      const currentZone = this.getZoneAt(this.camera.position.x, this.camera.position.z);
-      this.currentZone = currentZone;
-      const visibleList = this.getVisibleZones(currentZone, this.controlsManager?.currentYaw || 0);
-
-      // 1. Cull exhibit groups (Mục E.1)
-      if (this.exhibitBuilder && this.exhibitBuilder.zoneGroups) {
-        for (const [k, grp] of Object.entries(this.exhibitBuilder.zoneGroups)) {
-          if (grp) {
-            grp.visible = visibleList.includes(k);
-          }
-        }
-      }
-
-      // 1b. Cull potted plant groups per zone (Mục E.1)
-      if (this.architect && this.architect.plantZoneGroups) {
-        for (const [k, grp] of Object.entries(this.architect.plantZoneGroups)) {
-          if (grp) {
-            grp.visible = visibleList.includes(k);
-          }
-        }
-      }
-
-      // 1c. Cull Khu 3 Smart Grid & Sa bàn lưới điện (Mục E.1)
-      const isKhu3Visible = visibleList.includes('khu3');
-      if (this.architect?.k3SmartGridGroup) this.architect.k3SmartGridGroup.visible = isKhu3Visible;
-      if (this.gridMapTable?.tableGroup) this.gridMapTable.tableGroup.visible = isKhu3Visible;
-
-      // 2. Cull HCM zone (Mục E.1)
-      const isHcmVisible = visibleList.includes('khu5');
-      if (this.hcmExhibitBuilder?.group) this.hcmExhibitBuilder.group.visible = isHcmVisible;
-      if (this.hcmTimelineBuilder?.group) this.hcmTimelineBuilder.group.visible = isHcmVisible;
-      if (this.architect?.hcmScreenMesh) this.architect.hcmScreenMesh.visible = isHcmVisible;
-      if (this.architect?.hcmGroup) this.architect.hcmGroup.visible = isHcmVisible;
-
-      // 3. Cull Zone 4 & 6 LED screens and standing flags (Mục E.1)
-      const isKhu4Visible = visibleList.includes('khu4');
-      const isKhu6Visible = visibleList.includes('khu6');
-      if (this.architect?.screensGroup) this.architect.screensGroup.visible = isKhu4Visible || isKhu6Visible;
-
-      // 4. Control slideshow activity per zone (Mục C)
-      const isKhu4Active = currentZone === 'khu4';
-      const isKhu6Active = currentZone === 'khu6';
-      if (this.slideshowKhu4) this.slideshowKhu4.setActive(isKhu4Active);
-      if (this.slideshowKhu6) this.slideshowKhu6.setActive(isKhu6Active);
+  updateZoneCulling() {
+    if (!this._cullableGroups || this._cullableGroups.length === 0) {
+      this.initZoneCullingBoxes();
     }
+
+    // Mục A.3: Frustum + Distance < 45m tính lại mỗi khung hình (không phụ thuộc yaw, không delay)
+    this.camera.updateMatrixWorld();
+    this._cullProjScreenMatrix.multiplyMatrices(this.camera.projectionMatrix, this.camera.matrixWorldInverse);
+    this._cullFrustum.setFromProjectionMatrix(this._cullProjScreenMatrix);
+
+    const camPos = this.camera.position;
+
+    for (let i = 0; i < this._cullableGroups.length; i++) {
+      const item = this._cullableGroups[i];
+      const dist = item.box.distanceToPoint(camPos);
+      const inFrustum = this._cullFrustum.intersectsBox(item.box);
+      item.group.visible = inFrustum && dist < 45.0;
+    }
+
+    // Mục A.4: Trình chiếu khu 4 và khu 6 chỉ kích hoạt khi camera ở trong khu tương ứng
+    const currentZone = this.getZoneAt(camPos.x, camPos.z);
+    this.currentZone = currentZone;
+    if (this.slideshowKhu4) this.slideshowKhu4.setActive(currentZone === 'khu4');
+    if (this.slideshowKhu6) this.slideshowKhu6.setActive(currentZone === 'khu6');
+  }
+
+  assertNoOverlapOnWalls() {
+    const wallBuckets = new Map();
+
+    const registerWallItem = (name, obj3d) => {
+      if (!obj3d) return;
+      obj3d.updateMatrixWorld(true);
+      const box = new THREE.Box3().setFromObject(obj3d);
+      if (box.isEmpty()) return;
+
+      const size = new THREE.Vector3();
+      box.getSize(size);
+      const center = new THREE.Vector3();
+      box.getCenter(center);
+
+      // Định hướng: trục có bề dày mỏng nhất là trục vuông góc với mặt tường
+      let axis, wallCoord, uMin, uMax;
+      if (size.z <= size.x) {
+        axis = 'z';
+        wallCoord = Math.round(center.z * 2) / 2; // làm tròn 0.5m
+        uMin = box.min.x;
+        uMax = box.max.x;
+      } else {
+        axis = 'x';
+        wallCoord = Math.round(center.x * 2) / 2;
+        uMin = box.min.z;
+        uMax = box.max.z;
+      }
+
+      const key = `${axis}_${wallCoord}`;
+      if (!wallBuckets.has(key)) wallBuckets.set(key, []);
+      wallBuckets.get(key).push({
+        id: name,
+        box,
+        uMin,
+        uMax,
+        yMin: box.min.y,
+        yMax: box.max.y,
+        center,
+        size
+      });
+    };
+
+    // 1. Toàn bộ 433 khung hiện vật
+    if (this.exhibitBuilder?.exhibitMeshes) {
+      for (const mesh of this.exhibitBuilder.exhibitMeshes) {
+        const item = mesh.userData.item;
+        const name = `Exhibit_${item?.id || 'unknown'}`;
+        registerWallItem(name, mesh.parent || mesh);
+      }
+    }
+
+    // 2. Màn hình LED và cờ đứng Khu 4 & 6
+    if (this.architect?.screenKhu4) {
+      registerWallItem('Screen_Khu4', this.architect.screenKhu4.unit);
+    }
+    if (this.architect?.screenKhu6) {
+      registerWallItem('Screen_Khu6', this.architect.screenKhu6.unit);
+    }
+    if (this.architect?.screensGroup) {
+      this.architect.screensGroup.children.forEach((child, idx) => {
+        if (child !== this.architect?.screenKhu4?.unit && child !== this.architect?.screenKhu6?.unit) {
+          registerWallItem(`StandingFlag_${idx}`, child);
+        }
+      });
+    }
+
+    // 3. Các bảng tiêu đề khu (sign banners)
+    if (this.architect?.signBanners) {
+      for (const banner of this.architect.signBanners) {
+        registerWallItem(`SignBanner_${banner.title}`, banner.frameMesh);
+      }
+    }
+
+    // 4. Biển mốc son danh dự / giai đoạn (chỉ số chẵn là frameMesh đại diện cho 1 biển)
+    if (this.architect?.milestonesGroup) {
+      this.architect.milestonesGroup.children.forEach((child, idx) => {
+        if (idx % 2 === 0) {
+          registerWallItem(`MilestonePlaque_${Math.floor(idx / 2)}`, child);
+        }
+      });
+    }
+
+    // 5. Màn hình trung tâm khu HCM
+    if (this.architect?.hcmScreenMesh) {
+      registerWallItem('HCM_CentralScreen', this.architect.hcmScreenMesh);
+    }
+
+    // Kiểm tra chồng nhau từng mặt tường (dung sai 2cm = 0.02m theo Mục C)
+    let totalPairsChecked = 0;
+    const overlappingPairs = [];
+    const TOLERANCE = 0.02;
+
+    for (const [wallKey, items] of wallBuckets.entries()) {
+      for (let i = 0; i < items.length; i++) {
+        for (let j = i + 1; j < items.length; j++) {
+          totalPairsChecked++;
+          const a = items[i];
+          const b = items[j];
+
+          const overlapU = (a.uMax - TOLERANCE > b.uMin) && (b.uMax - TOLERANCE > a.uMin);
+          const overlapY = (a.yMax - TOLERANCE > b.yMin) && (b.yMax - TOLERANCE > a.yMin);
+
+          if (overlapU && overlapY) {
+            overlappingPairs.push({ wall: wallKey, itemA: a.id, itemB: b.id });
+            console.warn(`[assertNoOverlapOnWalls] Chồng nhau trên tường ${wallKey}:`, a.id, 'và', b.id);
+          }
+        }
+      }
+    }
+
+    console.log(`[assertNoOverlapOnWalls] Đã kiểm tra ${totalPairsChecked} cặp vật trên ${wallBuckets.size} mặt tường -> ${overlappingPairs.length} cặp chồng nhau.`);
+    if (overlappingPairs.length === 0) {
+      console.log('✓ assertNoOverlapOnWalls() = 0 cặp chồng nhau trên mọi mặt tường!');
+    }
+    return overlappingPairs.length;
   }
 
   getScreenCurrentItem(zone) {
@@ -1252,12 +1373,12 @@ class HeritageApp {
       this.architect.animate(delta, time);
     }
     if (this.gridMapTable && this.gridMapTable.animate) {
-      this.gridMapTable.animate(delta, time);
+      this.gridMapTable.animate(delta, time, this.camera.position);
     }
     this.updateGridHudProximity();
 
-    // GĐ5: Zone culling and Zone screens slideshow
-    this.updateZoneCulling(time);
+    // GĐ5-fix2: Frustum + Distance < 45m zone culling and Zone screens slideshow
+    this.updateZoneCulling();
     if (this.slideshowKhu4) this.slideshowKhu4.update(delta);
     if (this.slideshowKhu6) this.slideshowKhu6.update(delta);
 

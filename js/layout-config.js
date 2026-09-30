@@ -312,16 +312,6 @@ export const FLOORS = {
 };
 
 // ============================================================================
-// 12. ZONE VISIBILITY (ZONE CULLING - MỤC E)
-// ============================================================================
-export const VISIBLE_ZONES = {
-  lobby:   ['khu1', 'khu2', 'khu3', 'lobby'],
-  khu1:    ['khu1', 'lobby'],
-  khu2:    ['khu2', 'lobby'],
-  khu3:    ['khu3', 'lobby'],
-  hallway: ['khu4', 'khu5', 'khu6', 'lobby', 'hallway'],
-  khu4:    ['khu4', 'hallway'],
-  khu5:    ['khu5', 'hallway'],
-  khu6:    ['khu6', 'hallway'],
-};
+// 12. ZONE VISIBILITY (Bảng VISIBLE_ZONES đã được xóa theo Mục A.1 GĐ5-fix2, thay bằng Frustum + Distance culling)
+
 

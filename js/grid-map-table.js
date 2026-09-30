@@ -42,6 +42,7 @@ export class GridMapTable {
       lines220: new THREE.Group(),
       lines110: new THREE.Group(),
       quyHoach: new THREE.Group(),
+      ranhGioiMoi: new THREE.Group(), // Lớp ranh giới phường/xã mới (Mục B.2)
       tram500: new THREE.Group(),
       tram220: new THREE.Group(),
       tram110: new THREE.Group(),
@@ -59,6 +60,7 @@ export class GridMapTable {
       line110: true,
       khachHang: true,
       quyHoach: true,
+      ranhGioiMoi: true,
       labels: true,
       phuong: true
     };
@@ -73,14 +75,16 @@ export class GridMapTable {
     // Since local +Z is world -X (facing door), the near edge is lower
     this.tiltRad = (GRID_TABLE.tiltDeg || 8) * Math.PI / 180;
 
-    // Map board dimensions inside table bevel (aspect ratio from PDF = 2364.0 / 3116.88 = 0.75845)
-    this.mapAspect = 2364.0 / 3116.88;
-    this.mapW = 4.0;
-    this.mapD = this.mapW / this.mapAspect; // ≈ 5.274m
+    // Map board dimensions inside table bevel (Mục B.0b: Cắt sát bounds 1500 x 2580 pt -> aspect = 0.5814)
+    this.mapAspect = 1500.0 / 2580.0;
+    this.mapD = 5.4; // 5.4m chiều dài dọc bàn 6m
+    this.mapW = this.mapD * this.mapAspect; // ≈ 3.14m bề rộng trên bàn 4.2m
 
     // Instanced meshes references
     this.instancedTramMeshes = [];
     this.instancedCoSoMesh = null;
+    this._tilesLoaded = false;
+    this.highResTilesGroup = null;
   }
 
   async loadData() {
@@ -123,6 +127,9 @@ export class GridMapTable {
 
     // 3. Mount all layer groups to table
     Object.values(this.layers).forEach(grp => this.tableGroup.add(grp));
+
+    // 3b. Build New Boundaries Layer (Mục B.2: ranh_gioi_moi 1E40A0)
+    this.buildNewBoundaries();
 
     // 4. Build Power Lines (500kV, 220kV, 110kV LineSegments)
     this.buildPowerLines();
@@ -208,40 +215,116 @@ export class GridMapTable {
     baseTex.generateMipmaps = true;
     baseTex.minFilter = THREE.LinearMipmapLinearFilter;
 
-    // Mặt bản đồ nằm ngang trong hệ tọa độ cục bộ của bàn
+    // Mặt bản đồ: đặt ở y = 0.02, KHÔNG dùng polygonOffset, toneMapped = false (Mục B.0 & B.1)
     const boardGeo = new THREE.PlaneGeometry(this.mapW, this.mapD);
-    const boardMat = new THREE.MeshStandardMaterial({
+    const boardMat = new THREE.MeshBasicMaterial({
       map: baseTex,
-      roughness: 0.4,
-      metalness: 0.1,
-      polygonOffset: true,
-      polygonOffsetFactor: 2,
-      polygonOffsetUnits: 2
+      toneMapped: false
     });
 
     const boardMesh = new THREE.Mesh(boardGeo, boardMat);
     boardMesh.rotation.x = -Math.PI / 2;
-    boardMesh.position.y = 0.005;
-    boardMesh.receiveShadow = true;
+    boardMesh.position.y = 0.02;
+    boardMesh.name = 'GridMap_Board_Mesh';
     this.tableGroup.add(boardMesh);
+    this.boardMesh = boardMesh;
 
     // Hitbox cho toàn bộ mặt bàn sa bàn (raycast khi người dùng bấm vào sa bàn)
     const hitGeo = new THREE.PlaneGeometry(this.tableWidth, this.tableDepth);
     const hitMat = new THREE.MeshBasicMaterial({ visible: false });
     this.tableHitMesh = new THREE.Mesh(hitGeo, hitMat);
     this.tableHitMesh.rotation.x = -Math.PI / 2;
-    this.tableHitMesh.position.y = 0.01;
+    this.tableHitMesh.position.y = 0.021;
     this.tableHitMesh.userData = { isGridTableSurface: true };
     this.tableGroup.add(this.tableHitMesh);
     this.interactiveObjects.push(this.tableHitMesh);
   }
 
+  // Tải 6 ô nét khi cách sa bàn dưới 15 m (Mục B.1)
+  updateTilesLOD(cameraPos) {
+    if (this._tilesLoaded || !this.boardMesh || !cameraPos) return;
+    const worldCenter = new THREE.Vector3(26, 0.95, 0);
+    if (cameraPos.distanceTo(worldCenter) < 15.0) {
+      this._tilesLoaded = true;
+      this.loadHighResTiles();
+    }
+  }
+
+  loadHighResTiles() {
+    const texLoader = new THREE.TextureLoader();
+    const cols = 2;
+    const rows = 3;
+    const tileW = this.mapW / cols;
+    const tileD = this.mapD / rows;
+
+    const tilesGroup = new THREE.Group();
+    tilesGroup.name = 'GridMap_HighResTiles';
+
+    for (let r = 0; r < rows; r++) {
+      for (let c = 0; c < cols; c++) {
+        const tileTex = texLoader.load(`assets/grid/base_${r}_${c}.webp`);
+        tileTex.colorSpace = THREE.SRGBColorSpace;
+        tileTex.generateMipmaps = true;
+
+        const tileGeo = new THREE.PlaneGeometry(tileW, tileD);
+        const tileMat = new THREE.MeshBasicMaterial({
+          map: tileTex,
+          toneMapped: false
+        });
+        const tileMesh = new THREE.Mesh(tileGeo, tileMat);
+        tileMesh.rotation.x = -Math.PI / 2;
+        const lx = (c + 0.5 - cols / 2) * tileW;
+        const lz = (r + 0.5 - rows / 2) * tileD;
+        tileMesh.position.set(lx, 0.0205, lz);
+        tilesGroup.add(tileMesh);
+      }
+    }
+    this.tableGroup.add(tilesGroup);
+    this.highResTilesGroup = tilesGroup;
+    console.log('GridMapTable: Loaded 6 high-res tiles at distance < 15m.');
+  }
+
   // Chuyển đổi tọa độ chuẩn hóa [0..1] sang tọa độ cục bộ trên sa bàn
   // nx: 0 (Tây) -> 1 (Đông); ny: 0 (Bắc) -> 1 (Nam)
-  mapToLocal(nx, ny, elevation = 0.015) {
+  mapToLocal(nx, ny, elevation = 0.030) {
     const lx = (nx - 0.5) * this.mapW;
     const lz = (ny - 0.5) * this.mapD;
     return new THREE.Vector3(lx, elevation, lz);
+  }
+
+  // ===========================================================================
+  // 2b. LỚP RANH GIỚI PHƯỜNG/XÃ MỚI (MỤC B.2)
+  // Gộp 1 geometry, màu #1E40A0, cao hơn mặt bàn 1 cm (y = 0.03)
+  // ===========================================================================
+  buildNewBoundaries() {
+    const ranhGioiMoi = this.gridData?.ranh_gioi_moi || [];
+    if (ranhGioiMoi.length === 0) return;
+
+    const linePoints = [];
+    const elev = 0.030; // Cao hơn mặt bản đồ 1 cm (y = 0.02 -> y = 0.03)
+
+    ranhGioiMoi.forEach(poly => {
+      if (!poly || poly.length < 2) return;
+      for (let i = 0; i < poly.length - 1; i++) {
+        const p1 = this.mapToLocal(poly[i][0], poly[i][1], elev);
+        const p2 = this.mapToLocal(poly[i + 1][0], poly[i + 1][1], elev);
+        linePoints.push(p1, p2);
+      }
+    });
+
+    if (linePoints.length > 0) {
+      const geo = new THREE.BufferGeometry().setFromPoints(linePoints);
+      const mat = new THREE.LineBasicMaterial({
+        color: 0x1e40a0,
+        linewidth: 3,
+        transparent: true,
+        opacity: 0.95
+      });
+      const linesMesh = new THREE.LineSegments(geo, mat);
+      linesMesh.name = 'GridMap_NewBoundaries';
+      this.layers.ranhGioiMoi.add(linesMesh);
+      console.log(`GridMapTable: Built new boundaries layer with ${linePoints.length / 2} segments (1 draw call).`);
+    }
   }
 
   // ===========================================================================
@@ -256,19 +339,19 @@ export class GridMapTable {
         cap: '500kV',
         color: 0xe879f9, // Hồng tím
         group: this.layers.lines500,
-        height: 0.024
+        height: 0.038
       },
       {
         cap: '220kV',
         color: 0xf87171, // Đỏ
         group: this.layers.lines220,
-        height: 0.020
+        height: 0.035
       },
       {
         cap: '110kV',
         color: 0x22d3ee, // Cyan
         group: this.layers.lines110,
-        height: 0.016
+        height: 0.032
       }
     ];
 
@@ -412,8 +495,8 @@ export class GridMapTable {
       instMesh.instanceMatrix.setUsage(THREE.StaticDrawUsage);
 
       grp.items.forEach((t, idx) => {
-        const pos = this.mapToLocal(t.x, t.y, 0.01);
-        dummy.position.set(pos.x, grp.height / 2 + 0.01, pos.z);
+        const pos = this.mapToLocal(t.x, t.y, 0.035);
+        dummy.position.set(pos.x, grp.height / 2 + 0.035, pos.z);
         dummy.scale.set(1, 1, 1);
         dummy.rotation.set(0, 0, 0);
         dummy.updateMatrix();
@@ -459,8 +542,8 @@ export class GridMapTable {
 
     const dummy = new THREE.Object3D();
     coSoList.forEach((cs, idx) => {
-      const pos = this.mapToLocal(cs.x, cs.y, 0.01);
-      dummy.position.set(pos.x, 0.0325 + 0.01, pos.z);
+      const pos = this.mapToLocal(cs.x, cs.y, 0.035);
+      dummy.position.set(pos.x, 0.0325 + 0.035, pos.z);
       dummy.rotation.set(Math.PI, 0, 0); // chúc mũi kim xuống mặt bàn
       dummy.scale.set(1, 1, 1);
       dummy.updateMatrix();
@@ -479,54 +562,48 @@ export class GridMapTable {
   }
 
   // ===========================================================================
-  // 6. NHÃN 14 PHƯỜNG & MŨI TÊN OUTBOUND (VẼ TRÊN 1 TEXTURE OVERLAY DUY NHẤT)
+  // 6. NHÃN 14 PHƯỜNG & MŨI TÊN OUTBOUND (MỤC B.3: cao 0.18m, chữ #0F172A viền trắng 4px, y = 0.025)
   // ===========================================================================
   buildWardsAndLabelsOverlay() {
     const phuongList = this.gridData.phuong || [];
     const nhanNgoaiList = this.gridData.nhan_ngoai || [];
 
-    // Tạo canvas kích thước 2048 x 2700 (tỷ lệ khớp với mapW / mapD)
+    // Tạo canvas kích thước 2048 x (2048 / mapAspect)
     const cW = 2048;
-    const cH = Math.round(cW / this.mapAspect); // ≈ 2700
+    const cH = Math.round(cW / this.mapAspect);
     const canvas = document.createElement('canvas');
     canvas.width = cW;
     canvas.height = cH;
     const ctx = canvas.getContext('2d');
     ctx.clearRect(0, 0, cW, cH);
 
-    // 1. Vẽ 14 nhãn phường/xã hành chính mới
+    // 1. Tên 14 phường/xã hành chính mới (Mục B.3: chữ #0F172A weight 700, viền trắng 4px)
+    ctx.font = `700 36px ${FONT_FAMILY}`;
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.lineJoin = 'round';
+
     phuongList.forEach(ph => {
       const px = ph.x * cW;
       const py = ph.y * cH;
 
-      const badgeW = 260;
-      const badgeH = 56;
-      const bx = px - badgeW / 2;
-      const by = py - badgeH / 2;
+      // Viền trắng 4px (lineWidth = 8px cho strokeText)
+      ctx.strokeStyle = '#ffffff';
+      ctx.lineWidth = 8;
+      ctx.strokeText(ph.ten, px, py);
 
-      ctx.fillStyle = 'rgba(6, 13, 30, 0.72)';
-      ctx.beginPath();
-      ctx.roundRect(bx, by, badgeW, badgeH, 10);
-      ctx.fill();
-
-      ctx.strokeStyle = 'rgba(255, 255, 255, 0.45)';
-      ctx.lineWidth = 2.5;
-      ctx.stroke();
-
-      ctx.fillStyle = '#ffffff';
-      ctx.font = `600 24px ${FONT_FAMILY}`;
-      ctx.textAlign = 'center';
-      ctx.textBaseline = 'middle';
+      // Chữ màu #0F172A
+      ctx.fillStyle = '#0f172a';
       ctx.fillText(ph.ten, px, py);
     });
 
-    // 2. Vẽ các mũi tên outbound ("Đi trạm...", "Từ trạm...")
+    // 2. Các mũi tên outbound ("Đi trạm...", "Từ trạm...")
     nhanNgoaiList.forEach(nh => {
       const px = nh.x * cW;
       const py = nh.y * cH;
 
       const labelText = `➜ ${nh.ten}`;
-      ctx.font = `700 26px ${FONT_FAMILY}`;
+      ctx.font = `700 28px ${FONT_FAMILY}`;
       const metrics = ctx.measureText(labelText);
       const badgeW = Math.max(300, metrics.width + 36);
       const badgeH = 58;
@@ -558,15 +635,12 @@ export class GridMapTable {
     const overlayMat = new THREE.MeshBasicMaterial({
       map: overlayTex,
       transparent: true,
-      depthWrite: false,
-      polygonOffset: true,
-      polygonOffsetFactor: -1,
-      polygonOffsetUnits: -1
+      depthWrite: false
     });
 
     const overlayMesh = new THREE.Mesh(overlayGeo, overlayMat);
     overlayMesh.rotation.x = -Math.PI / 2;
-    overlayMesh.position.y = 0.008; // Nằm sát ngay trên mặt base_low.webp
+    overlayMesh.position.y = 0.025; // Nằm ở y = 0.025, trên nền bản đồ y = 0.02 (Mục B.0 & B.3)
     overlayMesh.name = 'GridMap_WardsLabelsOverlay';
     this.layers.phuong.add(overlayMesh);
   }
@@ -707,6 +781,9 @@ export class GridMapTable {
       case 'quyHoach':
         this.layers.quyHoach.visible = isVisible;
         break;
+      case 'ranhGioiMoi':
+        this.layers.ranhGioiMoi.visible = isVisible;
+        break;
       case 'phuong':
         this.layers.phuong.visible = isVisible;
         break;
@@ -716,9 +793,11 @@ export class GridMapTable {
   }
 
   // ===========================================================================
-  // 9. ANIMATION (RỖNG THEO YÊU CẦU MỤC B3 ĐỂ ĐẠT >= 50 FPS)
+  // 9. ANIMATION & LOD
   // ===========================================================================
-  animate(_delta, _time) {
-    // Không chạy vòng lặp tính toán hay beacon nhấp nháy, giữ hiệu năng cao nhất
+  animate(_delta, _time, cameraPos) {
+    if (cameraPos) {
+      this.updateTilesLOD(cameraPos);
+    }
   }
 }

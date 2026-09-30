@@ -159,8 +159,8 @@ export class MilestoneWallBuilder {
           westGroup.add(smExhibit);
           if (onExhibitDone) onExhibitDone();
         } else {
-          // 2 ảnh nhỏ xếp chồng tại y = 4.15 và y = 3.05
-          const yOffsets = [4.15, 3.05];
+          // 2 ảnh nhỏ xếp 2 tầng tại y = 4.20 và y = 2.95 (cách nhau 15cm, không chạm nhau)
+          const yOffsets = [4.20, 2.95];
           m.smallIds.slice(0, 2).forEach((smId, idx) => {
             const smItem = itemsById.get(smId) || {
               id: smId,
