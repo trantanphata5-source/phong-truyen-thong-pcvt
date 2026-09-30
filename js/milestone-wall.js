@@ -82,7 +82,7 @@ export class MilestoneWallBuilder {
         date: '01/01/2026',
         title: 'ĐỒNG CHÍ NGUYỄN NGỌC TUYẾN',
         subtitle: 'Nhận nhiệm vụ Giám đốc Công ty (từ 01/01/2026)',
-        descExtra: 'Lễ công bố và trao quyết định cán bộ – 16/01/2026',
+        descExtra: '',
         mainId: 'moc2_01',
         smallIds: ['moc2_02'],
         mainSize: { w: 2.6, h: 1.5 },

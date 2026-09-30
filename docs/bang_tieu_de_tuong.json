@@ -1,0 +1,169 @@
+{
+  "ghi_chu": "Cấu hình băng tiêu đề, khẩu hiệu trên 7 bức tường (Khu 3, 4, 6) và 4 trụ thông tin mặt tiền Khu 3 theo GĐ5-fix3. Người duyệt có thể trực tiếp chỉnh sửa nội dung văn bản trong file này.",
+  "walls": [
+    {
+      "id": "wall_k3_north",
+      "zone": "khu3",
+      "wall_name": "Tường Bắc Khu 3",
+      "time_span": "03/2026 – 05/2026",
+      "topic": "Những ngày đầu thành lập",
+      "full_title": "03/2026 – 05/2026 · Những ngày đầu thành lập",
+      "sub_text": "20 ảnh tư liệu • Triển khai Văn bản 832/EVNHCMC • Khởi đầu tuần mới lan tỏa năng lượng tích cực",
+      "slogan": "CÔNG TY ĐIỆN LỰC VŨNG TÀU – VỮNG BƯỚC CÙNG EVNHCMC",
+      "colors": {
+        "banner_bg": "#FFFFFF",
+        "banner_text": "#1E40A0",
+        "banner_border": "#1E40A0",
+        "banner_sub": "#475569",
+        "slogan_color": "#1E40A0"
+      },
+      "logo": "assets/logo.png"
+    },
+    {
+      "id": "wall_k3_far",
+      "zone": "khu3",
+      "wall_name": "Tường Đông Khu 3 (x = 50)",
+      "time_span": "07/2025 – 03/2026",
+      "topic": "Vững vàng phát triển",
+      "full_title": "07/2025 – 03/2026 · Vững vàng phát triển",
+      "sub_text": "34 ảnh tư liệu • Điện lực Vũng Tàu • Lễ công bố quyết định công tác cán bộ",
+      "slogan": "LƯỚI ĐIỆN THÔNG MINH – DỊCH VỤ KHÁCH HÀNG HIỆN ĐẠI",
+      "colors": {
+        "banner_bg": "#FFFFFF",
+        "banner_text": "#1E40A0",
+        "banner_border": "#1E40A0",
+        "banner_sub": "#475569",
+        "slogan_color": "#1E40A0"
+      },
+      "logo": "assets/logo.png"
+    },
+    {
+      "id": "wall_k3_south",
+      "zone": "khu3",
+      "wall_name": "Tường Nam Khu 3",
+      "time_span": "05/2026 – 07/2026",
+      "topic": "Chào mừng 1 năm thành lập",
+      "full_title": "05/2026 – 07/2026 · Chào mừng 1 năm thành lập",
+      "sub_text": "19 ảnh tư liệu • Điện lực Côn Đảo tiếp sức mùa thi • Hội nghị sơ kết 6 tháng đầu năm",
+      "slogan": "ĐOÀN KẾT – ĐỔI MỚI – HIỆU QUẢ",
+      "colors": {
+        "banner_bg": "#FFFFFF",
+        "banner_text": "#1E40A0",
+        "banner_border": "#1E40A0",
+        "banner_sub": "#475569",
+        "slogan_color": "#1E40A0"
+      },
+      "logo": "assets/logo.png"
+    },
+    {
+      "id": "wall_k4_east",
+      "zone": "khu4",
+      "wall_name": "Tường Đông Khu 4 (x = 50)",
+      "time_span": "02/2026 – 04/2026",
+      "topic": "Hoạt động Đảng bộ Công ty",
+      "full_title": "02/2026 – 04/2026 · Hoạt động Đảng bộ Công ty",
+      "sub_text": "26 ảnh tư liệu • Hoạt động Đảng bộ Công ty • Chi bộ Côn Đảo",
+      "slogan": "ĐẢNG CỘNG SẢN VIỆT NAM QUANG VINH MUÔN NĂM",
+      "colors": {
+        "banner_bg": "#B91C1C",
+        "banner_text": "#FACC15",
+        "banner_border": "#FACC15",
+        "banner_sub": "#FEF08A",
+        "slogan_color": "#B91C1C"
+      },
+      "logo": "assets/logo/co_dang.png"
+    },
+    {
+      "id": "wall_k4_west_hcm",
+      "zone": "khu4",
+      "wall_name": "Tường Tây Khu 4 (mặt ngoài HCM Đông)",
+      "time_span": "04/2026 – 08/2026",
+      "topic": "Xây dựng Đảng bộ trong sạch, vững mạnh",
+      "full_title": "04/2026 – 08/2026 · Xây dựng Đảng bộ trong sạch, vững mạnh",
+      "sub_text": "22 ảnh tư liệu • Chi bộ 3 • Hội nghị sơ kết 6 tháng đầu năm",
+      "slogan": "HỌC TẬP VÀ LÀM THEO TƯ TƯỞNG, ĐẠO ĐỨC, PHONG CÁCH HỒ CHÍ MINH",
+      "colors": {
+        "banner_bg": "#B91C1C",
+        "banner_text": "#FACC15",
+        "banner_border": "#FACC15",
+        "banner_sub": "#FEF08A",
+        "slogan_color": "#B91C1C"
+      },
+      "logo": "assets/logo/co_dang.png"
+    },
+    {
+      "id": "wall_k6_west",
+      "zone": "khu6",
+      "wall_name": "Tường Tây Khu 6 (Công đoàn)",
+      "time_span": "08/2025 – 03/2026",
+      "topic": "Công đoàn Công ty – chăm lo, đồng hành",
+      "full_title": "08/2025 – 03/2026 · Công đoàn Công ty – chăm lo, đồng hành",
+      "sub_text": "25 ảnh tư liệu • Hoạt động Công đoàn tại phường Vũng Tàu • Bữa cơm Công đoàn",
+      "slogan": "ĐOÀN KẾT – SÁNG TẠO – CHĂM LO – BẢO VỆ",
+      "colors": {
+        "banner_bg": "#FFFFFF",
+        "banner_text": "#1D4ED8",
+        "banner_border": "#1D4ED8",
+        "banner_sub": "#475569",
+        "slogan_color": "#1D4ED8"
+      },
+      "logo": "assets/logo/logo_cong_doan.png"
+    },
+    {
+      "id": "wall_k6_east_hcm",
+      "zone": "khu6",
+      "wall_name": "Tường Đông Khu 6 (Đoàn Thanh niên)",
+      "time_span": "10/2025 – 09/2026",
+      "topic": "Tuổi trẻ PCVT xung kích, tình nguyện",
+      "full_title": "10/2025 – 09/2026 · Tuổi trẻ PCVT xung kích, tình nguyện",
+      "sub_text": "25 ảnh tư liệu • Đại hội đại biểu Đoàn • Góp sức Xuân tình nguyện 2026",
+      "slogan": "TUỔI TRẺ PCVT – XUNG KÍCH, SÁNG TẠO, TÌNH NGUYỆN",
+      "colors": {
+        "banner_bg": "#FFFFFF",
+        "banner_text": "#0EA5E9",
+        "banner_border": "#0EA5E9",
+        "banner_sub": "#475569",
+        "slogan_color": "#0EA5E9"
+      },
+      "logo": "assets/logo/logo_doan_tn.png"
+    }
+  ],
+  "totems": [
+    {
+      "x": 21.5,
+      "z": -9.5,
+      "side": "left",
+      "title": "TRUNG TÂM ĐIỀU KHIỂN",
+      "sub": "SCADA / DMS CONTROL CENTER",
+      "slogan": "Vận hành hệ thống điện thông minh, tin cậy và an toàn",
+      "detail": ""
+    },
+    {
+      "x": 21.5,
+      "z": -7.0,
+      "side": "left",
+      "title": "TỰ ĐỘNG HÓA LƯỚI ĐIỆN",
+      "sub": "SMART GRID AUTOMATION",
+      "slogan": "Hiện đại hóa và tự động hóa hệ thống điện phân phối",
+      "detail": ""
+    },
+    {
+      "x": 21.5,
+      "z": 7.0,
+      "side": "right",
+      "title": "DỊCH VỤ KHÁCH HÀNG SỐ",
+      "sub": "DIGITAL CUSTOMER SERVICES",
+      "slogan": "Chuyển đổi số toàn diện, nâng cao trải nghiệm khách hàng",
+      "detail": ""
+    },
+    {
+      "x": 21.5,
+      "z": 9.5,
+      "side": "right",
+      "title": "CHUYỂN ĐỔI SỐ",
+      "sub": "DIGITAL TRANSFORMATION",
+      "slogan": "Phát triển doanh nghiệp số, tối ưu hóa quy trình nghiệp vụ",
+      "detail": ""
+    }
+  ]
+}

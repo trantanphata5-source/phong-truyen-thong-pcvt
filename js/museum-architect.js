@@ -2305,14 +2305,8 @@ export class MuseumArchitect {
       k3Content.add(decalMesh);
     });
 
-    // 3. Ba trụ thông tin nền trắng viền xanh EVN, dời sang bên (x=21.5, z=-7.0, -9.5, 7.0) (Mục A.22)
+    // 3. Bốn trụ thông tin đối xứng qua trục Khu 3 (x=21.5, z=-9.5, -7.0, +7.0, +9.5) (Mục E)
     const totemsData = [
-      {
-        z: -7.0,
-        title: 'TỰ ĐỘNG HÓA LƯỚI ĐIỆN',
-        slogan: 'Hiện đại hóa và tự động hóa hệ thống điện phân phối',
-        sub: 'SMART GRID AUTOMATION'
-      },
       {
         z: -9.5,
         title: 'TRUNG TÂM ĐIỀU KHIỂN',
@@ -2320,10 +2314,22 @@ export class MuseumArchitect {
         sub: 'SCADA / DMS CONTROL CENTER'
       },
       {
+        z: -7.0,
+        title: 'TỰ ĐỘNG HÓA LƯỚI ĐIỆN',
+        slogan: 'Hiện đại hóa và tự động hóa hệ thống điện phân phối',
+        sub: 'SMART GRID AUTOMATION'
+      },
+      {
         z: 7.0,
         title: 'DỊCH VỤ KHÁCH HÀNG SỐ',
         slogan: 'Chuyển đổi số toàn diện, nâng cao trải nghiệm khách hàng',
         sub: 'DIGITAL CUSTOMER SERVICES'
+      },
+      {
+        z: 9.5,
+        title: 'CHUYỂN ĐỔI SỐ',
+        slogan: 'Phát triển doanh nghiệp số, tối ưu hóa quy trình nghiệp vụ',
+        sub: 'DIGITAL TRANSFORMATION'
       }
     ];
 
@@ -2399,86 +2405,100 @@ export class MuseumArchitect {
     c.height = 1400;
     const ctx = c.getContext('2d');
 
-    // Nền trắng tinh khiết
-    ctx.fillStyle = '#ffffff';
-    ctx.fillRect(0, 0, 800, 1400);
+    const renderContent = (logoImg = null) => {
+      // Nền trắng tinh khiết
+      ctx.fillStyle = '#ffffff';
+      ctx.fillRect(0, 0, 800, 1400);
 
-    // Khung viền xanh EVN
-    ctx.strokeStyle = '#1e40a0';
-    ctx.lineWidth = 6;
-    ctx.strokeRect(24, 24, 752, 1352);
+      // Khung viền xanh EVN
+      ctx.strokeStyle = '#1e40a0';
+      ctx.lineWidth = 6;
+      ctx.strokeRect(24, 24, 752, 1352);
 
-    ctx.strokeStyle = 'rgba(56, 189, 248, 0.4)';
-    ctx.lineWidth = 2;
-    ctx.strokeRect(36, 36, 728, 1328);
+      ctx.strokeStyle = 'rgba(56, 189, 248, 0.4)';
+      ctx.lineWidth = 2;
+      ctx.strokeRect(36, 36, 728, 1328);
 
-    // Header EVNHCMC
-    ctx.fillStyle = '#1e40a0';
-    ctx.font = '700 28px "Be Vietnam Pro", sans-serif';
-    ctx.textAlign = 'center';
-    ctx.fillText('EVNHCMC • PC VŨNG TÀU', 400, 140);
+      // Header EVNHCMC
+      ctx.fillStyle = '#1e40a0';
+      ctx.font = '700 28px "Be Vietnam Pro", sans-serif';
+      ctx.textAlign = 'center';
+      ctx.fillText('EVNHCMC • PC VŨNG TÀU', 400, 140);
 
-    ctx.fillStyle = '#64748b';
-    ctx.font = '500 20px "Be Vietnam Pro", sans-serif';
-    ctx.letterSpacing = '2px';
-    ctx.fillText(sub, 400, 180);
+      ctx.fillStyle = '#64748b';
+      ctx.font = '500 20px "Be Vietnam Pro", sans-serif';
+      ctx.letterSpacing = '2px';
+      ctx.fillText(sub, 400, 180);
 
-    // Đường kẻ phân cách
-    ctx.strokeStyle = '#1e40a0';
-    ctx.lineWidth = 3;
-    ctx.beginPath();
-    ctx.moveTo(100, 220);
-    ctx.lineTo(700, 220);
-    ctx.stroke();
+      // Đường kẻ phân cách
+      ctx.strokeStyle = '#1e40a0';
+      ctx.lineWidth = 3;
+      ctx.beginPath();
+      ctx.moveTo(100, 220);
+      ctx.lineTo(700, 220);
+      ctx.stroke();
 
-    // Biểu tượng công nghệ ở giữa
-    ctx.fillStyle = 'rgba(30, 64, 160, 0.08)';
-    ctx.beginPath();
-    ctx.arc(400, 480, 110, 0, Math.PI * 2);
-    ctx.fill();
+      // Logo EVNHCMC ở phần đầu trụ (rộng khoảng 0.35m, giữ đúng tỷ lệ gốc, nền trắng) (Mục E.3)
+      // w = 1.1m -> 800px canvas; 0.35m = (0.35/1.1)*800 ≈ 255px
+      const logoW = 255;
+      const logoH = 200; // tỷ lệ ~1.276
+      const logoX = 400 - logoW / 2;
+      const logoY = 320;
 
-    ctx.strokeStyle = '#1e40a0';
-    ctx.lineWidth = 4;
-    ctx.beginPath();
-    ctx.arc(400, 480, 95, 0, Math.PI * 2);
-    ctx.stroke();
+      // Nền trắng tinh khiết cho logo
+      ctx.fillStyle = '#ffffff';
+      ctx.fillRect(logoX - 10, logoY - 10, logoW + 20, logoH + 20);
 
-    ctx.fillStyle = '#1e40a0';
-    ctx.font = '900 80px "Be Vietnam Pro", sans-serif';
-    ctx.fillText('⚡', 400, 510);
-
-    // Tiêu đề trụ
-    ctx.fillStyle = '#1e40a0';
-    ctx.font = '900 46px "Be Vietnam Pro", sans-serif';
-    ctx.fillText(title, 400, 740);
-
-    // Khẩu hiệu chính thức
-    ctx.fillStyle = '#0f172a';
-    ctx.font = '500 30px "Be Vietnam Pro", sans-serif';
-    const words = slogan.split(' ');
-    let line = '';
-    let y = 840;
-    for (let n = 0; n < words.length; n++) {
-      const testLine = line + words[n] + ' ';
-      const metrics = ctx.measureText(testLine);
-      if (metrics.width > 640 && n > 0) {
-        ctx.fillText(line.trim(), 400, y);
-        line = words[n] + ' ';
-        y += 50;
-      } else {
-        line = testLine;
+      if (logoImg && logoImg.complete && logoImg.naturalWidth > 0) {
+        ctx.drawImage(logoImg, logoX, logoY, logoW, logoH);
       }
-    }
-    ctx.fillText(line.trim(), 400, y);
 
-    // Footer
-    ctx.fillStyle = '#475569';
-    ctx.font = '600 22px "Be Vietnam Pro", sans-serif';
-    ctx.fillText('CHUYỂN ĐỔI SỐ • LƯỚI ĐIỆN THÔNG MINH', 400, 1260);
+      // Tiêu đề trụ
+      ctx.fillStyle = '#1e40a0';
+      ctx.font = '900 46px "Be Vietnam Pro", sans-serif';
+      ctx.fillText(title, 400, 680);
+
+      // Khẩu hiệu chính thức
+      ctx.fillStyle = '#0f172a';
+      ctx.font = '500 30px "Be Vietnam Pro", sans-serif';
+      const words = slogan.split(' ');
+      let line = '';
+      let y = 780;
+      for (let n = 0; n < words.length; n++) {
+        const testLine = line + words[n] + ' ';
+        const metrics = ctx.measureText(testLine);
+        if (metrics.width > 640 && n > 0) {
+          ctx.fillText(line.trim(), 400, y);
+          line = words[n] + ' ';
+          y += 50;
+        } else {
+          line = testLine;
+        }
+      }
+      ctx.fillText(line.trim(), 400, y);
+
+      // Footer
+      ctx.fillStyle = '#475569';
+      ctx.font = '600 22px "Be Vietnam Pro", sans-serif';
+      ctx.fillText('CHUYỂN ĐỔI SỐ • LƯỚI ĐIỆN THÔNG MINH', 400, 1260);
+
+      faceTex.needsUpdate = true;
+    };
 
     const faceTex = new THREE.CanvasTexture(c);
     faceTex.colorSpace = THREE.SRGBColorSpace;
     const faceMat = new THREE.MeshBasicMaterial({ map: faceTex });
+
+    if (!this._totemLogoImg) {
+      this._totemLogoImg = new Image();
+      this._totemLogoImg.src = 'assets/logo.png';
+    }
+    if (this._totemLogoImg.complete && this._totemLogoImg.naturalWidth > 0) {
+      renderContent(this._totemLogoImg);
+    } else {
+      renderContent(null);
+      this._totemLogoImg.addEventListener('load', () => renderContent(this._totemLogoImg));
+    }
 
     // Mặt trước (hướng Tây: rotY = -Math.PI / 2)
     const facePlaneGeo = new THREE.PlaneGeometry(w - 0.04, h - 0.1);

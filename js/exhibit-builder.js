@@ -21,13 +21,11 @@ export class ExhibitBuilder {
     this.exhibitMap = new Map();
     this.mountedExhibits = [];
 
-    // GĐ3-fix2 thông số tầng ảnh
-    // Vách ngăn đơn giữa khu (partition_k1): 3.10 / 1.50
+    // GĐ5-fix3: Chiều cao tầng ảnh: top 3.10m, bottom 1.50m (mép trên ảnh ở ~3.61m, cách băng tiêu đề 4.15m một khe ~0.27m)
     this.ROW_Y_TOP = 3.10;
     this.ROW_Y_BOTTOM = 1.50;
-    // Các bức tường xung quanh bảo tàng nâng cao lên vừa tầm mắt người xem (eyeHeight 2.85m)
-    this.OUTER_ROW_Y_TOP = 3.50;
-    this.OUTER_ROW_Y_BOTTOM = 1.85;
+    this.OUTER_ROW_Y_TOP = 3.10;
+    this.OUTER_ROW_Y_BOTTOM = 1.50;
     this.MIN_GAP = 0.35;
     this.END_MARGIN = 1.20;
 
@@ -395,6 +393,9 @@ export class ExhibitBuilder {
       x: -22, z: 60, rotY: -Math.PI / 2, wallLength: 40, thickness: WALL_THICKNESS
     }, k6_dtn, this.zoneGroups.khu6, onDone);
 
+    // GĐ5-fix3: Dựng băng tiêu đề và dải khẩu hiệu cho 7 bức tường Khu 3, 4, 6 (Mục D)
+    this.buildWallBannersAndSlogans();
+
     this.scene.add(exhibitsGroup);
 
     // Ràng buộc kiểm tra tự động Section A & C
@@ -406,6 +407,273 @@ export class ExhibitBuilder {
     console.log(`Tổng hiện vật trên tường: ${totalCreated}`);
 
     return exhibitsGroup;
+  }
+
+  // ===========================================================================
+  // BĂNG TIÊU ĐỀ TƯỜNG (y = 4.15m) VÀ DẢI KHẨU HIỆU (y = 5.60m) CHO 7 BỨC TƯỜNG (Mục D)
+  // ===========================================================================
+  buildWallBannersAndSlogans() {
+    this.wallBanners = [];
+    const configs = [
+      {
+        id: 'wall_k3_north',
+        zone: 'khu3',
+        baseX: 34, baseZ: -25, rotY: 0, wallLength: 26, thickness: 0.2,
+        length: 16.5,
+        time_span: '03/2026 – 05/2026',
+        topic: 'Những ngày đầu thành lập',
+        full_title: '03/2026 – 05/2026 · Những ngày đầu thành lập',
+        sub_text: '20 ảnh tư liệu • Triển khai Văn bản 832/EVNHCMC • Khởi đầu tuần mới lan tỏa năng lượng tích cực',
+        slogan: 'CÔNG TY ĐIỆN LỰC VŨNG TÀU – VỮNG BƯỚC CÙNG EVNHCMC',
+        colors: {
+          banner_bg: '#FFFFFF',
+          banner_text: '#1E40A0',
+          banner_border: '#1E40A0',
+          banner_sub: '#475569',
+          slogan_color: '#1E40A0'
+        },
+        logo: 'assets/logo.png'
+      },
+      {
+        id: 'wall_k3_far',
+        zone: 'khu3',
+        baseX: 50, baseZ: 0, rotY: -Math.PI / 2, wallLength: 44, thickness: 0.2,
+        length: 29.0,
+        time_span: '07/2025 – 03/2026',
+        topic: 'Vững vàng phát triển',
+        full_title: '07/2025 – 03/2026 · Vững vàng phát triển',
+        sub_text: '34 ảnh tư liệu • Điện lực Vũng Tàu • Lễ công bố quyết định công tác cán bộ',
+        slogan: 'LƯỚI ĐIỆN THÔNG MINH – DỊCH VỤ KHÁCH HÀNG HIỆN ĐẠI',
+        colors: {
+          banner_bg: '#FFFFFF',
+          banner_text: '#1E40A0',
+          banner_border: '#1E40A0',
+          banner_sub: '#475569',
+          slogan_color: '#1E40A0'
+        },
+        logo: 'assets/logo.png'
+      },
+      {
+        id: 'wall_k3_south',
+        zone: 'khu3',
+        baseX: 34, baseZ: 25, rotY: Math.PI, wallLength: 26, thickness: 0.2,
+        length: 16.5,
+        time_span: '05/2026 – 07/2026',
+        topic: 'Chào mừng 1 năm thành lập',
+        full_title: '05/2026 – 07/2026 · Chào mừng 1 năm thành lập',
+        sub_text: '19 ảnh tư liệu • Điện lực Côn Đảo tiếp sức mùa thi • Hội nghị sơ kết 6 tháng đầu năm',
+        slogan: 'ĐOÀN KẾT – ĐỔI MỚI – HIỆU QUẢ',
+        colors: {
+          banner_bg: '#FFFFFF',
+          banner_text: '#1E40A0',
+          banner_border: '#1E40A0',
+          banner_sub: '#475569',
+          slogan_color: '#1E40A0'
+        },
+        logo: 'assets/logo.png'
+      },
+      {
+        id: 'wall_k4_east',
+        zone: 'khu4',
+        baseX: 50, baseZ: 60, rotY: -Math.PI / 2, wallLength: 44, thickness: 0.2,
+        length: 29.0,
+        time_span: '02/2026 – 04/2026',
+        topic: 'Hoạt động Đảng bộ Công ty',
+        full_title: '02/2026 – 04/2026 · Hoạt động Đảng bộ Công ty',
+        sub_text: '26 ảnh tư liệu • Hoạt động Đảng bộ Công ty • Chi bộ Côn Đảo',
+        slogan: 'ĐẢNG CỘNG SẢN VIỆT NAM QUANG VINH MUÔN NĂM',
+        colors: {
+          banner_bg: '#B91C1C',
+          banner_text: '#FACC15',
+          banner_border: '#FACC15',
+          banner_sub: '#FEF08A',
+          slogan_color: '#B91C1C'
+        },
+        logo: 'assets/logo/co_dang.png'
+      },
+      {
+        id: 'wall_k4_west_hcm',
+        zone: 'khu4',
+        baseX: 22, baseZ: 60, rotY: Math.PI / 2, wallLength: 40, thickness: 0.2,
+        length: 26.0,
+        time_span: '04/2026 – 08/2026',
+        topic: 'Xây dựng Đảng bộ trong sạch, vững mạnh',
+        full_title: '04/2026 – 08/2026 · Xây dựng Đảng bộ trong sạch, vững mạnh',
+        sub_text: '22 ảnh tư liệu • Chi bộ 3 • Hội nghị sơ kết 6 tháng đầu năm',
+        slogan: 'HỌC TẬP VÀ LÀM THEO TƯ TƯỞNG, ĐẠO ĐỨC, PHONG CÁCH HỒ CHÍ MINH',
+        colors: {
+          banner_bg: '#B91C1C',
+          banner_text: '#FACC15',
+          banner_border: '#FACC15',
+          banner_sub: '#FEF08A',
+          slogan_color: '#B91C1C'
+        },
+        logo: 'assets/logo/co_dang.png'
+      },
+      {
+        id: 'wall_k6_west',
+        zone: 'khu6',
+        baseX: -50, baseZ: 60, rotY: Math.PI / 2, wallLength: 44, thickness: 0.2,
+        length: 29.0,
+        time_span: '08/2025 – 03/2026',
+        topic: 'Công đoàn Công ty – chăm lo, đồng hành',
+        full_title: '08/2025 – 03/2026 · Công đoàn Công ty – chăm lo, đồng hành',
+        sub_text: '25 ảnh tư liệu • Hoạt động Công đoàn tại phường Vũng Tàu • Bữa cơm Công đoàn',
+        slogan: 'ĐOÀN KẾT – SÁNG TẠO – CHĂM LO – BẢO VỆ',
+        colors: {
+          banner_bg: '#FFFFFF',
+          banner_text: '#1D4ED8',
+          banner_border: '#1D4ED8',
+          banner_sub: '#475569',
+          slogan_color: '#1D4ED8'
+        },
+        logo: 'assets/logo/logo_cong_doan.png'
+      },
+      {
+        id: 'wall_k6_east_hcm',
+        zone: 'khu6',
+        baseX: -22, baseZ: 60, rotY: -Math.PI / 2, wallLength: 40, thickness: 0.2,
+        length: 26.0,
+        time_span: '10/2025 – 09/2026',
+        topic: 'Tuổi trẻ PCVT xung kích, tình nguyện',
+        full_title: '10/2025 – 09/2026 · Tuổi trẻ PCVT xung kích, tình nguyện',
+        sub_text: '25 ảnh tư liệu • Đại hội đại biểu Đoàn • Góp sức Xuân tình nguyện 2026',
+        slogan: 'TUỔI TRẺ PCVT – XUNG KÍCH, SÁNG TẠO, TÌNH NGUYỆN',
+        colors: {
+          banner_bg: '#FFFFFF',
+          banner_text: '#0EA5E9',
+          banner_border: '#0EA5E9',
+          banner_sub: '#475569',
+          slogan_color: '#0EA5E9'
+        },
+        logo: 'assets/logo/logo_doan_tn.png'
+      }
+    ];
+
+    // Preload logos
+    const logoMap = {};
+    configs.forEach(c => {
+      if (!logoMap[c.logo]) {
+        const img = new Image();
+        img.src = c.logo;
+        logoMap[c.logo] = img;
+      }
+    });
+
+    configs.forEach(cfg => {
+      const parentGroup = this.zoneGroups[cfg.zone] || this.scene;
+      const nx = Math.sin(cfg.rotY);
+      const nz = Math.cos(cfg.rotY);
+      // Tường bảo tàng dày WALL_THICKNESS (1.2m), standOff = 1.2/2 + 0.04 phào + 0.07 khe = 0.71m từ tâm tường
+      const standOff = WALL_THICKNESS / 2 + 0.04 + 0.07;
+
+      const posX = cfg.baseX + nx * standOff;
+      const posZ = cfg.baseZ + nz * standOff;
+
+      // 1. Banner mesh: Canvas 2048 x 256, cao 0.55m, tâm y = 4.15m
+      const canvasB = document.createElement('canvas');
+      canvasB.width = 2048;
+      canvasB.height = 256;
+      const ctxB = canvasB.getContext('2d');
+
+      const texB = new THREE.CanvasTexture(canvasB);
+      texB.colorSpace = THREE.SRGBColorSpace;
+
+      const renderBanner = () => {
+        ctxB.fillStyle = cfg.colors.banner_bg;
+        ctxB.beginPath();
+        ctxB.roundRect(8, 8, 2032, 240, 16);
+        ctxB.fill();
+
+        ctxB.strokeStyle = cfg.colors.banner_border;
+        ctxB.lineWidth = 6;
+        ctxB.stroke();
+
+        ctxB.strokeStyle = (cfg.colors.banner_bg === '#B91C1C') ? 'rgba(250, 204, 21, 0.4)' : 'rgba(30, 64, 160, 0.2)';
+        ctxB.lineWidth = 2;
+        ctxB.beginPath();
+        ctxB.roundRect(18, 18, 2012, 220, 12);
+        ctxB.stroke();
+
+        // Draw logos at both ends
+        const lImg = logoMap[cfg.logo];
+        if (lImg && lImg.complete && lImg.naturalWidth > 0) {
+          const lAspect = lImg.naturalWidth / lImg.naturalHeight;
+          const lH = 130;
+          const lW = lH * lAspect;
+          // Left logo
+          ctxB.drawImage(lImg, 60, (256 - lH) / 2, lW, lH);
+          // Right logo
+          ctxB.drawImage(lImg, 2048 - 60 - lW, (256 - lH) / 2, lW, lH);
+        }
+
+        // Main title
+        ctxB.fillStyle = cfg.colors.banner_text;
+        ctxB.font = '800 48px "Be Vietnam Pro", sans-serif';
+        ctxB.textAlign = 'center';
+        ctxB.textBaseline = 'middle';
+        ctxB.fillText(cfg.full_title, 1024, 95);
+
+        // Subtext
+        ctxB.fillStyle = cfg.colors.banner_sub;
+        ctxB.font = '600 26px "Be Vietnam Pro", sans-serif';
+        ctxB.fillText(cfg.sub_text, 1024, 175);
+
+        texB.needsUpdate = true;
+      };
+
+      const lImg = logoMap[cfg.logo];
+      if (lImg.complete && lImg.naturalWidth > 0) {
+        renderBanner();
+      } else {
+        renderBanner();
+        lImg.addEventListener('load', renderBanner);
+      }
+
+      const bannerMat = new THREE.MeshBasicMaterial({
+        map: texB,
+        side: THREE.DoubleSide
+      });
+      const bannerGeo = new THREE.PlaneGeometry(cfg.length, 0.55);
+      const bannerMesh = new THREE.Mesh(bannerGeo, bannerMat);
+      bannerMesh.position.set(posX, 4.15, posZ);
+      bannerMesh.rotation.y = cfg.rotY;
+      bannerMesh.name = `WallBanner_${cfg.id}`;
+      parentGroup.add(bannerMesh);
+      this.wallBanners.push(bannerMesh);
+
+      // 2. Slogan mesh: Canvas 2048 x 128 (transparent), cao 0.45m, tâm y = 5.60m
+      const canvasS = document.createElement('canvas');
+      canvasS.width = 2048;
+      canvasS.height = 128;
+      const ctxS = canvasS.getContext('2d');
+      ctxS.clearRect(0, 0, 2048, 128);
+
+      ctxS.fillStyle = cfg.colors.slogan_color;
+      ctxS.font = '900 52px "Be Vietnam Pro", sans-serif';
+      ctxS.textAlign = 'center';
+      ctxS.textBaseline = 'middle';
+      ctxS.letterSpacing = '3px';
+      ctxS.fillText(cfg.slogan, 1024, 64);
+
+      const texS = new THREE.CanvasTexture(canvasS);
+      texS.colorSpace = THREE.SRGBColorSpace;
+      const sloganMat = new THREE.MeshBasicMaterial({
+        map: texS,
+        transparent: true,
+        depthWrite: false,
+        side: THREE.DoubleSide
+      });
+      const sloganGeo = new THREE.PlaneGeometry(cfg.length, 0.45);
+      const sloganMesh = new THREE.Mesh(sloganGeo, sloganMat);
+      sloganMesh.position.set(posX, 5.60, posZ);
+      sloganMesh.rotation.y = cfg.rotY;
+      sloganMesh.name = `WallSlogan_${cfg.id}`;
+      parentGroup.add(sloganMesh);
+      this.wallBanners.push(sloganMesh);
+    });
+
+    console.log(`[buildWallBannersAndSlogans] Đã thêm thành công 14 meshes (7 băng tiêu đề y=4.15m + 7 khẩu hiệu y=5.60m) cho Khu 3, 4, 6.`);
   }
 
   // ===========================================================================

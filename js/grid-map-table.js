@@ -75,10 +75,10 @@ export class GridMapTable {
     // Since local +Z is world -X (facing door), the near edge is lower
     this.tiltRad = (GRID_TABLE.tiltDeg || 8) * Math.PI / 180;
 
-    // Map board dimensions inside table bevel (Mục B.0b: Cắt sát bounds 1500 x 2580 pt -> aspect = 0.5814)
-    this.mapAspect = 1500.0 / 2580.0;
-    this.mapD = 5.4; // 5.4m chiều dài dọc bàn 6m
-    this.mapW = this.mapD * this.mapAspect; // ≈ 3.14m bề rộng trên bàn 4.2m
+    // Map board dimensions inside table bevel (Mục B.1: Cắt sát bounds 1660 x 2100 pt -> aspect = 0.7905)
+    this.mapAspect = 1660.0 / 2100.0;
+    this.mapW = 4.0; // 4.0m chiều rộng trên bàn 4.2m (lề 10cm mỗi bên)
+    this.mapD = this.mapW / this.mapAspect; // ≈ 5.06m chiều dài dọc bàn 6.0m (lề 47cm mỗi đầu)
 
     // Instanced meshes references
     this.instancedTramMeshes = [];
@@ -143,8 +143,8 @@ export class GridMapTable {
     // 7. Build Administrative Wards & Outbound Labels on a single texture plane
     this.buildWardsAndLabelsOverlay();
 
-    // 8. Build 3D Legend Plaque beside table (không có ĐBGT)
-    this.build3DLegendPlaque();
+    // 8. Gỡ bảng chú thích 3D đứng bên trái sa bàn theo Mục B.3 (đã có bảng lọc lớp UI)
+    // this.build3DLegendPlaque();
 
     this.scene.add(this.rootGroup);
     console.log('GridMapTable 3D build complete with InstancedMeshes and <= 20 draw calls.');
@@ -799,5 +799,49 @@ export class GridMapTable {
     if (cameraPos) {
       this.updateTilesLOD(cameraPos);
     }
+  }
+
+  // ===========================================================================
+  // 10. KIỂM TRA NGHIỆM THU (MỤC B.1): TẤT CẢ ĐIỂM NẰM TRỌN TRONG MẶT BÀN
+  // ===========================================================================
+  assertAllInsideBoard() {
+    if (!this.gridData) {
+      console.warn('[assertAllInsideBoard] gridData chưa nạp!');
+      return -1;
+    }
+
+    const stations = this.gridData.tram || [];
+    const coso = this.gridData.co_so || [];
+    const phuong = this.gridData.phuong || [];
+    const allPoints = [
+      ...stations.map(s => ({ name: s.ten, type: 'Trạm ' + s.cap, x: s.x, y: s.y })),
+      ...coso.map(c => ({ name: c.ten, type: 'Cơ sở', x: c.x, y: c.y })),
+      ...phuong.map(p => ({ name: p.ten, type: 'Phường/Xã', x: p.x, y: p.y }))
+    ];
+
+    let outsideCount = 0;
+    const halfW = this.tableWidth / 2; // 2.1m
+    const halfD = this.tableDepth / 2; // 3.0m
+
+    allPoints.forEach(pt => {
+      const localPos = this.mapToLocal(pt.x, pt.y);
+      const isInside = (
+        pt.x >= 0.0 && pt.x <= 1.0 &&
+        pt.y >= 0.0 && pt.y <= 1.0 &&
+        Math.abs(localPos.x) <= halfW &&
+        Math.abs(localPos.z) <= halfD
+      );
+
+      if (!isInside) {
+        outsideCount++;
+        console.warn(`[assertAllInsideBoard] Điểm ngoài bàn: ${pt.name} (${pt.type}) tại norm=(${pt.x.toFixed(4)}, ${pt.y.toFixed(4)}), local=(${localPos.x.toFixed(2)}, ${localPos.z.toFixed(2)})`);
+      }
+    });
+
+    console.log(`[assertAllInsideBoard] Đã kiểm tra ${allPoints.length} điểm (44 trạm, 4 cơ sở, 14 phường): ${allPoints.length - outsideCount}/${allPoints.length} điểm nằm trong mặt bàn. Số điểm ngoài: ${outsideCount}`);
+    if (outsideCount === 0) {
+      console.log('✓ assertAllInsideBoard() = 0 điểm ngoài bàn!');
+    }
+    return outsideCount;
   }
 }

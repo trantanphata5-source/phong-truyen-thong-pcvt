@@ -1,13 +1,15 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-extract_grid_map.py
-Trích xuất toàn bộ dữ liệu vector và ảnh nền từ bản vẽ địa dư PCVT:
-Source: source/dia-du-pcvt.pdf
-Output:
-  - assets/grid/pcvt_grid.json (bao gồm ranh_gioi_moi)
-  - assets/grid/base_{r}_{c}.webp (6 tiles: 2 col x 3 row)
+run_new_grid_extraction.py
+Trích xuất toàn bộ dữ liệu vector và ảnh nền từ bản vẽ địa dư PCVT theo GĐ5-fix3:
+- Frame contain đủ 14 đơn vị hành chính + 3% lề (X: 250..1910, Y: 430..2530)
+- Ô Côn Đảo thu nhỏ 25% bề rộng mặt bàn, đặt ở góc biển (đông nam)
+- Đọc và gộp docs/ranh_gioi_bo_sung.json (4 phường TP Vũng Tàu cũ) vào ranh_gioi_moi
+- Xuất:
+  - assets/grid/pcvt_grid.json
   - assets/grid/base_low.webp (2048px)
+  - assets/grid/base_{r}_{c}.webp (6 tiles)
   - assets/grid/preview.png
 """
 
@@ -30,13 +32,31 @@ PDF_PATH = 'source/dia-du-pcvt.pdf'
 OUTPUT_DIR = 'assets/grid'
 os.makedirs(OUTPUT_DIR, exist_ok=True)
 
-# Khung cắt sát nội dung theo Mục 0b (đất liền + ô Côn Đảo góc dưới phải + lề 3%)
-FRAME_X0 = 360.0
-FRAME_Y0 = 480.0
-FRAME_X1 = 1860.0
-FRAME_Y1 = 3060.0
-FRAME_W = FRAME_X1 - FRAME_X0  # 1500.0 pt
-FRAME_H = FRAME_Y1 - FRAME_Y0  # 2580.0 pt
+# Khung cắt sát nội dung theo Mục B1 (đất liền chứa trọn 14 ĐVHC + lề 3%)
+FRAME_X0 = 250.0
+FRAME_Y0 = 430.0
+FRAME_X1 = 1910.0
+FRAME_Y1 = 2530.0
+FRAME_W = FRAME_X1 - FRAME_X0  # 1660.0 pt
+FRAME_H = FRAME_Y1 - FRAME_Y0  # 2100.0 pt
+
+# Ô Côn Đảo trong bản vẽ gốc
+CD_SRC_X0 = 1269.0
+CD_SRC_Y0 = 2465.2
+CD_SRC_X1 = 1811.3
+CD_SRC_Y1 = 2788.0
+CD_SRC_W = CD_SRC_X1 - CD_SRC_X0  # 542.3 pt
+CD_SRC_H = CD_SRC_Y1 - CD_SRC_Y0  # 322.8 pt
+
+# Côn Đảo thu nhỏ còn 25% bề rộng mặt bàn, đặt ở góc biển xa đất liền (Đông Nam)
+CD_DEST_W = FRAME_W * 0.25  # 415.0 pt
+scale_cd = CD_DEST_W / CD_SRC_W  # 0.76526
+CD_DEST_H = CD_SRC_H * scale_cd  # 247.0 pt
+
+CD_DEST_X0 = FRAME_X1 - CD_DEST_W - 35.0  # 1460.0 pt
+CD_DEST_Y0 = FRAME_Y1 - CD_DEST_H - 35.0  # 2248.0 pt
+CD_DEST_X1 = CD_DEST_X0 + CD_DEST_W
+CD_DEST_Y1 = CD_DEST_Y0 + CD_DEST_H
 
 # Bảng chú thích trong PDF (để lọc bỏ và inpaint trắng)
 LEGEND_X0 = 10.1
@@ -47,10 +67,27 @@ LEGEND_Y1 = 3242.7
 def is_in_legend(x, y):
     return LEGEND_X0 <= x <= LEGEND_X1 and LEGEND_Y0 <= y <= LEGEND_Y1
 
-def norm_x(x):
+def is_in_cd_box(x, y):
+    return CD_SRC_X0 <= x <= CD_SRC_X1 and CD_SRC_Y0 <= y <= CD_SRC_Y1
+
+def transform_pt(x, y):
+    """Ánh xạ tọa độ từ ô Côn Đảo cũ sang ô Côn Đảo thu nhỏ mới ở góc biển."""
+    if is_in_cd_box(x, y):
+        tx = CD_DEST_X0 + (x - CD_SRC_X0) * scale_cd
+        ty = CD_DEST_Y0 + (y - CD_SRC_Y0) * scale_cd
+        return tx, ty
+    return x, y
+
+def norm_x(x, y=None):
+    if y is not None:
+        tx, _ = transform_pt(x, y)
+        return max(0.0, min(1.0, (tx - FRAME_X0) / FRAME_W))
     return max(0.0, min(1.0, (x - FRAME_X0) / FRAME_W))
 
-def norm_y(y):
+def norm_y(y, x=None):
+    if x is not None:
+        _, ty = transform_pt(x, y)
+        return max(0.0, min(1.0, (ty - FRAME_Y0) / FRAME_H))
     return max(0.0, min(1.0, (y - FRAME_Y0) / FRAME_H))
 
 # =============================================================================
@@ -82,7 +119,9 @@ def douglas_peucker(points, tolerance=1.0):
 
 def main():
     print("=================================================================")
-    print("PCVT GRID MAP EXTRACTION - BẮT ĐẦU TRÍCH XUẤT BẢN ĐỒ ĐỊA DƯ PCVT")
+    print("PCVT GRID MAP EXTRACTION - BẮT ĐẦU TRÍCH XUẤT BẢN ĐỒ ĐỊA DƯ PCVT (GĐ5-fix3)")
+    print(f"Khung bao contain: X=[{FRAME_X0}, {FRAME_X1}], Y=[{FRAME_Y0}, {FRAME_Y1}] ({FRAME_W} x {FRAME_H} pt)")
+    print(f"Ô Côn Đảo đích (25% W): X=[{CD_DEST_X0}, {CD_DEST_X1}], Y=[{CD_DEST_Y0:.1f}, {CD_DEST_Y1:.1f}]")
     print("=================================================================")
     t0 = time.time()
 
@@ -121,20 +160,16 @@ def main():
         for it in d.get('items', []):
             cmd = it[0]
             if cmd == 're':
-                # Bỏ qua khung hình chữ nhật
                 continue
             elif cmd == 'l':
                 p1, p2 = it[1], it[2]
                 length = math.hypot(p2.x - p1.x, p2.y - p1.y)
-                # Bỏ đoạn ngắn hơn 3 pt (chấm ranh giới cũ)
                 if length < 3.0:
                     continue
 
-                # Bỏ ô chú thích góc dưới trái
                 if p1.x < legend_x_max and p1.y > legend_y_min and p2.x < legend_x_max and p2.y > legend_y_min:
                     continue
 
-                # Bỏ khung viền trang
                 if (min(p1.x, p2.x) < 8 or max(p1.x, p2.x) > W - 8 or
                     min(p1.y, p2.y) < 8 or max(p1.y, p2.y) > H - 8):
                     continue
@@ -148,158 +183,119 @@ def main():
 
     print(f"Đã trích xuất {len(boundary_segments)} đoạn ranh giới (Nét dày: {count_thick}, Nét mảnh: {count_thin})")
 
-    # Nối đoạn đầu - cuối trùng nhau (sai số <= 1 pt) thành polylines
-    def pt_key(p, tol=1.0):
-        return (int(round(p[0] / tol)), int(round(p[1] / tol)))
-
-    adj = defaultdict(list)
-    edges = {}
+    # Ghép nối các đoạn thẳng thành polyline
+    seg_map = defaultdict(list)
     for i, (p1, p2) in enumerate(boundary_segments):
-        k1 = pt_key(p1)
-        k2 = pt_key(p2)
-        adj[k1].append((i, p1, p2, 0))
-        adj[k2].append((i, p2, p1, 1))
-        edges[i] = (p1, p2)
+        seg_map[p1].append((p2, i))
+        seg_map[p2].append((p1, i))
 
     visited = set()
     boundary_polylines = []
 
-    for i in range(len(boundary_segments)):
-        if i in visited:
+    for idx, (start_p1, start_p2) in enumerate(boundary_segments):
+        if idx in visited:
             continue
-        visited.add(i)
-        p1, p2 = edges[i]
-        line = [p1, p2]
+
+        line = [start_p1, start_p2]
+        visited.add(idx)
 
         # Mở rộng về phía đuôi
         while True:
-            k = pt_key(line[-1])
-            found = False
-            for next_i, start_p, end_p, _ in adj[k]:
-                if next_i not in visited:
-                    if math.hypot(line[-1][0] - start_p[0], line[-1][1] - start_p[1]) <= 1.2:
-                        visited.add(next_i)
-                        line.append(end_p)
-                        found = True
-                        break
-            if not found:
+            curr = line[-1]
+            next_found = False
+            for nxt, s_idx in seg_map[curr]:
+                if s_idx not in visited:
+                    visited.add(s_idx)
+                    line.append(nxt)
+                    next_found = True
+                    break
+            if not next_found:
                 break
 
         # Mở rộng về phía đầu
         while True:
-            k = pt_key(line[0])
-            found = False
-            for next_i, start_p, end_p, _ in adj[k]:
-                if next_i not in visited:
-                    if math.hypot(line[0][0] - start_p[0], line[0][1] - start_p[1]) <= 1.2:
-                        visited.add(next_i)
-                        line.insert(0, end_p)
-                        found = True
-                        break
-            if not found:
+            curr = line[0]
+            next_found = False
+            for nxt, s_idx in seg_map[curr]:
+                if s_idx not in visited:
+                    visited.add(s_idx)
+                    line.insert(0, nxt)
+                    next_found = True
+                    break
+            if not next_found:
                 break
 
         boundary_polylines.append(line)
 
     print(f"Đã kết nối thành {len(boundary_polylines)} polylines")
 
-    # Rút gọn Douglas-Peucker sai số 1 pt và chuẩn hóa tọa độ [0..1]
+    # Rút gọn Douglas-Peucker và chuẩn hóa tọa độ [0..1]
     norm_boundary_polylines = []
     total_pts = 0
     for poly in boundary_polylines:
-        simplified = douglas_peucker(poly, tolerance=1.0)
+        # Ánh xạ Côn Đảo nếu có
+        t_poly = [transform_pt(p[0], p[1]) for p in poly]
+        simplified = douglas_peucker(t_poly, tolerance=1.0)
         norm_line = [[round(norm_x(p[0]), 5), round(norm_y(p[1]), 5)] for p in simplified]
         norm_boundary_polylines.append(norm_line)
         total_pts += len(norm_line)
 
-    # Đọc bổ sung nếu có file docs/ranh_gioi_bo_sung.json
+    # Đọc bổ sung docs/ranh_gioi_bo_sung.json (4 phường TP Vũng Tàu cũ) theo Mục B2
     bo_sung_path = 'docs/ranh_gioi_bo_sung.json'
     if os.path.exists(bo_sung_path):
         try:
             with open(bo_sung_path, 'r', encoding='utf-8') as f:
                 bo_sung_data = json.load(f)
-                if isinstance(bo_sung_data, list):
-                    for poly in bo_sung_data:
-                        norm_line = [[round(norm_x(p[0]), 5), round(norm_y(p[1]), 5)] for p in poly]
+                phuong_dict = bo_sung_data.get('phuong', {})
+                for name, poly in phuong_dict.items():
+                    if poly and len(poly) >= 2:
+                        norm_line = []
+                        for p in poly:
+                            # Tọa độ trong ranh_gioi_bo_sung.json đã chuẩn hóa theo bounds cũ (360, 480, 1500, 2580)
+                            pt_x = 360.0 + p[0] * 1500.0
+                            pt_y = 480.0 + p[1] * 2580.0
+                            nx = round(norm_x(pt_x, pt_y), 5)
+                            ny = round(norm_y(pt_y, pt_x), 5)
+                            norm_line.append([nx, ny])
+                        if norm_line[0] != norm_line[-1]:
+                            norm_line.append(norm_line[0])
                         norm_boundary_polylines.append(norm_line)
                         total_pts += len(norm_line)
-            print(f"Đã nạp thêm ranh giới bổ sung từ {bo_sung_path}")
+                        print(f"  + Đã gộp ranh giới bổ sung: {name} ({len(norm_line)} điểm)")
+            print(f"Đã nạp thành công 4 phường từ {bo_sung_path}")
         except Exception as e:
             print("Lỗi nạp ranh giới bổ sung:", e)
 
-    print(f"Tổng số điểm ranh giới sau DP: {total_pts}")
+    print(f"Tổng số điểm ranh giới sau gộp: {total_pts}")
 
     # 2. TRÍCH XUẤT NHÃN VĂN BẢN & ĐỊNH VỊ TRẠM
     print("\n--- BƯỚC 2: TRÍCH XUẤT VĂN BẢN & ĐỊNH VỊ TRẠM ---")
     blocks = page.get_text('blocks')
     print(f"Tổng số text blocks: {len(blocks)}")
 
-    all_triangles = []
-    for d in drawings:
-        r = d.get('rect')
-        if not r or r.width > 30 or r.height > 30:
-            continue
-        c = tuple(round(x, 2) for x in d['color']) if d.get('color') else None
-        f = tuple(round(x, 2) for x in d['fill']) if d.get('fill') else None
-        if len(d.get('items', [])) in (3, 4, 6, 8, 12, 14, 24):
-            cx = (r.x0 + r.x1) / 2
-            cy = (r.y0 + r.y1) / 2
-            if not is_in_legend(cx, cy):
-                all_triangles.append({'cx': cx, 'cy': cy, 'rect': r, 'color': c, 'fill': f})
-
-    print(f"Đã tìm thấy {len(all_triangles)} ký hiệu biểu trưng trạm.")
-
-    def find_nearest_station_pos(name_pattern, default_x, default_y, search_rad=55):
-        best_block = None
+    def find_nearest_station_pos(name_pattern, default_x, default_y):
         for b in blocks:
             txt = b[4].strip().replace('\n', ' ')
             if re.search(name_pattern, txt, re.IGNORECASE):
                 bx = (b[0] + b[2]) / 2
                 by = (b[1] + b[3]) / 2
                 if not is_in_legend(bx, by):
-                    best_block = (bx, by, txt)
-                    break
-        if not best_block:
-            return default_x, default_y
+                    return (bx, by)
+        return (default_x, default_y)
 
-        bx, by, _ = best_block
-        best_sym = None
-        min_d = search_rad
-        for sym in all_triangles:
-            d = math.hypot(sym['cx'] - bx, sym['cy'] - by)
-            if d < min_d:
-                min_d = d
-                best_sym = sym
-
-        if best_sym:
-            return round(best_sym['cx'], 1), round(best_sym['cy'], 1)
-        return round(bx, 1), round(by, 1)
-
-    # 1 TBA 500kV
     tram_500 = [
-        {
-            'id': 'tba_500_phu_my',
-            'ten': 'Phú Mỹ (KCN Phú Mỹ)',
-            'cap': '500kV',
-            'loai': 'luoi',
-            'trang_thai': 'hien_trang',
-            'phuong': 'P. Phú Mỹ',
-            'pattern': r'500kV.*Phú Mỹ|Trạm 500kV',
-            'def_pos': (474.0, 900.7)
-        }
+        { 'id': 'tba_500_kcn_phu_my', 'ten': 'KCN Phú Mỹ', 'cap': '500kV', 'loai': 'luoi', 'trang_thai': 'hien_trang', 'phuong': 'P. Tân Phước', 'pattern': r'Trạm 500kV.*Phú Mỹ', 'def_pos': (474.0, 900.7) }
     ]
 
-    # 6 TBA 220kV
     tram_220 = [
-        { 'id': 'tba_220_my_xuan', 'ten': 'KCN Mỹ Xuân', 'cap': '220kV', 'loai': 'luoi', 'trang_thai': 'hien_trang', 'phuong': 'P. Mỹ Xuân', 'pattern': r'220kV.*Mỹ Xuân', 'def_pos': (510.2, 793.9) },
-        { 'id': 'tba_220_phu_my', 'ten': 'Phú Mỹ', 'cap': '220kV', 'loai': 'luoi', 'trang_thai': 'hien_trang', 'phuong': 'P. Phú Mỹ', 'pattern': r'220kV Phú Mỹ', 'def_pos': (504.1, 918.4) },
-        { 'id': 'tba_220_tan_thanh', 'ten': 'Tân Thành', 'cap': '220kV', 'loai': 'luoi', 'trang_thai': 'hien_trang', 'phuong': 'P. Tân Phước', 'pattern': r'220kV Tân Thành', 'def_pos': (653.6, 1244.6) },
-        { 'id': 'tba_220_phu_my_3', 'ten': 'KCN Phú Mỹ 3', 'cap': '220kV', 'loai': 'luoi', 'trang_thai': 'hien_trang', 'phuong': 'P. Tân Phước', 'pattern': r'220kV.*Phú Mỹ 3', 'def_pos': (831.4, 1541.0) },
-        { 'id': 'tba_220_ba_ria', 'ten': 'KCN Bà Rịa', 'cap': '220kV', 'loai': 'luoi', 'trang_thai': 'hien_trang', 'phuong': 'P. Long Hương', 'pattern': r'220kV.*Bà Rịa', 'def_pos': (1262.9, 1573.1) },
-        { 'id': 'tba_220_vung_tau', 'ten': 'Vũng Tàu', 'cap': '220kV', 'loai': 'luoi', 'trang_thai': 'hien_trang', 'phuong': 'P. 11', 'pattern': r'220kV Vũng Tàu', 'def_pos': (1051.7, 2095.6) }
+        { 'id': 'tba_220_phu_my', 'ten': 'Phú Mỹ', 'cap': '220kV', 'loai': 'luoi', 'trang_thai': 'hien_trang', 'phuong': 'P. Phú Mỹ', 'pattern': r'220kV Phú Mỹ\b', 'def_pos': (504.1, 918.4) },
+        { 'id': 'tba_220_kcn_phu_my_3', 'ten': 'KCN Phú Mỹ 3', 'cap': '220kV', 'loai': 'luoi', 'trang_thai': 'hien_trang', 'phuong': 'P. Phước Hòa', 'pattern': r'220kV.*Phú Mỹ 3', 'def_pos': (831.4, 1541.0) },
+        { 'id': 'tba_220_kcn_ba_ria', 'ten': 'KCN Bà Rịa', 'cap': '220kV', 'loai': 'luoi', 'trang_thai': 'hien_trang', 'phuong': 'P. Bà Rịa', 'pattern': r'220kV.*Bà Rịa\b', 'def_pos': (1262.9, 1573.1) },
+        { 'id': 'tba_220_vung_tau', 'ten': 'Vũng Tàu', 'cap': '220kV', 'loai': 'luoi', 'trang_thai': 'hien_trang', 'phuong': 'P. Thắng Nhất', 'pattern': r'220kV.*Vũng Tàu', 'def_pos': (1051.7, 2095.6) },
+        { 'id': 'tba_220_long_son', 'ten': 'Long Sơn', 'cap': '220kV', 'loai': 'luoi', 'trang_thai': 'quy_hoach', 'phuong': 'Xã Long Sơn', 'pattern': r'220kV Long Sơn', 'def_pos': (887.3, 1729.8) },
+        { 'id': 'tba_220_phuoc_thang', 'ten': 'Phước Thắng', 'cap': '220kV', 'loai': 'luoi', 'trang_thai': 'quy_hoach', 'phuong': 'P. 12', 'pattern': r'220kV Phước Thắng', 'def_pos': (1282.7, 1941.5) }
     ]
 
-    # 19 TBA 110kV Lưới
     tram_110_luoi = [
         { 'id': 'tba_110_my_xuan_a', 'ten': 'Mỹ Xuân A', 'cap': '110kV', 'loai': 'luoi', 'trang_thai': 'hien_trang', 'phuong': 'P. Mỹ Xuân', 'pattern': r'110kV Mỹ Xuân A\b', 'def_pos': (510.4, 734.9) },
         { 'id': 'tba_110_my_xuan_a2', 'ten': 'Mỹ Xuân A2', 'cap': '110kV', 'loai': 'luoi', 'trang_thai': 'hien_trang', 'phuong': 'P. Mỹ Xuân', 'pattern': r'110kV Mỹ Xuân A2', 'def_pos': (531.0, 776.7) },
@@ -322,7 +318,6 @@ def main():
         { 'id': 'tba_110_con_dao', 'ten': 'Côn Đảo', 'cap': '110kV', 'loai': 'luoi', 'trang_thai': 'hien_trang', 'phuong': 'Đặc khu Côn Đảo', 'pattern': r'Trạm 110kV.*Côn Đảo', 'def_pos': (1484.4, 2836.3) }
     ]
 
-    # 15 TBA 110kV Khách hàng
     tram_110_kh = [
         { 'id': 'tba_kh_thep_dong_tien', 'ten': 'Thép Đồng Tiến', 'cap': '110kV', 'loai': 'khach_hang', 'trang_thai': 'hien_trang', 'phuong': 'P. Mỹ Xuân', 'pattern': r'THÉP ĐỒNG TIẾN', 'def_pos': (761.2, 738.7) },
         { 'id': 'tba_kh_china_steel', 'ten': 'China Steel', 'cap': '110kV', 'loai': 'khach_hang', 'trang_thai': 'hien_trang', 'phuong': 'P. Mỹ Xuân', 'pattern': r'China Steel', 'def_pos': (600.8, 816.9) },
@@ -341,14 +336,12 @@ def main():
         { 'id': 'tba_kh_lsb_long_son', 'ten': 'LSB Long Sơn', 'cap': '110kV', 'loai': 'khach_hang', 'trang_thai': 'hien_trang', 'phuong': 'Xã Long Sơn', 'pattern': r'LSB Long Sơn', 'def_pos': (686.9, 1755.1) }
     ]
 
-    # 3 Trạm lân cận
     tram_lan_can = [
         { 'id': 'tba_lc_ngai_giao', 'ten': 'Ngãi Giao (PC Đất Đỏ)', 'cap': '110kV', 'loai': 'lan_can', 'trang_thai': 'hien_trang', 'phuong': 'H. Châu Đức', 'pattern': r'Ngãi Giao', 'def_pos': (1539.6, 563.6) },
         { 'id': 'tba_lc_long_dat', 'ten': 'Long Đất (PC Đất Đỏ)', 'cap': '110kV', 'loai': 'lan_can', 'trang_thai': 'hien_trang', 'phuong': 'H. Long Đất', 'pattern': r'Long Đất', 'def_pos': (1611.1, 1518.9) },
         { 'id': 'tba_lc_an_ngai', 'ten': 'An Ngãi (PC Đất Đỏ)', 'cap': '110kV', 'loai': 'lan_can', 'trang_thai': 'hien_trang', 'phuong': 'H. Long Đất', 'pattern': r'An Ngãi', 'def_pos': (1570.4, 1758.1) }
     ]
 
-    # 4 Cơ sở PCVT
     co_so_pcvt = [
         { 'id': 'coso_1', 'ten': 'PCVT – Cơ sở 1', 'loai': 'co_so', 'phuong': 'P. Vũng Tàu', 'dia_chi': 'Trụ sở chính Công ty', 'pattern': r'Cơ sở 1', 'def_pos': (789.4, 2372.4) },
         { 'id': 'coso_2', 'ten': 'PCVT – Cơ sở 2', 'loai': 'co_so', 'phuong': 'P. Thắng Nhất', 'dia_chi': 'Đội QLVH Lưới điện Vũng Tàu', 'pattern': r'Cơ sở 2', 'def_pos': (848.8, 2239.2) },
@@ -360,6 +353,7 @@ def main():
     for grp in [tram_500, tram_220, tram_110_luoi, tram_110_kh, tram_lan_can]:
         for s in grp:
             x_pt, y_pt = find_nearest_station_pos(s['pattern'], s['def_pos'][0], s['def_pos'][1])
+            tx, ty = transform_pt(x_pt, y_pt)
             s_out = {
                 'id': s['id'],
                 'ten': s['ten'],
@@ -367,24 +361,25 @@ def main():
                 'loai': s['loai'],
                 'trang_thai': s['trang_thai'],
                 'phuong': s['phuong'],
-                'pt': [x_pt, y_pt],
-                'x': round(norm_x(x_pt), 5),
-                'y': round(norm_y(y_pt), 5)
+                'pt': [round(tx, 1), round(ty, 1)],
+                'x': round(norm_x(tx), 5),
+                'y': round(norm_y(ty), 5)
             }
             all_stations_output.append(s_out)
 
     all_coso_output = []
     for cs in co_so_pcvt:
         x_pt, y_pt = find_nearest_station_pos(cs['pattern'], cs['def_pos'][0], cs['def_pos'][1])
+        tx, ty = transform_pt(x_pt, y_pt)
         cs_out = {
             'id': cs['id'],
             'ten': cs['ten'],
             'loai': cs['loai'],
             'phuong': cs['phuong'],
             'dia_chi': cs['dia_chi'],
-            'pt': [x_pt, y_pt],
-            'x': round(norm_x(x_pt), 5),
-            'y': round(norm_y(y_pt), 5)
+            'pt': [round(tx, 1), round(ty, 1)],
+            'x': round(norm_x(tx), 5),
+            'y': round(norm_y(ty), 5)
         }
         all_coso_output.append(cs_out)
 
@@ -418,12 +413,13 @@ def main():
                 if not is_in_legend(bx, by):
                     ax, ay = bx, by
                     break
+        tx, ty = transform_pt(ax, ay)
         all_admin_output.append({
             'id': adm['id'],
             'ten': adm['ten'],
-            'pt': [round(ax, 1), round(ay, 1)],
-            'x': round(norm_x(ax), 5),
-            'y': round(norm_y(ay), 5)
+            'pt': [round(tx, 1), round(ty, 1)],
+            'x': round(norm_x(tx), 5),
+            'y': round(norm_y(ty), 5)
         })
 
     # 4. TRÍCH XUẤT ĐƯỜNG DÂY (500kV, 220kV, 110kV)
@@ -448,7 +444,7 @@ def main():
             v_class = '500kV'
         elif c in ((1.0, 0.0, 0.0), (0.8, 0.13, 0.15)):
             v_class = '220kV'
-        elif c == (0.0, 0.0, 1.0):
+        elif c in ((0.0, 0.8, 1.0), (0.0, 1.0, 1.0), (0.13, 0.59, 0.95)):
             v_class = '110kV'
 
         if not v_class:
@@ -456,17 +452,13 @@ def main():
 
         pts = []
         for it in d.get('items', []):
-            cmd = it[0]
-            if cmd == 'l':
+            if it[0] == 'l':
                 p1, p2 = it[1], it[2]
+                tx1, ty1 = transform_pt(p1.x, p1.y)
+                tx2, ty2 = transform_pt(p2.x, p2.y)
                 if not pts:
-                    pts.append((p1.x, p1.y))
-                pts.append((p2.x, p2.y))
-            elif cmd == 'c':
-                p1, p2, p3, p4 = it[1], it[2], it[3], it[4]
-                if not pts:
-                    pts.append((p1.x, p1.y))
-                pts.extend([(p2.x, p2.y), (p3.x, p3.y), (p4.x, p4.y)])
+                    pts.append((tx1, ty1))
+                pts.append((tx2, ty2))
 
         if len(pts) >= 2:
             simplified = douglas_peucker(pts, tolerance=1.5)
@@ -475,11 +467,6 @@ def main():
                 'quy_hoach': is_dashed,
                 'points': norm_pts
             })
-
-    for v, llist in lines_by_voltage.items():
-        ht_cnt = sum(1 for l in llist if not l['quy_hoach'])
-        qh_cnt = sum(1 for l in llist if l['quy_hoach'])
-        print(f"Đường dây {v}: {len(llist)} đoạn (Hiện trạng: {ht_cnt}, Quy hoạch: {qh_cnt})")
 
     # 5. XUẤT FILE JSON TỔNG HỢP (BAO GỒM ranh_gioi_moi)
     print("\n--- BƯỚC 5: XUẤT FILE JSON assets/grid/pcvt_grid.json ---")
@@ -499,7 +486,7 @@ def main():
             { 'ten': 'Đi trạm Long Thành', 'x': norm_x(430.0), 'y': norm_y(540.0) },
             { 'ten': 'Đi trạm Nhơn Trạch', 'x': norm_x(410.0), 'y': norm_y(680.0) },
             { 'ten': 'Đi trạm Mỹ Tho', 'x': norm_x(390.0), 'y': norm_y(1250.0) },
-            { 'ten': 'Từ trạm 220kV Vĩnh Châu đến Côn Đảo', 'x': norm_x(1370.0), 'y': norm_y(2900.0) }
+            { 'ten': 'Từ trạm 220kV Vĩnh Châu đến Côn Đảo', 'x': norm_x(CD_DEST_X0 + 30.0), 'y': norm_y(CD_DEST_Y0 + CD_DEST_H + 15.0) }
         ]
     }
 
@@ -509,41 +496,48 @@ def main():
     print(f"Đã lưu thành công: {json_path} ({os.path.getsize(json_path) / 1024:.1f} KB)")
 
     # 6. RENDER ẢNH NỀN MỚI (ZOOM 2.5, INPAINT ĐBGT, GAMMA 0.9, 2048px)
-    print("\n--- BƯỚC 6: RENDER ẢNH NỀN BẢN ĐỒ & INPAINT ĐBGT (MỤC B.2) ---")
-    # Render ở zoom 2.5
+    print("\n--- BƯỚC 6: RENDER ẢNH NỀN BẢN ĐỒ & INPAINT ĐBGT ---")
     scale = 2.5
     mat = fitz.Matrix(scale, scale)
     print(f"Render PDF ở zoom {scale}...")
     pix = page.get_pixmap(matrix=mat)
 
-    # Chuyển sang ảnh OpenCV BGR
     img_bgr = np.frombuffer(pix.samples, dtype=np.uint8).reshape((pix.height, pix.width, 3))
     img_bgr = cv2.cvtColor(img_bgr, cv2.COLOR_RGB2BGR)
 
-    # Cắt sát theo bounds [FRAME_X0, FRAME_Y0, FRAME_X1, FRAME_Y1]
+    # Cắt sát theo bounds đất liền [FRAME_X0, FRAME_Y0, FRAME_X1, FRAME_Y1]
     crop_x0 = int(FRAME_X0 * scale)
     crop_y0 = int(FRAME_Y0 * scale)
     crop_x1 = int(FRAME_X1 * scale)
     crop_y1 = int(FRAME_Y1 * scale)
-    cropped_bgr = img_bgr[crop_y0:crop_y1, crop_x0:crop_x1].copy()
-    ch, cw = cropped_bgr.shape[:2]
-    print(f"Ảnh sau khi crop sát bounds: {cw} x {ch} px")
+    mainland_crop = img_bgr[crop_y0:crop_y1, crop_x0:crop_x1].copy()
+    ch, cw = mainland_crop.shape[:2]
+    print(f"Ảnh đất liền sau khi crop sát bounds: {cw} x {ch} px")
 
-    # Tô trắng vùng ô chú thích nếu còn lọt vào crop
-    leg_x0_c = max(0, int((LEGEND_X0 - FRAME_X0) * scale))
-    leg_y0_c = max(0, int((LEGEND_Y0 - FRAME_Y0) * scale))
-    leg_x1_c = min(cw, int((LEGEND_X1 - FRAME_X0) * scale))
-    leg_y1_c = min(ch, int((LEGEND_Y1 - FRAME_Y0) * scale))
-    if leg_x1_c > leg_x0_c and leg_y1_c > leg_y0_c:
-        cropped_bgr[leg_y0_c:leg_y1_c, leg_x0_c:leg_x1_c] = (255, 255, 255)
-        print(f"Đã tô trắng ô chú thích: ({leg_x0_c}, {leg_y0_c}) đến ({leg_x1_c}, {leg_y1_c})")
+    # Cắt ô Côn Đảo từ PDF gốc
+    cx0 = int(CD_SRC_X0 * scale)
+    cy0 = int(CD_SRC_Y0 * scale)
+    cx1 = int(CD_SRC_X1 * scale)
+    cy1 = int(CD_SRC_Y1 * scale)
+    cd_crop = img_bgr[cy0:cy1, cx0:cx1].copy()
+
+    # Thu nhỏ Côn Đảo còn 25% bề rộng mặt bàn
+    cd_dw = int(CD_DEST_W * scale)
+    cd_dh = int(CD_DEST_H * scale)
+    cd_resized = cv2.resize(cd_crop, (cd_dw, cd_dh), interpolation=cv2.INTER_LANCZOS4)
+
+    # Đặt vào góc biển Đông Nam
+    dest_x = int((CD_DEST_X0 - FRAME_X0) * scale)
+    dest_y = int((CD_DEST_Y0 - FRAME_Y0) * scale)
+
+    # Nền trắng nhẹ và dán ô Côn Đảo
+    cv2.rectangle(mainland_crop, (dest_x - 3, dest_y - 3), (dest_x + cd_dw + 3, dest_y + cd_dh + 3), (255, 255, 255), -1)
+    mainland_crop[dest_y:dest_y+cd_dh, dest_x:dest_x+cd_dw] = cd_resized
+
+    # Khung viền mảnh màu xanh EVN (#1E40A0 -> BGR (160, 64, 30))
+    cv2.rectangle(mainland_crop, (dest_x, dest_y), (dest_x + cd_dw, dest_y + cd_dh), (160, 64, 30), 2)
 
     # Inpaint xóa nét ĐBGT:
-    # Mặt nạ gần màu:
-    # 1. Xanh lá: (0, 255, 0) -> BGR (0, 255, 0)
-    # 2. Cam: (255, 128, 0) -> BGR (0, 128, 255)
-    # 3. Vàng: (255, 255, 0) -> BGR (0, 255, 255)
-    # 4. Vàng sậm: (247, 214, 48) -> BGR (48, 214, 247)
     target_bgrs = [
         np.array([0, 255, 0], dtype=np.int16),
         np.array([0, 128, 255], dtype=np.int16),
@@ -552,24 +546,22 @@ def main():
     ]
 
     mask = np.zeros((ch, cw), dtype=np.uint8)
-    cropped_int = cropped_bgr.astype(np.int16)
+    cropped_int = mainland_crop.astype(np.int16)
 
     for target in target_bgrs:
         diff = np.abs(cropped_int - target)
         dist = np.sqrt(np.sum(diff ** 2, axis=2))
-        mask[dist < 35] = 255  # ΔE < 35
+        mask[dist < 35] = 255
 
-    # Nở mặt nạ thêm 2px
     kernel = cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (5, 5))
     mask_dilated = cv2.dilate(mask, kernel, iterations=1)
     dbgt_pixels = np.count_nonzero(mask_dilated)
     print(f"Số pixel ĐBGT cần inpaint: {dbgt_pixels}")
 
     if dbgt_pixels > 0:
-        print("Đang inpaint xóa nét ĐBGT bằng OpenCV INPAINT_TELEA...")
-        inpainted_bgr = cv2.inpaint(cropped_bgr, mask_dilated, inpaintRadius=3, flags=cv2.INPAINT_TELEA)
+        inpainted_bgr = cv2.inpaint(mainland_crop, mask_dilated, inpaintRadius=3, flags=cv2.INPAINT_TELEA)
     else:
-        inpainted_bgr = cropped_bgr
+        inpainted_bgr = mainland_crop
 
     # Tăng tương phản nhẹ (gamma 0.9)
     gamma = 0.9
@@ -580,6 +572,17 @@ def main():
     # Chuyển về PIL RGB
     final_rgb = cv2.cvtColor(contrast_bgr, cv2.COLOR_BGR2RGB)
     map_img = Image.fromarray(final_rgb)
+
+    # Vẽ chữ "Đặc khu Côn Đảo" trên ô Côn Đảo
+    draw_title = ImageDraw.Draw(map_img)
+    badge_x = int((CD_DEST_X0 - FRAME_X0) * scale) + 10
+    badge_y = int((CD_DEST_Y0 - FRAME_Y0) * scale) + 10
+    draw_title.rectangle([badge_x, badge_y, badge_x + 280, badge_y + 40], fill=(255, 255, 255, 230), outline=(30, 64, 160), width=2)
+    try:
+        font_cd = ImageFont.truetype('arial.ttf', 24)
+    except Exception:
+        font_cd = ImageFont.load_default()
+    draw_title.text((badge_x + 12, badge_y + 8), "Đặc khu Côn Đảo", fill=(30, 64, 160), font=font_cd)
 
     # Xuất base_low.webp rộng 2048 px
     low_w = 2048
@@ -610,25 +613,24 @@ def main():
             tile_file = f"base_{r}_{c}.webp"
             tile_path = os.path.join(OUTPUT_DIR, tile_file)
             tile_resized.save(tile_path, 'WEBP', quality=85)
-            print(f"  Ô [{r}, {c}] -> {tile_file} ({tile_resized.width}x{tile_resized.height}px, {os.path.getsize(tile_path)/1024:.1f} KB)")
 
     # 7. RENDER PREVIEW IMAGE (preview.png)
-    print("\n--- BƯỚC 7: TẠO ẢNH PREVIEW CÓ LỚP RANH GIỚI MỚI ĐỎ ĐẬM (preview.png) ---")
+    print("\n--- BƯỚC 7: TẠO ẢNH PREVIEW (preview.png) ---")
     preview = base_low.copy()
     draw = ImageDraw.Draw(preview, 'RGBA')
     pw, ph = preview.width, preview.height
 
-    # 1. Vẽ ranh giới mới màu đỏ đậm (Crimson / Deep Red)
+    # 1. Vẽ ranh giới mới màu xanh EVN (#1E40A0)
     for norm_poly in norm_boundary_polylines:
         pts = [(int(p[0] * pw), int(p[1] * ph)) for p in norm_poly]
         if len(pts) >= 2:
-            draw.line(pts, fill=(180, 20, 20, 255), width=3)
+            draw.line(pts, fill=(30, 64, 160, 255), width=3)
 
     # 2. Vẽ đường dây điện
     color_map = {
-        '500kV': (232, 121, 249, 230),  # Magenta
-        '220kV': (248, 113, 113, 230),  # Red
-        '110kV': (34, 211, 238, 230)    # Cyan
+        '500kV': (232, 121, 249, 230),
+        '220kV': (248, 113, 113, 230),
+        '110kV': (34, 211, 238, 230)
     }
 
     for v, llist in lines_by_voltage.items():
@@ -648,7 +650,6 @@ def main():
             s_col = (255, 255, 100, 255)
         elif s['loai'] == 'lan_can':
             s_col = (180, 180, 180, 255)
-
         draw.ellipse((sx - rad, sy - rad, sx + rad, sy + rad), fill=s_col, outline=(0, 0, 0, 255), width=2)
 
     # 4. Vẽ cơ sở PCVT
@@ -667,15 +668,7 @@ def main():
     preview.save(preview_path, 'PNG')
     print(f"Đã lưu preview.png: {preview_path} ({os.path.getsize(preview_path)/1024:.1f} KB)")
 
-    # 8. TỔNG KẾT
-    print("\n=================================================================")
-    print("HOÀN TẤT TRÍCH XUẤT BẢN ĐỒ ĐỊA DƯ PCVT:")
-    print(f"- Ranh giới mới: {len(norm_boundary_polylines)} polylines ({total_pts} điểm)")
-    print(f"- Trạm TBA: 500kV ({len(tram_500)}), 220kV ({len(tram_220)}), 110kV lưới ({len(tram_110_luoi)}), KH ({len(tram_110_kh)}), lân cận ({len(tram_lan_can)})")
-    print(f"- Cơ sở PCVT: {len(co_so_pcvt)}")
-    print(f"- Đơn vị hành chính: {len(all_admin_output)}")
-    print(f"- Thời gian thực hiện: {time.time() - t0:.2f}s")
-    print("=================================================================")
+    print(f"\nHOÀN TẤT TRÍCH XUẤT trong {time.time() - t0:.2f}s!")
 
 if __name__ == '__main__':
     main()

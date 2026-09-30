@@ -193,6 +193,9 @@ class HeritageApp {
       // GĐ5-fix2: Dựng bounding boxes cho culling & kiểm tra không chồng khung
       this.initZoneCullingBoxes();
       this.assertNoOverlapOnWalls();
+      if (this.gridMapTable && typeof this.gridMapTable.assertAllInsideBoard === 'function') {
+        this.gridMapTable.assertAllInsideBoard();
+      }
       this.updateZoneCulling();
 
       this.uiController.updateLoadingProgress(100, 'Phòng truyền thống đã sẵn sàng!');
@@ -1204,25 +1207,16 @@ class HeritageApp {
   }
 
   updateZoneCulling() {
-    if (!this._cullableGroups || this._cullableGroups.length === 0) {
-      this.initZoneCullingBoxes();
+    // Mục A (GĐ5-fix3): Bỏ hoàn toàn culling khoảng cách và culling cấp nhóm.
+    // Three.js tự quản lý frustumCulled cho từng mesh con.
+    if (this._cullableGroups) {
+      for (let i = 0; i < this._cullableGroups.length; i++) {
+        this._cullableGroups[i].group.visible = true;
+      }
     }
 
-    // Mục A.3: Frustum + Distance < 45m tính lại mỗi khung hình (không phụ thuộc yaw, không delay)
-    this.camera.updateMatrixWorld();
-    this._cullProjScreenMatrix.multiplyMatrices(this.camera.projectionMatrix, this.camera.matrixWorldInverse);
-    this._cullFrustum.setFromProjectionMatrix(this._cullProjScreenMatrix);
-
+    // Giữ phần bật/tắt trình chiếu khu 4 và khu 6 theo khu camera đang đứng:
     const camPos = this.camera.position;
-
-    for (let i = 0; i < this._cullableGroups.length; i++) {
-      const item = this._cullableGroups[i];
-      const dist = item.box.distanceToPoint(camPos);
-      const inFrustum = this._cullFrustum.intersectsBox(item.box);
-      item.group.visible = inFrustum && dist < 45.0;
-    }
-
-    // Mục A.4: Trình chiếu khu 4 và khu 6 chỉ kích hoạt khi camera ở trong khu tương ứng
     const currentZone = this.getZoneAt(camPos.x, camPos.z);
     this.currentZone = currentZone;
     if (this.slideshowKhu4) this.slideshowKhu4.setActive(currentZone === 'khu4');
@@ -1314,6 +1308,13 @@ class HeritageApp {
     // 5. Màn hình trung tâm khu HCM
     if (this.architect?.hcmScreenMesh) {
       registerWallItem('HCM_CentralScreen', this.architect.hcmScreenMesh);
+    }
+
+    // 6. Băng tiêu đề tường và khẩu hiệu 7 bức tường Khu 3, 4, 6 (Mục D)
+    if (this.exhibitBuilder?.wallBanners) {
+      for (const item of this.exhibitBuilder.wallBanners) {
+        registerWallItem(item.name || 'WallBanner', item);
+      }
     }
 
     // Kiểm tra chồng nhau từng mặt tường (dung sai 2cm = 0.02m theo Mục C)
