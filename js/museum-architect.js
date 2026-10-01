@@ -593,97 +593,420 @@ export class MuseumArchitect {
     });
   }
 
-  buildSignage(parent) {
-    this.signBanners = [];
-    const createSignBanner = (title, subtitle, color, x, y, z, rotY = 0, bgColor = '#0a0f1d') => {
-      const canvas = document.createElement('canvas');
-      canvas.width = 2048;
-      canvas.height = 512;
-      const ctx = canvas.getContext('2d');
-
-      // Background plate
-      ctx.fillStyle = bgColor;
-      ctx.fillRect(0, 0, 2048, 512);
-
-      // Border
-      ctx.strokeStyle = color;
-      ctx.lineWidth = 14;
-      ctx.strokeRect(20, 20, 2008, 472);
-
-      // Inner subtle border
-      ctx.strokeStyle = (bgColor === '#0a0f1d') ? 'rgba(212, 175, 55, 0.35)' : 'rgba(255, 255, 255, 0.35)';
-      ctx.lineWidth = 4;
-      ctx.strokeRect(36, 36, 1976, 440);
-
-      const maxTextWidth = 1860;
-
-      // Dynamic Auto-fit for Title Font Size
-      let titleSize = 70;
-      ctx.font = `bold ${titleSize}px "Be Vietnam Pro", sans-serif`;
-      while (ctx.measureText(title).width > maxTextWidth && titleSize > 24) {
-        titleSize -= 2;
-        ctx.font = `bold ${titleSize}px "Be Vietnam Pro", sans-serif`;
+  createZoneTitleBoard({
+    badge = '',
+    title = '',
+    subtitle = '',
+    theme = 'sanh',
+    w = 12.0,
+    h = 2.2,
+    pos = { x: 0, y: 6.2, z: 0 },
+    rotY = 0,
+    doubleSided = false,
+    parent = null
+  }) {
+    const THEMES = {
+      sanh: {
+        bgGrad: ['#0f2b6e', '#1e40a0'],
+        borderColor: '#facc15',
+        innerBorder: 'rgba(250, 204, 21, 0.45)',
+        titleColor: '#ffffff',
+        subColor: '#fef08a',
+        badgeBg: '#facc15',
+        badgeText: '#1e40a0',
+        badgeBorder: '#ffffff',
+        emissiveColor: 0x1e40a0
+      },
+      khu1: {
+        bgColor: '#f5ebd7',
+        borderColor: '#8b6f47',
+        innerBorder: 'rgba(139, 111, 71, 0.4)',
+        titleColor: '#5b3a1e',
+        subColor: '#785336',
+        badgeBg: '#8b6f47',
+        badgeText: '#f5ebd7',
+        badgeBorder: '#5b3a1e',
+        emissiveColor: 0x8b6f47
+      },
+      khu2: {
+        bgGrad: ['#7f1d1d', '#991b1b'],
+        borderColor: '#f6d26b',
+        innerBorder: 'rgba(246, 210, 107, 0.45)',
+        titleColor: '#f6d26b',
+        subColor: '#fef08a',
+        badgeBg: '#f6d26b',
+        badgeText: '#7f1d1d',
+        badgeBorder: '#ffffff',
+        emissiveColor: 0x8b1a1a
+      },
+      khu3: {
+        bgGrad: ['#080e1e', '#0e1a34'],
+        borderColor: '#22d3ee',
+        innerBorder: 'rgba(34, 211, 238, 0.4)',
+        titleColor: '#ffffff',
+        subColor: '#7dd3fc',
+        badgeBg: '#0f2756',
+        badgeText: '#38bdf8',
+        badgeBorder: '#22d3ee',
+        emissiveColor: 0x0284c7
+      },
+      khu4: {
+        bgGrad: ['#991b1b', '#b91c1c'],
+        borderColor: '#facc15',
+        innerBorder: 'rgba(250, 204, 21, 0.45)',
+        titleColor: '#facc15',
+        subColor: '#fef08a',
+        badgeBg: '#facc15',
+        badgeText: '#991b1b',
+        badgeBorder: '#ffffff',
+        emissiveColor: 0xb91c1c
+      },
+      khu5: {
+        bgGrad: ['#541018', '#6b1520'],
+        borderColor: '#d4af37',
+        innerBorder: 'rgba(212, 175, 55, 0.4)',
+        titleColor: '#facc15',
+        subColor: '#fef08a',
+        badgeBg: '#d4af37',
+        badgeText: '#541018',
+        badgeBorder: '#ffffff',
+        emissiveColor: 0x6b1520
+      },
+      khu6: {
+        isDual: true,
+        borderColor: '#38bdf8',
+        innerBorder: 'rgba(255, 255, 255, 0.4)',
+        titleColor: '#ffffff',
+        subColor: '#e0f2fe',
+        badgeBg: '#ffffff',
+        badgeText: '#1d4ed8',
+        badgeBorder: '#38bdf8',
+        emissiveColor: 0x0284c7
       }
-      ctx.fillStyle = '#ffffff';
-      ctx.textAlign = 'center';
-      ctx.textBaseline = 'middle';
-      ctx.fillText(title, 1024, 195);
-
-      // Dynamic Auto-fit for Subtitle Font Size
-      let subSize = 36;
-      ctx.font = `bold ${subSize}px "Be Vietnam Pro", sans-serif`;
-      while (ctx.measureText(subtitle).width > maxTextWidth && subSize > 18) {
-        subSize -= 2;
-        ctx.font = `bold ${subSize}px "Be Vietnam Pro", sans-serif`;
-      }
-      ctx.fillStyle = (bgColor === '#1E40A0' || bgColor === '#991B1B') ? '#fde047' : color;
-      ctx.fillText(subtitle, 1024, 335);
-
-      const texture = new THREE.CanvasTexture(canvas);
-      texture.colorSpace = THREE.SRGBColorSpace;
-      texture.anisotropy = this.renderer?.capabilities?.getMaxAnisotropy?.() || 16;
-      const geo = new THREE.PlaneGeometry(8.0, 2.0);
-      const mat = new THREE.MeshStandardMaterial({
-        map: texture,
-        emissive: new THREE.Color(color),
-        emissiveIntensity: 0.20,
-        roughness: 0.3
-      });
-
-      const nx = Math.sin(rotY);
-      const nz = Math.cos(rotY);
-      const mesh = new THREE.Mesh(geo, mat);
-      mesh.position.set(x + nx * 0.08, y, z + nz * 0.08);
-      mesh.rotation.y = rotY;
-      mesh.name = `SignBanner_${title}`;
-      mesh.userData = {
-        isTextPlane: true,
-        planeW: 8.0,
-        planeH: 2.0,
-        canvasW: 2048,
-        canvasH: 512
-      };
-
-      const frameMat = (bgColor === '#1E40A0') ? this.matBaseboardKhu3 : this.matGold;
-      const frameMesh = new THREE.Mesh(new THREE.BoxGeometry(8.2, 2.2, 0.15), frameMat);
-      frameMesh.position.set(x, y, z);
-      frameMesh.rotation.y = rotY;
-
-      parent.add(frameMesh);
-      parent.add(mesh);
-      this.signBanners.push({ title, frameMesh, mesh, x, y, z, rotY });
     };
 
-    // Khu 1 Sign (Tây) — Ký ức & Tranh tặng
-    createSignBanner('KHU 1: KÝ ỨC & TRANH TẶNG', 'ẢNH TƯ LIỆU 1985–2009 • TRANH TẶNG CÁC ĐƠN VỊ', '#8B6F47', -18.0, 6.2, 0, Math.PI / 2);
-    // Khu 2 Sign (Bắc) — Bằng khen & Cờ lưu niệm
-    createSignBanner('KHU 2: BẰNG KHEN & CỜ LƯU NIỆM', 'HUÂN CHƯƠNG • THỦ TƯỚNG • BỘ CÔNG THƯƠNG • UBND • EVN • EVNSPC', '#8B1A1A', 0, 6.2, -17.0, 0);
-    // Khu 3 Sign (Đông) — Vững bước kỷ nguyên mới (Mục A.21: Nền #1E40A0, chữ trắng, viền #38BDF8)
-    createSignBanner('VỮNG BƯỚC KỶ NGUYÊN MỚI', 'CÔNG TY ĐIỆN LỰC VŨNG TÀU', '#38BDF8', 34.65, 6.2, 0, -Math.PI / 2, '#1E40A0');
-    // Khu 4 Sign (Đông Nam) — Đảng bộ (Mục C.2: Dời lên y = 6.85 để cách mép trên màn hình 5.65 an toàn)
-    createSignBanner('KHU 4: ĐẢNG BỘ CÔNG TY', 'ĐẢNG BỘ CÔNG TY ĐIỆN LỰC VŨNG TÀU', '#FACC15', 36.0, 6.85, 81.3, Math.PI, '#991B1B');
-    // Khu 6 Sign (Tây Nam) — Công đoàn & Đoàn TN (Mục C.2: Dời lên y = 6.85)
-    createSignBanner('KHU 6: CÔNG ĐOÀN & ĐOÀN THANH NIÊN', 'CÔNG ĐOÀN • ĐOÀN THANH NIÊN CÔNG TY', '#38BDF8', -36.0, 6.85, 81.3, Math.PI, '#1E3A8A');
+    const cfg = THEMES[theme] || THEMES.sanh;
+
+    // Strict 1:1 canvas-to-plane aspect ratio
+    const canvasH = 512;
+    const canvasW = Math.round(canvasH * (w / h));
+    const canvas = document.createElement('canvas');
+    canvas.width = canvasW;
+    canvas.height = canvasH;
+    const ctx = canvas.getContext('2d');
+
+    // 1. Background
+    if (cfg.isDual) {
+      const grad = ctx.createLinearGradient(0, 0, canvasW, 0);
+      grad.addColorStop(0, '#1d4ed8');
+      grad.addColorStop(0.48, '#1e40af');
+      grad.addColorStop(0.52, '#0369a1');
+      grad.addColorStop(1, '#0284c7');
+      ctx.fillStyle = grad;
+      ctx.fillRect(0, 0, canvasW, canvasH);
+    } else if (cfg.bgGrad) {
+      const grad = ctx.createLinearGradient(0, 0, canvasW, 0);
+      grad.addColorStop(0, cfg.bgGrad[0]);
+      grad.addColorStop(0.5, cfg.bgGrad[1]);
+      grad.addColorStop(1, cfg.bgGrad[0]);
+      ctx.fillStyle = grad;
+      ctx.fillRect(0, 0, canvasW, canvasH);
+    } else {
+      ctx.fillStyle = cfg.bgColor;
+      ctx.fillRect(0, 0, canvasW, canvasH);
+    }
+
+    // 2. Borders
+    ctx.strokeStyle = cfg.borderColor;
+    ctx.lineWidth = 14;
+    ctx.strokeRect(18, 18, canvasW - 36, canvasH - 36);
+
+    ctx.strokeStyle = cfg.innerBorder;
+    ctx.lineWidth = 4;
+    ctx.strokeRect(34, 34, canvasW - 68, canvasH - 68);
+
+    // 3. Badge (Huy hiệu tròn ghi số khu)
+    let titleY = 220;
+    if (badge) {
+      const badgeW = Math.min(280, Math.max(160, badge.length * 20));
+      const badgeH = 50;
+      const badgeX = canvasW / 2 - badgeW / 2;
+      const badgeY = 54;
+      ctx.fillStyle = cfg.badgeBg;
+      ctx.beginPath();
+      ctx.roundRect(badgeX, badgeY, badgeW, badgeH, 25);
+      ctx.fill();
+      if (cfg.badgeBorder) {
+        ctx.strokeStyle = cfg.badgeBorder;
+        ctx.lineWidth = 3;
+        ctx.stroke();
+      }
+      ctx.fillStyle = cfg.badgeText;
+      ctx.font = 'bold 24px "Be Vietnam Pro", sans-serif';
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      ctx.fillText(badge, canvasW / 2, badgeY + badgeH / 2);
+      titleY = 226;
+    }
+
+    // 4. Main Title
+    const maxTextW = canvasW - 160;
+    let titleSize = Math.min(68, Math.round(canvasH * 0.135));
+    ctx.font = `800 ${titleSize}px "Be Vietnam Pro", sans-serif`;
+    ctx.letterSpacing = '0.06em';
+    while (ctx.measureText(title).width > maxTextW && titleSize > 22) {
+      titleSize -= 2;
+      ctx.font = `800 ${titleSize}px "Be Vietnam Pro", sans-serif`;
+    }
+    ctx.fillStyle = cfg.titleColor;
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.fillText(title, canvasW / 2, titleY);
+
+    // Divider line
+    const divY = titleY + titleSize * 0.72 + 14;
+    ctx.strokeStyle = cfg.borderColor;
+    ctx.lineWidth = 2;
+    ctx.beginPath();
+    ctx.moveTo(canvasW / 2 - 280, divY);
+    ctx.lineTo(canvasW / 2 + 280, divY);
+    ctx.stroke();
+
+    // 5. Subtitle
+    const subY = divY + 44;
+    let subSize = Math.min(32, Math.round(canvasH * 0.07));
+    ctx.font = `500 ${subSize}px "Be Vietnam Pro", sans-serif`;
+    ctx.letterSpacing = '0.02em';
+    while (ctx.measureText(subtitle).width > maxTextW && subSize > 16) {
+      subSize -= 2;
+      ctx.font = `500 ${subSize}px "Be Vietnam Pro", sans-serif`;
+    }
+    ctx.fillStyle = cfg.subColor;
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.fillText(subtitle, canvasW / 2, subY);
+
+    // 3D Texture & Material
+    const texture = new THREE.CanvasTexture(canvas);
+    texture.colorSpace = THREE.SRGBColorSpace;
+    texture.anisotropy = this.renderer?.capabilities?.getMaxAnisotropy?.() || 16;
+    const mat = new THREE.MeshStandardMaterial({
+      map: texture,
+      roughness: 0.3,
+      metalness: 0.15,
+      emissive: new THREE.Color(cfg.emissiveColor || 0x000000),
+      emissiveIntensity: 0.15,
+      side: THREE.DoubleSide,
+      polygonOffset: true,
+      polygonOffsetFactor: -1,
+      polygonOffsetUnits: -1
+    });
+
+    const boardGroup = new THREE.Group();
+    boardGroup.position.set(pos.x, pos.y, pos.z);
+    boardGroup.rotation.y = rotY;
+
+    // Frame
+    const frameDepth = doubleSided ? 0.14 : 0.10;
+    const frameMat = (theme === 'khu3') ? this.matBaseboardKhu3 : this.matGold;
+    const frameMesh = new THREE.Mesh(new THREE.BoxGeometry(w + 0.12, h + 0.12, frameDepth), frameMat);
+    boardGroup.add(frameMesh);
+
+    // Front face
+    const planeGeo = new THREE.PlaneGeometry(w, h);
+    const frontMesh = new THREE.Mesh(planeGeo, mat);
+    frontMesh.position.z = frameDepth / 2 + 0.02;
+    frontMesh.name = `SignBanner_${title}_Front`;
+    frontMesh.userData = {
+      isTextPlane: true,
+      planeW: w,
+      planeH: h,
+      canvasW: canvasW,
+      canvasH: canvasH
+    };
+    boardGroup.add(frontMesh);
+
+    if (doubleSided) {
+      const backMesh = new THREE.Mesh(planeGeo, mat);
+      backMesh.position.z = -frameDepth / 2 - 0.02;
+      backMesh.rotation.y = Math.PI;
+      backMesh.name = `SignBanner_${title}_Back`;
+      backMesh.userData = {
+        isTextPlane: true,
+        planeW: w,
+        planeH: h,
+        canvasW: canvasW,
+        canvasH: canvasH
+      };
+      boardGroup.add(backMesh);
+
+      // Hanging cables up to ceiling y = 8.0
+      const ceilingY = 8.0;
+      const cableH = ceilingY - (pos.y + h / 2);
+      if (cableH > 0) {
+        const cableGeo = new THREE.CylinderGeometry(0.015, 0.015, cableH, 8);
+        const cableMat = new THREE.MeshStandardMaterial({ color: 0x94a3b8, metalness: 0.85, roughness: 0.2 });
+        const cable1 = new THREE.Mesh(cableGeo, cableMat);
+        cable1.position.set(-w * 0.38, h / 2 + cableH / 2, 0);
+        const cable2 = new THREE.Mesh(cableGeo, cableMat);
+        cable2.position.set(w * 0.38, h / 2 + cableH / 2, 0);
+        boardGroup.add(cable1);
+        boardGroup.add(cable2);
+      }
+    }
+
+    if (parent) parent.add(boardGroup);
+    this.signBanners.push({ title, frameMesh, mesh: frontMesh, x: pos.x, y: pos.y, z: pos.z, rotY });
+    return boardGroup;
+  }
+
+  buildSignage(parent) {
+    this.signBanners = [];
+
+    // =========================================================================
+    // 1. BẢNG CHÍNH TỪNG KHU (Mục 7)
+    // =========================================================================
+
+    // Sảnh: (0; 6,8; −11), quay về lối vào (+z, hướng Nam: rotY = 0)
+    this.createZoneTitleBoard({
+      badge: 'PC VŨNG TÀU',
+      title: 'PHÒNG TRUYỀN THỐNG – CÔNG TY ĐIỆN LỰC VŨNG TÀU',
+      subtitle: 'Trực thuộc Tổng công ty Điện lực TP. Hồ Chí Minh',
+      theme: 'sanh',
+      w: 13.0, h: 2.2,
+      pos: { x: 0, y: 6.8, z: -11.0 },
+      rotY: 0,
+      parent
+    });
+
+    // Khu 1: Giữa tường x = −50, quay về hướng Đông (rotY = Math.PI / 2)
+    this.createZoneTitleBoard({
+      badge: 'KHU 1',
+      title: 'KÝ ỨC MỘT CHẶNG ĐƯỜNG',
+      subtitle: 'Ảnh tư liệu 1985 – 2009 và tranh các đơn vị trao tặng',
+      theme: 'khu1',
+      w: 12.0, h: 2.2,
+      pos: { x: -49.85, y: 6.2, z: 0 },
+      rotY: Math.PI / 2,
+      parent
+    });
+
+    // Khu 2: Giữa tường z = −55, phía trên tầng cờ, quay về hướng Nam (rotY = 0)
+    this.createZoneTitleBoard({
+      badge: 'KHU 2',
+      title: 'VINH QUANG NHỮNG CHẶNG ĐƯỜNG',
+      subtitle: 'Huân chương, Bằng khen và Cờ thi đua 1985 – 2025',
+      theme: 'khu2',
+      w: 14.0, h: 2.2,
+      pos: { x: 0, y: 6.4, z: -54.85 },
+      rotY: 0,
+      parent
+    });
+
+    // Khu 3: Phía trên mặt Tây vách mốc son x = 35, quay về hướng Tây (rotY = -Math.PI / 2)
+    this.createZoneTitleBoard({
+      badge: 'KHU 3',
+      title: 'VỮNG BƯỚC KỶ NGUYÊN MỚI',
+      subtitle: 'Lưới điện thông minh · Tự động hóa · Chuyển đổi số',
+      theme: 'khu3',
+      w: 12.0, h: 2.2,
+      pos: { x: 34.65, y: 6.45, z: 0 },
+      rotY: -Math.PI / 2,
+      parent
+    });
+
+    // Khu 4: Giữa tường z = 82, quay về hướng Bắc (rotY = Math.PI)
+    this.createZoneTitleBoard({
+      badge: 'KHU 4',
+      title: 'ĐẢNG BỘ CÔNG TY',
+      subtitle: 'Đảng bộ Công ty Điện lực Vũng Tàu – trong sạch, vững mạnh',
+      theme: 'khu4',
+      w: 12.0, h: 2.2,
+      pos: { x: 36.0, y: 6.85, z: 81.7 },
+      rotY: Math.PI,
+      parent
+    });
+
+    // Khu 6: Giữa tường z = 82, quay về hướng Bắc (rotY = Math.PI)
+    this.createZoneTitleBoard({
+      badge: 'KHU 6',
+      title: 'CÔNG ĐOÀN – ĐOÀN THANH NIÊN',
+      subtitle: 'Đoàn kết · Sáng tạo · Xung kích · Tình nguyện',
+      theme: 'khu6',
+      w: 12.0, h: 2.2,
+      pos: { x: -36.0, y: 6.85, z: 81.7 },
+      rotY: Math.PI,
+      parent
+    });
+
+    // =========================================================================
+    // 2. BIỂN CỔNG TREO 2 MẶT TẠI LỐI VÀO (6 × 1,2 m, y = 5,4 m)
+    // =========================================================================
+
+    // Cổng Khu 1 (Lối vào phía Tây): x = -17.5, y = 5.4, z = 0, rotY = Math.PI / 2
+    this.createZoneTitleBoard({
+      badge: 'KHU 1',
+      title: 'KÝ ỨC & TRANH TẶNG',
+      subtitle: 'Ảnh tư liệu 1985–2009 • Tranh tặng các đơn vị',
+      theme: 'khu1',
+      w: 6.0, h: 1.2,
+      pos: { x: -17.5, y: 5.4, z: 0 },
+      rotY: Math.PI / 2,
+      doubleSided: true,
+      parent
+    });
+
+    // Cổng Khu 2 (Lối vào phía Bắc): x = 0, y = 5.4, z = -17.0, rotY = 0
+    this.createZoneTitleBoard({
+      badge: 'KHU 2',
+      title: 'BẰNG KHEN & CỜ THI ĐUA',
+      subtitle: 'Huân chương • Bằng khen • Cờ lưu niệm 1985–2025',
+      theme: 'khu2',
+      w: 6.0, h: 1.2,
+      pos: { x: 0, y: 5.4, z: -17.0 },
+      rotY: 0,
+      doubleSided: true,
+      parent
+    });
+
+    // Cổng Khu 3 (Lối vào phía Đông): x = 17.5, y = 5.4, z = 0, rotY = -Math.PI / 2
+    this.createZoneTitleBoard({
+      badge: 'KHU 3',
+      title: 'LƯỚI ĐIỆN THÔNG MINH',
+      subtitle: 'Sa bàn lưới điện • Tự động hóa • Chuyển đổi số',
+      theme: 'khu3',
+      w: 6.0, h: 1.2,
+      pos: { x: 17.5, y: 5.4, z: 0 },
+      rotY: -Math.PI / 2,
+      doubleSided: true,
+      parent
+    });
+
+    // Cổng Khu 4 (Lối vào Đông Nam): x = 34.0, y = 5.4, z = 38.0, rotY = 0
+    this.createZoneTitleBoard({
+      badge: 'KHU 4',
+      title: 'ĐẢNG BỘ CÔNG TY',
+      subtitle: 'Đoàn kết • Kỷ cương • Đổi mới • Phát triển',
+      theme: 'khu4',
+      w: 6.0, h: 1.2,
+      pos: { x: 34.0, y: 5.4, z: 38.0 },
+      rotY: 0,
+      doubleSided: true,
+      parent
+    });
+
+    // Cổng Khu 6 (Lối vào Tây Nam): x = -34.0, y = 5.4, z = 38.0, rotY = 0
+    this.createZoneTitleBoard({
+      badge: 'KHU 6',
+      title: 'CÔNG ĐOÀN – ĐOÀN THANH NIÊN',
+      subtitle: 'Đoàn kết • Sáng tạo • Xung kích • Tình nguyện',
+      theme: 'khu6',
+      w: 6.0, h: 1.2,
+      pos: { x: -34.0, y: 5.4, z: 38.0 },
+      rotY: 0,
+      doubleSided: true,
+      parent
+    });
   }
 
   /**
@@ -728,7 +1051,7 @@ export class MuseumArchitect {
       ctx.fill();
 
       ctx.fillStyle = '#0a0f1d';
-      ctx.font = 'bold 24px "Inter", sans-serif';
+      ctx.font = 'bold 24px "Be Vietnam Pro", sans-serif';
       ctx.textAlign = 'center';
       ctx.textBaseline = 'middle';
       ctx.fillText(badge, 215, 70);
@@ -750,12 +1073,12 @@ export class MuseumArchitect {
 
       // 5. Milestone Subtitle / Description (Auto-fit font size to NEVER overflow)
       let subFontSize = 26;
-      ctx.font = `italic ${subFontSize}px "Inter", sans-serif`;
+      ctx.font = `italic 500 ${subFontSize}px "Be Vietnam Pro", sans-serif`;
       let subWidth = ctx.measureText(subtitle).width;
       const maxSubWidth = canvasW - 148;
       while (subWidth > maxSubWidth && subFontSize > 18) {
         subFontSize -= 1;
-        ctx.font = `italic ${subFontSize}px "Inter", sans-serif`;
+        ctx.font = `italic 500 ${subFontSize}px "Be Vietnam Pro", sans-serif`;
         subWidth = ctx.measureText(subtitle).width;
       }
       ctx.fillStyle = '#cbd5e1';
@@ -811,71 +1134,71 @@ export class MuseumArchitect {
       milestonesGroup.add(plaqueMesh);
     };
 
-    // --- KHU 1: NHÀ NƯỚC & TẬP ĐOÀN ĐIỆN LỰC ---
-    // 1. Tường Bắc Khu 1 (Honor Wall above Orders)
+    // --- KHU 2: NHÀ NƯỚC & TẬP ĐOÀN ĐIỆN LỰC (y = 3.90m) ---
+    // 1. Tường Bắc Khu 2 (Honor Wall above Orders)
     createMilestonePlaque(
       'MỐC SON DANH DỰ',
       'CÁC PHẦN THƯỞNG CAO QUÝ CỦA ĐẢNG & NHÀ NƯỚC (1985 - 2025)',
       'Huân chương Lao động Hạng Nhất, Nhì, Ba • Bằng khen Thủ tướng Chính phủ trao tặng Công ty Điện lực Vũng Tàu',
       '#eab308',
-      12.0, 1.4,
-      0, 5.75, -44.25,
+      12.0, 0.55,
+      0, 3.90, -54.85,
       0
     );
 
-    // 2. Tường Tây Khu 1 (EVN & Bộ Công Thương)
+    // 2. Tường Tây Khu 2 (EVN & Bộ Công Thương)
     createMilestonePlaque(
       'GIAI ĐOẠN 1985 - 2025',
       'THI ĐUA XUẤT SẮC: TẬP ĐOÀN ĐIỆN LỰC VIỆT NAM (EVN) & BỘ CÔNG THƯƠNG',
       'Cờ thi đua & Bằng khen ghi nhận thành tích xuất sắc toàn diện trong cung ứng điện an toàn, ổn định và liên tục',
       '#eab308',
-      10.5, 1.3,
-      -17.25, 5.75, -31.0,
+      10.0, 0.55,
+      -17.85, 3.90, -36.0,
       Math.PI / 2
     );
 
-    // 3. Tường Đông Khu 1 (EVNHCMC)
+    // 3. Tường Đông Khu 2 (EVNHCMC)
     createMilestonePlaque(
       'GIAI ĐOẠN 1985 - 2025',
       'ĐƠN VỊ DẪN ĐẦU: TỔNG CÔNG TY ĐIỆN LỰC TP. HỒ CHÍ MINH (EVNHCMC)',
       'Tiên phong hoàn thành xuất sắc các chỉ tiêu kinh tế kỹ thuật, hiện đại hóa lưới điện và nâng tầm dịch vụ khách hàng',
       '#eab308',
-      10.5, 1.3,
-      17.25, 5.75, -31.0,
+      10.0, 0.55,
+      17.85, 3.90, -36.0,
       -Math.PI / 2
     );
 
-    // --- KHU 2: ĐỒNG HÀNH CÙNG TỈNH BÀ RỊA - VŨNG TÀU ---
-    // 4. Tường Bắc Khu 2 (1985 - 2005)
+    // --- KHU 1: ĐỒNG HÀNH CÙNG TỈNH BÀ RỊA - VŨNG TÀU (y = 3.90m) ---
+    // 4. Tường Bắc Khu 1 (1985 - 2005)
     createMilestonePlaque(
       'GIAI ĐOẠN 1985 - 2005',
       'THỜI KỲ KHỞI ĐẦU, THÀNH LẬP & TÁI THIẾT HỆ THỐNG ĐIỆN ĐÔ THỊ BIỂN',
       'Từ Đặc khu Vũng Tàu - Côn Đảo đến thành lập tỉnh Bà Rịa - Vũng Tàu • Vượt qua muôn vàn khó khăn mở rộng nguồn điện',
       '#16a34a',
-      10.0, 1.3,
-      -35.0, 5.75, -24.25,
+      10.0, 0.55,
+      -34.0, 3.90, -24.85,
       0
     );
 
-    // 5. Tường Tây Khu 2 (2006 - 2016)
+    // 5. Tường Tây Khu 1 (2006 - 2016)
     createMilestonePlaque(
       'GIAI ĐOẠN 2006 - 2016',
       'TĂNG TỐC PHÁT TRIỂN & CÔNG NGHIỆP HÓA ĐÔ THỊ DẦU KHÍ - DU LỊCH',
       'Cung ứng nguồn điện ổn định phục vụ trọng điểm ngành dầu khí, cụm cảng nước sâu Cái Mép và du lịch biển Vũng Tàu',
       '#16a34a',
-      12.0, 1.3,
-      -49.25, 5.75, 0,
+      12.0, 0.55,
+      -49.85, 3.90, 0,
       Math.PI / 2
     );
 
-    // 6. Tường Nam Khu 2 (2017 - 2025)
+    // 6. Tường Nam Khu 1 (2017 - 2025)
     createMilestonePlaque(
       'GIAI ĐOẠN 2017 - 2025',
       'HIỆN ĐẠI HÓA, LƯỚI ĐIỆN THÔNG MINH & CHUYỂN ĐỔI SỐ TOÀN DIỆN',
       'Đột phá tự động hóa lưới điện, trạm không người trực, giao dịch điện tử 100% và chỉ số SAIDI - SAIFI đạt chuẩn quốc tế',
       '#16a34a',
-      10.0, 1.3,
-      -35.0, 5.75, 24.25,
+      10.0, 0.55,
+      -34.0, 3.90, 24.85,
       Math.PI
     );
 
@@ -1714,15 +2037,15 @@ export class MuseumArchitect {
     ctx.fillText(title, 512, 390);
 
     ctx.fillStyle = '#ffffff';
-    ctx.font = 'bold 28px "Inter", sans-serif';
+    ctx.font = 'bold 28px "Be Vietnam Pro", sans-serif';
     ctx.fillText(org, 512, 460);
 
     ctx.fillStyle = gold;
-    ctx.font = '600 22px "Inter", sans-serif';
+    ctx.font = '600 22px "Be Vietnam Pro", sans-serif';
     ctx.fillText(sub, 512, 520);
 
     ctx.fillStyle = 'rgba(250, 204, 21, 0.75)';
-    ctx.font = 'italic 18px "Inter", sans-serif';
+    ctx.font = 'italic 500 18px "Be Vietnam Pro", sans-serif';
     ctx.fillText('• KHÔNG GIAN SỐ HÓA TRUYỀN THỐNG 3D •', 512, 630);
 
     const texture = new THREE.CanvasTexture(canvas);
@@ -2159,17 +2482,20 @@ export class MuseumArchitect {
 
     // Title
     ctx.fillStyle = '#ffffff';
-    ctx.font = 'bold 64px "Be Vietnam Pro", sans-serif';
+    ctx.font = '800 60px "Be Vietnam Pro", sans-serif';
     ctx.textAlign = 'center';
     ctx.textBaseline = 'middle';
-    ctx.fillText('KHU VỰC 4: KHÔNG GIAN VĂN HÓA HỒ CHÍ MINH', 1024, 195);
+    ctx.letterSpacing = '0.06em';
+    ctx.fillText('KHÔNG GIAN VĂN HÓA HỒ CHÍ MINH', 1024, 195);
 
     // Subtitle
-    ctx.fillStyle = '#eab308';
-    ctx.font = 'bold 34px "Inter", sans-serif';
-    ctx.fillText('LƯỢC SỬ CUỘC ĐỜI • ẢNH TƯ LIỆU • DI SẢN VĂN HÓA', 1024, 335);
+    ctx.fillStyle = '#fde047';
+    ctx.font = '500 32px "Be Vietnam Pro", sans-serif';
+    ctx.fillText('Học tập và làm theo tư tưởng, đạo đức, phong cách Hồ Chí Minh', 1024, 335);
 
     const tex = new THREE.CanvasTexture(canvas);
+    tex.colorSpace = THREE.SRGBColorSpace;
+    tex.anisotropy = this.renderer?.capabilities?.getMaxAnisotropy?.() || 16;
     const signGeo = new THREE.PlaneGeometry(8, 2);
     const signMat = new THREE.MeshStandardMaterial({
       map: tex,
@@ -2180,6 +2506,14 @@ export class MuseumArchitect {
     const sign = new THREE.Mesh(signGeo, signMat);
     sign.position.set(0, 6.5, 38.5);
     sign.rotation.y = Math.PI;
+    sign.name = 'SignBanner_HCM';
+    sign.userData = {
+      isTextPlane: true,
+      planeW: 8,
+      planeH: 2,
+      canvasW: 2048,
+      canvasH: 512
+    };
 
     // Frame
     const signFrame = new THREE.Mesh(new THREE.BoxGeometry(8.2, 2.2, 0.15), this.matGold);
@@ -2188,6 +2522,7 @@ export class MuseumArchitect {
 
     parent.add(signFrame);
     parent.add(sign);
+    this.signBanners.push({ title: 'KHÔNG GIAN VĂN HÓA HỒ CHÍ MINH', frameMesh: signFrame, mesh: sign, x: 0, y: 6.5, z: 38.5, rotY: Math.PI });
   }
 
   /**
@@ -2218,7 +2553,7 @@ export class MuseumArchitect {
 
       // Badge
       ctx.fillStyle = p.color;
-      ctx.font = 'bold 70px "Inter", sans-serif';
+      ctx.font = 'bold 70px "Be Vietnam Pro", sans-serif';
       ctx.textAlign = 'center';
       ctx.textBaseline = 'middle';
       ctx.fillText(p.badge, 512, 180);

@@ -287,15 +287,15 @@ export class HCMExhibitBuilder {
     pctx.fillStyle = '#452603';
     pctx.textAlign = 'center';
     pctx.textBaseline = 'middle';
-    pctx.font = 'bold 36px "Inter", sans-serif';
+    pctx.font = 'bold 36px "Be Vietnam Pro", sans-serif';
     pctx.fillText(`• ${date || year} •`, 600, 52);
 
     // Main Title (Auto-scaling for perfect fit)
     let fontSize = 38;
-    pctx.font = `bold ${fontSize}px "Inter", sans-serif`;
+    pctx.font = `bold ${fontSize}px "Be Vietnam Pro", sans-serif`;
     while (pctx.measureText(title).width > 1120 && fontSize > 18) {
       fontSize -= 2;
-      pctx.font = `bold ${fontSize}px "Inter", sans-serif`;
+      pctx.font = `bold ${fontSize}px "Be Vietnam Pro", sans-serif`;
     }
     pctx.shadowColor = 'rgba(255, 255, 255, 0.6)';
     pctx.shadowOffsetY = 1;
@@ -305,7 +305,7 @@ export class HCMExhibitBuilder {
     // Category / Historical note
     pctx.shadowBlur = 0;
     pctx.fillStyle = '#684507';
-    pctx.font = 'italic 500 24px "Inter", sans-serif';
+    pctx.font = 'italic 500 24px "Be Vietnam Pro", sans-serif';
     pctx.fillText(category, 600, 185);
 
     const plaqueTex = new THREE.CanvasTexture(plaqueCanvas);

@@ -135,12 +135,12 @@ export class HCMTimelineBuilder {
 
     // Title
     ctx.fillStyle = '#ffffff';
-    ctx.font = 'bold 44px "Inter", sans-serif';
+    ctx.font = 'bold 44px "Be Vietnam Pro", sans-serif';
     ctx.fillText('HÀNH TRÌNH RA ĐI TÌM ĐƯỜNG CỨU NƯỚC', 1024, 150);
 
     // Subtitle
     ctx.fillStyle = '#fbbf24';
-    ctx.font = '500 28px "Inter", sans-serif';
+    ctx.font = '500 28px "Be Vietnam Pro", sans-serif';
     ctx.fillText('Lược sử cuộc đời và sự nghiệp Chủ tịch Hồ Chí Minh (1890 – 1969)', 1024, 230);
 
     // Bottom gold line
@@ -242,14 +242,14 @@ export class HCMTimelineBuilder {
 
     // Year/Date
     pctx.fillStyle = '#452603';
-    pctx.font = 'bold 30px "Inter", sans-serif';
+    pctx.font = 'bold 30px "Be Vietnam Pro", sans-serif';
     pctx.textAlign = 'left';
     pctx.textBaseline = 'middle';
     pctx.fillText(evt.date || evt.year, 20, 42);
 
     // Event title (word-wrap)
     let fontSize = 22;
-    pctx.font = `bold ${fontSize}px "Inter", sans-serif`;
+    pctx.font = `bold ${fontSize}px "Be Vietnam Pro", sans-serif`;
     const maxW = 660;
     const words = evt.title.split(' ');
     let lines = [];

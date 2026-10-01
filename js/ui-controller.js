@@ -1,3 +1,12 @@
+import {
+  ZONES,
+  WALLS,
+  PARTITIONS,
+  ALBUM_CABINETS,
+  GRID_TABLE,
+  HALL_TARGETS
+} from './layout-config.js';
+
 /**
  * UI Controller (Artsteps Standard)
  * Zero-lag UI with Artsteps Floating Exhibit Card,
@@ -88,6 +97,7 @@ export class UIController {
     };
 
     this.initEvents();
+    this.renderMinimap();
   }
 
   initEvents() {
@@ -169,16 +179,7 @@ export class UIController {
       this.dom.btnMinimapToggle.classList.remove('active');
     });
 
-    // Minimap Hall Clicks
-    document.querySelectorAll('.hall-zone, .rotunda-zone').forEach(zone => {
-      zone.addEventListener('click', (e) => {
-        e.stopPropagation();
-        const hallId = zone.dataset.hall;
-        this.controlsManager.teleportToHall(hallId);
-        this.dom.pillBtns.forEach(p => p.classList.toggle('active', p.dataset.hall === hallId));
-        this.audioService.playClickSound();
-      });
-    });
+    // Minimap click events are now dynamically bound in renderMinimap()
 
     // Filter Drawer Toggle
     this.dom.btnFilterToggle?.addEventListener('click', () => {
@@ -597,10 +598,213 @@ export class UIController {
     });
   }
 
-  updateMinimap(camPos, camRotY) {
+  /**
+   * GĐ6 - Mục 8: Minimap sinh động từ layout-config.js
+   * Tỷ lệ 1 đơn vị SVG = 1 mét thật (viewBox -52 -57 104 141)
+   */
+  renderMinimap() {
+    const svg = document.getElementById('minimap-svg');
+    if (!svg) return;
+
+    svg.setAttribute('viewBox', '-52 -57 104 141');
+    svg.setAttribute('preserveAspectRatio', 'xMidYMid meet');
+
+    const svgParts = [];
+
+    // 1. Defs: Radial gradient for light cone (dải màu rgba(255,236,150,0.55) nhạt dần ra trong suốt)
+    svgParts.push(`
+      <defs>
+        <radialGradient id="player-cone-gradient" cx="0" cy="0" r="9" fx="0" fy="0" gradientUnits="userSpaceOnUse">
+          <stop offset="0%" stop-color="#FFE796" stop-opacity="0.55" />
+          <stop offset="35%" stop-color="#FFE796" stop-opacity="0.30" />
+          <stop offset="75%" stop-color="#FFE796" stop-opacity="0.08" />
+          <stop offset="100%" stop-color="#FFE796" stop-opacity="0" />
+        </radialGradient>
+      </defs>
+    `);
+
+    // 2. Museum overall floor background
+    svgParts.push(`
+      <rect x="-51.5" y="-56.5" width="103" height="140" rx="2" fill="#070c18" stroke="#1e293b" stroke-width="0.8" />
+    `);
+
+    // 3. Zone floor areas (Tô màu chủ đề, độ mờ 15%, tương tác click)
+    svgParts.push(`
+      <!-- Khu 1: Tây -->
+      <g class="minimap-zone" data-zone="khu1" style="cursor: pointer;">
+        <rect class="zone-floor" x="-50" y="-25" width="32" height="50" fill="rgba(245, 235, 215, 0.15)" stroke="rgba(245, 235, 215, 0.25)" stroke-width="0.3" />
+      </g>
+      <!-- Khu 2: Bắc -->
+      <g class="minimap-zone" data-zone="khu2" style="cursor: pointer;">
+        <rect class="zone-floor" x="-18" y="-55" width="36" height="38" fill="rgba(139, 26, 26, 0.18)" stroke="rgba(139, 26, 26, 0.3)" stroke-width="0.3" />
+      </g>
+      <!-- Khu 3: Đông -->
+      <g class="minimap-zone" data-zone="khu3" style="cursor: pointer;">
+        <rect class="zone-floor" x="18" y="-25" width="32" height="50" fill="rgba(34, 211, 238, 0.14)" stroke="rgba(34, 211, 238, 0.25)" stroke-width="0.3" />
+      </g>
+      <!-- Sảnh trung tâm: [-17.5, 17.5] x [-17, 38] -->
+      <g class="minimap-zone" data-zone="lobby" style="cursor: pointer;">
+        <rect class="zone-floor" x="-17.5" y="-17" width="35" height="55" fill="rgba(30, 64, 160, 0.15)" stroke="rgba(30, 64, 160, 0.25)" stroke-width="0.3" />
+      </g>
+      <!-- Hành lang kết nối z 25..38 -->
+      <rect x="-50" y="25" width="100" height="13" fill="rgba(255, 255, 255, 0.03)" pointer-events="none" />
+      <!-- Khu 6: Tây Nam -->
+      <g class="minimap-zone" data-zone="khu6" style="cursor: pointer;">
+        <rect class="zone-floor" x="-50" y="38" width="28" height="44" fill="rgba(30, 58, 95, 0.22)" stroke="rgba(30, 58, 95, 0.3)" stroke-width="0.3" />
+      </g>
+      <!-- Khu 5: Nam (Văn hóa HCM) -->
+      <g class="minimap-zone" data-zone="khu5" style="cursor: pointer;">
+        <rect class="zone-floor" x="-22" y="38" width="44" height="44" fill="rgba(107, 21, 32, 0.20)" stroke="rgba(212, 175, 55, 0.3)" stroke-width="0.3" />
+      </g>
+      <!-- Khu 4: Đông Nam -->
+      <g class="minimap-zone" data-zone="khu4" style="cursor: pointer;">
+        <rect class="zone-floor" x="22" y="38" width="28" height="44" fill="rgba(185, 28, 28, 0.18)" stroke="rgba(185, 28, 28, 0.3)" stroke-width="0.3" />
+      </g>
+    `);
+
+    // 4. Vòng Logo & Đài hoa sảnh
+    svgParts.push(`
+      <circle cx="0" cy="0" r="12" fill="rgba(30,64,160,0.10)" stroke="rgba(212,175,55,0.35)" stroke-width="0.7" stroke-dasharray="1.5,1.5" pointer-events="none" />
+      <circle cx="0" cy="0" r="4.5" fill="rgba(30,64,160,0.25)" stroke="#D4AF37" stroke-width="0.5" pointer-events="none" />
+    `);
+
+    // 5. 2 Tủ Album xoay ±45°
+    svgParts.push(`
+      <g transform="translate(-6.5, -6.5) rotate(45)" pointer-events="none">
+        <rect x="-1.1" y="-0.45" width="2.2" height="0.9" rx="0.2" fill="#D4AF37" stroke="#F6D26B" stroke-width="0.25" />
+      </g>
+      <g transform="translate(6.5, -6.5) rotate(-45)" pointer-events="none">
+        <rect x="-1.1" y="-0.45" width="2.2" height="0.9" rx="0.2" fill="#D4AF37" stroke="#F6D26B" stroke-width="0.25" />
+      </g>
+    `);
+
+    // 6. Sa bàn lưới điện (26, 0)
+    svgParts.push(`
+      <rect x="23" y="-2.1" width="6.0" height="4.2" rx="0.4" fill="#0A1224" stroke="#22D3EE" stroke-width="0.5" pointer-events="none" />
+      <text x="26" y="0.4" font-family="'Be Vietnam Pro', sans-serif" font-size="1.5" font-weight="700" fill="#22D3EE" text-anchor="middle" pointer-events="none">SA BÀN</text>
+    `);
+
+    // 7. Partitions (Vách mốc son x=35 và Vách tranh x=-35)
+    svgParts.push(`
+      <rect x="-35.4" y="-12" width="0.8" height="24" fill="#8B6F47" stroke="#F5EBD7" stroke-width="0.2" pointer-events="none" />
+      <rect x="34.7" y="-12" width="0.6" height="24" fill="#1E40A0" stroke="#38BDF8" stroke-width="0.3" pointer-events="none" />
+    `);
+
+    // 8. Tường thực tế (từ WALLS & tường HCM với độ dày 1.2m và hở cửa)
+    const wallElements = [];
+    WALLS.forEach(w => {
+      const isVertical = Math.abs(Math.abs(w.rotY) - Math.PI / 2) < 0.01;
+      let rx, ry, rw, rh;
+      if (isVertical) {
+        rx = w.x - w.d / 2;
+        ry = w.z - w.w / 2;
+        rw = w.d;
+        rh = w.w;
+      } else {
+        rx = w.x - w.w / 2;
+        ry = w.z - w.d / 2;
+        rw = w.w;
+        rh = w.d;
+      }
+      wallElements.push(`<rect x="${rx.toFixed(2)}" y="${ry.toFixed(2)}" width="${rw.toFixed(2)}" height="${rh.toFixed(2)}" fill="#334155" stroke="rgba(255,255,255,0.4)" stroke-width="0.25" pointer-events="none" />`);
+    });
+
+    // Tường HCM: Tây (-22), Đông (22), Nam (82), Bắc (38, hở cửa -5..5)
+    wallElements.push(`
+      <rect x="-22.6" y="38" width="1.2" height="44" fill="#334155" stroke="rgba(255,255,255,0.4)" stroke-width="0.25" pointer-events="none" />
+      <rect x="21.4" y="38" width="1.2" height="44" fill="#334155" stroke="rgba(255,255,255,0.4)" stroke-width="0.25" pointer-events="none" />
+      <rect x="-22" y="81.4" width="44" height="1.2" fill="#334155" stroke="rgba(255,255,255,0.4)" stroke-width="0.25" pointer-events="none" />
+      <rect x="-22" y="37.4" width="17" height="1.2" fill="#334155" stroke="rgba(255,255,255,0.4)" stroke-width="0.25" pointer-events="none" />
+      <rect x="5" y="37.4" width="17" height="1.2" fill="#334155" stroke="rgba(255,255,255,0.4)" stroke-width="0.25" pointer-events="none" />
+    `);
+    svgParts.push(wallElements.join('\n'));
+
+    // 9. Zone Labels (Font Be Vietnam Pro, số và tên ngắn)
+    svgParts.push(`
+      <!-- Sảnh -->
+      <text x="0" y="22" class="minimap-label">SẢNH</text>
+      <text x="0" y="25" class="minimap-sublabel">Trung tâm</text>
+
+      <!-- Khu 1 -->
+      <text x="-34" y="18" class="minimap-label">KHU 1</text>
+      <text x="-34" y="21" class="minimap-sublabel">Ký ức</text>
+
+      <!-- Khu 2 -->
+      <text x="0" y="-45" class="minimap-label">KHU 2</text>
+      <text x="0" y="-42" class="minimap-sublabel">Vinh quang</text>
+
+      <!-- Khu 3 -->
+      <text x="34" y="18" class="minimap-label">KHU 3</text>
+      <text x="34" y="21" class="minimap-sublabel">Hiện tại</text>
+
+      <!-- Khu 4 -->
+      <text x="36" y="62" class="minimap-label">KHU 4</text>
+      <text x="36" y="65" class="minimap-sublabel">Đảng bộ</text>
+
+      <!-- Khu 5 -->
+      <text x="0" y="62" class="minimap-label">KHU 5</text>
+      <text x="0" y="65" class="minimap-sublabel">Văn hóa HCM</text>
+
+      <!-- Khu 6 -->
+      <text x="-36" y="62" class="minimap-label">KHU 6</text>
+      <text x="-36" y="65" class="minimap-sublabel">CĐ - ĐTN</text>
+    `);
+
+    // 10. Chấm định vị và Nón ánh sáng (#player-marker được đặt cuối để luôn nổi lên trên)
+    svgParts.push(`
+      <g id="player-marker">
+        <path id="player-cone" class="player-cone" fill="url(#player-cone-gradient)" stroke="none" />
+        <circle class="player-pulse" cx="0" cy="0" r="1.2" />
+        <circle class="player-dot" cx="0" cy="0" r="1.2" />
+      </g>
+    `);
+
+    svg.innerHTML = svgParts.join('\n');
+
+    // Cache dynamic references
+    this.dom.playerMarker = document.getElementById('player-marker');
+    this.dom.playerCone = document.getElementById('player-cone');
+
+    // Attach click events on zones for smooth camera glide
+    svg.querySelectorAll('.minimap-zone').forEach(zoneEl => {
+      zoneEl.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const zoneId = zoneEl.dataset.zone;
+        if (zoneId) {
+          this.controlsManager?.teleportToHall(zoneId);
+          this.audioService?.playClickSound();
+          this.dom.pillBtns?.forEach(p => p.classList.toggle('active', p.dataset.hall === zoneId));
+        }
+      });
+    });
+  }
+
+  /**
+   * GĐ6 - Mục 8: Cập nhật minimap mỗi khung hình
+   * Sai số tọa độ SVG so với 3D = 0.000m (tỷ lệ 1:1, viewBox khớp tuyệt đối)
+   * Nón sáng hình quạt 9m co giãn theo fovH và quay đúng 360° theo camRotY
+   */
+  updateMinimap(camPos, camRotY, fovH = 1.0) {
     if (!this.dom.playerMarker) return;
-    const svgX = camPos.x * 0.85;
-    const svgY = camPos.z * 0.85;
-    this.dom.playerMarker.setAttribute('transform', `translate(${svgX}, ${svgY}) rotate(${(-camRotY * 180) / Math.PI})`);
+    const deg = (-camRotY * 180) / Math.PI;
+    this.dom.playerMarker.setAttribute(
+      'transform',
+      `translate(${camPos.x.toFixed(2)}, ${camPos.z.toFixed(2)}) rotate(${deg.toFixed(2)})`
+    );
+
+    if (fovH !== undefined && fovH !== this._lastFovH && this.dom.playerCone) {
+      this._lastFovH = fovH;
+      const R = 9.0;
+      const alpha = fovH / 2;
+      const x1 = -R * Math.sin(alpha);
+      const y1 = -R * Math.cos(alpha);
+      const x2 = R * Math.sin(alpha);
+      const y2 = -R * Math.cos(alpha);
+      const largeArc = fovH > Math.PI ? 1 : 0;
+      this.dom.playerCone.setAttribute(
+        'd',
+        `M 0 0 L ${x1.toFixed(3)} ${y1.toFixed(3)} A ${R} ${R} 0 ${largeArc} 1 ${x2.toFixed(3)} ${y2.toFixed(3)} Z`
+      );
+    }
   }
 }

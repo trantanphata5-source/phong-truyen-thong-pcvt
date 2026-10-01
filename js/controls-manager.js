@@ -366,7 +366,7 @@ export class ControlsManager {
 
   teleportToHall(hallId) {
     // Map old hall IDs to new khu IDs
-    const idMap = { hall_1: 'khu1', hall_2: 'khu2', hall_3: 'khu3', hcm: 'khu5' };
+    const idMap = { hall_1: 'khu1', hall_2: 'khu2', hall_3: 'khu3', hcm: 'khu5', lobby: 'all' };
     const khuId = idMap[hallId] || hallId;
     const target = HALL_TARGETS[khuId] || HALL_TARGETS.all;
 

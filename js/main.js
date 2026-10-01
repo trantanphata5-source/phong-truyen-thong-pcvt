@@ -613,7 +613,7 @@ class HeritageApp {
       border: 2px solid #d4af37; border-radius: 12px;
       padding: 28px; color: #fff; overflow-y: auto;
       box-shadow: 0 0 60px rgba(234, 179, 8, 0.35);
-      font-family: 'Inter', sans-serif;
+      font-family: 'Be Vietnam Pro', sans-serif;
     `;
 
     let imgHtml = '';
@@ -691,7 +691,7 @@ class HeritageApp {
       border: 2px solid #d4af37; border-radius: 12px;
       padding: 28px; color: #fff; overflow-y: auto;
       box-shadow: 0 0 60px rgba(59, 130, 246, 0.25);
-      font-family: 'Inter', sans-serif;
+      font-family: 'Be Vietnam Pro', sans-serif;
     `;
 
     let imgHtml = '';
@@ -788,7 +788,7 @@ class HeritageApp {
     header.innerHTML = `
       <div style="display: flex; align-items: center; gap: 12px;">
         <span style="color: #facc15; font-size: 20px;">•</span>
-        <span style="color: #fff; font-size: 16px; font-weight: 600; font-family: 'Inter', sans-serif;">Lược sử cuộc đời Chủ tịch Hồ Chí Minh — Trình chiếu tương tác</span>
+        <span style="color: #fff; font-size: 16px; font-weight: 600; font-family: 'Be Vietnam Pro', sans-serif;">Lược sử cuộc đời Chủ tịch Hồ Chí Minh — Trình chiếu tương tác</span>
       </div>
     `;
 
@@ -1268,6 +1268,7 @@ class HeritageApp {
   }
 
   assertNoOverlapOnWalls() {
+    this.scene.updateMatrixWorld(true);
     const wallBuckets = new Map();
 
     const registerWallItem = (name, obj3d) => {
@@ -1410,8 +1411,10 @@ class HeritageApp {
     // Update Controls
     this.controlsManager.update(delta);
 
-    // Update Minimap
-    this.uiController.updateMinimap(this.camera.position, this.controlsManager.currentYaw);
+    // Update Minimap (GĐ6: pass camPos, yaw, and fovH)
+    const vFovRad = (this.camera.fov * Math.PI) / 180;
+    const fovH = 2 * Math.atan(Math.tan(vFovRad / 2) * this.camera.aspect);
+    this.uiController.updateMinimap(this.camera.position, this.controlsManager.currentYaw, fovH);
 
     // GĐ5: Animate smart grid floor and power grid table
     if (this.architect && this.architect.animate) {
