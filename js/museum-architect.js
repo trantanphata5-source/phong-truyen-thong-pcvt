@@ -640,6 +640,8 @@ export class MuseumArchitect {
       ctx.fillText(subtitle, 1024, 335);
 
       const texture = new THREE.CanvasTexture(canvas);
+      texture.colorSpace = THREE.SRGBColorSpace;
+      texture.anisotropy = this.renderer?.capabilities?.getMaxAnisotropy?.() || 16;
       const geo = new THREE.PlaneGeometry(8.0, 2.0);
       const mat = new THREE.MeshStandardMaterial({
         map: texture,
@@ -653,6 +655,14 @@ export class MuseumArchitect {
       const mesh = new THREE.Mesh(geo, mat);
       mesh.position.set(x + nx * 0.08, y, z + nz * 0.08);
       mesh.rotation.y = rotY;
+      mesh.name = `SignBanner_${title}`;
+      mesh.userData = {
+        isTextPlane: true,
+        planeW: 8.0,
+        planeH: 2.0,
+        canvasW: 2048,
+        canvasH: 512
+      };
 
       const frameMat = (bgColor === '#1E40A0') ? this.matBaseboardKhu3 : this.matGold;
       const frameMesh = new THREE.Mesh(new THREE.BoxGeometry(8.2, 2.2, 0.15), frameMat);
@@ -687,27 +697,29 @@ export class MuseumArchitect {
 
     const createMilestonePlaque = (badge, title, subtitle, themeColor, w, h, x, y, z, rotY) => {
       const canvas = document.createElement('canvas');
-      canvas.width = 2048;
-      canvas.height = 320;
+      const canvasH = 320;
+      const canvasW = Math.round(canvasH * (w / h));
+      canvas.width = canvasW;
+      canvas.height = canvasH;
       const ctx = canvas.getContext('2d');
 
       // 1. Dark royal obsidian background
-      const grad = ctx.createLinearGradient(0, 0, 2048, 0);
+      const grad = ctx.createLinearGradient(0, 0, canvasW, 0);
       grad.addColorStop(0, '#090e1a');
       grad.addColorStop(0.5, '#101728');
       grad.addColorStop(1, '#090e1a');
       ctx.fillStyle = grad;
-      ctx.fillRect(0, 0, 2048, 320);
+      ctx.fillRect(0, 0, canvasW, canvasH);
 
       // 2. Outer decorative gold/theme border
       ctx.strokeStyle = themeColor;
       ctx.lineWidth = 8;
-      ctx.strokeRect(12, 12, 2024, 296);
+      ctx.strokeRect(12, 12, canvasW - 24, canvasH - 24);
 
       // Inner subtle gold border
       ctx.strokeStyle = 'rgba(212, 175, 55, 0.4)';
       ctx.lineWidth = 3;
-      ctx.strokeRect(24, 24, 2000, 272);
+      ctx.strokeRect(24, 24, canvasW - 48, canvasH - 48);
 
       // 3. Left Pill Badge (MỐC LỊCH SỬ / GIAI ĐOẠN)
       ctx.fillStyle = themeColor;
@@ -725,7 +737,7 @@ export class MuseumArchitect {
       let titleFontSize = 46;
       ctx.font = `bold ${titleFontSize}px "Be Vietnam Pro", sans-serif`;
       let titleWidth = ctx.measureText(title).width;
-      const maxTitleWidth = 1550;
+      const maxTitleWidth = canvasW - 500;
       while (titleWidth > maxTitleWidth && titleFontSize > 24) {
         titleFontSize -= 2;
         ctx.font = `bold ${titleFontSize}px "Be Vietnam Pro", sans-serif`;
@@ -740,7 +752,7 @@ export class MuseumArchitect {
       let subFontSize = 26;
       ctx.font = `italic ${subFontSize}px "Inter", sans-serif`;
       let subWidth = ctx.measureText(subtitle).width;
-      const maxSubWidth = 1900;
+      const maxSubWidth = canvasW - 148;
       while (subWidth > maxSubWidth && subFontSize > 18) {
         subFontSize -= 1;
         ctx.font = `italic ${subFontSize}px "Inter", sans-serif`;
@@ -756,10 +768,12 @@ export class MuseumArchitect {
       ctx.lineWidth = 2;
       ctx.beginPath();
       ctx.moveTo(45, 130);
-      ctx.lineTo(2000, 130);
+      ctx.lineTo(canvasW - 48, 130);
       ctx.stroke();
 
       const texture = new THREE.CanvasTexture(canvas);
+      texture.colorSpace = THREE.SRGBColorSpace;
+      texture.anisotropy = this.renderer?.capabilities?.getMaxAnisotropy?.() || 16;
       const mat = new THREE.MeshStandardMaterial({
         map: texture,
         roughness: 0.25,
@@ -784,6 +798,14 @@ export class MuseumArchitect {
       const plaqueMesh = new THREE.Mesh(new THREE.PlaneGeometry(w, h), mat);
       plaqueMesh.position.set(x + 0.035 * normalX, y, z + 0.035 * normalZ);
       plaqueMesh.rotation.y = rotY;
+      plaqueMesh.name = `MilestonePlaque_${title}`;
+      plaqueMesh.userData = {
+        isTextPlane: true,
+        planeW: w,
+        planeH: h,
+        canvasW: canvasW,
+        canvasH: canvasH
+      };
 
       milestonesGroup.add(frameMesh);
       milestonesGroup.add(plaqueMesh);
@@ -2399,51 +2421,54 @@ export class MuseumArchitect {
     rightLed.position.set(w / 2, h / 2 + 0.12, 0);
     group.add(rightLed);
 
-    // Canvas hiển thị thông tin nền trắng, viền xanh EVN
+    // Canvas hiển thị thông tin nền trắng, viền xanh EVN (tỷ lệ 1:1 với tấm phẳng w-0.04 x h-0.1 = 1.06 x 2.30)
+    const totemPlaneW = w - 0.04;
+    const totemPlaneH = h - 0.1;
+    const cW = 800;
+    const cH = Math.round(cW * (totemPlaneH / totemPlaneW)); // ≈ 1736
     const c = document.createElement('canvas');
-    c.width = 800;
-    c.height = 1400;
+    c.width = cW;
+    c.height = cH;
     const ctx = c.getContext('2d');
 
     const renderContent = (logoImg = null) => {
       // Nền trắng tinh khiết
       ctx.fillStyle = '#ffffff';
-      ctx.fillRect(0, 0, 800, 1400);
+      ctx.fillRect(0, 0, cW, cH);
 
       // Khung viền xanh EVN
       ctx.strokeStyle = '#1e40a0';
       ctx.lineWidth = 6;
-      ctx.strokeRect(24, 24, 752, 1352);
+      ctx.strokeRect(24, 24, cW - 48, cH - 48);
 
       ctx.strokeStyle = 'rgba(56, 189, 248, 0.4)';
       ctx.lineWidth = 2;
-      ctx.strokeRect(36, 36, 728, 1328);
+      ctx.strokeRect(36, 36, cW - 72, cH - 72);
 
       // Header EVNHCMC
       ctx.fillStyle = '#1e40a0';
       ctx.font = '700 28px "Be Vietnam Pro", sans-serif';
       ctx.textAlign = 'center';
-      ctx.fillText('EVNHCMC • PC VŨNG TÀU', 400, 140);
+      ctx.fillText('EVNHCMC • PC VŨNG TÀU', cW / 2, 160);
 
       ctx.fillStyle = '#64748b';
       ctx.font = '500 20px "Be Vietnam Pro", sans-serif';
       ctx.letterSpacing = '2px';
-      ctx.fillText(sub, 400, 180);
+      ctx.fillText(sub, cW / 2, 205);
 
       // Đường kẻ phân cách
       ctx.strokeStyle = '#1e40a0';
       ctx.lineWidth = 3;
       ctx.beginPath();
-      ctx.moveTo(100, 220);
-      ctx.lineTo(700, 220);
+      ctx.moveTo(100, 250);
+      ctx.lineTo(cW - 100, 250);
       ctx.stroke();
 
       // Logo EVNHCMC ở phần đầu trụ (rộng khoảng 0.35m, giữ đúng tỷ lệ gốc, nền trắng) (Mục E.3)
-      // w = 1.1m -> 800px canvas; 0.35m = (0.35/1.1)*800 ≈ 255px
       const logoW = 255;
-      const logoH = 200; // tỷ lệ ~1.276
-      const logoX = 400 - logoW / 2;
-      const logoY = 320;
+      const logoH = 200;
+      const logoX = cW / 2 - logoW / 2;
+      const logoY = 360;
 
       // Nền trắng tinh khiết cho logo
       ctx.fillStyle = '#ffffff';
@@ -2456,37 +2481,38 @@ export class MuseumArchitect {
       // Tiêu đề trụ
       ctx.fillStyle = '#1e40a0';
       ctx.font = '900 46px "Be Vietnam Pro", sans-serif';
-      ctx.fillText(title, 400, 680);
+      ctx.fillText(title, cW / 2, 800);
 
       // Khẩu hiệu chính thức
       ctx.fillStyle = '#0f172a';
       ctx.font = '500 30px "Be Vietnam Pro", sans-serif';
       const words = slogan.split(' ');
       let line = '';
-      let y = 780;
+      let y = 920;
       for (let n = 0; n < words.length; n++) {
         const testLine = line + words[n] + ' ';
         const metrics = ctx.measureText(testLine);
         if (metrics.width > 640 && n > 0) {
-          ctx.fillText(line.trim(), 400, y);
+          ctx.fillText(line.trim(), cW / 2, y);
           line = words[n] + ' ';
-          y += 50;
+          y += 55;
         } else {
           line = testLine;
         }
       }
-      ctx.fillText(line.trim(), 400, y);
+      ctx.fillText(line.trim(), cW / 2, y);
 
       // Footer
       ctx.fillStyle = '#475569';
       ctx.font = '600 22px "Be Vietnam Pro", sans-serif';
-      ctx.fillText('CHUYỂN ĐỔI SỐ • LƯỚI ĐIỆN THÔNG MINH', 400, 1260);
+      ctx.fillText('CHUYỂN ĐỔI SỐ • LƯỚI ĐIỆN THÔNG MINH', cW / 2, cH - 120);
 
       faceTex.needsUpdate = true;
     };
 
     const faceTex = new THREE.CanvasTexture(c);
     faceTex.colorSpace = THREE.SRGBColorSpace;
+    faceTex.anisotropy = this.renderer?.capabilities?.getMaxAnisotropy?.() || 16;
     const faceMat = new THREE.MeshBasicMaterial({ map: faceTex });
 
     if (!this._totemLogoImg) {
@@ -2501,15 +2527,31 @@ export class MuseumArchitect {
     }
 
     // Mặt trước (hướng Tây: rotY = -Math.PI / 2)
-    const facePlaneGeo = new THREE.PlaneGeometry(w - 0.04, h - 0.1);
+    const facePlaneGeo = new THREE.PlaneGeometry(totemPlaneW, totemPlaneH);
     const frontMesh = new THREE.Mesh(facePlaneGeo, faceMat);
     frontMesh.position.set(0, h / 2 + 0.12, d / 2 + 0.002);
+    frontMesh.name = `Totem_Front_${title}`;
+    frontMesh.userData = {
+      isTextPlane: true,
+      planeW: totemPlaneW,
+      planeH: totemPlaneH,
+      canvasW: cW,
+      canvasH: cH
+    };
     group.add(frontMesh);
 
     // Mặt sau
     const backMesh = new THREE.Mesh(facePlaneGeo, faceMat);
     backMesh.position.set(0, h / 2 + 0.12, -d / 2 - 0.002);
     backMesh.rotation.y = Math.PI;
+    backMesh.name = `Totem_Back_${title}`;
+    backMesh.userData = {
+      isTextPlane: true,
+      planeW: totemPlaneW,
+      planeH: totemPlaneH,
+      canvasW: cW,
+      canvasH: cH
+    };
     group.add(backMesh);
 
     // Hướng mặt chính về phía lối vào (hướng Tây nhìn sang Đông, hoặc quay mặt nhìn sang Tây)
@@ -2576,6 +2618,7 @@ export class MuseumArchitect {
       tex.colorSpace = THREE.SRGBColorSpace;
       tex.generateMipmaps = true;
       tex.minFilter = THREE.LinearMipmapLinearFilter;
+      tex.anisotropy = this.renderer?.capabilities?.getMaxAnisotropy?.() || 16;
 
       const screenMat = new THREE.MeshBasicMaterial({
         map: tex,
@@ -2584,15 +2627,22 @@ export class MuseumArchitect {
         polygonOffsetFactor: -2,
         polygonOffsetUnits: -2
       });
-      const screenGeo = new THREE.PlaneGeometry(screenW, screenH);
+      // 16:9 chính xác: screenW = 9.0 -> screenH = 5.0625
+      const exactScreenH = screenW * (1152 / 2048);
+      const screenGeo = new THREE.PlaneGeometry(screenW, exactScreenH);
       const screenMesh = new THREE.Mesh(screenGeo, screenMat);
       // Đặt ở z = mặt trước viền (-0.06) - 0.03 = -0.09 (Mục C.1)
       screenMesh.position.set(0, screenY, -0.09);
       screenMesh.rotation.y = Math.PI;
       screenMesh.name = `LED_Screen_${zoneId}`;
       screenMesh.userData = {
+        isTextPlane: true,
         isZoneScreen: true,
-        zone: zoneId
+        zone: zoneId,
+        planeW: screenW,
+        planeH: exactScreenH,
+        canvasW: 2048,
+        canvasH: 1152
       };
       unit.add(screenMesh);
 

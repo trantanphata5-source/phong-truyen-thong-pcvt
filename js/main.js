@@ -196,6 +196,11 @@ class HeritageApp {
       if (this.gridMapTable && typeof this.gridMapTable.assertAllInsideBoard === 'function') {
         this.gridMapTable.assertAllInsideBoard();
       }
+      if (this.exhibitBuilder && typeof this.exhibitBuilder.assertNoStretchedText === 'function') {
+        this.exhibitBuilder.assertNoStretchedText(this.scene);
+      }
+      window.assertNoStretchedText = () => this.exhibitBuilder.assertNoStretchedText(this.scene);
+      window.assertAllInsideBoard = () => this.gridMapTable.assertAllInsideBoard();
       this.updateZoneCulling();
 
       this.uiController.updateLoadingProgress(100, 'Phòng truyền thống đã sẵn sàng!');
@@ -226,6 +231,7 @@ class HeritageApp {
 
       // Start render loop
       this.animate();
+      this.isReady = true;
       console.log('Artsteps-standard 3D Heritage Room PCVT Ready!');
     } catch (err) {
       console.error('Initialization error:', err);
@@ -275,7 +281,7 @@ class HeritageApp {
       }
     }
 
-    // 0b. GĐ5: Check Sa bàn Lưới điện 3D (Trạm InstancedMesh, Cơ sở InstancedMesh, hoặc Mặt bàn)
+    // 0b. GĐ5: Check Sa bàn Lưới điện 3D (Trạm InstancedMesh, Cơ sở InstancedMesh, Vùng Phường, hoặc Mặt bàn)
     if (this.gridMapTable && this.gridMapTable.interactiveObjects.length > 0) {
       const gridHits = this.raycaster.intersectObjects(this.gridMapTable.interactiveObjects, false);
       if (gridHits.length > 0 && gridHits[0].distance < 38.0) {
@@ -290,6 +296,10 @@ class HeritageApp {
             this.container.style.cursor = 'pointer';
             this.audioService.playHoverSound();
           }
+          if (this.gridMapTable.currentHoveredWard) {
+            this.gridMapTable.currentHoveredWard.material.opacity = 0;
+            this.gridMapTable.currentHoveredWard = null;
+          }
           this.hoveredGridTable = null;
           if (this.architect.floorMarker) this.architect.floorMarker.visible = false;
           return;
@@ -297,6 +307,28 @@ class HeritageApp {
           const coSo = hitObj.userData.coSoList[hit.instanceId];
           const itemData = { isGridCoSo: true, coSoData: coSo };
           if (this.hoveredGridItem?.coSoData !== coSo) {
+            this.hoveredGridItem = itemData;
+            this.container.style.cursor = 'pointer';
+            this.audioService.playHoverSound();
+          }
+          if (this.gridMapTable.currentHoveredWard) {
+            this.gridMapTable.currentHoveredWard.material.opacity = 0;
+            this.gridMapTable.currentHoveredWard = null;
+          }
+          this.hoveredGridTable = null;
+          if (this.architect.floorMarker) this.architect.floorMarker.visible = false;
+          return;
+        } else if (hitObj.userData?.isGridPhuongZone && hitObj.userData.phuongData) {
+          const phuong = hitObj.userData.phuongData;
+          if (this.gridMapTable.hoverPhuongEnabled) {
+            if (this.gridMapTable.currentHoveredWard && this.gridMapTable.currentHoveredWard !== hitObj) {
+              this.gridMapTable.currentHoveredWard.material.opacity = 0;
+            }
+            hitObj.material.opacity = 0.15;
+            this.gridMapTable.currentHoveredWard = hitObj;
+          }
+          const itemData = { isGridPhuong: true, phuongData: phuong };
+          if (this.hoveredGridItem?.phuongData !== phuong) {
             this.hoveredGridItem = itemData;
             this.container.style.cursor = 'pointer';
             this.audioService.playHoverSound();
@@ -309,11 +341,19 @@ class HeritageApp {
             this.hoveredGridTable = hitObj;
             this.container.style.cursor = 'pointer';
           }
+          if (this.gridMapTable.currentHoveredWard) {
+            this.gridMapTable.currentHoveredWard.material.opacity = 0;
+            this.gridMapTable.currentHoveredWard = null;
+          }
           this.hoveredGridItem = null;
           if (this.architect.floorMarker) this.architect.floorMarker.visible = false;
           return;
         }
       }
+    }
+    if (this.gridMapTable?.currentHoveredWard) {
+      this.gridMapTable.currentHoveredWard.material.opacity = 0;
+      this.gridMapTable.currentHoveredWard = null;
     }
     this.hoveredGridItem = null;
     this.hoveredGridTable = null;
@@ -451,8 +491,8 @@ class HeritageApp {
       return;
     }
 
-    // 0b. GĐ5: Clicked a Substation / PCVT Facility on Sa bàn
-    if (this.hoveredGridItem && (this.hoveredGridItem.userData || this.hoveredGridItem.tramData || this.hoveredGridItem.coSoData)) {
+    // 0b. GĐ5: Clicked a Substation / PCVT Facility / Ward on Sa bàn
+    if (this.hoveredGridItem && (this.hoveredGridItem.userData || this.hoveredGridItem.tramData || this.hoveredGridItem.coSoData || this.hoveredGridItem.phuongData)) {
       this.showGridItemCard(this.hoveredGridItem.userData || this.hoveredGridItem);
       this.audioService.playClickSound();
       return;
@@ -789,31 +829,18 @@ class HeritageApp {
   // GĐ5: SA BÀN LƯỚI ĐIỆN 3D & 2D MODAL UI
   // ===========================================================================
   initGridMapUI() {
-    // 1. Layer filter checkboxes
-    const bindCheck = (id, key) => {
-      const el = document.getElementById(id);
-      if (el) {
-        el.addEventListener('change', (e) => {
-          if (this.gridMapTable) this.gridMapTable.setLayerVisibility(key, e.target.checked);
-        });
-      }
-    };
+    // 1. Layer filter checkboxes (rút gọn 2 công tắc theo Mục B.5)
+    const chkTram = document.getElementById('chk-layer-tram');
+    if (chkTram) {
+      chkTram.addEventListener('change', (e) => {
+        if (this.gridMapTable) this.gridMapTable.setLayerVisibility('tram', e.target.checked);
+      });
+    }
 
-    bindCheck('chk-layer-500', 'line500');
-    bindCheck('chk-layer-220', 'line220');
-    bindCheck('chk-layer-110', 'line110');
-    bindCheck('chk-layer-kh', 'khachHang');
-    bindCheck('chk-layer-qh', 'quyHoach');
-    bindCheck('chk-layer-dbgt', 'dbgt');
-    bindCheck('chk-layer-ranh-gioi', 'ranhGioiMoi');
-
-    const chkLabels = document.getElementById('chk-layer-labels');
-    if (chkLabels) {
-      chkLabels.addEventListener('change', (e) => {
-        if (this.gridMapTable) {
-          this.gridMapTable.setLayerVisibility('labels', e.target.checked);
-          this.gridMapTable.setLayerVisibility('phuong', e.target.checked);
-        }
+    const chkHoverPhuong = document.getElementById('chk-layer-hover-phuong');
+    if (chkHoverPhuong) {
+      chkHoverPhuong.addEventListener('change', (e) => {
+        if (this.gridMapTable) this.gridMapTable.setHoverPhuongEnabled(e.target.checked);
       });
     }
 
@@ -904,6 +931,8 @@ class HeritageApp {
     const phuongEl = document.getElementById('grid-info-phuong');
     const extraEl = document.getElementById('grid-info-extra');
 
+    const extraRow = document.getElementById('grid-info-extra-row');
+
     if (userData.isGridTram && userData.tramData) {
       const t = userData.tramData;
       titleEl.textContent = t.ten;
@@ -912,6 +941,7 @@ class HeritageApp {
       trangthaiEl.textContent = t.trang_thai === 'quy_hoach' ? 'Quy hoạch' : 'Hiện trạng';
       phuongEl.textContent = t.phuong || 'Tỉnh Bà Rịa – Vũng Tàu';
       extraEl.textContent = `Tọa độ bản vẽ CAD: (${t.pt ? t.pt[0].toFixed(1) : ''}, ${t.pt ? t.pt[1].toFixed(1) : ''})`;
+      if (extraRow) extraRow.style.display = '';
 
       badgeEl.className = 'grid-info-badge';
       if (t.cap === '500kV') badgeEl.classList.add('badge-500');
@@ -926,10 +956,24 @@ class HeritageApp {
       loaiEl.textContent = 'Trụ sở / Đơn vị trực thuộc';
       trangthaiEl.textContent = 'Đang hoạt động';
       phuongEl.textContent = cs.phuong || 'P. Vũng Tàu';
-      extraEl.textContent = cs.dia_chi || 'Cơ sở Công ty Điện lực Vũng Tàu';
+      // Mục B.4: Không hiển thị trường địa chỉ cho cơ sở PCVT
+      if (extraRow) extraRow.style.display = 'none';
 
       badgeEl.className = 'grid-info-badge badge-coso';
       badgeEl.textContent = 'PCVT';
+    } else if (userData.isGridPhuong && userData.phuongData) {
+      const p = userData.phuongData;
+      titleEl.textContent = p.ten;
+      capEl.textContent = 'Đơn vị hành chính';
+      loaiEl.textContent = 'Địa bàn quản lý điện lực';
+      trangthaiEl.textContent = 'Tỉnh Bà Rịa – Vũng Tàu';
+      phuongEl.textContent = p.ten;
+      if (extraRow) extraRow.style.display = 'none';
+
+      badgeEl.className = 'grid-info-badge';
+      badgeEl.style.background = '#1e40a0';
+      badgeEl.style.color = '#ffffff';
+      badgeEl.textContent = 'ĐỊA BÀN';
     } else if (userData.isGridDBGT && userData.dbgtData) {
       const d = userData.dbgtData;
       titleEl.textContent = d.ten;

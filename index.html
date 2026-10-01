@@ -527,42 +527,17 @@
       <button class="btn-tiny" id="btn-close-grid-hud" title="Ẩn bảng điều khiển"><i data-lucide="x"></i></button>
     </div>
     <div class="hud-panel-body">
-      <div class="grid-filter-title">LỌC LỚP TRUYỀN TẢI & PHÂN PHỐI</div>
+      <div class="grid-filter-title">LỌC LỚP SA BÀN 3D</div>
       <div class="grid-filter-switches">
         <label class="grid-switch-label">
-          <input type="checkbox" id="chk-layer-500" checked />
-          <span class="grid-color-dot dot-500"></span>
-          <span>Đường dây &amp; TBA 500kV (1 trạm)</span>
+          <input type="checkbox" id="chk-layer-tram" checked />
+          <span class="grid-color-dot" style="background:#22d3ee; box-shadow: 0 0 6px rgba(34,211,238,0.6);"></span>
+          <span>Ghim trạm 3D</span>
         </label>
         <label class="grid-switch-label">
-          <input type="checkbox" id="chk-layer-220" checked />
-          <span class="grid-color-dot dot-220"></span>
-          <span>Đường dây &amp; TBA 220kV (6 trạm)</span>
-        </label>
-        <label class="grid-switch-label">
-          <input type="checkbox" id="chk-layer-110" checked />
-          <span class="grid-color-dot dot-110"></span>
-          <span>Đường dây &amp; TBA 110kV Lưới (19 trạm)</span>
-        </label>
-        <label class="grid-switch-label">
-          <input type="checkbox" id="chk-layer-kh" checked />
-          <span class="grid-color-dot dot-kh"></span>
-          <span>TBA 110kV Khách hàng (15 trạm)</span>
-        </label>
-        <label class="grid-switch-label">
-          <input type="checkbox" id="chk-layer-qh" checked />
-          <span class="grid-color-dot dot-qh"></span>
-          <span>Quy hoạch (Nét đứt)</span>
-        </label>
-        <label class="grid-switch-label">
-          <input type="checkbox" id="chk-layer-ranh-gioi" checked />
+          <input type="checkbox" id="chk-layer-hover-phuong" checked />
           <span class="grid-color-dot" style="background:#1e40a0; box-shadow: 0 0 6px rgba(30,64,160,0.6);"></span>
-          <span>Ranh giới phường/xã mới</span>
-        </label>
-        <label class="grid-switch-label">
-          <input type="checkbox" id="chk-layer-labels" checked />
-          <span class="grid-color-dot dot-label"></span>
-          <span>Tên trạm &amp; Phường hành chính</span>
+          <span>Tô sáng phường khi rê chuột</span>
         </label>
       </div>
 
@@ -646,7 +621,7 @@
     <!-- Map Viewport with mouse pan and wheel zoom -->
     <div class="grid-2d-viewport" id="grid-2d-viewport">
       <div class="grid-2d-stage" id="grid-2d-stage">
-        <img src="assets/grid/preview.png" alt="Bản đồ địa dư lưới điện PCVT" class="grid-2d-image" id="grid-2d-image" />
+        <img src="assets/grid/pcvt_map_4096.webp" alt="Bản đồ địa dư lưới điện PCVT" class="grid-2d-image" id="grid-2d-image" />
         <div class="grid-2d-markers" id="grid-2d-markers"></div>
       </div>
     </div>
@@ -659,8 +634,6 @@
         <span><span class="legend-color dot-110"></span> 110kV Lưới</span>
         <span><span class="legend-color dot-kh"></span> 110kV Khách hàng</span>
         <span><span class="legend-color dot-co-so"></span> Cơ sở PCVT</span>
-        <span><span class="legend-color dot-dbgt-green"></span> ĐBGT Đã có ý kiến HSTK</span>
-        <span><span class="legend-color dot-dbgt-orange"></span> ĐBGT Thẩm định bồi thường</span>
       </div>
       <div class="grid-2d-tip">
         <i data-lucide="info"></i> Kéo chuột để di chuyển • Cuộn bánh xe để phóng to / thu nhỏ

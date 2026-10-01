@@ -560,120 +560,197 @@ export class ExhibitBuilder {
       }
     });
 
+    const maxAnis = window.app?.renderer?.capabilities?.getMaxAnisotropy?.() || 16;
+
+    // Temporary canvas for accurate text measurement
+    const measureCanvas = document.createElement('canvas');
+    const measureCtx = measureCanvas.getContext('2d');
+
     configs.forEach(cfg => {
       const parentGroup = this.zoneGroups[cfg.zone] || this.scene;
       const nx = Math.sin(cfg.rotY);
       const nz = Math.cos(cfg.rotY);
-      // Tường bảo tàng dày WALL_THICKNESS (1.2m), standOff = 1.2/2 + 0.04 phào + 0.07 khe = 0.71m từ tâm tường
       const standOff = WALL_THICKNESS / 2 + 0.04 + 0.07;
 
       const posX = cfg.baseX + nx * standOff;
       const posZ = cfg.baseZ + nz * standOff;
 
-      // 1. Banner mesh: Canvas 2048 x 256, cao 0.55m, tâm y = 4.15m
+      // Group chứa toàn bộ băng tiêu đề (nền + viền + 2 logo + chữ)
+      const bannerGroup = new THREE.Group();
+      bannerGroup.position.set(posX, 4.15, posZ);
+      bannerGroup.rotation.y = cfg.rotY;
+      bannerGroup.name = `WallBannerGroup_${cfg.id}`;
+
+      // 1. NỀN BĂNG TIÊU ĐỀ: Tấm phẳng dài cfg.length x 0.55m, MeshBasicMaterial một màu, không dùng texture (Mục A.1)
+      const bgGeo = new THREE.PlaneGeometry(cfg.length, 0.55);
+      const bgMat = new THREE.MeshBasicMaterial({
+        color: cfg.colors.banner_bg,
+        side: THREE.DoubleSide
+      });
+      const bgMesh = new THREE.Mesh(bgGeo, bgMat);
+      bgMesh.name = `WallBanner_Bg_${cfg.id}`;
+      bannerGroup.add(bgMesh);
+
+      // Viền trên và viền dưới: 2 dải mỏng 0.03m màu banner_border (Mục A.1)
+      const borderMat = new THREE.MeshBasicMaterial({
+        color: cfg.colors.banner_border,
+        side: THREE.DoubleSide
+      });
+      const topBorder = new THREE.Mesh(new THREE.PlaneGeometry(cfg.length, 0.03), borderMat);
+      topBorder.position.set(0, 0.55 / 2 - 0.03 / 2, 0.001);
+      bannerGroup.add(topBorder);
+
+      const btmBorder = new THREE.Mesh(new THREE.PlaneGeometry(cfg.length, 0.03), borderMat);
+      btmBorder.position.set(0, -0.55 / 2 + 0.03 / 2, 0.001);
+      bannerGroup.add(btmBorder);
+
+      // Logo ở 2 đầu: 2 tấm 0.45 x 0.45m, đúng tỷ lệ ảnh logo (Mục A.1)
+      const logoTex = this.getOrLoadTexture(cfg.logo);
+      if (logoTex) {
+        logoTex.anisotropy = maxAnis;
+        const logoMat = new THREE.MeshBasicMaterial({
+          map: logoTex,
+          transparent: true,
+          side: THREE.DoubleSide
+        });
+        const leftLogo = new THREE.Mesh(new THREE.PlaneGeometry(0.45, 0.45), logoMat);
+        leftLogo.position.set(-(cfg.length / 2 - 0.45), 0, 0.002);
+        bannerGroup.add(leftLogo);
+
+        const rightLogo = new THREE.Mesh(new THREE.PlaneGeometry(0.45, 0.45), logoMat);
+        rightLogo.position.set(cfg.length / 2 - 0.45, 0, 0.002);
+        bannerGroup.add(rightLogo);
+      }
+
+      // 2. CHỮ TRÊN BĂNG (Mục A.2): Canvas cao 256px, đo chữ trước, tấm cao 0.46m, tỷ lệ 1:1, cao hơn nền 2mm
+      const maxBannerTextW = 0.85 * cfg.length; // Không vượt quá 85% chiều dài băng
+      let titleSize = 46;
+      let subSize = 24;
+      const textPadding = 64;
+
+      measureCtx.font = `800 ${titleSize}px "Be Vietnam Pro", sans-serif`;
+      let titleW = measureCtx.measureText(cfg.full_title).width;
+      measureCtx.font = `600 ${subSize}px "Be Vietnam Pro", sans-serif`;
+      let subW = measureCtx.measureText(cfg.sub_text).width;
+      let maxContentW = Math.max(titleW, subW);
+
+      // Nếu chữ rộng hơn 85% chiều dài băng thì giảm cỡ chữ (Mục A.2)
+      while (0.46 * (maxContentW + 2 * textPadding) / 256 > maxBannerTextW && titleSize > 24) {
+        titleSize -= 2;
+        subSize = Math.max(16, Math.round(subSize * 0.95));
+        measureCtx.font = `800 ${titleSize}px "Be Vietnam Pro", sans-serif`;
+        titleW = measureCtx.measureText(cfg.full_title).width;
+        measureCtx.font = `600 ${subSize}px "Be Vietnam Pro", sans-serif`;
+        subW = measureCtx.measureText(cfg.sub_text).width;
+        maxContentW = Math.max(titleW, subW);
+      }
+
+      const canvasBW = Math.min(4096, Math.ceil(maxContentW + 2 * textPadding));
+      const canvasBH = 256;
+      const bannerPlaneH = 0.46;
+      const bannerPlaneW = bannerPlaneH * (canvasBW / canvasBH);
+
       const canvasB = document.createElement('canvas');
-      canvasB.width = 2048;
-      canvasB.height = 256;
+      canvasB.width = canvasBW;
+      canvasB.height = canvasBH;
       const ctxB = canvasB.getContext('2d');
+      ctxB.clearRect(0, 0, canvasBW, canvasBH);
+
+      // Vẽ tiêu đề chính
+      ctxB.fillStyle = cfg.colors.banner_text;
+      ctxB.font = `800 ${titleSize}px "Be Vietnam Pro", sans-serif`;
+      ctxB.textAlign = 'center';
+      ctxB.textBaseline = 'middle';
+      ctxB.fillText(cfg.full_title, canvasBW / 2, 92);
+
+      // Vẽ dòng phụ
+      ctxB.fillStyle = cfg.colors.banner_sub;
+      ctxB.font = `600 ${subSize}px "Be Vietnam Pro", sans-serif`;
+      ctxB.textAlign = 'center';
+      ctxB.textBaseline = 'middle';
+      ctxB.fillText(cfg.sub_text, canvasBW / 2, 172);
 
       const texB = new THREE.CanvasTexture(canvasB);
       texB.colorSpace = THREE.SRGBColorSpace;
+      texB.anisotropy = maxAnis;
 
-      const renderBanner = () => {
-        ctxB.fillStyle = cfg.colors.banner_bg;
-        ctxB.beginPath();
-        ctxB.roundRect(8, 8, 2032, 240, 16);
-        ctxB.fill();
-
-        ctxB.strokeStyle = cfg.colors.banner_border;
-        ctxB.lineWidth = 6;
-        ctxB.stroke();
-
-        ctxB.strokeStyle = (cfg.colors.banner_bg === '#B91C1C') ? 'rgba(250, 204, 21, 0.4)' : 'rgba(30, 64, 160, 0.2)';
-        ctxB.lineWidth = 2;
-        ctxB.beginPath();
-        ctxB.roundRect(18, 18, 2012, 220, 12);
-        ctxB.stroke();
-
-        // Draw logos at both ends
-        const lImg = logoMap[cfg.logo];
-        if (lImg && lImg.complete && lImg.naturalWidth > 0) {
-          const lAspect = lImg.naturalWidth / lImg.naturalHeight;
-          const lH = 130;
-          const lW = lH * lAspect;
-          // Left logo
-          ctxB.drawImage(lImg, 60, (256 - lH) / 2, lW, lH);
-          // Right logo
-          ctxB.drawImage(lImg, 2048 - 60 - lW, (256 - lH) / 2, lW, lH);
-        }
-
-        // Main title
-        ctxB.fillStyle = cfg.colors.banner_text;
-        ctxB.font = '800 48px "Be Vietnam Pro", sans-serif';
-        ctxB.textAlign = 'center';
-        ctxB.textBaseline = 'middle';
-        ctxB.fillText(cfg.full_title, 1024, 95);
-
-        // Subtext
-        ctxB.fillStyle = cfg.colors.banner_sub;
-        ctxB.font = '600 26px "Be Vietnam Pro", sans-serif';
-        ctxB.fillText(cfg.sub_text, 1024, 175);
-
-        texB.needsUpdate = true;
-      };
-
-      const lImg = logoMap[cfg.logo];
-      if (lImg.complete && lImg.naturalWidth > 0) {
-        renderBanner();
-      } else {
-        renderBanner();
-        lImg.addEventListener('load', renderBanner);
-      }
-
-      const bannerMat = new THREE.MeshBasicMaterial({
+      const textGeo = new THREE.PlaneGeometry(bannerPlaneW, bannerPlaneH);
+      const textMat = new THREE.MeshBasicMaterial({
         map: texB,
+        transparent: true,
         side: THREE.DoubleSide
       });
-      const bannerGeo = new THREE.PlaneGeometry(cfg.length, 0.55);
-      const bannerMesh = new THREE.Mesh(bannerGeo, bannerMat);
-      bannerMesh.position.set(posX, 4.15, posZ);
-      bannerMesh.rotation.y = cfg.rotY;
-      bannerMesh.name = `WallBanner_${cfg.id}`;
-      parentGroup.add(bannerMesh);
-      this.wallBanners.push(bannerMesh);
+      const textMesh = new THREE.Mesh(textGeo, textMat);
+      textMesh.position.set(0, 0, 0.002); // Cao hơn nền 2mm
+      textMesh.name = `WallBanner_Text_${cfg.id}`;
+      textMesh.userData = {
+        isTextPlane: true,
+        planeW: bannerPlaneW,
+        planeH: bannerPlaneH,
+        canvasW: canvasBW,
+        canvasH: canvasBH
+      };
+      bannerGroup.add(textMesh);
 
-      // 2. Slogan mesh: Canvas 2048 x 128 (transparent), cao 0.45m, tâm y = 5.60m
+      parentGroup.add(bannerGroup);
+      this.wallBanners.push(bannerGroup);
+
+      // 3. KHẨU HIỆU (Mục A.3): Canvas cao 192px, nền trong suốt, tấm chữ cao 0.45m, rộng theo tỷ lệ canvas
+      let sloganSize = 54;
+      const sloganPadding = 64;
+      measureCtx.font = `900 ${sloganSize}px "Be Vietnam Pro", sans-serif`;
+      let sloganTextW = measureCtx.measureText(cfg.slogan).width;
+
+      while (0.45 * (sloganTextW + 2 * sloganPadding) / 192 > maxBannerTextW && sloganSize > 24) {
+        sloganSize -= 2;
+        measureCtx.font = `900 ${sloganSize}px "Be Vietnam Pro", sans-serif`;
+        sloganTextW = measureCtx.measureText(cfg.slogan).width;
+      }
+
+      const canvasSW = Math.min(4096, Math.ceil(sloganTextW + 2 * sloganPadding));
+      const canvasSH = 192;
+      const sloganPlaneH = 0.45;
+      const sloganPlaneW = sloganPlaneH * (canvasSW / canvasSH);
+
       const canvasS = document.createElement('canvas');
-      canvasS.width = 2048;
-      canvasS.height = 128;
+      canvasS.width = canvasSW;
+      canvasS.height = canvasSH;
       const ctxS = canvasS.getContext('2d');
-      ctxS.clearRect(0, 0, 2048, 128);
+      ctxS.clearRect(0, 0, canvasSW, canvasSH);
 
       ctxS.fillStyle = cfg.colors.slogan_color;
-      ctxS.font = '900 52px "Be Vietnam Pro", sans-serif';
+      ctxS.font = `900 ${sloganSize}px "Be Vietnam Pro", sans-serif`;
       ctxS.textAlign = 'center';
       ctxS.textBaseline = 'middle';
-      ctxS.letterSpacing = '3px';
-      ctxS.fillText(cfg.slogan, 1024, 64);
+      ctxS.fillText(cfg.slogan, canvasSW / 2, 96);
 
       const texS = new THREE.CanvasTexture(canvasS);
       texS.colorSpace = THREE.SRGBColorSpace;
+      texS.anisotropy = maxAnis;
+
       const sloganMat = new THREE.MeshBasicMaterial({
         map: texS,
         transparent: true,
         depthWrite: false,
         side: THREE.DoubleSide
       });
-      const sloganGeo = new THREE.PlaneGeometry(cfg.length, 0.45);
+      const sloganGeo = new THREE.PlaneGeometry(sloganPlaneW, sloganPlaneH);
       const sloganMesh = new THREE.Mesh(sloganGeo, sloganMat);
       sloganMesh.position.set(posX, 5.60, posZ);
       sloganMesh.rotation.y = cfg.rotY;
       sloganMesh.name = `WallSlogan_${cfg.id}`;
+      sloganMesh.userData = {
+        isTextPlane: true,
+        planeW: sloganPlaneW,
+        planeH: sloganPlaneH,
+        canvasW: canvasSW,
+        canvasH: canvasSH
+      };
       parentGroup.add(sloganMesh);
       this.wallBanners.push(sloganMesh);
     });
 
-    console.log(`[buildWallBannersAndSlogans] Đã thêm thành công 14 meshes (7 băng tiêu đề y=4.15m + 7 khẩu hiệu y=5.60m) cho Khu 3, 4, 6.`);
+    console.log(`[buildWallBannersAndSlogans] Đã dựng thành công 7 cụm băng tiêu đề y=4.15m (nền + logo + chữ tỷ lệ 1:1) + 7 khẩu hiệu y=5.60m cho Khu 3, 4, 6.`);
   }
 
   // ===========================================================================
@@ -825,27 +902,32 @@ export class ExhibitBuilder {
   // BIỂN TÊN (Khu 3: dải trắng, chữ #0F172A, vạch trái #1E40A0)
   // ===========================================================================
   addPlaque(group, item, w, h, depth, style) {
-    const canvas = document.createElement('canvas');
-    canvas.width = 640;
-    canvas.height = 128;
-    const ctx = canvas.getContext('2d');
-
     const isKhu3 = style === 'khu3';
     const isFlag = style === 'flag';
+
+    const plaqueW = Math.max(w * 0.85, 0.65);
+    const plaqueH = 0.15;
+    const canvasH = 128;
+    const canvasW = Math.round(canvasH * (plaqueW / plaqueH));
+
+    const canvas = document.createElement('canvas');
+    canvas.width = canvasW;
+    canvas.height = canvasH;
+    const ctx = canvas.getContext('2d');
 
     if (isKhu3) {
       // Khu 3: Dải trắng, vạch trái #1E40A0, viền #CBD5E1 (Mục A.20)
       ctx.fillStyle = '#ffffff';
-      ctx.fillRect(0, 0, 640, 128);
+      ctx.fillRect(0, 0, canvasW, 128);
 
       ctx.fillStyle = '#1e40a0';
       ctx.fillRect(4, 4, 18, 120);
 
       ctx.strokeStyle = '#cbd5e1';
       ctx.lineWidth = 3;
-      ctx.strokeRect(4, 4, 632, 120);
+      ctx.strokeRect(4, 4, canvasW - 8, 120);
     } else {
-      const grad = ctx.createLinearGradient(0, 0, 640, 0);
+      const grad = ctx.createLinearGradient(0, 0, canvasW, 0);
       if (isFlag) {
         grad.addColorStop(0, '#7f1d1d');
         grad.addColorStop(0.5, '#b91c1c');
@@ -856,11 +938,11 @@ export class ExhibitBuilder {
         grad.addColorStop(1, '#78350f');
       }
       ctx.fillStyle = grad;
-      ctx.fillRect(0, 0, 640, 128);
+      ctx.fillRect(0, 0, canvasW, 128);
 
       ctx.strokeStyle = isFlag ? '#facc15' : '#fde047';
       ctx.lineWidth = 4;
-      ctx.strokeRect(4, 4, 632, 120);
+      ctx.strokeRect(4, 4, canvasW - 8, 120);
     }
 
     // Xử lý chú thích: không bao giờ in [CHỜ XÁC NHẬN]
@@ -877,8 +959,8 @@ export class ExhibitBuilder {
       text = cleanCaption || `${item.year}`;
     }
 
-    const maxTextW = isKhu3 ? 570 : 590;
-    const textCenterX = isKhu3 ? 330 : 320;
+    const maxTextW = isKhu3 ? (canvasW - 70) : (canvasW - 50);
+    const textCenterX = isKhu3 ? (canvasW / 2 + 10) : (canvasW / 2);
     ctx.fillStyle = isKhu3 ? '#0f172a' : '#ffffff';
     ctx.textAlign = 'center';
     ctx.textBaseline = 'middle';
@@ -930,13 +1012,22 @@ export class ExhibitBuilder {
 
     const tex = new THREE.CanvasTexture(canvas);
     tex.colorSpace = THREE.SRGBColorSpace;
+    const maxAnis = window.app?.renderer?.capabilities?.getMaxAnisotropy?.() || 16;
+    tex.anisotropy = maxAnis;
     const mat = new THREE.MeshStandardMaterial({
       map: tex, metalness: isKhu3 ? 0.2 : 0.7, roughness: 0.3,
       polygonOffset: true, polygonOffsetFactor: -1, polygonOffsetUnits: -1
     });
-    const plaqueW = Math.max(w * 0.85, 0.65);
-    const mesh = new THREE.Mesh(new THREE.PlaneGeometry(plaqueW, 0.15), mat);
+    const mesh = new THREE.Mesh(new THREE.PlaneGeometry(plaqueW, plaqueH), mat);
     mesh.position.set(0, -h / 2 - 0.14, depth / 2 + 0.008);
+    mesh.name = `Plaque_${item.id}`;
+    mesh.userData = {
+      isTextPlane: true,
+      planeW: plaqueW,
+      planeH: plaqueH,
+      canvasW: canvasW,
+      canvasH: canvasH
+    };
     group.add(mesh);
   }
 
@@ -956,5 +1047,56 @@ export class ExhibitBuilder {
     group.add(hitMesh);
     this.exhibitMeshes.push(hitMesh);
     this.exhibitMap.set(item.id, group);
+  }
+
+  // ===========================================================================
+  // KIỂM TRA TỰ ĐỘNG KHÔNG MÉO CHỮ (Mục A.5)
+  // Duyệt mọi mesh có userData.isTextPlane.
+  // Kiểm |planeW/planeH − canvas.width/canvas.height| / (canvas.width/canvas.height) < 2%
+  // ===========================================================================
+  assertNoStretchedText(scene = this.scene) {
+    let totalChecked = 0;
+    const errors = [];
+
+    scene.traverse(node => {
+      if (node.isMesh && node.userData && node.userData.isTextPlane) {
+        totalChecked++;
+        const canvas = node.material?.map?.image;
+        const canvasW = canvas?.width || node.userData.canvasW;
+        const canvasH = canvas?.height || node.userData.canvasH;
+        const planeW = node.userData.planeW ?? node.geometry?.parameters?.width;
+        const planeH = node.userData.planeH ?? node.geometry?.parameters?.height;
+
+        if (!canvasW || !canvasH || !planeW || !planeH) {
+          errors.push({
+            name: node.name || 'unnamed',
+            reason: 'Missing dimensions',
+            planeW, planeH, canvasW, canvasH
+          });
+          return;
+        }
+
+        const planeAspect = planeW / planeH;
+        const canvasAspect = canvasW / canvasH;
+        const errorRatio = Math.abs(planeAspect - canvasAspect) / canvasAspect;
+
+        if (errorRatio >= 0.02) {
+          errors.push({
+            name: node.name || 'unnamed',
+            planeAspect: planeAspect.toFixed(4),
+            canvasAspect: canvasAspect.toFixed(4),
+            errorPercent: (errorRatio * 100).toFixed(2) + '%'
+          });
+        }
+      }
+    });
+
+    console.log(`[assertNoStretchedText] Đã kiểm tra ${totalChecked} text planes. Số lỗi (>= 2%): ${errors.length}`);
+    if (errors.length > 0) {
+      console.error('[assertNoStretchedText] Phát hiện mesh text bị méo chữ:', errors);
+    } else {
+      console.log('✓ assertNoStretchedText: 0 lỗi! Toàn bộ text plane chuẩn tỷ lệ (< 2%).');
+    }
+    return errors.length;
   }
 }
