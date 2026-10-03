@@ -202,8 +202,8 @@ export class MuseumArchitect {
     // 5. Hallway Portals & Signage
     this.buildSignage(museumGroup);
 
-    // 5b. Historical Timeline Milestone Plaques on Walls
-    this.buildTimelineMilestonePlaques(museumGroup);
+    // 5b. GĐ6-fix1: 6 biển giai đoạn y = 3,90 cũ đã bỏ (trùng tầng ảnh trên sau khi nâng ảnh – mục C).
+    //     Thay bằng bảng tiêu đề tường tâm y = 5,80 do ExhibitBuilder.buildWallTitleBoards() dựng (mục D2).
 
     // 6. Decorative Potted Plants in Corners
     this.buildPottedPlants(museumGroup);
@@ -324,6 +324,19 @@ export class MuseumArchitect {
         wall.x, h / 2, wall.z,
         wall.rotY, wallMat, wall.id, trimMat, isKhu3
       ));
+
+      // GĐ6-fix1 E1: đầu tường bị cắt bọc nẹp dọc 0,12 m (khu 3: xanh #1E40A0, khu 1: vàng đồng)
+      if (wall.cutEnd) {
+        const capMat = isKhu3
+          ? new THREE.MeshStandardMaterial({ color: 0x1e40a0, roughness: 0.4, metalness: 0.2 })
+          : this.matGold;
+        const cap = new THREE.Mesh(new THREE.BoxGeometry(0.12, h, wall.d + 0.06), capMat);
+        const sign = wall.cutEnd === 'east' ? 1 : -1;
+        // Tường chạy dọc trục x (rotY = 0): đầu cắt ở x ± w/2
+        cap.position.set(wall.x + sign * wall.w / 2, h / 2, wall.z);
+        cap.name = `WallEndCap_${wall.id}`;
+        parent.add(cap);
+      }
     }
   }
 
@@ -725,16 +738,18 @@ export class MuseumArchitect {
     ctx.lineWidth = 4;
     ctx.strokeRect(34, 34, canvasW - 68, canvasH - 68);
 
-    // 3. Badge (Huy hiệu tròn ghi số khu)
-    let titleY = 220;
+    // 3. Badge (Huy hiệu tròn ghi số khu) — GĐ6-fix1 D3: cao 72 px, chữ 34 px, nằm trong dải 12–26% canvasH
+    const maxTextW = canvasW - 160;
     if (badge) {
-      const badgeW = Math.min(280, Math.max(160, badge.length * 20));
-      const badgeH = 50;
+      const badgeH = 72;
+      ctx.font = `800 34px "Be Vietnam Pro", sans-serif`;
+      ctx.letterSpacing = '0.04em';
+      const badgeW = Math.min(canvasW - 200, Math.max(200, ctx.measureText(badge).width + 80));
       const badgeX = canvasW / 2 - badgeW / 2;
-      const badgeY = 54;
+      const badgeY = Math.round(canvasH * 0.19 - badgeH / 2);
       ctx.fillStyle = cfg.badgeBg;
       ctx.beginPath();
-      ctx.roundRect(badgeX, badgeY, badgeW, badgeH, 25);
+      ctx.roundRect(badgeX, badgeY, badgeW, badgeH, badgeH / 2);
       ctx.fill();
       if (cfg.badgeBorder) {
         ctx.strokeStyle = cfg.badgeBorder;
@@ -742,19 +757,18 @@ export class MuseumArchitect {
         ctx.stroke();
       }
       ctx.fillStyle = cfg.badgeText;
-      ctx.font = 'bold 24px "Be Vietnam Pro", sans-serif';
       ctx.textAlign = 'center';
       ctx.textBaseline = 'middle';
-      ctx.fillText(badge, canvasW / 2, badgeY + badgeH / 2);
-      titleY = 226;
+      ctx.fillText(badge, canvasW / 2, badgeY + badgeH / 2 + 1);
     }
 
-    // 4. Main Title
-    const maxTextW = canvasW - 160;
-    let titleSize = Math.min(68, Math.round(canvasH * 0.135));
+    // 4. Main Title — GĐ6-fix1 D3: titleSize = canvasH × 0,22, thu tối thiểu canvasH × 0,14, tâm ~50%
+    const titleY = Math.round(canvasH * 0.50);
+    const titleMin = Math.round(canvasH * 0.14);
+    let titleSize = Math.round(canvasH * 0.22);
     ctx.font = `800 ${titleSize}px "Be Vietnam Pro", sans-serif`;
     ctx.letterSpacing = '0.06em';
-    while (ctx.measureText(title).width > maxTextW && titleSize > 22) {
+    while (ctx.measureText(title).width > maxTextW && titleSize > titleMin) {
       titleSize -= 2;
       ctx.font = `800 ${titleSize}px "Be Vietnam Pro", sans-serif`;
     }
@@ -763,21 +777,22 @@ export class MuseumArchitect {
     ctx.textBaseline = 'middle';
     ctx.fillText(title, canvasW / 2, titleY);
 
-    // Divider line
-    const divY = titleY + titleSize * 0.72 + 14;
+    // Divider line (giữa tiêu đề và dòng phụ)
+    const divY = Math.round(canvasH * 0.645);
     ctx.strokeStyle = cfg.borderColor;
-    ctx.lineWidth = 2;
+    ctx.lineWidth = 3;
     ctx.beginPath();
-    ctx.moveTo(canvasW / 2 - 280, divY);
-    ctx.lineTo(canvasW / 2 + 280, divY);
+    ctx.moveTo(canvasW / 2 - Math.min(420, canvasW * 0.25), divY);
+    ctx.lineTo(canvasW / 2 + Math.min(420, canvasW * 0.25), divY);
     ctx.stroke();
 
-    // 5. Subtitle
-    const subY = divY + 44;
-    let subSize = Math.min(32, Math.round(canvasH * 0.07));
+    // 5. Subtitle — GĐ6-fix1 D3: subSize = canvasH × 0,12, tối thiểu canvasH × 0,08, tâm ~78%
+    const subY = Math.round(canvasH * 0.78);
+    const subMin = Math.round(canvasH * 0.08);
+    let subSize = Math.round(canvasH * 0.12);
     ctx.font = `500 ${subSize}px "Be Vietnam Pro", sans-serif`;
     ctx.letterSpacing = '0.02em';
-    while (ctx.measureText(subtitle).width > maxTextW && subSize > 16) {
+    while (ctx.measureText(subtitle).width > maxTextW && subSize > subMin) {
       subSize -= 2;
       ctx.font = `500 ${subSize}px "Be Vietnam Pro", sans-serif`;
     }
@@ -785,6 +800,7 @@ export class MuseumArchitect {
     ctx.textAlign = 'center';
     ctx.textBaseline = 'middle';
     ctx.fillText(subtitle, canvasW / 2, subY);
+    ctx.letterSpacing = '0px';
 
     // 3D Texture & Material
     const texture = new THREE.CanvasTexture(canvas);
@@ -880,25 +896,28 @@ export class MuseumArchitect {
     });
 
     // Khu 1: Giữa tường x = −50, quay về hướng Đông (rotY = Math.PI / 2)
+    // GĐ6-fix1: mặt tường ở x = −49,4 (tường dày 1,2 m) → đặt bảng ở x = −49,33 để không chìm trong tường;
+    // nâng lên y = 6,75 (mép dưới 5,65 m) giống khu 2 vì tầng ảnh trên đã nâng lên 4,40 m
     this.createZoneTitleBoard({
       badge: 'KHU 1',
       title: 'KÝ ỨC MỘT CHẶNG ĐƯỜNG',
       subtitle: 'Ảnh tư liệu 1985 – 2009 và tranh các đơn vị trao tặng',
       theme: 'khu1',
       w: 12.0, h: 2.2,
-      pos: { x: -49.85, y: 6.2, z: 0 },
+      pos: { x: -49.33, y: 6.75, z: 0 },
       rotY: Math.PI / 2,
       parent
     });
 
     // Khu 2: Giữa tường z = −55, phía trên tầng cờ, quay về hướng Nam (rotY = 0)
+    // GĐ6-fix1 C: dời lên y = 6,75 (mép dưới 5,65 m); mặt tường ở z = −54,4 → z = −54,33
     this.createZoneTitleBoard({
       badge: 'KHU 2',
       title: 'VINH QUANG NHỮNG CHẶNG ĐƯỜNG',
       subtitle: 'Huân chương, Bằng khen và Cờ thi đua 1985 – 2025',
       theme: 'khu2',
       w: 14.0, h: 2.2,
-      pos: { x: 0, y: 6.4, z: -54.85 },
+      pos: { x: 0, y: 6.75, z: -54.33 },
       rotY: 0,
       parent
     });
@@ -922,7 +941,7 @@ export class MuseumArchitect {
       subtitle: 'Đảng bộ Công ty Điện lực Vũng Tàu – trong sạch, vững mạnh',
       theme: 'khu4',
       w: 12.0, h: 2.2,
-      pos: { x: 36.0, y: 6.85, z: 81.7 },
+      pos: { x: 36.0, y: 6.85, z: 81.33 },
       rotY: Math.PI,
       parent
     });
@@ -934,75 +953,76 @@ export class MuseumArchitect {
       subtitle: 'Đoàn kết · Sáng tạo · Xung kích · Tình nguyện',
       theme: 'khu6',
       w: 12.0, h: 2.2,
-      pos: { x: -36.0, y: 6.85, z: 81.7 },
+      pos: { x: -36.0, y: 6.85, z: 81.33 },
       rotY: Math.PI,
       parent
     });
 
     // =========================================================================
-    // 2. BIỂN CỔNG TREO 2 MẶT TẠI LỐI VÀO (6 × 1,2 m, y = 5,4 m)
+    // 2. BIỂN CỔNG TREO 2 MẶT TẠI LỐI VÀO — GĐ6-fix1 D3: 7,0 × 1,6 m, tâm y = 5,6 m
     // =========================================================================
+    const GATE_W = 7.0, GATE_H = 1.6, GATE_Y = 5.6;
 
-    // Cổng Khu 1 (Lối vào phía Tây): x = -17.5, y = 5.4, z = 0, rotY = Math.PI / 2
+    // Cổng Khu 1 (Lối vào phía Tây): x = -17.5, z = 0, rotY = Math.PI / 2
     this.createZoneTitleBoard({
       badge: 'KHU 1',
       title: 'KÝ ỨC & TRANH TẶNG',
       subtitle: 'Ảnh tư liệu 1985–2009 • Tranh tặng các đơn vị',
       theme: 'khu1',
-      w: 6.0, h: 1.2,
-      pos: { x: -17.5, y: 5.4, z: 0 },
+      w: GATE_W, h: GATE_H,
+      pos: { x: -17.5, y: GATE_Y, z: 0 },
       rotY: Math.PI / 2,
       doubleSided: true,
       parent
     });
 
-    // Cổng Khu 2 (Lối vào phía Bắc): x = 0, y = 5.4, z = -17.0, rotY = 0
+    // Cổng Khu 2 (Lối vào phía Bắc): x = 0, z = -17.0, rotY = 0
     this.createZoneTitleBoard({
       badge: 'KHU 2',
       title: 'BẰNG KHEN & CỜ THI ĐUA',
       subtitle: 'Huân chương • Bằng khen • Cờ lưu niệm 1985–2025',
       theme: 'khu2',
-      w: 6.0, h: 1.2,
-      pos: { x: 0, y: 5.4, z: -17.0 },
+      w: GATE_W, h: GATE_H,
+      pos: { x: 0, y: GATE_Y, z: -17.0 },
       rotY: 0,
       doubleSided: true,
       parent
     });
 
-    // Cổng Khu 3 (Lối vào phía Đông): x = 17.5, y = 5.4, z = 0, rotY = -Math.PI / 2
+    // Cổng Khu 3 (Lối vào phía Đông): x = 17.5, z = 0, rotY = -Math.PI / 2
     this.createZoneTitleBoard({
       badge: 'KHU 3',
       title: 'LƯỚI ĐIỆN THÔNG MINH',
       subtitle: 'Sa bàn lưới điện • Tự động hóa • Chuyển đổi số',
       theme: 'khu3',
-      w: 6.0, h: 1.2,
-      pos: { x: 17.5, y: 5.4, z: 0 },
+      w: GATE_W, h: GATE_H,
+      pos: { x: 17.5, y: GATE_Y, z: 0 },
       rotY: -Math.PI / 2,
       doubleSided: true,
       parent
     });
 
-    // Cổng Khu 4 (Lối vào Đông Nam): x = 34.0, y = 5.4, z = 38.0, rotY = 0
+    // Cổng Khu 4: treo từ trần tại z = 38, giữa lối vào mới x 22 → 50 (GĐ6-fix1 E2)
     this.createZoneTitleBoard({
       badge: 'KHU 4',
       title: 'ĐẢNG BỘ CÔNG TY',
       subtitle: 'Đoàn kết • Kỷ cương • Đổi mới • Phát triển',
       theme: 'khu4',
-      w: 6.0, h: 1.2,
-      pos: { x: 34.0, y: 5.4, z: 38.0 },
+      w: GATE_W, h: GATE_H,
+      pos: { x: 36.0, y: GATE_Y, z: 38.0 },
       rotY: 0,
       doubleSided: true,
       parent
     });
 
-    // Cổng Khu 6 (Lối vào Tây Nam): x = -34.0, y = 5.4, z = 38.0, rotY = 0
+    // Cổng Khu 6: treo từ trần tại z = 38, giữa lối vào mới x −50 → −22 (GĐ6-fix1 E2)
     this.createZoneTitleBoard({
       badge: 'KHU 6',
       title: 'CÔNG ĐOÀN – ĐOÀN THANH NIÊN',
       subtitle: 'Đoàn kết • Sáng tạo • Xung kích • Tình nguyện',
       theme: 'khu6',
-      w: 6.0, h: 1.2,
-      pos: { x: -34.0, y: 5.4, z: 38.0 },
+      w: GATE_W, h: GATE_H,
+      pos: { x: -36.0, y: GATE_Y, z: 38.0 },
       rotY: 0,
       doubleSided: true,
       parent
@@ -1484,12 +1504,12 @@ export class MuseumArchitect {
         [-16.93, -15.00], [16.93, -15.00]
       ],
       khu1: [
-        [-48.93, -23.93], [-48.93, 23.93],
+        [-48.93, -23.93], [-33.00, 23.93],
         [-19.00, -23.93], [-19.00, 23.93],
         [-35.00, -12.43], [-35.00, 12.43]
       ],
       khu3: [
-        [48.93, -23.93], [48.93, 23.93],
+        [48.93, -23.93], [33.00, 23.93],
         [19.00, -23.93], [19.00, 23.93]
       ],
       khu4: [

@@ -28,8 +28,14 @@ export class DataService {
       if (!response.ok) throw new Error(`HTTP error ${response.status}`);
       this.raw = await response.json();
       this.allItems = this.raw.items || [];
-      this.items = this.allItems.filter(it => it.treo !== false);
       this.allItems.forEach(item => this.itemsById.set(item.id, item));
+
+      // GĐ6-fix1 A1: gộp thuyết minh lúc chạy (KHÔNG ghi đè room_data.json)
+      await this.loadNarratives();
+      // GĐ6-fix1 B: bố trí khu 3 theo dòng thời gian; mọi id trong file được treo
+      await this.loadKhu3Layout();
+
+      this.items = this.allItems.filter(it => it.treo !== false);
       this.filteredItems = [...this.items];
       this.isLoaded = true;
       return this.raw;
@@ -37,6 +43,64 @@ export class DataService {
       console.error('Failed to load room_data.json:', err);
       throw err;
     }
+  }
+
+  async loadNarratives() {
+    this.narratives = {};
+    this.narrativeByPath = new Map();
+    try {
+      const res = await fetch('assets/thuyet_minh_anh.json');
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+      const data = await res.json();
+      this.narrativeSource = data.nguon || '';
+      this.narratives = data.items || {};
+      let merged = 0;
+      for (const [id, tm] of Object.entries(this.narratives)) {
+        const item = this.itemsById.get(id);
+        if (!item) continue;
+        if (tm.tieu_de) item.tieu_de = tm.tieu_de;
+        if (tm.thuyet_minh) item.thuyet_minh = tm.thuyet_minh;
+        if (tm.ngay) item.tm_ngay = tm.ngay;
+        merged++;
+        // Khóa tra cứu cho album: full_path, wall_path, tên file
+        for (const p of [item.full_path, item.wall_path, item.thumb_path]) {
+          if (!p) continue;
+          this.narrativeByPath.set(p, item);
+          this.narrativeByPath.set(p.split('/').pop().toLowerCase(), item);
+        }
+      }
+      console.log(`[DataService] Gộp thuyết minh: ${merged}/${Object.keys(this.narratives).length} ảnh`);
+    } catch (err) {
+      console.warn('[DataService] Không nạp được thuyet_minh_anh.json:', err);
+    }
+  }
+
+  async loadKhu3Layout() {
+    this.khu3Layout = null;
+    try {
+      const res = await fetch('docs/khu3_bo_tri.json');
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+      this.khu3Layout = await res.json();
+      let forced = 0;
+      for (const wall of this.khu3Layout.tuong || []) {
+        for (const a of wall.thu_tu_anh || []) {
+          const item = this.itemsById.get(a.id);
+          if (item && item.treo === false) forced++;
+          if (item) item.treo = true;
+        }
+      }
+      console.log(`[DataService] Bố trí khu 3: ${forced} ảnh chuyển treo=false → true theo khu3_bo_tri.json`);
+    } catch (err) {
+      console.warn('[DataService] Không nạp được docs/khu3_bo_tri.json:', err);
+    }
+  }
+
+  /** Tìm item có thuyết minh theo đường dẫn ảnh (album) */
+  findNarrativeItemByPath(path) {
+    if (!path || !this.narrativeByPath) return null;
+    return this.narrativeByPath.get(path)
+      || this.narrativeByPath.get(path.split('/').pop().toLowerCase())
+      || null;
   }
 
   getItemById(id) {
@@ -107,7 +171,7 @@ export class DataService {
 
       // 6. Search
       if (query) {
-        const fullText = `${item.caption || ''} ${item.year} ${item.org_name || ''} ${item.source} ${item.khu}`.toLowerCase();
+        const fullText = `${item.tieu_de || ''} ${item.caption || ''} ${item.year} ${item.org_name || ''} ${item.source} ${item.khu}`.toLowerCase();
         if (!fullText.includes(query)) return false;
       }
 

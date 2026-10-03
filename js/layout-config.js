@@ -107,9 +107,9 @@ export const WALLS = [
   // Tường Bắc z = −25
   { id: 'wall_k1_north', zone: 'khu1', w: 32, h: WALL_HEIGHT, d: WALL_THICKNESS,
     x: -34, z: -25, rotY: 0 },
-  // Tường Nam z = 25
-  { id: 'wall_k1_south', zone: 'khu1', w: 32, h: WALL_HEIGHT, d: WALL_THICKNESS,
-    x: -34, z: 25, rotY: 0 },
+  // Tường Nam z = 25 — GĐ6-fix1 E1: cắt còn 16 m (x −34 → −18), mở ra trước cửa khu 6
+  { id: 'wall_k1_south', zone: 'khu1', w: 16, h: WALL_HEIGHT, d: WALL_THICKNESS,
+    x: -26, z: 25, rotY: 0, cutEnd: 'west' },
 
   // ============ KHU 3 · Đông ============
   // Tường xa x = 50
@@ -118,9 +118,9 @@ export const WALLS = [
   // Tường Bắc z = −25
   { id: 'wall_k3_north', zone: 'khu3', w: 32, h: WALL_HEIGHT, d: WALL_THICKNESS,
     x: 34, z: -25, rotY: 0 },
-  // Tường Nam z = 25
-  { id: 'wall_k3_south', zone: 'khu3', w: 32, h: WALL_HEIGHT, d: WALL_THICKNESS,
-    x: 34, z: 25, rotY: 0 },
+  // Tường Nam z = 25 — GĐ6-fix1 E1: cắt còn 16 m (x 18 → 34), mở thẳng ra hành lang trước cửa khu 4
+  { id: 'wall_k3_south', zone: 'khu3', w: 16, h: WALL_HEIGHT, d: WALL_THICKNESS,
+    x: 26, z: 25, rotY: 0, cutEnd: 'east' },
 
   // ============ KHU 4 · Đông Nam ============
   // Tường Đông x = 50 (chung với khu 3 ở phía trên)
@@ -129,13 +129,7 @@ export const WALLS = [
   // Tường Nam z = 82
   { id: 'wall_k4_south', zone: 'khu4', w: 28, h: WALL_HEIGHT, d: WALL_THICKNESS,
     x: 36, z: 82, rotY: 0 },
-  // Tường Bắc z = 38 (đoạn Đông, có cửa rộng 8m)
-  // Đoạn phải: x = 30..50 (20m), cửa x = 30..38 (8m), tường x = 38..50 (12m)
-  { id: 'wall_k4_north_right', zone: 'khu4', w: 12, h: WALL_HEIGHT, d: WALL_THICKNESS,
-    x: 44, z: 38, rotY: 0 },
-  // Đoạn trái: x = 22..30 (8m)
-  { id: 'wall_k4_north_left', zone: 'khu4', w: 8, h: WALL_HEIGHT, d: WALL_THICKNESS,
-    x: 26, z: 38, rotY: 0 },
+  // GĐ6-fix1 E2: bỏ hẳn 2 đoạn tường Bắc z = 38 (lối vào mở rộng hết 28 m)
   // Tường Tây dùng chung với mặt ngoài tường Đông khu HCM (x = 22)
   // Khu HCM đã có tường x=22, khu 4 treo ảnh ở mặt ngoài
 
@@ -146,14 +140,16 @@ export const WALLS = [
   // Tường Nam z = 82
   { id: 'wall_k6_south', zone: 'khu6', w: 28, h: WALL_HEIGHT, d: WALL_THICKNESS,
     x: -36, z: 82, rotY: 0 },
-  // Tường Bắc z = 38 (đoạn Tây, có cửa rộng 8m)
-  // Đoạn trái: x = −50..−38 (12m)
-  { id: 'wall_k6_north_left', zone: 'khu6', w: 12, h: WALL_HEIGHT, d: WALL_THICKNESS,
-    x: -44, z: 38, rotY: 0 },
-  // Đoạn phải: x = −30..−22 (8m)
-  { id: 'wall_k6_north_right', zone: 'khu6', w: 8, h: WALL_HEIGHT, d: WALL_THICKNESS,
-    x: -26, z: 38, rotY: 0 },
+  // GĐ6-fix1 E2: bỏ hẳn 2 đoạn tường Bắc z = 38 (lối vào mở rộng hết 28 m)
   // Tường Đông dùng chung với mặt ngoài tường Tây khu HCM (x = −22)
+
+  // ============ HÀNH LANG z 25 → 38 (GĐ6-fix1 E3) ============
+  // Bịt khoảng trống ở 2 đầu hành lang x = ±50 (wall_k3_far/wall_k1_far hết ở z ≈ 26,
+  // wall_k4_east/wall_k6_west bắt đầu từ z = 38)
+  { id: 'wall_hall_east', zone: 'lobby', w: 14.4, h: WALL_HEIGHT, d: WALL_THICKNESS,
+    x: 50, z: 31.5, rotY: -Math.PI / 2 },
+  { id: 'wall_hall_west', zone: 'lobby', w: 14.4, h: WALL_HEIGHT, d: WALL_THICKNESS,
+    x: -50, z: 31.5, rotY: Math.PI / 2 },
 ];
 
 // ============================================================================

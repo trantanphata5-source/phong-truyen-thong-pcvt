@@ -21,13 +21,34 @@ export class ExhibitBuilder {
     this.exhibitMap = new Map();
     this.mountedExhibits = [];
 
-    // GĐ5-fix3: Chiều cao tầng ảnh: top 3.10m, bottom 1.50m (mép trên ảnh ở ~3.61m, cách băng tiêu đề 4.15m một khe ~0.27m)
-    this.ROW_Y_TOP = 3.10;
-    this.ROW_Y_BOTTOM = 1.50;
-    this.OUTER_ROW_Y_TOP = 3.10;
-    this.OUTER_ROW_Y_BOTTOM = 1.50;
+    // GĐ6-fix1 C: nâng ảnh trên các tường bao (khu 1, 2, 3, 4, 6)
+    //  - Tường bao: tâm tầng trên 4,40 m, tầng dưới 2,75 m (gần tầm mắt 2,85 m)
+    //  - Vách partition_k1 (cao 5,2 m): 3,64 / 2,05
+    this.ROW_Y_TOP = 3.64;
+    this.ROW_Y_BOTTOM = 2.05;
+    this.OUTER_ROW_Y_TOP = 4.40;
+    this.OUTER_ROW_Y_BOTTOM = 2.75;
     this.MIN_GAP = 0.35;
     this.END_MARGIN = 1.20;
+
+    // GĐ6-fix1 D: bảng tiêu đề tường và dải khẩu hiệu
+    this.WALL_BOARD_Y = 5.80;          // tâm bảng tiêu đề trên tường bao (cao 1,10 m)
+    this.WALL_BOARD_H = 1.10;
+    this.PARTITION_BOARD_Y = 4.82;     // tâm bảng trên partition_k1 (cao 0,70 m) – GĐ6-fix1: 4,78 → 4,82 để khe tới khung ≥ 0,25 m
+    this.PARTITION_BOARD_H = 0.70;
+    this.SLOGAN_Y = 7.00;              // tâm dải khẩu hiệu
+
+    /** Mỗi mặt tường đã treo ảnh: faceKey → { cfg, minU, maxU, years[] } */
+    this.faceMounts = {};
+    /** faceKey → mép dưới bảng tiêu đề phía trên ảnh (để kiểm khoảng hở) */
+    this.boardBottoms = {
+      // Bảng chính khu 1 / khu 2 (museum-architect.js): tâm 6,75, cao 2,2, khung +0,06
+      'wall_k1_far|1.57': 6.75 - 1.1 - 0.06,
+      'wall_k2_back|0.00': 6.75 - 1.1 - 0.06,
+    };
+    /** Khu 3: báo cáo tỷ lệ thu nhỏ khung từng tường + thứ tự đi xem */
+    this.khu3Report = { walls: [], sequence: [] };
+    this.khu3Layout = null;
 
     // Xây index tường theo id
     this.wallIndex = {};
@@ -186,29 +207,108 @@ export class ExhibitBuilder {
         exhibit.position.set(posX, y, posZ);
         parent.add(exhibit);
 
-        this.mountedExhibits.push({
-          exhibit,
-          item,
-          size,
-          rotY,
-          posX,
-          posY: y,
-          posZ,
-          wallId: wallId || 'custom_wall'
-        });
+        this.recordMount(wallCfg, item, size, localOffset, exhibit, posX, y, posZ);
 
         if (onDone) onDone();
       }
     };
 
-    // Tường đơn giữa khu (partition_k1) giữ mức cũ 3.10 / 1.50
-    // Các bức tường xung quanh bảo tàng nâng cao lên vừa tầm mắt người xem: 3.50 / 1.85
+    // Tường đơn giữa khu (partition_k1) dùng mức riêng 3,64 / 2,05 (vách cao 5,2 m)
+    // Các bức tường bao quanh bảo tàng: 4,40 / 2,75 (GĐ6-fix1 C)
     const isPartition = wallId === 'partition_k1' || (wallId && wallId.startsWith('partition_'));
     const yTop = isPartition ? this.ROW_Y_TOP : this.OUTER_ROW_Y_TOP;
     const yBottom = isPartition ? this.ROW_Y_BOTTOM : this.OUTER_ROW_Y_BOTTOM;
 
     mountRow(topItems, yTop);
     mountRow(bottomItems, yBottom);
+  }
+
+  /** Khóa mặt tường: cùng một vách có 2 mặt (partition_k1) phân biệt bằng rotY */
+  faceKeyOf(wallId, rotY) {
+    return `${wallId}|${rotY.toFixed(2)}`;
+  }
+
+  /** Ghi lại khung đã treo + mở rộng phạm vi khối ảnh của mặt tường */
+  recordMount(wallCfg, item, size, localOffset, exhibit, posX, posY, posZ, extra = {}) {
+    const { rotY, id: wallId } = wallCfg;
+    const faceKey = this.faceKeyOf(wallId || 'custom_wall', rotY);
+    this.mountedExhibits.push({
+      exhibit, item, size, rotY, posX, posY, posZ,
+      wallId: wallId || 'custom_wall',
+      faceKey,
+      localOffset,
+      ...extra
+    });
+    if (!this.faceMounts[faceKey]) {
+      this.faceMounts[faceKey] = { cfg: wallCfg, minU: Infinity, maxU: -Infinity, years: [], count: 0 };
+    }
+    const f = this.faceMounts[faceKey];
+    f.minU = Math.min(f.minU, localOffset - size.w / 2 - 0.06);
+    f.maxU = Math.max(f.maxU, localOffset + size.w / 2 + 0.06);
+    if (item.year && item.year > 0) f.years.push(item.year);
+    f.count++;
+  }
+
+  // ===========================================================================
+  // GĐ6-fix1 B: treo THEO CỘT đúng thứ tự (ảnh 1 tầng trên, ảnh 2 tầng dưới cùng cột, …)
+  // Cột rộng = khung rộng hơn trong 2 ảnh; trái → phải theo hướng người đứng nhìn tường
+  // (offset tăng dần dọc trục t = (cos rotY, −sin rotY), giống packRow).
+  // Không bỏ ảnh: nếu phải thu nhỏ dưới 90% thì chỉ cảnh báo.
+  // ===========================================================================
+  mountWallColumns(wallCfg, items, parent, onDone, seqStart = 0) {
+    if (!items.length) return 0;
+    const { x: baseX, z: baseZ, rotY, wallLength, thickness, id: wallId } = wallCfg;
+    const nx = Math.sin(rotY), nz = Math.cos(rotY);
+    const tx = Math.cos(rotY), tz = -Math.sin(rotY);
+    const standOff = thickness / 2 + 0.04 + 0.06;
+
+    const baseSizes = items.map(it => this.getFrameSize(it));
+    const cols = [];
+    for (let i = 0; i < items.length; i += 2) {
+      cols.push({ top: i, bottom: (i + 1 < items.length) ? i + 1 : null });
+    }
+    const colW = cols.map(c => Math.max(baseSizes[c.top].w, c.bottom !== null ? baseSizes[c.bottom].w : 0));
+    const n = cols.length;
+    const usable = Math.max(1, wallLength - 2 * this.END_MARGIN);
+    const sumW = colW.reduce((s, w) => s + w, 0);
+    let scale = 1.0;
+    if (sumW + (n - 1) * this.MIN_GAP > usable) {
+      scale = (usable - (n - 1) * this.MIN_GAP) / sumW;
+    }
+    const gap = n > 1 ? Math.max(this.MIN_GAP, (usable - sumW * scale) / (n - 1)) : 0;
+
+    this.khu3Report.walls.push({ wallId, items: items.length, columns: n, scale, usable });
+    if (scale < 0.9) {
+      console.warn(`[khu3] BÁO LẠI: tường ${wallId} phải thu nhỏ khung còn ${(scale * 100).toFixed(1)}% (< 90%). Không bỏ ảnh.`);
+    } else {
+      console.log(`[khu3] Tường ${wallId}: ${items.length} ảnh / ${n} cột, tỷ lệ khung ${(scale * 100).toFixed(1)}%`);
+    }
+
+    const yTop = this.OUTER_ROW_Y_TOP;
+    const yBottom = this.OUTER_ROW_Y_BOTTOM;
+    let cursor = n > 1 ? -wallLength / 2 + this.END_MARGIN : -colW[0] * scale / 2;
+    cols.forEach((c, ci) => {
+      const cw = colW[ci] * scale;
+      const center = cursor + cw / 2;
+      const place = (idx, y, row) => {
+        const item = items[idx];
+        const sz = baseSizes[idx];
+        const size = { ...sz, w: sz.w * scale, h: sz.h * scale };
+        const posX = baseX + nx * standOff + tx * center;
+        const posZ = baseZ + nz * standOff + tz * center;
+        const exhibit = this.createExhibit(item, size, rotY);
+        exhibit.position.set(posX, y, posZ);
+        parent.add(exhibit);
+        this.recordMount(wallCfg, item, size, center, exhibit, posX, y, posZ,
+          { column: ci, row, order: seqStart + idx });
+        this.khu3Report.sequence.push({ id: item.id, date: item.date, wallId, column: ci, row, order: seqStart + idx });
+        if (onDone) onDone();
+      };
+      place(c.top, yTop, 'top');
+      if (c.bottom !== null) place(c.bottom, yBottom, 'bottom');
+      cursor += cw + gap;
+    });
+    return items.length;
   }
 
   // ===========================================================================
@@ -233,6 +333,8 @@ export class ExhibitBuilder {
     const exhibitsGroup = new THREE.Group();
     exhibitsGroup.name = 'AllExhibits';
     this.mountedExhibits = [];
+    this.faceMounts = {};
+    this.khu3Report = { walls: [], sequence: [] };
 
     // GĐ5: Zone grouping cho Zone Culling (Mục E)
     this.zoneGroups = {
@@ -338,28 +440,54 @@ export class ExhibitBuilder {
     // ======== KHU 3 · Hiện tại (PCVT & Vách mốc son) ========
     console.log(`khu3 ${khu3.length}`);
 
-    // Dựng vách mốc son partition_k3
+    // Dựng vách mốc son partition_k3 (GĐ6-fix1 B4: không đổi vách và 14 ảnh trên đó)
     this.milestoneBuilder = new MilestoneWallBuilder(this.scene, this);
     this.milestoneBuilder.build(this.zoneGroups.khu3, items, onDone);
 
-    // Các ảnh PCVT còn lại treo 2 tầng trên tường ngoài
-    const pcvt_normal = khu3.filter(it => !it.vach_moc_son);
-
-    // Tường xa x = 50
-    const pcvt_far = pcvt_normal.slice(0, 34);
-    this.mountWall(this.wallCfgFromId('wall_k3_far', -Math.PI / 2, 44), pcvt_far, this.zoneGroups.khu3, onDone);
-
-    // Tường Bắc z = −25 và Nam z = 25
-    const pcvt_rest = pcvt_normal.slice(34);
-    const pcvt_n_wall = pcvt_rest.slice(0, Math.ceil(pcvt_rest.length / 2));
-    const pcvt_s_wall = pcvt_rest.slice(pcvt_n_wall.length);
-
-    if (pcvt_n_wall.length > 0) {
-      this.mountWall(this.wallCfgFromId('wall_k3_north', 0, 26), pcvt_n_wall, this.zoneGroups.khu3, onDone);
+    // GĐ6-fix1 B: treo đúng thứ tự docs/khu3_bo_tri.json.
+    // Đi xem: vào khu 3 → rẽ trái theo tường Bắc → sang tường xa → về tường Nam.
+    const K3_WALLS = {
+      wall_k3_north:      { id: 'wall_k3_north', rotY: 0,            length: 30 },
+      wall_k3_far:        { id: 'wall_k3_far',   rotY: -Math.PI / 2, length: 44 },
+      wall_k3_south:      { id: 'wall_k3_south', rotY: Math.PI,      length: 16 },
+      wall_k3_south_half: { id: 'wall_k3_south', rotY: Math.PI,      length: 16 },
+    };
+    const itemById = new Map(items.map(it => [it.id, it]));
+    this.khu3WallTitles = {};
+    let k3Seq = 0, k3Hung = 0;
+    const k3Placed = new Set();
+    if (this.khu3Layout && Array.isArray(this.khu3Layout.tuong)) {
+      for (const wallDef of this.khu3Layout.tuong) {
+        const spec = K3_WALLS[wallDef.tuong];
+        if (!spec) { console.warn(`[khu3] Không biết tường ${wallDef.tuong}`); continue; }
+        const wallItems = [];
+        for (const a of wallDef.thu_tu_anh || []) {
+          const it = itemById.get(a.id);
+          if (!it) { console.warn(`[khu3] Thiếu ảnh ${a.id} trong room_data`); continue; }
+          wallItems.push(it);
+          k3Placed.add(it.id);
+        }
+        if (wallDef.so_anh && wallDef.so_anh !== wallItems.length) {
+          console.warn(`[khu3] ${wallDef.tuong}: file ghi ${wallDef.so_anh} ảnh, đọc được ${wallItems.length}`);
+        }
+        k3Hung += this.mountWallColumns(
+          this.wallCfgFromId(spec.id, spec.rotY, spec.length),
+          wallItems, this.zoneGroups.khu3, onDone, k3Seq
+        );
+        k3Seq += wallItems.length;
+        this.khu3WallTitles[this.faceKeyOf(spec.id, spec.rotY)] = {
+          title: wallDef.bang_tieu_de || '',
+          sub: wallDef.dong_phu || ''
+        };
+      }
+    } else {
+      console.error('[khu3] Thiếu docs/khu3_bo_tri.json – không treo ảnh PCVT trên tường bao.');
     }
-    if (pcvt_s_wall.length > 0) {
-      this.mountWall(this.wallCfgFromId('wall_k3_south', Math.PI, 26), pcvt_s_wall, this.zoneGroups.khu3, onDone);
+    const k3Leftover = khu3.filter(it => !it.vach_moc_son && !k3Placed.has(it.id));
+    if (k3Leftover.length) {
+      console.warn(`[khu3] ${k3Leftover.length} ảnh PCVT không có trong khu3_bo_tri.json (không treo):`, k3Leftover.map(i => i.id));
     }
+    console.log(`[khu3] Đã treo ${k3Hung} ảnh PCVT trên 3 tường + ${khu3.filter(it => it.vach_moc_son).length} ảnh trên vách mốc son`);
 
     // ======== KHU 4 · Đảng bộ ========
     const khu4_normal = khu4.filter(it => !it.vach_moc_son);
@@ -393,413 +521,360 @@ export class ExhibitBuilder {
       x: -22, z: 60, rotY: -Math.PI / 2, wallLength: 40, thickness: WALL_THICKNESS
     }, k6_dtn, this.zoneGroups.khu6, onDone);
 
-    // GĐ5-fix3: Dựng băng tiêu đề và dải khẩu hiệu cho 7 bức tường Khu 3, 4, 6 (Mục D)
-    this.buildWallBannersAndSlogans();
+    // GĐ6-fix1 D1 + D2: bảng tiêu đề đứng giữa khối ảnh (không chạy suốt tường) + dải khẩu hiệu
+    this.buildWallTitleBoards();
 
     this.scene.add(exhibitsGroup);
 
     // Ràng buộc kiểm tra tự động Section A & C
-    this.assertRowGap();
-    this.assertInsideZone();
+    this.rowGapErrors = this.assertRowGap();
+    this.insideZoneErrors = this.assertInsideZone();
 
     // Báo cáo số lượng (Criterion 5)
-    console.log(`khu1 ${k1_atl.length}+${k1_tt.length} · khu2 ${k2_bk.length} BK + ${k2_co.length} cờ (giữa ${giua_items.length} / tây ${tay_items.length} / đông ${dong_items.length}) · khu3 ${khu3.length} · khu4 ${khu4.length} · khu6 ${k6_cd.length}+${k6_dtn.length} · tổng 433`);
+    console.log(`khu1 ${k1_atl.length}+${k1_tt.length} · khu2 ${k2_bk.length} BK + ${k2_co.length} cờ (giữa ${giua_items.length} / tây ${tay_items.length} / đông ${dong_items.length}) · khu3 ${khu3.length} · khu4 ${khu4.length} · khu6 ${k6_cd.length}+${k6_dtn.length} · tổng ${items.length}`);
     console.log(`Tổng hiện vật trên tường: ${totalCreated}`);
 
     return exhibitsGroup;
   }
 
   // ===========================================================================
-  // BĂNG TIÊU ĐỀ TƯỜNG (y = 4.15m) VÀ DẢI KHẨU HIỆU (y = 5.60m) CHO 7 BỨC TƯỜNG (Mục D)
+  // GĐ6-fix1 D1 + D2: BẢNG TIÊU ĐỀ ĐỨNG GIỮA KHỐI ẢNH TỪNG MẶT TƯỜNG + DẢI KHẨU HIỆU
+  //  - Rộng = clamp(0,45 × chiều dài khối ảnh, 8 m, 14 m) (partition_k1: tối đa 10 m), cao 1,10 m
+  //    (partition_k1: 0,70 m), tâm y = 5,80 (partition_k1: 4,78). Không còn dải nền chạy suốt tường.
+  //  - Canvas đúng tỷ lệ bảng: canvasW = 4096, canvasH = round(4096 × h / w). Nền, viền đôi,
+  //    2 logo (0,75 × 0,75 m) và chữ vẽ trên CÙNG một canvas.
+  //  - Tiêu đề ~0,30 m chữ hoa (fontPx ≈ 0,40/1,10 × canvasH, đậm 800); dòng phụ ~0,15 m (đậm 600).
+  //    Tràn 80% bề rộng (trừ logo) → thu cỡ chữ, tối thiểu 70%; vẫn tràn → xuống 2 dòng.
+  //  - Dải khẩu hiệu (khu 3, 4, 6): tâm y = 7,00, cao chữ ~0,28 m, rộng tối đa 70% đoạn tường.
   // ===========================================================================
-  buildWallBannersAndSlogans() {
+  buildWallTitleBoards() {
     this.wallBanners = [];
+    this.wallBoardInfo = [];
+
+    const yearSpan = (faceKey) => {
+      const ys = (this.faceMounts[faceKey]?.years || []).filter(y => y > 0);
+      if (!ys.length) return '[CHỜ XÁC NHẬN]';
+      const a = Math.min(...ys), b = Math.max(...ys);
+      return a === b ? `${a}` : `${a} – ${b}`;
+    };
+
+    const COLORS = {
+      khu1: { bg: '#F5EBD7', text: '#5B3A1E', border: '#8B6F47', sub: '#785336', slogan: '#5B3A1E' },
+      khu2: { bg: '#8B1A1A', text: '#F6D26B', border: '#F6D26B', sub: '#FDE68A', slogan: '#8B1A1A' },
+      khu3: { bg: '#FFFFFF', text: '#1E40A0', border: '#1E40A0', sub: '#475569', slogan: '#1E40A0' },
+      khu4: { bg: '#B91C1C', text: '#FACC15', border: '#FACC15', sub: '#FEF08A', slogan: '#B91C1C' },
+      khu6cd: { bg: '#FFFFFF', text: '#1D4ED8', border: '#1D4ED8', sub: '#475569', slogan: '#1D4ED8' },
+      khu6dtn: { bg: '#FFFFFF', text: '#0EA5E9', border: '#0EA5E9', sub: '#475569', slogan: '#0EA5E9' },
+    };
+
+    const k3 = this.khu3WallTitles || {};
+    const k3t = (fk, fallback) => k3[fk] || fallback;
+
+    const fk = (id, rotY) => this.faceKeyOf(id, rotY);
     const configs = [
-      {
-        id: 'wall_k3_north',
-        zone: 'khu3',
-        baseX: 34, baseZ: -25, rotY: 0, wallLength: 26, thickness: 0.2,
-        length: 16.5,
-        time_span: '03/2026 – 05/2026',
-        topic: 'Những ngày đầu thành lập',
-        full_title: '03/2026 – 05/2026 · Những ngày đầu thành lập',
-        sub_text: '20 ảnh tư liệu • Triển khai Văn bản 832/EVNHCMC • Khởi đầu tuần mới lan tỏa năng lượng tích cực',
-        slogan: 'CÔNG TY ĐIỆN LỰC VŨNG TÀU – VỮNG BƯỚC CÙNG EVNHCMC',
-        colors: {
-          banner_bg: '#FFFFFF',
-          banner_text: '#1E40A0',
-          banner_border: '#1E40A0',
-          banner_sub: '#475569',
-          slogan_color: '#1E40A0'
-        },
-        logo: 'assets/logo.png'
-      },
-      {
-        id: 'wall_k3_far',
-        zone: 'khu3',
-        baseX: 50, baseZ: 0, rotY: -Math.PI / 2, wallLength: 44, thickness: 0.2,
-        length: 29.0,
-        time_span: '07/2025 – 03/2026',
-        topic: 'Vững vàng phát triển',
-        full_title: '07/2025 – 03/2026 · Vững vàng phát triển',
-        sub_text: '34 ảnh tư liệu • Điện lực Vũng Tàu • Lễ công bố quyết định công tác cán bộ',
-        slogan: 'LƯỚI ĐIỆN THÔNG MINH – DỊCH VỤ KHÁCH HÀNG HIỆN ĐẠI',
-        colors: {
-          banner_bg: '#FFFFFF',
-          banner_text: '#1E40A0',
-          banner_border: '#1E40A0',
-          banner_sub: '#475569',
-          slogan_color: '#1E40A0'
-        },
-        logo: 'assets/logo.png'
-      },
-      {
-        id: 'wall_k3_south',
-        zone: 'khu3',
-        baseX: 34, baseZ: 25, rotY: Math.PI, wallLength: 26, thickness: 0.2,
-        length: 16.5,
-        time_span: '05/2026 – 07/2026',
-        topic: 'Chào mừng 1 năm thành lập',
-        full_title: '05/2026 – 07/2026 · Chào mừng 1 năm thành lập',
-        sub_text: '19 ảnh tư liệu • Điện lực Côn Đảo tiếp sức mùa thi • Hội nghị sơ kết 6 tháng đầu năm',
-        slogan: 'ĐOÀN KẾT – ĐỔI MỚI – HIỆU QUẢ',
-        colors: {
-          banner_bg: '#FFFFFF',
-          banner_text: '#1E40A0',
-          banner_border: '#1E40A0',
-          banner_sub: '#475569',
-          slogan_color: '#1E40A0'
-        },
-        logo: 'assets/logo.png'
-      },
-      {
-        id: 'wall_k4_east',
-        zone: 'khu4',
-        baseX: 50, baseZ: 60, rotY: -Math.PI / 2, wallLength: 44, thickness: 0.2,
-        length: 29.0,
-        time_span: '02/2026 – 04/2026',
-        topic: 'Hoạt động Đảng bộ Công ty',
-        full_title: '02/2026 – 04/2026 · Hoạt động Đảng bộ Công ty',
-        sub_text: '26 ảnh tư liệu • Hoạt động Đảng bộ Công ty • Chi bộ Côn Đảo',
-        slogan: 'ĐẢNG CỘNG SẢN VIỆT NAM QUANG VINH MUÔN NĂM',
-        colors: {
-          banner_bg: '#B91C1C',
-          banner_text: '#FACC15',
-          banner_border: '#FACC15',
-          banner_sub: '#FEF08A',
-          slogan_color: '#B91C1C'
-        },
-        logo: 'assets/logo/co_dang.png'
-      },
-      {
-        id: 'wall_k4_west_hcm',
-        zone: 'khu4',
-        baseX: 22, baseZ: 60, rotY: Math.PI / 2, wallLength: 40, thickness: 0.2,
-        length: 26.0,
-        time_span: '04/2026 – 08/2026',
-        topic: 'Xây dựng Đảng bộ trong sạch, vững mạnh',
-        full_title: '04/2026 – 08/2026 · Xây dựng Đảng bộ trong sạch, vững mạnh',
-        sub_text: '22 ảnh tư liệu • Chi bộ 3 • Hội nghị sơ kết 6 tháng đầu năm',
-        slogan: 'HỌC TẬP VÀ LÀM THEO TƯ TƯỞNG, ĐẠO ĐỨC, PHONG CÁCH HỒ CHÍ MINH',
-        colors: {
-          banner_bg: '#B91C1C',
-          banner_text: '#FACC15',
-          banner_border: '#FACC15',
-          banner_sub: '#FEF08A',
-          slogan_color: '#B91C1C'
-        },
-        logo: 'assets/logo/co_dang.png'
-      },
-      {
-        id: 'wall_k6_west',
-        zone: 'khu6',
-        baseX: -50, baseZ: 60, rotY: Math.PI / 2, wallLength: 44, thickness: 0.2,
-        length: 29.0,
-        time_span: '08/2025 – 03/2026',
-        topic: 'Công đoàn Công ty – chăm lo, đồng hành',
-        full_title: '08/2025 – 03/2026 · Công đoàn Công ty – chăm lo, đồng hành',
-        sub_text: '25 ảnh tư liệu • Hoạt động Công đoàn tại phường Vũng Tàu • Bữa cơm Công đoàn',
-        slogan: 'ĐOÀN KẾT – SÁNG TẠO – CHĂM LO – BẢO VỆ',
-        colors: {
-          banner_bg: '#FFFFFF',
-          banner_text: '#1D4ED8',
-          banner_border: '#1D4ED8',
-          banner_sub: '#475569',
-          slogan_color: '#1D4ED8'
-        },
-        logo: 'assets/logo/logo_cong_doan.png'
-      },
-      {
-        id: 'wall_k6_east_hcm',
-        zone: 'khu6',
-        baseX: -22, baseZ: 60, rotY: -Math.PI / 2, wallLength: 40, thickness: 0.2,
-        length: 26.0,
-        time_span: '10/2025 – 09/2026',
-        topic: 'Tuổi trẻ PCVT xung kích, tình nguyện',
-        full_title: '10/2025 – 09/2026 · Tuổi trẻ PCVT xung kích, tình nguyện',
-        sub_text: '25 ảnh tư liệu • Đại hội đại biểu Đoàn • Góp sức Xuân tình nguyện 2026',
-        slogan: 'TUỔI TRẺ PCVT – XUNG KÍCH, SÁNG TẠO, TÌNH NGUYỆN',
-        colors: {
-          banner_bg: '#FFFFFF',
-          banner_text: '#0EA5E9',
-          banner_border: '#0EA5E9',
-          banner_sub: '#475569',
-          slogan_color: '#0EA5E9'
-        },
-        logo: 'assets/logo/logo_doan_tn.png'
-      }
+      // ---------------- KHU 1 (D2) ----------------
+      // wall_k1_far: bảng chính khu 1 (12 × 2,2 m, tâm y 6,75) đã nằm giữa tường này → không thêm bảng
+      // riêng để tránh chồng lên nhau (giống quy tắc tường hậu khu 2). Xem báo cáo GĐ6-fix1.
+      { face: fk('wall_k1_north', 0), zone: 'khu1', colors: COLORS.khu1, logo: 'assets/logo.png',
+        title: `ẢNH TƯ LIỆU ${yearSpan(fk('wall_k1_north', 0))}`, sub: 'Ký ức một chặng đường' },
+      { face: fk('partition_k1', -Math.PI / 2), zone: 'khu1', colors: COLORS.khu1, logo: 'assets/logo.png',
+        title: 'TRANH CÁC ĐƠN VỊ TRAO TẶNG', sub: 'Tình cảm của các đơn vị bạn', partition: true },
+      { face: fk('partition_k1', Math.PI / 2), zone: 'khu1', colors: COLORS.khu1, logo: 'assets/logo.png',
+        title: 'TRANH CÁC ĐƠN VỊ TRAO TẶNG', sub: 'Tình cảm của các đơn vị bạn', partition: true },
+      { face: fk('wall_k1_south', Math.PI), zone: 'khu1', colors: COLORS.khu1, logo: 'assets/logo.png',
+        title: 'TRANH CÁC ĐƠN VỊ TRAO TẶNG', sub: 'Tình cảm của các đơn vị bạn' },
+      // ---------------- KHU 2 (D2) ----------------
+      { face: fk('wall_k2_west', Math.PI / 2), zone: 'khu2', colors: COLORS.khu2, logo: 'assets/logo.png',
+        title: `BẰNG KHEN – CỜ THI ĐUA ${yearSpan(fk('wall_k2_west', Math.PI / 2))}`, sub: 'Vinh quang những chặng đường' },
+      { face: fk('wall_k2_east', -Math.PI / 2), zone: 'khu2', colors: COLORS.khu2, logo: 'assets/logo.png',
+        title: `BẰNG KHEN – CỜ THI ĐUA ${yearSpan(fk('wall_k2_east', -Math.PI / 2))}`, sub: 'Vinh quang những chặng đường' },
+      // ---------------- KHU 3 (mục B + D2) ----------------
+      { face: fk('wall_k3_north', 0), zone: 'khu3', colors: COLORS.khu3, logo: 'assets/logo.png',
+        ...k3t(fk('wall_k3_north', 0), { title: '', sub: '' }),
+        slogan: 'CÔNG TY ĐIỆN LỰC VŨNG TÀU – VỮNG BƯỚC CÙNG EVNHCMC' },
+      { face: fk('wall_k3_far', -Math.PI / 2), zone: 'khu3', colors: COLORS.khu3, logo: 'assets/logo.png',
+        ...k3t(fk('wall_k3_far', -Math.PI / 2), { title: '', sub: '' }),
+        slogan: 'LƯỚI ĐIỆN THÔNG MINH – DỊCH VỤ KHÁCH HÀNG HIỆN ĐẠI' },
+      { face: fk('wall_k3_south', Math.PI), zone: 'khu3', colors: COLORS.khu3, logo: 'assets/logo.png',
+        ...k3t(fk('wall_k3_south', Math.PI), { title: '', sub: '' }),
+        slogan: 'ĐOÀN KẾT – ĐỔI MỚI – HIỆU QUẢ' },
+      // ---------------- KHU 4 (D1: giữ nội dung) ----------------
+      { face: fk('wall_k4_east', -Math.PI / 2), zone: 'khu4', colors: COLORS.khu4, logo: 'assets/logo/co_dang.png',
+        title: '02/2026 – 04/2026 · Hoạt động Đảng bộ Công ty',
+        sub: '26 ảnh tư liệu • Hoạt động Đảng bộ Công ty • Chi bộ Côn Đảo',
+        slogan: 'ĐẢNG CỘNG SẢN VIỆT NAM QUANG VINH MUÔN NĂM' },
+      { face: fk('wall_k4_west_hcm', Math.PI / 2), zone: 'khu4', colors: COLORS.khu4, logo: 'assets/logo/co_dang.png',
+        title: '04/2026 – 08/2026 · Xây dựng Đảng bộ trong sạch, vững mạnh',
+        sub: '22 ảnh tư liệu • Chi bộ 3 • Hội nghị sơ kết 6 tháng đầu năm',
+        slogan: 'HỌC TẬP VÀ LÀM THEO TƯ TƯỞNG, ĐẠO ĐỨC, PHONG CÁCH HỒ CHÍ MINH' },
+      // ---------------- KHU 6 (D1: giữ nội dung) ----------------
+      { face: fk('wall_k6_west', Math.PI / 2), zone: 'khu6', colors: COLORS.khu6cd, logo: 'assets/logo/logo_cong_doan.png',
+        title: '08/2025 – 03/2026 · Công đoàn Công ty – chăm lo, đồng hành',
+        sub: '25 ảnh tư liệu • Hoạt động Công đoàn tại phường Vũng Tàu • Bữa cơm Công đoàn',
+        slogan: 'ĐOÀN KẾT – SÁNG TẠO – CHĂM LO – BẢO VỆ' },
+      { face: fk('wall_k6_east_hcm', -Math.PI / 2), zone: 'khu6', colors: COLORS.khu6dtn, logo: 'assets/logo/logo_doan_tn.png',
+        title: '10/2025 – 09/2026 · Tuổi trẻ PCVT xung kích, tình nguyện',
+        sub: '25 ảnh tư liệu • Đại hội đại biểu Đoàn • Góp sức Xuân tình nguyện 2026',
+        slogan: 'TUỔI TRẺ PCVT – XUNG KÍCH, SÁNG TẠO, TÌNH NGUYỆN' },
     ];
 
-    // Preload logos
-    const logoMap = {};
-    configs.forEach(c => {
-      if (!logoMap[c.logo]) {
-        const img = new Image();
-        img.src = c.logo;
-        logoMap[c.logo] = img;
-      }
-    });
-
     const maxAnis = window.app?.renderer?.capabilities?.getMaxAnisotropy?.() || 16;
+    const measure = document.createElement('canvas').getContext('2d');
 
-    // Temporary canvas for accurate text measurement
-    const measureCanvas = document.createElement('canvas');
-    const measureCtx = measureCanvas.getContext('2d');
+    for (const cfg of configs) {
+      const face = this.faceMounts[cfg.face];
+      if (!face || !cfg.title) {
+        console.warn(`[buildWallTitleBoards] Bỏ qua ${cfg.face}: chưa có ảnh hoặc chưa có tiêu đề`);
+        continue;
+      }
+      const wc = face.cfg;
+      const blockLen = face.maxU - face.minU;
+      const blockCenter = (face.maxU + face.minU) / 2;
+      const isPart = !!cfg.partition;
+      const boardH = isPart ? this.PARTITION_BOARD_H : this.WALL_BOARD_H;
+      const boardY = isPart ? this.PARTITION_BOARD_Y : this.WALL_BOARD_Y;
+      const maxW = isPart ? 10 : 14;
+      const boardW = Math.min(maxW, Math.max(8, 0.45 * blockLen));
 
-    configs.forEach(cfg => {
+      const nx = Math.sin(wc.rotY), nz = Math.cos(wc.rotY);
+      const tx = Math.cos(wc.rotY), tz = -Math.sin(wc.rotY);
+      const surf = wc.thickness / 2 + 0.05;
+      const cx = wc.x + nx * surf + tx * blockCenter;
+      const cz = wc.z + nz * surf + tz * blockCenter;
+
       const parentGroup = this.zoneGroups[cfg.zone] || this.scene;
-      const nx = Math.sin(cfg.rotY);
-      const nz = Math.cos(cfg.rotY);
-      const standOff = WALL_THICKNESS / 2 + 0.04 + 0.07;
+      const group = new THREE.Group();
+      group.position.set(cx, boardY, cz);
+      group.rotation.y = wc.rotY;
+      group.name = `WallTitleBoard_${cfg.face}`;
 
-      const posX = cfg.baseX + nx * standOff;
-      const posZ = cfg.baseZ + nz * standOff;
+      // Tấm lưng mỏng (khung) phía sau
+      const back = new THREE.Mesh(
+        new THREE.BoxGeometry(boardW + 0.06, boardH + 0.06, 0.03),
+        new THREE.MeshStandardMaterial({ color: cfg.colors.border, roughness: 0.45, metalness: 0.35 })
+      );
+      back.position.z = 0.015;
+      group.add(back);
 
-      // Group chứa toàn bộ băng tiêu đề (nền + viền + 2 logo + chữ)
-      const bannerGroup = new THREE.Group();
-      bannerGroup.position.set(posX, 4.15, posZ);
-      bannerGroup.rotation.y = cfg.rotY;
-      bannerGroup.name = `WallBannerGroup_${cfg.id}`;
+      // Canvas đúng tỷ lệ bảng
+      const canvasW = 4096;
+      const canvasH = Math.round(canvasW * boardH / boardW);
+      const canvas = document.createElement('canvas');
+      canvas.width = canvasW;
+      canvas.height = canvasH;
+      const ctx = canvas.getContext('2d');
+      const pxPerM = canvasW / boardW;
 
-      // 1. NỀN BĂNG TIÊU ĐỀ: Tấm phẳng dài cfg.length x 0.55m, MeshBasicMaterial một màu, không dùng texture (Mục A.1)
-      const bgGeo = new THREE.PlaneGeometry(cfg.length, 0.55);
-      const bgMat = new THREE.MeshBasicMaterial({
-        color: cfg.colors.banner_bg,
-        side: THREE.DoubleSide
-      });
-      const bgMesh = new THREE.Mesh(bgGeo, bgMat);
-      bgMesh.name = `WallBanner_Bg_${cfg.id}`;
-      bannerGroup.add(bgMesh);
+      const logoM = Math.min(0.75, boardH - 0.2);
+      const logoPx = Math.round(logoM * pxPerM);
+      const marginPx = Math.round(0.25 * pxPerM);
+      const textAvail = canvasW - 2 * (marginPx + logoPx + marginPx);
+      const limit = 0.80 * textAvail;
 
-      // Viền trên và viền dưới: 2 dải mỏng 0.03m màu banner_border (Mục A.1)
-      const borderMat = new THREE.MeshBasicMaterial({
-        color: cfg.colors.banner_border,
-        side: THREE.DoubleSide
-      });
-      const topBorder = new THREE.Mesh(new THREE.PlaneGeometry(cfg.length, 0.03), borderMat);
-      topBorder.position.set(0, 0.55 / 2 - 0.03 / 2, 0.001);
-      bannerGroup.add(topBorder);
+      const titleBase = Math.round(0.40 / 1.10 * canvasH);
+      const subBase = Math.round(0.20 / 1.10 * canvasH);
+      const fontT = (px) => `800 ${px}px ${FONT_FAMILY}`;
+      const fontS = (px) => `600 ${px}px ${FONT_FAMILY}`;
+      const widthOf = (txt, font) => { measure.font = font; return measure.measureText(txt).width; };
 
-      const btmBorder = new THREE.Mesh(new THREE.PlaneGeometry(cfg.length, 0.03), borderMat);
-      btmBorder.position.set(0, -0.55 / 2 + 0.03 / 2, 0.001);
-      bannerGroup.add(btmBorder);
-
-      // Logo ở 2 đầu: 2 tấm 0.45 x 0.45m, đúng tỷ lệ ảnh logo (Mục A.1)
-      const logoTex = this.getOrLoadTexture(cfg.logo);
-      if (logoTex) {
-        logoTex.anisotropy = maxAnis;
-        const logoMat = new THREE.MeshBasicMaterial({
-          map: logoTex,
-          transparent: true,
-          side: THREE.DoubleSide
-        });
-        const leftLogo = new THREE.Mesh(new THREE.PlaneGeometry(0.45, 0.45), logoMat);
-        leftLogo.position.set(-(cfg.length / 2 - 0.45), 0, 0.002);
-        bannerGroup.add(leftLogo);
-
-        const rightLogo = new THREE.Mesh(new THREE.PlaneGeometry(0.45, 0.45), logoMat);
-        rightLogo.position.set(cfg.length / 2 - 0.45, 0, 0.002);
-        bannerGroup.add(rightLogo);
+      // Tiêu đề: thu cỡ (≥ 70%), rồi xuống 2 dòng, rồi tiếp tục thu nếu cần (không bao giờ kéo giãn)
+      let titlePx = titleBase;
+      let titleLines = [cfg.title];
+      while (widthOf(cfg.title, fontT(titlePx)) > limit && titlePx > Math.round(titleBase * 0.7)) titlePx -= 2;
+      if (widthOf(cfg.title, fontT(titlePx)) > limit) {
+        let l1, l2;
+        const sep = cfg.title.indexOf(' · ');
+        if (sep > 0) { l1 = cfg.title.slice(0, sep); l2 = cfg.title.slice(sep + 3); }
+        else {
+          const words = cfg.title.split(' ');
+          const mid = Math.ceil(words.length / 2);
+          l1 = words.slice(0, mid).join(' '); l2 = words.slice(mid).join(' ');
+        }
+        titleLines = [l1, l2];
+        titlePx = Math.round(titleBase * 0.7);
+        while (Math.max(widthOf(l1, fontT(titlePx)), widthOf(l2, fontT(titlePx))) > limit && titlePx > 12) titlePx -= 2;
       }
+      let subPx = subBase;
+      while (cfg.sub && widthOf(cfg.sub, fontS(subPx)) > limit && subPx > 12) subPx -= 2;
 
-      // 2. CHỮ TRÊN BĂNG (Mục A.2): Canvas cao 256px, đo chữ trước, tấm cao 0.46m, tỷ lệ 1:1, cao hơn nền 2mm
-      const maxBannerTextW = 0.85 * cfg.length; // Không vượt quá 85% chiều dài băng
-      let titleSize = 46;
-      let subSize = 24;
-      const textPadding = 64;
+      const logoImg = new Image();
+      let logoReady = false;
+      const draw = () => {
+        ctx.clearRect(0, 0, canvasW, canvasH);
+        ctx.fillStyle = cfg.colors.bg;
+        ctx.fillRect(0, 0, canvasW, canvasH);
+        // Viền đôi
+        const b1 = Math.max(6, Math.round(0.035 * pxPerM));
+        ctx.strokeStyle = cfg.colors.border;
+        ctx.lineWidth = b1;
+        ctx.strokeRect(b1 / 2 + 4, b1 / 2 + 4, canvasW - b1 - 8, canvasH - b1 - 8);
+        const inset = b1 + Math.round(0.03 * pxPerM);
+        ctx.lineWidth = Math.max(2, Math.round(b1 * 0.35));
+        ctx.strokeRect(inset, inset, canvasW - 2 * inset, canvasH - 2 * inset);
 
-      measureCtx.font = `800 ${titleSize}px "Be Vietnam Pro", sans-serif`;
-      let titleW = measureCtx.measureText(cfg.full_title).width;
-      measureCtx.font = `600 ${subSize}px "Be Vietnam Pro", sans-serif`;
-      let subW = measureCtx.measureText(cfg.sub_text).width;
-      let maxContentW = Math.max(titleW, subW);
+        // 2 logo trong bảng
+        if (logoReady) {
+          const ly = (canvasH - logoPx) / 2;
+          const ar = logoImg.naturalWidth / Math.max(1, logoImg.naturalHeight);
+          let dw = logoPx, dh = logoPx;
+          if (ar > 1) dh = logoPx / ar; else dw = logoPx * ar;
+          ctx.drawImage(logoImg, marginPx + (logoPx - dw) / 2, ly + (logoPx - dh) / 2, dw, dh);
+          ctx.drawImage(logoImg, canvasW - marginPx - logoPx + (logoPx - dw) / 2, ly + (logoPx - dh) / 2, dw, dh);
+        }
 
-      // Nếu chữ rộng hơn 85% chiều dài băng thì giảm cỡ chữ (Mục A.2)
-      while (0.46 * (maxContentW + 2 * textPadding) / 256 > maxBannerTextW && titleSize > 24) {
-        titleSize -= 2;
-        subSize = Math.max(16, Math.round(subSize * 0.95));
-        measureCtx.font = `800 ${titleSize}px "Be Vietnam Pro", sans-serif`;
-        titleW = measureCtx.measureText(cfg.full_title).width;
-        measureCtx.font = `600 ${subSize}px "Be Vietnam Pro", sans-serif`;
-        subW = measureCtx.measureText(cfg.sub_text).width;
-        maxContentW = Math.max(titleW, subW);
-      }
-
-      const canvasBW = Math.min(4096, Math.ceil(maxContentW + 2 * textPadding));
-      const canvasBH = 256;
-      const bannerPlaneH = 0.46;
-      const bannerPlaneW = bannerPlaneH * (canvasBW / canvasBH);
-
-      const canvasB = document.createElement('canvas');
-      canvasB.width = canvasBW;
-      canvasB.height = canvasBH;
-      const ctxB = canvasB.getContext('2d');
-      ctxB.clearRect(0, 0, canvasBW, canvasBH);
-
-      // Vẽ tiêu đề chính
-      ctxB.fillStyle = cfg.colors.banner_text;
-      ctxB.font = `800 ${titleSize}px "Be Vietnam Pro", sans-serif`;
-      ctxB.textAlign = 'center';
-      ctxB.textBaseline = 'middle';
-      ctxB.fillText(cfg.full_title, canvasBW / 2, 92);
-
-      // Vẽ dòng phụ
-      ctxB.fillStyle = cfg.colors.banner_sub;
-      ctxB.font = `600 ${subSize}px "Be Vietnam Pro", sans-serif`;
-      ctxB.textAlign = 'center';
-      ctxB.textBaseline = 'middle';
-      ctxB.fillText(cfg.sub_text, canvasBW / 2, 172);
-
-      const texB = new THREE.CanvasTexture(canvasB);
-      texB.colorSpace = THREE.SRGBColorSpace;
-      texB.anisotropy = maxAnis;
-
-      const textGeo = new THREE.PlaneGeometry(bannerPlaneW, bannerPlaneH);
-      const textMat = new THREE.MeshBasicMaterial({
-        map: texB,
-        transparent: true,
-        side: THREE.DoubleSide
-      });
-      const textMesh = new THREE.Mesh(textGeo, textMat);
-      textMesh.position.set(0, 0, 0.002); // Cao hơn nền 2mm
-      textMesh.name = `WallBanner_Text_${cfg.id}`;
-      textMesh.userData = {
-        isTextPlane: true,
-        planeW: bannerPlaneW,
-        planeH: bannerPlaneH,
-        canvasW: canvasBW,
-        canvasH: canvasBH
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        ctx.fillStyle = cfg.colors.text;
+        ctx.font = fontT(titlePx);
+        if (titleLines.length === 1) {
+          ctx.fillText(titleLines[0], canvasW / 2, canvasH * (cfg.sub ? 0.40 : 0.5));
+        } else {
+          ctx.fillText(titleLines[0], canvasW / 2, canvasH * 0.26);
+          ctx.fillText(titleLines[1], canvasW / 2, canvasH * 0.52);
+        }
+        if (cfg.sub) {
+          ctx.fillStyle = cfg.colors.sub;
+          ctx.font = fontS(subPx);
+          ctx.fillText(cfg.sub, canvasW / 2, canvasH * (titleLines.length === 1 ? 0.75 : 0.79));
+        }
       };
-      bannerGroup.add(textMesh);
+      draw();
 
-      parentGroup.add(bannerGroup);
-      this.wallBanners.push(bannerGroup);
+      const tex = new THREE.CanvasTexture(canvas);
+      tex.colorSpace = THREE.SRGBColorSpace;
+      tex.anisotropy = maxAnis;
+      logoImg.onload = () => { logoReady = true; draw(); tex.needsUpdate = true; };
+      logoImg.src = cfg.logo;
 
-      // 3. KHẨU HIỆU (Mục A.3): Canvas cao 192px, nền trong suốt, tấm chữ cao 0.45m, rộng theo tỷ lệ canvas
-      let sloganSize = 54;
-      const sloganPadding = 64;
-      measureCtx.font = `900 ${sloganSize}px "Be Vietnam Pro", sans-serif`;
-      let sloganTextW = measureCtx.measureText(cfg.slogan).width;
+      const textMesh = new THREE.Mesh(
+        new THREE.PlaneGeometry(boardW, boardH),
+        new THREE.MeshBasicMaterial({ map: tex, side: THREE.FrontSide, toneMapped: false })
+      );
+      textMesh.position.z = 0.032;
+      textMesh.name = `WallTitleBoard_Text_${cfg.face}`;
+      textMesh.userData = { isTextPlane: true, planeW: boardW, planeH: boardH, canvasW, canvasH };
+      group.add(textMesh);
 
-      while (0.45 * (sloganTextW + 2 * sloganPadding) / 192 > maxBannerTextW && sloganSize > 24) {
-        sloganSize -= 2;
-        measureCtx.font = `900 ${sloganSize}px "Be Vietnam Pro", sans-serif`;
-        sloganTextW = measureCtx.measureText(cfg.slogan).width;
-      }
-
-      const canvasSW = Math.min(4096, Math.ceil(sloganTextW + 2 * sloganPadding));
-      const canvasSH = 192;
-      const sloganPlaneH = 0.45;
-      const sloganPlaneW = sloganPlaneH * (canvasSW / canvasSH);
-
-      const canvasS = document.createElement('canvas');
-      canvasS.width = canvasSW;
-      canvasS.height = canvasSH;
-      const ctxS = canvasS.getContext('2d');
-      ctxS.clearRect(0, 0, canvasSW, canvasSH);
-
-      ctxS.fillStyle = cfg.colors.slogan_color;
-      ctxS.font = `900 ${sloganSize}px "Be Vietnam Pro", sans-serif`;
-      ctxS.textAlign = 'center';
-      ctxS.textBaseline = 'middle';
-      ctxS.fillText(cfg.slogan, canvasSW / 2, 96);
-
-      const texS = new THREE.CanvasTexture(canvasS);
-      texS.colorSpace = THREE.SRGBColorSpace;
-      texS.anisotropy = maxAnis;
-
-      const sloganMat = new THREE.MeshBasicMaterial({
-        map: texS,
-        transparent: true,
-        depthWrite: false,
-        side: THREE.DoubleSide
+      parentGroup.add(group);
+      this.wallBanners.push(group);
+      this.boardBottoms[cfg.face] = boardY - boardH / 2 - 0.03;
+      this.wallBoardInfo.push({
+        face: cfg.face, title: cfg.title, sub: cfg.sub, w: boardW, h: boardH, y: boardY,
+        titlePx, subPx, titleLines: titleLines.length,
+        titleCapM: +(titlePx / pxPerM * 0.72).toFixed(3),
+        subCapM: +(subPx / pxPerM * 0.72).toFixed(3)
       });
-      const sloganGeo = new THREE.PlaneGeometry(sloganPlaneW, sloganPlaneH);
-      const sloganMesh = new THREE.Mesh(sloganGeo, sloganMat);
-      sloganMesh.position.set(posX, 5.60, posZ);
-      sloganMesh.rotation.y = cfg.rotY;
-      sloganMesh.name = `WallSlogan_${cfg.id}`;
-      sloganMesh.userData = {
-        isTextPlane: true,
-        planeW: sloganPlaneW,
-        planeH: sloganPlaneH,
-        canvasW: canvasSW,
-        canvasH: canvasSH
-      };
-      parentGroup.add(sloganMesh);
-      this.wallBanners.push(sloganMesh);
-    });
 
-    console.log(`[buildWallBannersAndSlogans] Đã dựng thành công 7 cụm băng tiêu đề y=4.15m (nền + logo + chữ tỷ lệ 1:1) + 7 khẩu hiệu y=5.60m cho Khu 3, 4, 6.`);
+      // ---------------- DẢI KHẨU HIỆU ----------------
+      if (cfg.slogan) {
+        const planeH = 0.55;
+        const padM = 0.30;
+        let fontM = 0.39; // cao chữ hoa ≈ 0,28 m
+        const per100 = widthOf(cfg.slogan, `900 100px ${FONT_FAMILY}`) / 100; // px chữ / px cỡ
+        let textM = per100 * fontM;
+        const maxPlaneW = 0.70 * wc.wallLength;
+        if (textM + 2 * padM > maxPlaneW) {
+          fontM = (maxPlaneW - 2 * padM) / per100;
+          textM = per100 * fontM;
+        }
+        const wantW = textM + 2 * padM;
+        const sPxPerM = Math.min(400, 4096 / wantW);
+        const sCanvasW = Math.round(wantW * sPxPerM);
+        const sCanvasH = Math.round(planeH * sPxPerM);
+        const sPlaneW = sCanvasW / sPxPerM;
+        const sPlaneH = sCanvasH / sPxPerM;
+        const sc = document.createElement('canvas');
+        sc.width = sCanvasW;
+        sc.height = sCanvasH;
+        const sctx = sc.getContext('2d');
+        sctx.fillStyle = cfg.colors.slogan;
+        sctx.font = `900 ${Math.round(fontM * sPxPerM)}px ${FONT_FAMILY}`;
+        sctx.textAlign = 'center';
+        sctx.textBaseline = 'middle';
+        sctx.fillText(cfg.slogan, sCanvasW / 2, sCanvasH / 2);
+        const sTex = new THREE.CanvasTexture(sc);
+        sTex.colorSpace = THREE.SRGBColorSpace;
+        sTex.anisotropy = maxAnis;
+        const sMesh = new THREE.Mesh(
+          new THREE.PlaneGeometry(sPlaneW, sPlaneH),
+          new THREE.MeshBasicMaterial({ map: sTex, transparent: true, depthWrite: false, side: THREE.FrontSide })
+        );
+        const sSurf = wc.thickness / 2 + 0.03;
+        sMesh.position.set(wc.x + nx * sSurf + tx * blockCenter, this.SLOGAN_Y, wc.z + nz * sSurf + tz * blockCenter);
+        sMesh.rotation.y = wc.rotY;
+        sMesh.name = `WallSlogan_${cfg.face}`;
+        sMesh.userData = { isTextPlane: true, planeW: sPlaneW, planeH: sPlaneH, canvasW: sCanvasW, canvasH: sCanvasH };
+        parentGroup.add(sMesh);
+        this.wallBanners.push(sMesh);
+      }
+    }
+
+    console.log(`[buildWallTitleBoards] Đã dựng ${this.wallBoardInfo.length} bảng tiêu đề tường (khu 1, 2, 3, 4, 6):`);
+    console.table(this.wallBoardInfo.map(b => ({
+      mat: b.face, w: b.w.toFixed(2), h: b.h, y: b.y, dong: b.titleLines,
+      chu_tieu_de_m: b.titleCapM, chu_phu_m: b.subCapM, tieu_de: b.title
+    })));
   }
 
   // ===========================================================================
-  // KIỂM TRA RÀNG BUỘC KHOẢNG CÁCH TẦNG ẢNH (Section A)
+  // KIỂM TRA KHOẢNG HỞ TẦNG ẢNH (GĐ6-fix1 C)
+  //  1. Khe giữa mép dưới biển tên tầng trên và mép trên khung tầng dưới ≥ 0,30 m
+  //  2. Tường bao: mép dưới biển tên tầng dưới ≥ 1,95 m
+  //  3. Mép trên khung tầng trên cách mép dưới bảng tiêu đề phía trên ≥ 0,25 m
+  //  Biển tên: tâm = tâm khung − h/2 − 0,14, cao 0,15 → mép dưới = tâm − h/2 − 0,215
+  //  Khung: mép trên = tâm + h/2 + 0,06 (viền khung)
   // ===========================================================================
   assertRowGap() {
-    console.log('\n=== KIỂM TRA RÀNG BUỘC KHOẢNG CÁCH TẦNG ẢNH (assertRowGap) ===');
-    const wallGroups = new Map();
+    console.log('\n=== KIỂM TRA KHOẢNG HỞ TẦNG ẢNH (assertRowGap) ===');
+    const faces = new Map();
     for (const ex of this.mountedExhibits) {
-      if (!wallGroups.has(ex.wallId)) wallGroups.set(ex.wallId, []);
-      wallGroups.get(ex.wallId).push(ex);
+      const key = ex.faceKey || ex.wallId;
+      if (!faces.has(key)) faces.set(key, []);
+      faces.get(key).push(ex);
     }
 
-    let allPassed = true;
-    for (const [wallId, exhibits] of wallGroups.entries()) {
-      const topRow = exhibits.filter(e => e.posY >= 2.5);
-      const bottomRow = exhibits.filter(e => e.posY < 2.5);
+    const errors = [];
+    this.rowGapReport = [];
+    for (const [faceKey, exhibits] of faces.entries()) {
+      const ys = exhibits.map(e => e.posY);
+      const midY = (Math.min(...ys) + Math.max(...ys)) / 2;
+      const twoRows = Math.max(...ys) - Math.min(...ys) > 0.5;
+      const topRow = twoRows ? exhibits.filter(e => e.posY > midY) : exhibits;
+      const bottomRow = twoRows ? exhibits.filter(e => e.posY <= midY) : [];
+      const isPartition = faceKey.startsWith('partition_');
 
-      if (topRow.length === 0 || bottomRow.length === 0) continue;
+      const rec = { face: faceKey, rowGap: null, bottomPlaque: null, boardGap: null };
 
-      // Tìm mép dưới thấp nhất của biển tên tầng trên
-      // Plaque center = ROW_Y_TOP - h/2 - 0.14, plaqueH = 0.15 => bottom = ROW_Y_TOP - h/2 - 0.215
-      let minPlaqueBottom = 999;
-      for (const t of topRow) {
-        const pBottom = t.posY - t.size.h / 2 - 0.215;
-        if (pBottom < minPlaqueBottom) minPlaqueBottom = pBottom;
+      if (bottomRow.length) {
+        const minTopPlaqueBottom = Math.min(...topRow.map(t => t.posY - t.size.h / 2 - 0.215));
+        const maxBottomFrameTop = Math.max(...bottomRow.map(b => b.posY + b.size.h / 2 + 0.06));
+        rec.rowGap = minTopPlaqueBottom - maxBottomFrameTop;
+        if (rec.rowGap < 0.30 - 1e-6) errors.push(`${faceKey}: khe giữa 2 tầng ${rec.rowGap.toFixed(3)} m < 0,30 m`);
+
+        const minBottomPlaque = Math.min(...bottomRow.map(b => b.posY - b.size.h / 2 - 0.215));
+        rec.bottomPlaque = minBottomPlaque;
+        if (!isPartition && minBottomPlaque < 1.95 - 1e-6) {
+          errors.push(`${faceKey}: mép dưới biển tên tầng dưới ${minBottomPlaque.toFixed(3)} m < 1,95 m`);
+        }
       }
 
-      // Tìm mép trên cao nhất của khung tầng dưới
-      // Frame top = ROW_Y_BOTTOM + h/2 + 0.06 (tính cả viền khung 0.06m)
-      let maxFrameTop = -999;
-      for (const b of bottomRow) {
-        const fTop = b.posY + b.size.h / 2 + 0.06;
-        if (fTop > maxFrameTop) maxFrameTop = fTop;
+      const boardBottom = this.boardBottoms[faceKey];
+      if (boardBottom !== undefined) {
+        const maxTopFrameTop = Math.max(...topRow.map(t => t.posY + t.size.h / 2 + 0.06));
+        rec.boardGap = boardBottom - maxTopFrameTop;
+        if (rec.boardGap < 0.25 - 1e-6) errors.push(`${faceKey}: mép trên tầng trên cách bảng tiêu đề ${rec.boardGap.toFixed(3)} m < 0,25 m`);
       }
 
-      const gap = minPlaqueBottom - maxFrameTop;
-      const status = gap >= 0.30 ? 'ĐẠT ✓' : 'CẢNH BÁO ✗';
-      console.log(`  - Tường ${wallId}: khoảng trống dọc = ${gap.toFixed(3)}m (${status}, yêu cầu >= 0.30m)`);
-
-      if (gap < 0.30) {
-        console.warn(`[assertRowGap] CẢNH BÁO: Tường ${wallId} có khoảng trống ${gap.toFixed(3)}m < 0.30m!`);
-        allPassed = false;
-      }
+      this.rowGapReport.push(rec);
+      const f = (v) => (v === null ? '—' : v.toFixed(3));
+      console.log(`  - ${faceKey}: khe 2 tầng ${f(rec.rowGap)} m · mép dưới biển tên tầng dưới ${f(rec.bottomPlaque)} m · khe tới bảng tiêu đề ${f(rec.boardGap)} m`);
     }
 
-    if (allPassed) {
-      console.log('=> KẾT QUẢ assertRowGap: 100% TƯỜNG ĐẠT CHUẨN >= 0.30M!\n');
+    if (errors.length) {
+      errors.forEach(e => console.warn(`[assertRowGap] ${e}`));
     }
+    console.log(`=> KẾT QUẢ assertRowGap: ${errors.length} lỗi ${errors.length === 0 ? '✓ ĐẠT' : '✗'}\n`);
+    return errors.length;
   }
 
   // ===========================================================================
@@ -840,6 +915,7 @@ export class ExhibitBuilder {
 
     console.log(`  Kết quả kiểm tra: khu1: ${wrongCounts.khu1} sai, khu2: ${wrongCounts.khu2} sai, khu3: ${wrongCounts.khu3} sai, khu4: ${wrongCounts.khu4} sai, khu6: ${wrongCounts.khu6} sai`);
     console.log(`=> KẾT QUẢ assertInsideZone: Tổng số khung sai = ${totalErrors} (Yêu cầu: 0) ${totalErrors === 0 ? '✓ ĐẠT' : '✗ THẤT BẠI'}\n`);
+    return totalErrors;
   }
 
   // ===========================================================================
@@ -946,7 +1022,7 @@ export class ExhibitBuilder {
     }
 
     // Xử lý chú thích: không bao giờ in [CHỜ XÁC NHẬN]
-    let cleanCaption = (item.caption || '').replace(/\[CHỜ XÁC NHẬN\]/g, '').trim();
+    let cleanCaption = (item.tieu_de || item.caption || '').replace(/\[CHỜ XÁC NHẬN\]/g, '').trim();
 
     let text;
     if (item.source === 'bang_khen' || item.source === 'co') {

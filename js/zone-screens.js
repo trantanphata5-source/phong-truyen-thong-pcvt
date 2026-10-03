@@ -340,7 +340,7 @@ export class ZoneScreenSlideshow {
     }
 
     // Tiêu đề sự kiện
-    const titleStr = item.caption || item.new_name || item.title || 'Sự kiện ghi nhận hình ảnh';
+    const titleStr = item.tieu_de || item.caption || item.new_name || item.title || 'Sự kiện ghi nhận hình ảnh';
 
     // Badge ngày tháng
     ctx.textAlign = 'left';

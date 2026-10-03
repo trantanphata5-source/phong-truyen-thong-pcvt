@@ -6,6 +6,13 @@ import {
   GRID_TABLE,
   HALL_TARGETS
 } from './layout-config.js';
+import {
+  renderNarrativeHTML,
+  formatDateVN,
+  displayTitle,
+  escapeHTML,
+  NARRATIVE_SOURCE_LABEL
+} from './narrative.js';
 
 /**
  * UI Controller (Artsteps Standard)
@@ -60,6 +67,9 @@ export class UIController {
       cardDescription: document.getElementById('card-description'),
       cardCohortItems: document.getElementById('card-cohort-items'),
       cardOrigLink: document.getElementById('card-orig-link'),
+      cardMetaLine: document.getElementById('card-meta-line'),
+      cardNarrative: document.getElementById('card-narrative'),
+      cardOrgRow: document.getElementById('card-org-row'),
 
       // Tour Ribbon
       tourRibbon: document.getElementById('tour-ribbon'),
@@ -375,7 +385,7 @@ export class UIController {
         card.dataset.index = currentIdx;
         card.dataset.id = item.id;
         card.innerHTML = `
-          <img src="${item.thumb_path || item.wall_path}" alt="${item.caption || ''}" loading="lazy" />
+          <img src="${item.thumb_path || item.wall_path}" alt="${escapeHTML(displayTitle(item))}" loading="lazy" />
           <span class="tour-thumb-badge">${item.year}</span>
         `;
 
@@ -444,13 +454,12 @@ export class UIController {
     this.currentExhibit = item;
     this.dom.cardImg.src = item.thumb_path || item.wall_path;
 
-    // Tiêu đề lớn: dùng caption. Nếu trống thì hiện "Ảnh ngày dd/mm/yyyy"
-    if (item.caption) {
-      this.dom.cardTitle.textContent = item.caption;
+    // Tiêu đề lớn: GĐ6-fix1 A2 dùng tieu_de || caption. Nếu trống thì hiện "Ảnh ngày dd/mm/yyyy"
+    const titleText = displayTitle(item);
+    if (titleText) {
+      this.dom.cardTitle.textContent = titleText;
     } else if (item.date) {
-      const parts = item.date.split('-');
-      const dateDisplay = parts.length === 3 ? `${parts[2]}/${parts[1]}/${parts[0]}` : item.date;
-      this.dom.cardTitle.textContent = `Ảnh ngày ${dateDisplay}`;
+      this.dom.cardTitle.textContent = `Ảnh ngày ${formatDateVN(item.date)}`;
     } else {
       this.dom.cardTitle.textContent = item.new_name || '';
     }
@@ -497,14 +506,51 @@ export class UIController {
       }
     } else {
       if (orgSubEl) orgSubEl.textContent = 'SỰ KIỆN';
-      const parts = item.date ? item.date.split('-') : [];
-      const dateDisplay = parts.length === 3 ? `${parts[2]}/${parts[1]}/${parts[0]}` : (item.date || `${item.year}`);
-      this.dom.cardOrgName.textContent = item.caption ? `${dateDisplay} • ${item.caption}` : `Sự kiện ngày ${dateDisplay}`;
+      const dateDisplay = item.date ? formatDateVN(item.date) : `${item.year}`;
+      const evTitle = displayTitle(item);
+      this.dom.cardOrgName.textContent = evTitle ? `${dateDisplay} • ${evTitle}` : `Sự kiện ngày ${dateDisplay}`;
       this.dom.cardOrgIcon.textContent = '📸';
-      this.dom.cardDescription.textContent = item.caption ? `${item.caption} (ngày ${dateDisplay})` : `Ảnh hoạt động ngày ${dateDisplay}`;
+      this.dom.cardDescription.textContent = evTitle ? `${evTitle} (ngày ${dateDisplay})` : `Ảnh hoạt động ngày ${dateDisplay}`;
       if (cohortTitleEl) {
         cohortTitleEl.innerHTML = '<i data-lucide="layers"></i> CÙNG SỰ KIỆN';
       }
+    }
+
+    // GĐ6-fix1 A3: Ảnh khu 3, 4, 6 có trong thuyet_minh_anh.json
+    //  - Dòng nhỏ: "Ngày dd/mm/yyyy · Nguồn: Ngôi nhà EVNHCMC"
+    //  - Khung thuyết minh: nguyên văn (ẩn nếu ảnh chưa có thuyết minh, chỉ hiện tiêu đề và ngày)
+    const hasTieuDe = !!item.tieu_de;
+    const hasNarrative = !!item.thuyet_minh;
+    const metaEl = this.dom.cardMetaLine;
+    const narEl = this.dom.cardNarrative;
+    if (hasTieuDe) {
+      const d = formatDateVN(item.tm_ngay || item.date);
+      if (metaEl) {
+        metaEl.textContent = hasNarrative
+          ? `Ngày ${d} · Nguồn: ${NARRATIVE_SOURCE_LABEL}`
+          : `Ngày ${d}`;
+        metaEl.classList.remove('hidden');
+      }
+      if (narEl) {
+        if (hasNarrative) {
+          narEl.innerHTML = renderNarrativeHTML(item.thuyet_minh);
+          narEl.scrollTop = 0;
+          narEl.classList.remove('hidden');
+        } else {
+          narEl.innerHTML = '';
+          narEl.classList.add('hidden');
+        }
+      }
+      // Thay thế hàng SỰ KIỆN + mô tả lặp lại tiêu đề
+      this.dom.cardOrgRow?.classList.add('hidden');
+      this.dom.cardDescription.classList.add('hidden');
+      this.dom.exhibitCard.classList.toggle('has-narrative', hasNarrative);
+    } else {
+      metaEl?.classList.add('hidden');
+      if (narEl) { narEl.innerHTML = ''; narEl.classList.add('hidden'); }
+      this.dom.cardOrgRow?.classList.remove('hidden');
+      this.dom.cardDescription.classList.remove('hidden');
+      this.dom.exhibitCard.classList.remove('has-narrative');
     }
 
     this.dom.cardOrigLink.href = item.full_path || item.wall_path || '';
@@ -530,10 +576,10 @@ export class UIController {
     related.forEach(rel => {
       const chip = document.createElement('div');
       chip.className = 'cohort-item-chip';
-      const labelText = rel.caption || rel.new_name || '';
+      const labelText = displayTitle(rel) || rel.new_name || '';
       chip.innerHTML = `
-        <img class="cohort-thumb" src="${rel.thumb_path || rel.wall_path}" alt="${rel.caption || ''}" />
-        <span class="cohort-info" title="${labelText}">${labelText}</span>
+        <img class="cohort-thumb" src="${rel.thumb_path || rel.wall_path}" alt="${escapeHTML(labelText)}" />
+        <span class="cohort-info" title="${escapeHTML(labelText)}">${escapeHTML(labelText)}</span>
       `;
       chip.addEventListener('click', () => {
         const idx = this.dataService.filteredItems.findIndex(it => it.id === rel.id);
@@ -557,7 +603,7 @@ export class UIController {
     const sourceLabel = { bang_khen: 'Bằng khen', co: 'Cờ thi đua', anh_tu_lieu: 'Ảnh tư liệu', tranh_tang: 'Tranh tặng', pcvt: 'PCVT', dang_bo: 'Đảng bộ', cong_doan: 'Công đoàn', doan_tn: 'Đoàn TN' };
     const orgDisplay = item.org_name || item.org_code || '';
     this.dom.lightboxCaption.innerHTML = `
-      <div style="font-family: var(--font-sans); font-size: 16px; font-weight: 700; color: #facc15; margin-bottom: 4px; letter-spacing: 0.2px;">${item.caption || item.new_name || ''}</div>
+      <div style="font-family: var(--font-sans); font-size: 16px; font-weight: 700; color: #facc15; margin-bottom: 4px; letter-spacing: 0.2px;">${escapeHTML(displayTitle(item) || item.new_name || '')}</div>
       <div style="font-family: var(--font-sans); font-size: 13px; font-weight: 500; color: #cbd5e1;">${sourceLabel[item.source] || item.source} • Năm ${item.year} • ${orgDisplay}</div>
     `;
     this.dom.lightboxModal.classList.remove('hidden');
@@ -584,9 +630,9 @@ export class UIController {
       const el = document.createElement('div');
       el.className = 'catalog-item';
       el.innerHTML = `
-        <img class="catalog-thumb" src="${item.thumb_path || item.wall_path}" alt="${item.caption || ''}" loading="lazy" />
+        <img class="catalog-thumb" src="${item.thumb_path || item.wall_path}" alt="${escapeHTML(displayTitle(item))}" loading="lazy" />
         <div class="catalog-info">
-          <span class="catalog-item-title">${item.caption || item.new_name || ''}</span>
+          <span class="catalog-item-title">${escapeHTML(displayTitle(item) || item.new_name || '')}</span>
           <span class="catalog-item-meta">${item.year} • ${item.org_name || item.org_code || ''} • ${item.source}</span>
         </div>
       `;

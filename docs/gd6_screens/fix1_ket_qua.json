@@ -1,0 +1,447 @@
+{
+ "stats": {
+  "narrativesMerged": 222,
+  "narrativesTotal": 222,
+  "khu3Walls": [
+   {
+    "wallId": "wall_k3_north",
+    "items": 29,
+    "columns": 15,
+    "scale": 1,
+    "usable": 27.6
+   },
+   {
+    "wallId": "wall_k3_far",
+    "items": 45,
+    "columns": 23,
+    "scale": 0.9695409695409695,
+    "usable": 41.6
+   },
+   {
+    "wallId": "wall_k3_south",
+    "items": 14,
+    "columns": 7,
+    "scale": 1,
+    "usable": 13.6
+   }
+  ],
+  "khu3SeqCount": 88,
+  "khu3First": {
+   "id": "pcvt_001_2025-07-23",
+   "date": "2025-07-23",
+   "wallId": "wall_k3_north",
+   "column": 0,
+   "row": "top",
+   "order": 0
+  },
+  "khu3Last": {
+   "id": "pcvt_100_2026-09-20",
+   "date": "2026-09-20",
+   "wallId": "wall_k3_south",
+   "column": 6,
+   "row": "bottom",
+   "order": 87
+  },
+  "seqBad": [],
+  "partitionK3": 0,
+  "rowGap": 0,
+  "insideZone": 0,
+  "rowGapReport": [
+   {
+    "face": "wall_k1_far|1.57",
+    "rowGap": 0.475,
+    "bottomPlaque": 2.085,
+    "boardGap": 0.68
+   },
+   {
+    "face": "wall_k1_north|0.00",
+    "rowGap": 0.475,
+    "bottomPlaque": 2.085,
+    "boardGap": 0.31
+   },
+   {
+    "face": "partition_k1|-1.57",
+    "rowGap": 0.365,
+    "bottomPlaque": 1.36,
+    "boardGap": 0.265
+   },
+   {
+    "face": "partition_k1|1.57",
+    "rowGap": 0.367,
+    "bottomPlaque": 1.36,
+    "boardGap": 0.267
+   },
+   {
+    "face": "wall_k1_south|3.14",
+    "rowGap": 0.425,
+    "bottomPlaque": 2.06,
+    "boardGap": 0.285
+   },
+   {
+    "face": "wall_k2_back|0.00",
+    "rowGap": 0.375,
+    "bottomPlaque": 2.035,
+    "boardGap": 0.63
+   },
+   {
+    "face": "wall_k2_west|1.57",
+    "rowGap": 0.52,
+    "bottomPlaque": 2.107,
+    "boardGap": 0.332
+   },
+   {
+    "face": "wall_k2_east|-1.57",
+    "rowGap": 0.541,
+    "bottomPlaque": 2.107,
+    "boardGap": 0.354
+   },
+   {
+    "face": "wall_k3_north|0.00",
+    "rowGap": 0.475,
+    "bottomPlaque": 2.085,
+    "boardGap": 0.31
+   },
+   {
+    "face": "wall_k3_far|-1.57",
+    "rowGap": 0.502,
+    "bottomPlaque": 2.099,
+    "boardGap": 0.324
+   },
+   {
+    "face": "wall_k3_south|3.14",
+    "rowGap": 0.475,
+    "bottomPlaque": 2.085,
+    "boardGap": 0.31
+   },
+   {
+    "face": "wall_k4_east|-1.57",
+    "rowGap": 0.375,
+    "bottomPlaque": 2.035,
+    "boardGap": 0.26
+   },
+   {
+    "face": "wall_k4_west_hcm|1.57",
+    "rowGap": 0.375,
+    "bottomPlaque": 2.035,
+    "boardGap": 0.26
+   },
+   {
+    "face": "wall_k6_west|1.57",
+    "rowGap": 0.375,
+    "bottomPlaque": 2.035,
+    "boardGap": 0.26
+   },
+   {
+    "face": "wall_k6_east_hcm|-1.57",
+    "rowGap": 0.375,
+    "bottomPlaque": 2.035,
+    "boardGap": 0.26
+   }
+  ],
+  "stretched": 0,
+  "overlap": 0,
+  "boards": [
+   {
+    "face": "wall_k1_north|0.00",
+    "title": "ẢNH TƯ LIỆU 1998 – 2009",
+    "sub": "Ký ức một chặng đường",
+    "w": 13.37,
+    "h": 1.1,
+    "y": 5.8,
+    "lines": 1,
+    "cap": 0.289,
+    "subCap": 0.143
+   },
+   {
+    "face": "partition_k1|-1.57",
+    "title": "TRANH CÁC ĐƠN VỊ TRAO TẶNG",
+    "sub": "Tình cảm của các đơn vị bạn",
+    "w": 9.77,
+    "h": 0.7,
+    "y": 4.82,
+    "lines": 1,
+    "cap": 0.184,
+    "subCap": 0.091
+   },
+   {
+    "face": "partition_k1|1.57",
+    "title": "TRANH CÁC ĐƠN VỊ TRAO TẶNG",
+    "sub": "Tình cảm của các đơn vị bạn",
+    "w": 9.77,
+    "h": 0.7,
+    "y": 4.82,
+    "lines": 1,
+    "cap": 0.184,
+    "subCap": 0.091
+   },
+   {
+    "face": "wall_k1_south|3.14",
+    "title": "TRANH CÁC ĐƠN VỊ TRAO TẶNG",
+    "sub": "Tình cảm của các đơn vị bạn",
+    "w": 8,
+    "h": 1.1,
+    "y": 5.8,
+    "lines": 2,
+    "cap": 0.202,
+    "subCap": 0.143
+   },
+   {
+    "face": "wall_k2_west|1.57",
+    "title": "BẰNG KHEN – CỜ THI ĐUA 1985 – 2025",
+    "sub": "Vinh quang những chặng đường",
+    "w": 14,
+    "h": 1.1,
+    "y": 5.8,
+    "lines": 1,
+    "cap": 0.288,
+    "subCap": 0.145
+   },
+   {
+    "face": "wall_k2_east|-1.57",
+    "title": "BẰNG KHEN – CỜ THI ĐUA 1991 – 2024",
+    "sub": "Vinh quang những chặng đường",
+    "w": 14,
+    "h": 1.1,
+    "y": 5.8,
+    "lines": 1,
+    "cap": 0.288,
+    "subCap": 0.145
+   },
+   {
+    "face": "wall_k3_north|0.00",
+    "title": "THÁNG 7/2025 – THÁNG 2/2026 · NHỮNG NGÀY ĐẦU THÀNH LẬP",
+    "sub": "Công bố thành lập Công ty · Ổn định tổ chức · Đón Xuân Bính Ngọ 2026",
+    "w": 12.47,
+    "h": 1.1,
+    "y": 5.8,
+    "lines": 2,
+    "cap": 0.202,
+    "subCap": 0.145
+   },
+   {
+    "face": "wall_k3_far|-1.57",
+    "title": "THÁNG 3/2026 – THÁNG 7/2026 · VỮNG BƯỚC NĂM ĐẦU TIÊN",
+    "sub": "Hội thao · Hội nghị khách hàng · Tròn 1 năm thành lập · Điện lực Đặc khu Côn Đảo",
+    "w": 14,
+    "h": 1.1,
+    "y": 5.8,
+    "lines": 1,
+    "cap": 0.204,
+    "subCap": 0.145
+   },
+   {
+    "face": "wall_k3_south|3.14",
+    "title": "THÁNG 8/2026 – THÁNG 9/2026 · TIẾP BƯỚC CHẶNG ĐƯỜNG MỚI",
+    "sub": "Đối thoại người lao động · Đào tạo ISO 9001:2015 · Sẵn sàng mùa mưa bão",
+    "w": 8,
+    "h": 1.1,
+    "y": 5.8,
+    "lines": 2,
+    "cap": 0.183,
+    "subCap": 0.084
+   },
+   {
+    "face": "wall_k4_east|-1.57",
+    "title": "02/2026 – 04/2026 · Hoạt động Đảng bộ Công ty",
+    "sub": "26 ảnh tư liệu • Hoạt động Đảng bộ Công ty • Chi bộ Côn Đảo",
+    "w": 14,
+    "h": 1.1,
+    "y": 5.8,
+    "lines": 1,
+    "cap": 0.258,
+    "subCap": 0.145
+   },
+   {
+    "face": "wall_k4_west_hcm|1.57",
+    "title": "04/2026 – 08/2026 · Xây dựng Đảng bộ trong sạch, vững mạnh",
+    "sub": "22 ảnh tư liệu • Chi bộ 3 • Hội nghị sơ kết 6 tháng đầu năm",
+    "w": 14,
+    "h": 1.1,
+    "y": 5.8,
+    "lines": 1,
+    "cap": 0.199,
+    "subCap": 0.145
+   },
+   {
+    "face": "wall_k6_west|1.57",
+    "title": "08/2025 – 03/2026 · Công đoàn Công ty – chăm lo, đồng hành",
+    "sub": "25 ảnh tư liệu • Hoạt động Công đoàn tại phường Vũng Tàu • Bữa cơm Công đoàn",
+    "w": 14,
+    "h": 1.1,
+    "y": 5.8,
+    "lines": 1,
+    "cap": 0.204,
+    "subCap": 0.145
+   },
+   {
+    "face": "wall_k6_east_hcm|-1.57",
+    "title": "10/2025 – 09/2026 · Tuổi trẻ PCVT xung kích, tình nguyện",
+    "sub": "25 ảnh tư liệu • Đại hội đại biểu Đoàn • Góp sức Xuân tình nguyện 2026",
+    "w": 14,
+    "h": 1.1,
+    "y": 5.8,
+    "lines": 1,
+    "cap": 0.219,
+    "subCap": 0.145
+   }
+  ],
+  "mountedKeys": [
+   "wall_k1_far|1.57",
+   "wall_k1_north|0.00",
+   "partition_k1|-1.57",
+   "partition_k1|1.57",
+   "wall_k1_south|3.14",
+   "wall_k2_back|0.00",
+   "wall_k2_west|1.57",
+   "wall_k2_east|-1.57",
+   "wall_k3_north|0.00",
+   "wall_k3_far|-1.57",
+   "wall_k3_south|3.14",
+   "wall_k4_east|-1.57",
+   "wall_k4_west_hcm|1.57",
+   "wall_k6_west|1.57",
+   "wall_k6_east_hcm|-1.57"
+  ]
+ },
+ "walk": {
+  "k3_to_k4_x42": [],
+  "k3_to_k4_x36": [],
+  "k1_to_k6_x42": [],
+  "k1_to_k6_x36": [],
+  "hallEndEastBlocked": [
+   true,
+   true,
+   true
+  ],
+  "hallEndWestBlocked": [
+   true,
+   true,
+   true
+  ],
+  "hasHallEast": true,
+  "hasHallWest": true,
+  "removed": [],
+  "minimapWalls": 34
+ },
+ "cards": [
+  {
+   "id": "pcvt_001_2025-07-23",
+   "title": "Trao đổi nghiệp vụ Tổ chức & Nhân sự giữa PC Thủ Đức và PC Vũng Tàu",
+   "meta": "Ngày 23/07/2025 · Nguồn: Ngôi nhà EVNHCMC",
+   "narrativeVisible": true,
+   "narrativeLen": 2798,
+   "fontSize": "15px",
+   "lineHeight": "24px",
+   "whiteSpace": "pre-line",
+   "maxH": "486px",
+   "overflowY": "auto",
+   "links": [],
+   "tags": 1
+  },
+  {
+   "id": "dang_bo_001_2026-02-06",
+   "title": "Đảng bộ Công ty nghiêm túc học tập, quán triệt Nghị quyết",
+   "meta": "Ngày 06/02/2026 · Nguồn: Ngôi nhà EVNHCMC",
+   "narrativeVisible": true,
+   "narrativeLen": 2494,
+   "fontSize": "15px",
+   "lineHeight": "24px",
+   "whiteSpace": "pre-line",
+   "maxH": "486px",
+   "overflowY": "auto",
+   "links": [],
+   "tags": 1
+  },
+  {
+   "id": "cong_doan_001_2025-08-28",
+   "title": "Bữa cơm Công đoàn – chia sẻ, đoàn kết, gắn bó",
+   "meta": "Ngày 28/08/2025 · Nguồn: Ngôi nhà EVNHCMC",
+   "narrativeVisible": true,
+   "narrativeLen": 1524,
+   "fontSize": "15px",
+   "lineHeight": "24px",
+   "whiteSpace": "pre-line",
+   "maxH": "486px",
+   "overflowY": "auto",
+   "links": [],
+   "tags": 1
+  },
+  {
+   "id": "pcvt_066_2026-06-15",
+   "title": "Họp mặt An toàn vệ sinh viên năm 2026 và tuyên dương An toàn vệ sinh viên tiêu biểu năm 2026",
+   "meta": "Ngày 15/06/2026 · Nguồn: Ngôi nhà EVNHCMC",
+   "narrativeVisible": true,
+   "narrativeLen": 830,
+   "fontSize": "15px",
+   "lineHeight": "24px",
+   "whiteSpace": "pre-line",
+   "maxH": "486px",
+   "overflowY": "auto",
+   "links": [
+    "_blank"
+   ],
+   "tags": 1
+  },
+  {
+   "id": "pcvt_068_2026-06-15",
+   "title": "Họp mặt An toàn vệ sinh viên năm 2026 và tuyên dương An toàn vệ sinh viên tiêu biểu năm 2026",
+   "meta": "Ngày 15/06/2026 · Nguồn: Ngôi nhà EVNHCMC",
+   "narrativeVisible": true,
+   "narrativeLen": 830,
+   "fontSize": "15px",
+   "lineHeight": "24px",
+   "whiteSpace": "pre-line",
+   "maxH": "486px",
+   "overflowY": "auto",
+   "links": [
+    "_blank"
+   ],
+   "tags": 1
+  },
+  {
+   "id": "moc2_01",
+   "title": "Đồng chí Nguyễn Ngọc Tuyến nhận nhiệm vụ Giám đốc Công ty",
+   "meta": "Ngày 01/01/2026",
+   "narrativeVisible": false,
+   "narrativeLen": 0,
+   "fontSize": "15px",
+   "lineHeight": "24px",
+   "whiteSpace": "pre-line",
+   "maxH": "486px",
+   "overflowY": "auto",
+   "links": [],
+   "tags": 0
+  },
+  {
+   "id": "pcvt_011_2025-08-20",
+   "title": "Tập huấn ứng dụng hiện trường CMIS Mobile",
+   "meta": "Ngày 20/08/2025 · Nguồn: Ngôi nhà EVNHCMC",
+   "narrativeVisible": true,
+   "narrativeLen": 1181,
+   "fontSize": "15px",
+   "lineHeight": "24px",
+   "whiteSpace": "pre-line",
+   "maxH": "486px",
+   "overflowY": "auto",
+   "links": [],
+   "tags": 1
+  }
+ ],
+ "album": {
+  "pcvt": {
+   "pages": 100,
+   "matched": 100,
+   "btn": true,
+   "panel": true,
+   "title": "Trao đổi nghiệp vụ Tổ chức & Nhân sự giữa PC Thủ Đức và PC Vũng Tàu"
+  },
+  "doan_the": {
+   "pages": 120,
+   "matched": 120,
+   "btn": true,
+   "panel": true,
+   "title": "Đảng bộ Công ty nghiêm túc học tập, quán triệt Nghị quyết"
+  }
+ },
+ "consoleErrors": []
+}

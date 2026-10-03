@@ -119,6 +119,8 @@ class HeritageApp {
 
       this.uiController.updateLoadingProgress(55, 'Đang bố trí hiện vật lên các vách trưng bày...');
       this.exhibitBuilder = new ExhibitBuilder(this.scene);
+      // GĐ6-fix1: bố trí khu 3 theo dòng thời gian (docs/khu3_bo_tri.json)
+      this.exhibitBuilder.khu3Layout = this.dataService.khu3Layout || null;
       // GĐ3-fix: truyền raw data (chứa toàn bộ items), exhibitBuilder tự lọc treo
       this.exhibitBuilder.buildAllExhibits(this.dataService.raw, (done, total) => {
         const pct = 55 + (done / total) * 30;

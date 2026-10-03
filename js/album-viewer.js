@@ -8,6 +8,8 @@
  * - Realistic dual-page flip with real page-flip.mp3 sound
  * - Individual photo zoom lightbox
  */
+import { renderNarrativeHTML, formatDateVN, escapeHTML, NARRATIVE_SOURCE_LABEL } from './narrative.js';
+
 export class AlbumViewer {
   constructor(app) {
     this.app = app;
@@ -389,11 +391,18 @@ export class AlbumViewer {
 
     // Determine image source and caption
     let imgSrc, title, year, isPainting;
+    let narrativeItem = null;
     if (pageData.full) {
       imgSrc = pageData.thumb || pageData.full;
       title = pageData.caption || '';
       year = pageData.date && pageData.date !== '0' ? pageData.date : '';
       isPainting = false;
+      // GĐ6-fix1 A4: ảnh trùng full_path / wall_path / tên file với thuyet_minh_anh.json
+      const ds = this.app?.dataService;
+      if (ds && typeof ds.findNarrativeItemByPath === 'function') {
+        narrativeItem = ds.findNarrativeItemByPath(pageData.full) || ds.findNarrativeItemByPath(pageData.thumb);
+        if (narrativeItem && narrativeItem.tieu_de) title = narrativeItem.tieu_de;
+      }
     } else if (pageData.item) {
       const item = pageData.item;
       imgSrc = item.src;
@@ -406,6 +415,10 @@ export class AlbumViewer {
     }
 
     const yearBadge = year ? `<span class="photo-badge-year">${year}</span>` : '';
+    const hasNarrative = !!(narrativeItem && narrativeItem.thuyet_minh);
+    const narrativeBtn = hasNarrative
+      ? `<button type="button" class="album-narrative-btn"><i data-lucide="book-open-text"></i> Xem thuyết minh</button>`
+      : '';
 
     container.innerHTML = `
       <div class="page-inner page-photo-layout">
@@ -420,7 +433,7 @@ export class AlbumViewer {
           <div class="photo-corner corner-bl"></div>
           <div class="photo-corner corner-br"></div>
           
-          <img src="${imgSrc}" alt="${title}" class="album-photo-img-tag" loading="lazy" />
+          <img src="${imgSrc}" alt="${escapeHTML(title)}" class="album-photo-img-tag" loading="lazy" />
           
           <div class="photo-zoom-hint">
             <i data-lucide="maximize-2"></i>
@@ -429,12 +442,42 @@ export class AlbumViewer {
         </div>
 
         <div class="photo-caption-box">
-          <h4 class="photo-title">${title}</h4>
+          <h4 class="photo-title">${escapeHTML(title)}</h4>
+          ${narrativeBtn}
         </div>
 
         <div class="page-footer-num">${pageNum}</div>
       </div>
     `;
+
+    // GĐ6-fix1 A4: nút "Xem thuyết minh" mở rộng ra nguyên văn (phủ lên trang, có thanh cuộn)
+    if (hasNarrative) {
+      const btn = container.querySelector('.album-narrative-btn');
+      const inner = container.querySelector('.page-inner');
+      btn?.addEventListener('click', (e) => {
+        e.stopPropagation();
+        if (inner.querySelector('.album-narrative-panel')) return;
+        const panel = document.createElement('div');
+        panel.className = 'album-narrative-panel';
+        panel.innerHTML = `
+          <div class="album-narrative-head">
+            <div>
+              <div class="album-narrative-title">${escapeHTML(narrativeItem.tieu_de || title)}</div>
+              <div class="album-narrative-meta">Ngày ${formatDateVN(narrativeItem.tm_ngay || narrativeItem.date)} · Nguồn: ${NARRATIVE_SOURCE_LABEL}</div>
+            </div>
+            <button type="button" class="album-narrative-close" title="Thu gọn">×</button>
+          </div>
+          <div class="album-narrative-text">${renderNarrativeHTML(narrativeItem.thuyet_minh)}</div>
+        `;
+        panel.addEventListener('click', ev => ev.stopPropagation());
+        panel.addEventListener('wheel', ev => ev.stopPropagation(), { passive: true });
+        panel.querySelector('.album-narrative-close').addEventListener('click', ev => {
+          ev.stopPropagation();
+          panel.remove();
+        });
+        inner.appendChild(panel);
+      });
+    }
 
     // Click on photo to open lightbox
     const frame = container.querySelector('.photo-frame-wrapper');
