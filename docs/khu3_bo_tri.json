@@ -1,20 +1,16 @@
 {
- "ghi_chu": "Thứ tự trái→phải theo hướng người xem; treo theo CỘT (ảnh chẵn tầng trên, ảnh lẻ tầng dưới). Tất cả 88 ảnh PCVT không thuộc vách mốc son đều treo (treo=true).",
+ "phien_ban": "GĐ6-fix2 (05/10/2026)",
+ "ghi_chu": "Mỗi sự kiện chỉ 1 ảnh, sự kiện quan trọng 2 ảnh; ảnh đã có trên vách mốc son được tính trước (sự kiện đã có trên vách mốc son thì tường bao không treo thêm). Ảnh không có trong file này: treo=false, vẫn xem được trong album và thẻ \"Ảnh cùng sự kiện\". Thứ tự trái→phải theo hướng người xem; treo theo CỘT (ảnh 1 tầng trên, ảnh 2 tầng dưới). wall_k3_south_half = đoạn tường Nam x 34→50 (sau khi đảo).",
  "tuong": [
   {
    "tuong": "wall_k3_north",
    "rotY": "0",
    "bang_tieu_de": "THÁNG 7/2025 – THÁNG 2/2026 · NHỮNG NGÀY ĐẦU THÀNH LẬP",
    "dong_phu": "Công bố thành lập Công ty · Ổn định tổ chức · Đón Xuân Bính Ngọ 2026",
-   "so_anh": 29,
+   "so_anh": 15,
    "thu_tu_anh": [
     {
      "id": "pcvt_001_2025-07-23",
-     "ngay": "2025-07-23",
-     "tieu_de": "Trao đổi nghiệp vụ Tổ chức & Nhân sự giữa PC Thủ Đức và PC Vũng Tàu"
-    },
-    {
-     "id": "pcvt_002_2025-07-23",
      "ngay": "2025-07-23",
      "tieu_de": "Trao đổi nghiệp vụ Tổ chức & Nhân sự giữa PC Thủ Đức và PC Vũng Tàu"
     },
@@ -29,34 +25,9 @@
      "tieu_de": "Hội thi, kiểm tra sát hạch an toàn điện năm 2025"
     },
     {
-     "id": "pcvt_008_2025-08-11",
-     "ngay": "2025-08-11",
-     "tieu_de": "Hội thi, kiểm tra sát hạch an toàn điện năm 2025"
-    },
-    {
-     "id": "pcvt_010_2025-08-13",
-     "ngay": "2025-08-13",
-     "tieu_de": "Đoàn công tác EVNHCMC kiểm tra các công trình đầu tư xây dựng"
-    },
-    {
      "id": "pcvt_011_2025-08-20",
      "ngay": "2025-08-20",
      "tieu_de": "Tập huấn ứng dụng hiện trường CMIS Mobile"
-    },
-    {
-     "id": "pcvt_013_2025-08-27",
-     "ngay": "2025-08-27",
-     "tieu_de": "Chủ tịch HĐTV EVNHCMC Phạm Quốc Bảo làm việc với Công ty"
-    },
-    {
-     "id": "pcvt_015_2025-08-29",
-     "ngay": "2025-08-29",
-     "tieu_de": "Hội nghị đối thoại người lao động"
-    },
-    {
-     "id": "pcvt_016_2025-08-29",
-     "ngay": "2025-08-29",
-     "tieu_de": "Hội nghị đối thoại người lao động"
     },
     {
      "id": "pcvt_017_2025-09-04",
@@ -79,11 +50,6 @@
      "tieu_de": "Lễ công bố quyết định về công tác cán bộ"
     },
     {
-     "id": "pcvt_021_2026-01-16",
-     "ngay": "2026-01-16",
-     "tieu_de": "Lễ công bố quyết định về công tác cán bộ"
-    },
-    {
      "id": "pcvt_022_2026-01-22",
      "ngay": "2026-01-22",
      "tieu_de": "Giải đi bộ lần I năm 2026 – chinh phục thử thách"
@@ -94,22 +60,7 @@
      "tieu_de": "Giải đi bộ lần I năm 2026 – chinh phục thử thách"
     },
     {
-     "id": "pcvt_024_2026-01-22",
-     "ngay": "2026-01-22",
-     "tieu_de": "Giải đi bộ lần I năm 2026 – chinh phục thử thách"
-    },
-    {
-     "id": "pcvt_025_2026-01-22",
-     "ngay": "2026-01-22",
-     "tieu_de": "Giải đi bộ lần I năm 2026 – chinh phục thử thách"
-    },
-    {
      "id": "pcvt_026_2026-01-31",
-     "ngay": "2026-01-31",
-     "tieu_de": "Vinh danh hai \"đôi chân vàng\" của Công ty Điện lực Vũng Tàu"
-    },
-    {
-     "id": "pcvt_027_2026-01-31",
      "ngay": "2026-01-31",
      "tieu_de": "Vinh danh hai \"đôi chân vàng\" của Công ty Điện lực Vũng Tàu"
     },
@@ -124,32 +75,12 @@
      "tieu_de": "Lan tỏa khí thế Xuân 2026 từ Côn Đảo"
     },
     {
-     "id": "pcvt_030_2026-02-02",
-     "ngay": "2026-02-02",
-     "tieu_de": "Lan tỏa khí thế Xuân 2026 từ Côn Đảo"
-    },
-    {
-     "id": "pcvt_031_2026-02-02",
-     "ngay": "2026-02-02",
-     "tieu_de": "Lan tỏa khí thế Xuân 2026 từ Côn Đảo"
-    },
-    {
-     "id": "pcvt_032_2026-02-07",
-     "ngay": "2026-02-07",
-     "tieu_de": "Sắc xuân 2026 tại Đội QLVH Tổng hợp Đặc khu Côn Đảo"
-    },
-    {
      "id": "pcvt_033_2026-02-07",
      "ngay": "2026-02-07",
      "tieu_de": "Sắc xuân 2026 tại Đội QLVH Tổng hợp Đặc khu Côn Đảo"
     },
     {
      "id": "pcvt_034_2026-02-12",
-     "ngay": "2026-02-12",
-     "tieu_de": "Côn Đảo sẵn sàng đảm bảo điện an toàn, ổn định"
-    },
-    {
-     "id": "pcvt_035_2026-02-12",
      "ngay": "2026-02-12",
      "tieu_de": "Côn Đảo sẵn sàng đảm bảo điện an toàn, ổn định"
     }
@@ -160,13 +91,8 @@
    "rotY": "-PI/2",
    "bang_tieu_de": "THÁNG 3/2026 – THÁNG 7/2026 · VỮNG BƯỚC NĂM ĐẦU TIÊN",
    "dong_phu": "Hội thao · Hội nghị khách hàng · Tròn 1 năm thành lập · Điện lực Đặc khu Côn Đảo",
-   "so_anh": 45,
+   "so_anh": 20,
    "thu_tu_anh": [
-    {
-     "id": "pcvt_036_2026-03-14",
-     "ngay": "2026-03-14",
-     "tieu_de": "Đảm bảo điện phục vụ Ngày hội non sông 15/3/2026"
-    },
     {
      "id": "pcvt_037_2026-03-14",
      "ngay": "2026-03-14",
@@ -174,21 +100,6 @@
     },
     {
      "id": "pcvt_038_2026-03-17",
-     "ngay": "2026-03-17",
-     "tieu_de": "Nhịp nhàng phối hợp trên tuyến 480 Thanh Bình"
-    },
-    {
-     "id": "pcvt_039_2026-03-17",
-     "ngay": "2026-03-17",
-     "tieu_de": "Nhịp nhàng phối hợp trên tuyến 480 Thanh Bình"
-    },
-    {
-     "id": "pcvt_040_2026-03-17",
-     "ngay": "2026-03-17",
-     "tieu_de": "Nhịp nhàng phối hợp trên tuyến 480 Thanh Bình"
-    },
-    {
-     "id": "pcvt_041_2026-03-17",
      "ngay": "2026-03-17",
      "tieu_de": "Nhịp nhàng phối hợp trên tuyến 480 Thanh Bình"
     },
@@ -203,17 +114,7 @@
      "tieu_de": "Giải Nhất toàn đoàn Hội thao CNVC-LĐ EVNHCMC 2026"
     },
     {
-     "id": "pcvt_044_2026-03-25",
-     "ngay": "2026-03-25",
-     "tieu_de": "Hội nghị các giải pháp cung ứng điện và dịch vụ điện"
-    },
-    {
      "id": "pcvt_045_2026-03-25",
-     "ngay": "2026-03-25",
-     "tieu_de": "Hội nghị các giải pháp cung ứng điện và dịch vụ điện"
-    },
-    {
-     "id": "pcvt_046_2026-03-25",
      "ngay": "2026-03-25",
      "tieu_de": "Hội nghị các giải pháp cung ứng điện và dịch vụ điện"
     },
@@ -221,21 +122,6 @@
      "id": "pcvt_047_2026-03-27",
      "ngay": "2026-03-27",
      "tieu_de": "Hưởng ứng Giờ Trái Đất 2026 tại Côn Đảo"
-    },
-    {
-     "id": "pcvt_048_2026-03-27",
-     "ngay": "2026-03-27",
-     "tieu_de": "Hưởng ứng Giờ Trái Đất 2026 tại Côn Đảo"
-    },
-    {
-     "id": "pcvt_050_2026-04-03",
-     "ngay": "2026-04-03",
-     "tieu_de": "Tổng Giám đốc EVNHCMC làm việc với PC Vũng Tàu và PC Đất Đỏ"
-    },
-    {
-     "id": "pcvt_051_2026-04-03",
-     "ngay": "2026-04-03",
-     "tieu_de": "Tổng Giám đốc EVNHCMC làm việc với PC Vũng Tàu và PC Đất Đỏ"
     },
     {
      "id": "pcvt_052_2026-04-14",
@@ -263,11 +149,6 @@
      "tieu_de": "Chăm lo sức khỏe CBCNV tại Đặc khu Côn Đảo"
     },
     {
-     "id": "pcvt_057_2026-05-15",
-     "ngay": "2026-05-15",
-     "tieu_de": "Chăm lo sức khỏe CBCNV tại Đặc khu Côn Đảo"
-    },
-    {
      "id": "pcvt_058_2026-05-22",
      "ngay": "2026-05-22",
      "tieu_de": "Hưởng ứng Tháng hành động về An toàn, vệ sinh lao động"
@@ -278,32 +159,12 @@
      "tieu_de": "Khởi đầu tuần mới lan tỏa năng lượng tích cực"
     },
     {
-     "id": "pcvt_060_2026-05-24",
-     "ngay": "2026-05-24",
-     "tieu_de": "Khởi đầu tuần mới lan tỏa năng lượng tích cực"
-    },
-    {
-     "id": "pcvt_061_2026-05-24",
-     "ngay": "2026-05-24",
-     "tieu_de": "Khởi đầu tuần mới lan tỏa năng lượng tích cực"
-    },
-    {
      "id": "pcvt_062_2026-05-31",
      "ngay": "2026-05-31",
      "tieu_de": "Lễ chào cờ đầu tuần – tri ân và chia tay"
     },
     {
-     "id": "pcvt_063_2026-06-11",
-     "ngay": "2026-06-11",
-     "tieu_de": "Điện lực Côn Đảo tiếp sức mùa thi"
-    },
-    {
      "id": "pcvt_064_2026-06-11",
-     "ngay": "2026-06-11",
-     "tieu_de": "Điện lực Côn Đảo tiếp sức mùa thi"
-    },
-    {
-     "id": "pcvt_065_2026-06-11",
      "ngay": "2026-06-11",
      "tieu_de": "Điện lực Côn Đảo tiếp sức mùa thi"
     },
@@ -318,34 +179,9 @@
      "tieu_de": "Họp mặt An toàn vệ sinh viên năm 2026 và tuyên dương An toàn vệ sinh viên tiêu biểu năm 2026"
     },
     {
-     "id": "pcvt_068_2026-06-15",
-     "ngay": "2026-06-15",
-     "tieu_de": "Họp mặt An toàn vệ sinh viên năm 2026 và tuyên dương An toàn vệ sinh viên tiêu biểu năm 2026"
-    },
-    {
-     "id": "pcvt_072_2026-07-01",
-     "ngay": "2026-07-01",
-     "tieu_de": "Hội diễn Karaoke CBCNV mừng 1 năm thành lập Công ty"
-    },
-    {
      "id": "pcvt_073_2026-07-06",
      "ngay": "2026-07-06",
      "tieu_de": "Lễ công bố thành lập Điện lực Đặc khu Côn Đảo"
-    },
-    {
-     "id": "pcvt_074_2026-07-06",
-     "ngay": "2026-07-06",
-     "tieu_de": "Lễ công bố thành lập Điện lực Đặc khu Côn Đảo"
-    },
-    {
-     "id": "pcvt_076_2026-07-08",
-     "ngay": "2026-07-08",
-     "tieu_de": "Điện lực Đặc khu Côn Đảo – dấu mốc mới, khởi đầu chặng đường phát triển"
-    },
-    {
-     "id": "pcvt_077_2026-07-08",
-     "ngay": "2026-07-08",
-     "tieu_de": "Điện lực Đặc khu Côn Đảo – dấu mốc mới, khởi đầu chặng đường phát triển"
     },
     {
      "id": "pcvt_078_2026-07-13",
@@ -353,37 +189,7 @@
      "tieu_de": "Huấn luyện sơ cứu, cấp cứu năm 2026"
     },
     {
-     "id": "pcvt_079_2026-07-13",
-     "ngay": "2026-07-13",
-     "tieu_de": "Huấn luyện sơ cứu, cấp cứu năm 2026"
-    },
-    {
-     "id": "pcvt_081_2026-07-16",
-     "ngay": "2026-07-16",
-     "tieu_de": "Hội nghị sơ kết 6 tháng đầu năm"
-    },
-    {
-     "id": "pcvt_082_2026-07-16",
-     "ngay": "2026-07-16",
-     "tieu_de": "Hội nghị sơ kết 6 tháng đầu năm"
-    },
-    {
-     "id": "pcvt_083_2026-07-16",
-     "ngay": "2026-07-16",
-     "tieu_de": "Hội nghị sơ kết 6 tháng đầu năm"
-    },
-    {
      "id": "pcvt_084_2026-07-19",
-     "ngay": "2026-07-19",
-     "tieu_de": "Khóa đào tạo gắn kết văn hóa Cụm 3 tại PC Vũng Tàu"
-    },
-    {
-     "id": "pcvt_085_2026-07-19",
-     "ngay": "2026-07-19",
-     "tieu_de": "Khóa đào tạo gắn kết văn hóa Cụm 3 tại PC Vũng Tàu"
-    },
-    {
-     "id": "pcvt_086_2026-07-19",
      "ngay": "2026-07-19",
      "tieu_de": "Khóa đào tạo gắn kết văn hóa Cụm 3 tại PC Vũng Tàu"
     }
@@ -394,20 +200,10 @@
    "rotY": "PI",
    "bang_tieu_de": "THÁNG 8/2026 – THÁNG 9/2026 · TIẾP BƯỚC CHẶNG ĐƯỜNG MỚI",
    "dong_phu": "Đối thoại người lao động · Đào tạo ISO 9001:2015 · Sẵn sàng mùa mưa bão",
-   "so_anh": 14,
+   "so_anh": 5,
    "thu_tu_anh": [
     {
      "id": "pcvt_087_2026-08-04",
-     "ngay": "2026-08-04",
-     "tieu_de": "Hội nghị đối thoại người lao động năm 2026"
-    },
-    {
-     "id": "pcvt_088_2026-08-04",
-     "ngay": "2026-08-04",
-     "tieu_de": "Hội nghị đối thoại người lao động năm 2026"
-    },
-    {
-     "id": "pcvt_089_2026-08-04",
      "ngay": "2026-08-04",
      "tieu_de": "Hội nghị đối thoại người lao động năm 2026"
     },
@@ -417,22 +213,7 @@
      "tieu_de": "Hành trình tái tạo năng lượng tại Nhà máy Thủy điện Trị An"
     },
     {
-     "id": "pcvt_091_2026-08-09",
-     "ngay": "2026-08-09",
-     "tieu_de": "Hành trình tái tạo năng lượng tại Nhà máy Thủy điện Trị An"
-    },
-    {
-     "id": "pcvt_092_2026-08-09",
-     "ngay": "2026-08-09",
-     "tieu_de": "Hành trình tái tạo năng lượng tại Nhà máy Thủy điện Trị An"
-    },
-    {
      "id": "pcvt_093_2026-09-10",
-     "ngay": "2026-09-10",
-     "tieu_de": "Côn Đảo cùng bước – lan tỏa năng lượng tích cực"
-    },
-    {
-     "id": "pcvt_094_2026-09-10",
      "ngay": "2026-09-10",
      "tieu_de": "Côn Đảo cùng bước – lan tỏa năng lượng tích cực"
     },
@@ -442,27 +223,7 @@
      "tieu_de": "Khóa đào tạo ISO 9001:2015 nâng cao hiệu quả vận hành"
     },
     {
-     "id": "pcvt_096_2026-09-15",
-     "ngay": "2026-09-15",
-     "tieu_de": "Khóa đào tạo ISO 9001:2015 nâng cao hiệu quả vận hành"
-    },
-    {
-     "id": "pcvt_097_2026-09-15",
-     "ngay": "2026-09-15",
-     "tieu_de": "Khóa đào tạo ISO 9001:2015 nâng cao hiệu quả vận hành"
-    },
-    {
      "id": "pcvt_098_2026-09-20",
-     "ngay": "2026-09-20",
-     "tieu_de": "Chủ động đảm bảo an toàn lưới điện mùa mưa"
-    },
-    {
-     "id": "pcvt_099_2026-09-20",
-     "ngay": "2026-09-20",
-     "tieu_de": "Chủ động đảm bảo an toàn lưới điện mùa mưa"
-    },
-    {
-     "id": "pcvt_100_2026-09-20",
      "ngay": "2026-09-20",
      "tieu_de": "Chủ động đảm bảo an toàn lưới điện mùa mưa"
     }

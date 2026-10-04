@@ -1,5 +1,5 @@
 import * as THREE from 'three';
-import { WALLS, PARTITIONS, WALL_HEIGHT, PARTITION_HEIGHT, FLOORS } from './layout-config.js';
+import { WALLS, PARTITIONS, WALL_HEIGHT, PARTITION_HEIGHT, FLOORS, ALBUM_CABINETS } from './layout-config.js';
 
 /**
  * Museum Architect (Artsteps Standard)
@@ -926,10 +926,10 @@ export class MuseumArchitect {
     this.createZoneTitleBoard({
       badge: 'KHU 3',
       title: 'VỮNG BƯỚC KỶ NGUYÊN MỚI',
-      subtitle: 'Lưới điện thông minh · Tự động hóa · Chuyển đổi số',
+      subtitle: 'CHẶNG ĐƯỜNG MỚI · Lưới điện thông minh · Tự động hóa · Chuyển đổi số',
       theme: 'khu3',
-      w: 12.0, h: 2.2,
-      pos: { x: 34.65, y: 6.45, z: 0 },
+      w: 10.0, h: 1.6,
+      pos: { x: 34.65, y: 5.85, z: 0 },
       rotY: -Math.PI / 2,
       parent
     });
@@ -1737,7 +1737,7 @@ export class MuseumArchitect {
 
     const cabinetConfigs = [
       {
-        pos: [-6.5, -6.5], rotY: Math.PI / 4,
+        pos: [ALBUM_CABINETS[0].position.x, ALBUM_CABINETS[0].position.z], rotY: ALBUM_CABINETS[0].rotY,
         label: 'KÝ ỨC & VINH DANH',
         albums: [
           { id: 'souvenir', title: 'Ảnh Lưu Niệm', subtitle: 'Ký ức 1985–2009 & Tranh tặng',
@@ -1749,7 +1749,7 @@ export class MuseumArchitect {
         ]
       },
       {
-        pos: [6.5, -6.5], rotY: -Math.PI / 4,
+        pos: [ALBUM_CABINETS[1].position.x, ALBUM_CABINETS[1].position.z], rotY: ALBUM_CABINETS[1].rotY,
         label: 'HÔM NAY & ĐOÀN THỂ',
         albums: [
           { id: 'pcvt', title: 'Công ty Điện lực Vũng Tàu', subtitle: 'Hoạt động 7/2025 – 9/2026',
@@ -2305,22 +2305,7 @@ export class MuseumArchitect {
     const flagGap = 40;
     const centerY = 220;
 
-    // Cán cờ vàng cắm chéo nhẹ ±12°
-    pctx.save();
-    pctx.strokeStyle = '#facc15';
-    pctx.lineWidth = 10;
-    pctx.lineCap = 'round';
-    // Cán cờ trái (+12°)
-    pctx.beginPath();
-    pctx.moveTo(1024 - flagGap / 2 - flagW - 10, centerY - flagH / 2 - 20);
-    pctx.lineTo(1024 - flagGap / 2 + 30, centerY + flagH / 2 + 80);
-    pctx.stroke();
-    // Cán cờ phải (-12°)
-    pctx.beginPath();
-    pctx.moveTo(1024 + flagGap / 2 + flagW + 10, centerY - flagH / 2 - 20);
-    pctx.lineTo(1024 + flagGap / 2 - 30, centerY + flagH / 2 + 80);
-    pctx.stroke();
-    pctx.restore();
+    // GĐ6-fix2 F2: đã bỏ cán cờ vàng cắm chéo (cờ phẳng, không cán)
 
     // Vị trí cờ Đảng (trái)
     const leftX = 1024 - flagGap / 2 - flagW;
@@ -2329,57 +2314,20 @@ export class MuseumArchitect {
     const rightX = 1024 + flagGap / 2;
     const rightY = centerY - flagH / 2;
 
-    // Vẽ khung cờ đỏ chuẩn bị sẵn
-    pctx.fillStyle = '#da251d';
-    pctx.fillRect(leftX, leftY, flagW, flagH);
-    pctx.fillRect(rightX, rightY, flagW, flagH);
-
-    pctx.strokeStyle = '#facc15';
-    pctx.lineWidth = 2;
-    pctx.strokeRect(leftX, leftY, flagW, flagH);
-    pctx.strokeRect(rightX, rightY, flagW, flagH);
-
-    // Vẽ cờ theo đúng tỷ lệ gốc của file (fit trong ô 300x200, không kéo giãn - Mục D.3)
-    const drawFlagFitted = (img, x, y, maxW, maxH) => {
-      const imgAspect = (img.naturalWidth || img.width) / (img.naturalHeight || img.height);
-      const boxAspect = maxW / maxH;
-      let drawW, drawH;
-      if (imgAspect > boxAspect) {
-        drawW = maxW;
-        drawH = maxW / imgAspect;
-      } else {
-        drawH = maxH;
-        drawW = maxH * imgAspect;
-      }
-      const drawX = x + (maxW - drawW) / 2;
-      const drawY = y + (maxH - drawH) / 2;
-      pctx.drawImage(img, drawX, drawY, drawW, drawH);
+    // GĐ6-fix2 F2: cờ PHẲNG (file co_dang_phang.png / quoc_ky_phang.png) — vẽ đúng 300×200, không cán, viền vàng 2px
+    const drawFlatFlag = (src, x, y) => {
+      const im = new Image();
+      im.onload = () => {
+        pctx.drawImage(im, x, y, 300, 200);
+        pctx.strokeStyle = '#facc15';
+        pctx.lineWidth = 2;
+        pctx.strokeRect(x, y, 300, 200);
+        portraitTex.needsUpdate = true;
+      };
+      im.src = src;
     };
-
-    // Load file logo cờ chính thức (Mục D.2: bỏ vẽ dự phòng lộ viền)
-    const imgDang = new Image();
-    imgDang.onload = () => {
-      pctx.fillStyle = '#da251d';
-      pctx.fillRect(leftX, leftY, flagW, flagH);
-      drawFlagFitted(imgDang, leftX, leftY, flagW, flagH);
-      pctx.strokeStyle = '#facc15';
-      pctx.lineWidth = 2;
-      pctx.strokeRect(leftX, leftY, flagW, flagH);
-      portraitTex.needsUpdate = true;
-    };
-    imgDang.src = 'assets/logo/co_dang.png';
-
-    const imgQuocKy = new Image();
-    imgQuocKy.onload = () => {
-      pctx.fillStyle = '#da251d';
-      pctx.fillRect(rightX, rightY, flagW, flagH);
-      drawFlagFitted(imgQuocKy, rightX, rightY, flagW, flagH);
-      pctx.strokeStyle = '#facc15';
-      pctx.lineWidth = 2;
-      pctx.strokeRect(rightX, rightY, flagW, flagH);
-      portraitTex.needsUpdate = true;
-    };
-    imgQuocKy.src = 'assets/logo/co_to_quoc.png';
+    drawFlatFlag('assets/logo/co_dang_phang.png', leftX, leftY);
+    drawFlatFlag('assets/logo/quoc_ky_phang.png', rightX, rightY);
 
     // Căn giữa chữ toàn bộ màn hình HCM (Mục D.1)
     pctx.textAlign = 'center';
@@ -3047,7 +2995,8 @@ export class MuseumArchitect {
 
       const img = new Image();
       img.onload = () => {
-        ctx.drawImage(img, 106, 260, 300, 300);
+        // GĐ6-fix2 F1: biểu tượng (búa liềm / sao vàng) 300×300 tâm (256, 420)
+        ctx.drawImage(img, 106, (logoPath.includes('bua_liem_vang') || logoPath.includes('sao_vang')) ? 270 : 260, 300, 300);
         tex.needsUpdate = true;
       };
       img.src = logoPath;
@@ -3057,8 +3006,8 @@ export class MuseumArchitect {
       return tex;
     };
 
-    const flagDangTex = createFlagStandTexture('#b91c1c', 'assets/logo/co_dang.png', 'CỜ ĐẢNG');
-    const flagQuocKyTex = createFlagStandTexture('#da251d', 'assets/logo/co_to_quoc.png', 'QUỐC KỲ');
+    const flagDangTex = createFlagStandTexture('#DA251D', 'assets/logo/bua_liem_vang.png', 'CỜ ĐẢNG');
+    const flagQuocKyTex = createFlagStandTexture('#DA251D', 'assets/logo/sao_vang.png', 'QUỐC KỲ');
     const flagCongDoanTex = createFlagStandTexture('#004b93', 'assets/logo/logo_cong_doan.png', 'CÔNG ĐOÀN');
     const flagDoanTnTex = createFlagStandTexture('#0284c7', 'assets/logo/logo_doan_tn.png', 'ĐOÀN TN');
 

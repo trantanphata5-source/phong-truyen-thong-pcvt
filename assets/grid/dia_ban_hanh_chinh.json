@@ -1,0 +1,577 @@
+{
+ "phien_ban": "GĐ6-fix2 (05/10/2026)",
+ "nguon": "Danh sách 14 phường/xã/đặc khu và vị trí trạm lấy từ assets/grid/pcvt_grid_v2.json (dựng từ bản vẽ PDF). Trạm được gán phường/xã mới theo vị trí ký hiệu trên bản đồ. Từ 01/7/2025 các phường/xã này thuộc TP. Hồ Chí Minh; Điện lực Đặc khu Côn Đảo công bố thành lập ngày 06/7/2026.",
+ "phuong": {
+  "P. Tân Thành": {
+   "ten_day_du": "Phường Tân Thành",
+   "loai_don_vi": "Phường",
+   "truc_thuoc": "Thành phố Hồ Chí Minh",
+   "don_vi_quan_ly_dien": "Công ty Điện lực Vũng Tàu",
+   "tram_tren_dia_ban": "Không có trạm 110 kV trở lên của lưới; 1 trạm khách hàng 110 kV",
+   "so_tram_luoi": {},
+   "so_tram_khach_hang": 1,
+   "tram_ids": [
+    "tba_kh_thep_dong_tien"
+   ]
+  },
+  "Xã Châu Pha": {
+   "ten_day_du": "Xã Châu Pha",
+   "loai_don_vi": "Xã",
+   "truc_thuoc": "Thành phố Hồ Chí Minh",
+   "don_vi_quan_ly_dien": "Công ty Điện lực Vũng Tàu",
+   "tram_tren_dia_ban": "1 trạm 110kV",
+   "so_tram_luoi": {
+    "110kV": 1
+   },
+   "so_tram_khach_hang": 0,
+   "tram_ids": [
+    "tba_110_toc_tien"
+   ]
+  },
+  "P. Phú Mỹ": {
+   "ten_day_du": "Phường Phú Mỹ",
+   "loai_don_vi": "Phường",
+   "truc_thuoc": "Thành phố Hồ Chí Minh",
+   "don_vi_quan_ly_dien": "Công ty Điện lực Vũng Tàu",
+   "tram_tren_dia_ban": "1 trạm 500kV, 2 trạm 220kV, 4 trạm 110kV; 9 trạm khách hàng 110 kV",
+   "so_tram_luoi": {
+    "500kV": 1,
+    "220kV": 2,
+    "110kV": 4
+   },
+   "so_tram_khach_hang": 9,
+   "tram_ids": [
+    "tba_500_phu_my",
+    "tba_220_my_xuan",
+    "tba_220_phu_my",
+    "tba_110_my_xuan_a",
+    "tba_110_my_xuan_a2",
+    "tba_110_my_xuan_b1",
+    "tba_110_phu_my",
+    "tba_kh_china_steel",
+    "tba_kh_vina_kyoei",
+    "tba_kh_thep_viet",
+    "tba_kh_pomina",
+    "tba_kh_pomina_2",
+    "tba_kh_ton_hoa_sen",
+    "tba_kh_thep_mien_nam",
+    "tba_kh_pos_vina",
+    "tba_kh_posco"
+   ]
+  },
+  "P. Tân Phước": {
+   "ten_day_du": "Phường Tân Phước",
+   "loai_don_vi": "Phường",
+   "truc_thuoc": "Thành phố Hồ Chí Minh",
+   "don_vi_quan_ly_dien": "Công ty Điện lực Vũng Tàu",
+   "tram_tren_dia_ban": "1 trạm 220kV, 5 trạm 110kV; 4 trạm khách hàng 110 kV",
+   "so_tram_luoi": {
+    "220kV": 1,
+    "110kV": 5
+   },
+   "so_tram_khach_hang": 4,
+   "tram_ids": [
+    "tba_220_tan_thanh",
+    "tba_110_tan_hanh",
+    "tba_110_tan_phuoc",
+    "tba_110_thi_vai",
+    "tba_110_thanh_binh",
+    "tba_110_cai_mep",
+    "tba_kh_lgas",
+    "tba_kh_hyosung_core",
+    "tba_kh_hyosung_chem",
+    "tba_kh_fuco"
+   ]
+  },
+  "P. Tân Hải": {
+   "ten_day_du": "Phường Tân Hải",
+   "loai_don_vi": "Phường",
+   "truc_thuoc": "Thành phố Hồ Chí Minh",
+   "don_vi_quan_ly_dien": "Công ty Điện lực Vũng Tàu",
+   "tram_tren_dia_ban": "1 trạm 220kV",
+   "so_tram_luoi": {
+    "220kV": 1
+   },
+   "so_tram_khach_hang": 0,
+   "tram_ids": [
+    "tba_220_phu_my_3"
+   ]
+  },
+  "P. Long Hương": {
+   "ten_day_du": "Phường Long Hương",
+   "loai_don_vi": "Phường",
+   "truc_thuoc": "Thành phố Hồ Chí Minh",
+   "don_vi_quan_ly_dien": "Công ty Điện lực Vũng Tàu",
+   "tram_tren_dia_ban": "1 trạm 220kV, 2 trạm 110kV",
+   "so_tram_luoi": {
+    "220kV": 1,
+    "110kV": 2
+   },
+   "so_tram_khach_hang": 0,
+   "tram_ids": [
+    "tba_220_ba_ria",
+    "tba_110_ba_ria",
+    "tba_110_ba_ria_2"
+   ]
+  },
+  "P. Tam Long": {
+   "ten_day_du": "Phường Tam Long",
+   "loai_don_vi": "Phường",
+   "truc_thuoc": "Thành phố Hồ Chí Minh",
+   "don_vi_quan_ly_dien": "Công ty Điện lực Vũng Tàu",
+   "tram_tren_dia_ban": "Không có trạm 110 kV trở lên của lưới",
+   "so_tram_luoi": {},
+   "so_tram_khach_hang": 0,
+   "tram_ids": []
+  },
+  "P. Bà Rịa": {
+   "ten_day_du": "Phường Bà Rịa",
+   "loai_don_vi": "Phường",
+   "truc_thuoc": "Thành phố Hồ Chí Minh",
+   "don_vi_quan_ly_dien": "Công ty Điện lực Vũng Tàu",
+   "tram_tren_dia_ban": "Không có trạm 110 kV trở lên của lưới",
+   "so_tram_luoi": {},
+   "so_tram_khach_hang": 0,
+   "tram_ids": []
+  },
+  "Xã Long Sơn": {
+   "ten_day_du": "Xã Long Sơn",
+   "loai_don_vi": "Xã",
+   "truc_thuoc": "Thành phố Hồ Chí Minh",
+   "don_vi_quan_ly_dien": "Công ty Điện lực Vũng Tàu",
+   "tram_tren_dia_ban": "1 trạm 110kV; 1 trạm khách hàng 110 kV",
+   "so_tram_luoi": {
+    "110kV": 1
+   },
+   "so_tram_khach_hang": 1,
+   "tram_ids": [
+    "tba_110_ba_nanh",
+    "tba_kh_lsb_long_son"
+   ]
+  },
+  "P. Phước Thắng": {
+   "ten_day_du": "Phường Phước Thắng",
+   "loai_don_vi": "Phường",
+   "truc_thuoc": "Thành phố Hồ Chí Minh",
+   "don_vi_quan_ly_dien": "Công ty Điện lực Vũng Tàu",
+   "tram_tren_dia_ban": "1 trạm 220kV, 1 trạm 110kV",
+   "so_tram_luoi": {
+    "220kV": 1,
+    "110kV": 1
+   },
+   "so_tram_khach_hang": 0,
+   "tram_ids": [
+    "tba_220_vung_tau",
+    "tba_110_phuoc_thang"
+   ]
+  },
+  "P. Rạch Dừa": {
+   "ten_day_du": "Phường Rạch Dừa",
+   "loai_don_vi": "Phường",
+   "truc_thuoc": "Thành phố Hồ Chí Minh",
+   "don_vi_quan_ly_dien": "Công ty Điện lực Vũng Tàu",
+   "tram_tren_dia_ban": "2 trạm 110kV",
+   "so_tram_luoi": {
+    "110kV": 2
+   },
+   "so_tram_khach_hang": 0,
+   "tram_ids": [
+    "tba_110_dong_xuyen",
+    "tba_110_vung_tau"
+   ]
+  },
+  "P. Tam Thắng": {
+   "ten_day_du": "Phường Tam Thắng",
+   "loai_don_vi": "Phường",
+   "truc_thuoc": "Thành phố Hồ Chí Minh",
+   "don_vi_quan_ly_dien": "Công ty Điện lực Vũng Tàu",
+   "tram_tren_dia_ban": "2 trạm 110kV",
+   "so_tram_luoi": {
+    "110kV": 2
+   },
+   "so_tram_khach_hang": 0,
+   "tram_ids": [
+    "tba_110_thang_tam",
+    "tba_110_sm_ben_dinh"
+   ]
+  },
+  "P. Vũng Tàu": {
+   "ten_day_du": "Phường Vũng Tàu",
+   "loai_don_vi": "Phường",
+   "truc_thuoc": "Thành phố Hồ Chí Minh",
+   "don_vi_quan_ly_dien": "Công ty Điện lực Vũng Tàu",
+   "tram_tren_dia_ban": "Không có trạm 110 kV trở lên của lưới",
+   "so_tram_luoi": {},
+   "so_tram_khach_hang": 0,
+   "tram_ids": []
+  },
+  "Đặc khu Côn Đảo": {
+   "ten_day_du": "Đặc khu Côn Đảo",
+   "loai_don_vi": "Đặc khu",
+   "truc_thuoc": "Thành phố Hồ Chí Minh",
+   "don_vi_quan_ly_dien": "Điện lực Đặc khu Côn Đảo – Công ty Điện lực Vũng Tàu",
+   "tram_tren_dia_ban": "1 trạm 110kV",
+   "so_tram_luoi": {
+    "110kV": 1
+   },
+   "so_tram_khach_hang": 0,
+   "tram_ids": [
+    "tba_110_con_dao"
+   ]
+  }
+ },
+ "tram": {
+  "tba_500_phu_my": {
+   "ten": "Phú Mỹ (KCN Phú Mỹ)",
+   "cap": "500kV",
+   "loai": "luoi",
+   "phuong_cu_trong_file": "P. Phú Mỹ",
+   "phuong_moi": "P. Phú Mỹ",
+   "ghi_chu": "Xác định theo vị trí ký hiệu trạm trên bản đồ v2 (ranh giới phường/xã mới)."
+  },
+  "tba_220_my_xuan": {
+   "ten": "KCN Mỹ Xuân",
+   "cap": "220kV",
+   "loai": "luoi",
+   "phuong_cu_trong_file": "P. Mỹ Xuân",
+   "phuong_moi": "P. Phú Mỹ",
+   "ghi_chu": "Xác định theo vị trí ký hiệu trạm trên bản đồ v2 (ranh giới phường/xã mới)."
+  },
+  "tba_220_phu_my": {
+   "ten": "Phú Mỹ",
+   "cap": "220kV",
+   "loai": "luoi",
+   "phuong_cu_trong_file": "P. Phú Mỹ",
+   "phuong_moi": "P. Phú Mỹ",
+   "ghi_chu": "Xác định theo vị trí ký hiệu trạm trên bản đồ v2 (ranh giới phường/xã mới)."
+  },
+  "tba_220_tan_thanh": {
+   "ten": "Tân Thành",
+   "cap": "220kV",
+   "loai": "luoi",
+   "phuong_cu_trong_file": "P. Tân Phước",
+   "phuong_moi": "P. Tân Phước",
+   "ghi_chu": "Xác định theo vị trí ký hiệu trạm trên bản đồ v2 (ranh giới phường/xã mới)."
+  },
+  "tba_220_phu_my_3": {
+   "ten": "KCN Phú Mỹ 3",
+   "cap": "220kV",
+   "loai": "luoi",
+   "phuong_cu_trong_file": "P. Tân Phước",
+   "phuong_moi": "P. Tân Hải",
+   "ghi_chu": "Xác định theo vị trí ký hiệu trạm trên bản đồ v2 (ranh giới phường/xã mới)."
+  },
+  "tba_220_ba_ria": {
+   "ten": "KCN Bà Rịa",
+   "cap": "220kV",
+   "loai": "luoi",
+   "phuong_cu_trong_file": "P. Long Hương",
+   "phuong_moi": "P. Long Hương",
+   "ghi_chu": "Xác định theo vị trí ký hiệu trạm trên bản đồ v2 (ranh giới phường/xã mới)."
+  },
+  "tba_220_vung_tau": {
+   "ten": "Vũng Tàu",
+   "cap": "220kV",
+   "loai": "luoi",
+   "phuong_cu_trong_file": "P. 11",
+   "phuong_moi": "P. Phước Thắng",
+   "ghi_chu": "Xác định theo vị trí ký hiệu trạm trên bản đồ v2 (ranh giới phường/xã mới)."
+  },
+  "tba_110_my_xuan_a": {
+   "ten": "Mỹ Xuân A",
+   "cap": "110kV",
+   "loai": "luoi",
+   "phuong_cu_trong_file": "P. Mỹ Xuân",
+   "phuong_moi": "P. Phú Mỹ",
+   "ghi_chu": "Xác định theo vị trí ký hiệu trạm trên bản đồ v2 (ranh giới phường/xã mới)."
+  },
+  "tba_110_my_xuan_a2": {
+   "ten": "Mỹ Xuân A2",
+   "cap": "110kV",
+   "loai": "luoi",
+   "phuong_cu_trong_file": "P. Mỹ Xuân",
+   "phuong_moi": "P. Phú Mỹ",
+   "ghi_chu": "Xác định theo vị trí ký hiệu trạm trên bản đồ v2 (ranh giới phường/xã mới)."
+  },
+  "tba_110_my_xuan_b1": {
+   "ten": "Mỹ Xuân B1",
+   "cap": "110kV",
+   "loai": "luoi",
+   "phuong_cu_trong_file": "P. Mỹ Xuân",
+   "phuong_moi": "P. Phú Mỹ",
+   "ghi_chu": "Xác định theo vị trí ký hiệu trạm trên bản đồ v2 (ranh giới phường/xã mới)."
+  },
+  "tba_110_phu_my": {
+   "ten": "Phú Mỹ",
+   "cap": "110kV",
+   "loai": "luoi",
+   "phuong_cu_trong_file": "P. Phú Mỹ",
+   "phuong_moi": "P. Phú Mỹ",
+   "ghi_chu": "Xác định theo vị trí ký hiệu trạm trên bản đồ v2 (ranh giới phường/xã mới)."
+  },
+  "tba_110_toc_tien": {
+   "ten": "Tóc Tiên",
+   "cap": "110kV",
+   "loai": "luoi",
+   "phuong_cu_trong_file": "Xã Tóc Tiên",
+   "phuong_moi": "Xã Châu Pha",
+   "ghi_chu": "Xác định theo vị trí ký hiệu trạm trên bản đồ v2 (ranh giới phường/xã mới)."
+  },
+  "tba_110_tan_hanh": {
+   "ten": "Tân Hạnh",
+   "cap": "110kV",
+   "loai": "luoi",
+   "phuong_cu_trong_file": "P. Phú Mỹ",
+   "phuong_moi": "P. Tân Phước",
+   "ghi_chu": "Xác định theo vị trí ký hiệu trạm trên bản đồ v2 (ranh giới phường/xã mới). Ký hiệu nằm sát ranh giới – [CHỜ XÁC NHẬN]."
+  },
+  "tba_110_tan_phuoc": {
+   "ten": "Tân Phước",
+   "cap": "110kV",
+   "loai": "luoi",
+   "phuong_cu_trong_file": "P. Tân Phước",
+   "phuong_moi": "P. Tân Phước",
+   "ghi_chu": "Xác định theo vị trí ký hiệu trạm trên bản đồ v2 (ranh giới phường/xã mới)."
+  },
+  "tba_110_thi_vai": {
+   "ten": "Thị Vải",
+   "cap": "110kV",
+   "loai": "luoi",
+   "phuong_cu_trong_file": "P. Tân Phước",
+   "phuong_moi": "P. Tân Phước",
+   "ghi_chu": "Xác định theo vị trí ký hiệu trạm trên bản đồ v2 (ranh giới phường/xã mới)."
+  },
+  "tba_110_thanh_binh": {
+   "ten": "Thanh Bình",
+   "cap": "110kV",
+   "loai": "luoi",
+   "phuong_cu_trong_file": "P. Tân Phước",
+   "phuong_moi": "P. Tân Phước",
+   "ghi_chu": "Xác định theo vị trí ký hiệu trạm trên bản đồ v2 (ranh giới phường/xã mới)."
+  },
+  "tba_110_cai_mep": {
+   "ten": "Cái Mép",
+   "cap": "110kV",
+   "loai": "luoi",
+   "phuong_cu_trong_file": "P. Tân Phước",
+   "phuong_moi": "P. Tân Phước",
+   "ghi_chu": "Xác định theo vị trí ký hiệu trạm trên bản đồ v2 (ranh giới phường/xã mới)."
+  },
+  "tba_110_ba_ria": {
+   "ten": "Bà Rịa",
+   "cap": "110kV",
+   "loai": "luoi",
+   "phuong_cu_trong_file": "P. Bà Rịa",
+   "phuong_moi": "P. Long Hương",
+   "ghi_chu": "Xác định theo vị trí ký hiệu trạm trên bản đồ v2 (ranh giới phường/xã mới)."
+  },
+  "tba_110_ba_ria_2": {
+   "ten": "Bà Rịa 2",
+   "cap": "110kV",
+   "loai": "luoi",
+   "phuong_cu_trong_file": "P. Bà Rịa",
+   "phuong_moi": "P. Long Hương",
+   "ghi_chu": "Xác định theo vị trí ký hiệu trạm trên bản đồ v2 (ranh giới phường/xã mới)."
+  },
+  "tba_110_ba_nanh": {
+   "ten": "Ba Nanh",
+   "cap": "110kV",
+   "loai": "luoi",
+   "phuong_cu_trong_file": "Xã Long Sơn",
+   "phuong_moi": "Xã Long Sơn",
+   "ghi_chu": "Xác định theo vị trí ký hiệu trạm trên bản đồ v2 (ranh giới phường/xã mới)."
+  },
+  "tba_110_phuoc_thang": {
+   "ten": "Phước Thắng",
+   "cap": "110kV",
+   "loai": "luoi",
+   "phuong_cu_trong_file": "P. 12",
+   "phuong_moi": "P. Phước Thắng",
+   "ghi_chu": "Xác định theo vị trí ký hiệu trạm trên bản đồ v2 (ranh giới phường/xã mới)."
+  },
+  "tba_110_dong_xuyen": {
+   "ten": "Đông Xuyên",
+   "cap": "110kV",
+   "loai": "luoi",
+   "phuong_cu_trong_file": "P. Rạch Dừa",
+   "phuong_moi": "P. Rạch Dừa",
+   "ghi_chu": "Xác định theo vị trí ký hiệu trạm trên bản đồ v2 (ranh giới phường/xã mới)."
+  },
+  "tba_110_vung_tau": {
+   "ten": "Vũng Tàu",
+   "cap": "110kV",
+   "loai": "luoi",
+   "phuong_cu_trong_file": "P. Thắng Nhất",
+   "phuong_moi": "P. Rạch Dừa",
+   "ghi_chu": "Xác định theo vị trí ký hiệu trạm trên bản đồ v2 (ranh giới phường/xã mới)."
+  },
+  "tba_110_thang_tam": {
+   "ten": "Thắng Tam",
+   "cap": "110kV",
+   "loai": "luoi",
+   "phuong_cu_trong_file": "P. Thắng Tam",
+   "phuong_moi": "P. Tam Thắng",
+   "ghi_chu": "Xác định theo vị trí ký hiệu trạm trên bản đồ v2 (ranh giới phường/xã mới)."
+  },
+  "tba_110_sm_ben_dinh": {
+   "ten": "SM Bến Đình",
+   "cap": "110kV",
+   "loai": "luoi",
+   "phuong_cu_trong_file": "P. 9",
+   "phuong_moi": "P. Tam Thắng",
+   "ghi_chu": "Xác định theo vị trí ký hiệu trạm trên bản đồ v2 (ranh giới phường/xã mới)."
+  },
+  "tba_110_con_dao": {
+   "ten": "Côn Đảo",
+   "cap": "110kV",
+   "loai": "luoi",
+   "phuong_cu_trong_file": "Đặc khu Côn Đảo",
+   "phuong_moi": "Đặc khu Côn Đảo",
+   "ghi_chu": "Xác định theo vị trí ký hiệu trạm trên bản đồ v2 (ranh giới phường/xã mới)."
+  },
+  "tba_kh_thep_dong_tien": {
+   "ten": "Thép Đồng Tiến",
+   "cap": "110kV",
+   "loai": "khach_hang",
+   "phuong_cu_trong_file": "P. Mỹ Xuân",
+   "phuong_moi": "P. Tân Thành",
+   "ghi_chu": "Xác định theo vị trí ký hiệu trạm trên bản đồ v2 (ranh giới phường/xã mới). Ký hiệu nằm sát ranh giới – [CHỜ XÁC NHẬN]."
+  },
+  "tba_kh_china_steel": {
+   "ten": "China Steel",
+   "cap": "110kV",
+   "loai": "khach_hang",
+   "phuong_cu_trong_file": "P. Mỹ Xuân",
+   "phuong_moi": "P. Phú Mỹ",
+   "ghi_chu": "Xác định theo vị trí ký hiệu trạm trên bản đồ v2 (ranh giới phường/xã mới)."
+  },
+  "tba_kh_vina_kyoei": {
+   "ten": "Vina Kyoei",
+   "cap": "110kV",
+   "loai": "khach_hang",
+   "phuong_cu_trong_file": "P. Phú Mỹ",
+   "phuong_moi": "P. Phú Mỹ",
+   "ghi_chu": "Xác định theo vị trí ký hiệu trạm trên bản đồ v2 (ranh giới phường/xã mới)."
+  },
+  "tba_kh_thep_viet": {
+   "ten": "Thép Việt",
+   "cap": "110kV",
+   "loai": "khach_hang",
+   "phuong_cu_trong_file": "P. Phú Mỹ",
+   "phuong_moi": "P. Phú Mỹ",
+   "ghi_chu": "Xác định theo vị trí ký hiệu trạm trên bản đồ v2 (ranh giới phường/xã mới)."
+  },
+  "tba_kh_pomina": {
+   "ten": "Pomina",
+   "cap": "110kV",
+   "loai": "khach_hang",
+   "phuong_cu_trong_file": "P. Phú Mỹ",
+   "phuong_moi": "P. Phú Mỹ",
+   "ghi_chu": "Xác định theo vị trí ký hiệu trạm trên bản đồ v2 (ranh giới phường/xã mới)."
+  },
+  "tba_kh_pomina_2": {
+   "ten": "Pomina 2",
+   "cap": "110kV",
+   "loai": "khach_hang",
+   "phuong_cu_trong_file": "P. Phú Mỹ",
+   "phuong_moi": "P. Phú Mỹ",
+   "ghi_chu": "Xác định theo vị trí ký hiệu trạm trên bản đồ v2 (ranh giới phường/xã mới)."
+  },
+  "tba_kh_ton_hoa_sen": {
+   "ten": "Tôn Hoa Sen",
+   "cap": "110kV",
+   "loai": "khach_hang",
+   "phuong_cu_trong_file": "P. Phú Mỹ",
+   "phuong_moi": "P. Phú Mỹ",
+   "ghi_chu": "Xác định theo vị trí ký hiệu trạm trên bản đồ v2 (ranh giới phường/xã mới)."
+  },
+  "tba_kh_thep_mien_nam": {
+   "ten": "Thép Miền Nam",
+   "cap": "110kV",
+   "loai": "khach_hang",
+   "phuong_cu_trong_file": "P. Phú Mỹ",
+   "phuong_moi": "P. Phú Mỹ",
+   "ghi_chu": "Xác định theo vị trí ký hiệu trạm trên bản đồ v2 (ranh giới phường/xã mới)."
+  },
+  "tba_kh_pos_vina": {
+   "ten": "Pos-Vina",
+   "cap": "110kV",
+   "loai": "khach_hang",
+   "phuong_cu_trong_file": "P. Tân Phước",
+   "phuong_moi": "P. Phú Mỹ",
+   "ghi_chu": "Xác định theo vị trí ký hiệu trạm trên bản đồ v2 (ranh giới phường/xã mới)."
+  },
+  "tba_kh_lgas": {
+   "ten": "L.Gas",
+   "cap": "110kV",
+   "loai": "khach_hang",
+   "phuong_cu_trong_file": "P. Tân Phước",
+   "phuong_moi": "P. Tân Phước",
+   "ghi_chu": "Xác định theo vị trí ký hiệu trạm trên bản đồ v2 (ranh giới phường/xã mới)."
+  },
+  "tba_kh_posco": {
+   "ten": "Posco",
+   "cap": "110kV",
+   "loai": "khach_hang",
+   "phuong_cu_trong_file": "P. Tân Phước",
+   "phuong_moi": "P. Phú Mỹ",
+   "ghi_chu": "Xác định theo vị trí ký hiệu trạm trên bản đồ v2 (ranh giới phường/xã mới)."
+  },
+  "tba_kh_hyosung_core": {
+   "ten": "Hyosung Vina Core Materials",
+   "cap": "110kV",
+   "loai": "khach_hang",
+   "phuong_cu_trong_file": "P. Tân Phước",
+   "phuong_moi": "P. Tân Phước",
+   "ghi_chu": "Xác định theo vị trí ký hiệu trạm trên bản đồ v2 (ranh giới phường/xã mới)."
+  },
+  "tba_kh_hyosung_chem": {
+   "ten": "Hyosung Vina Chemical",
+   "cap": "110kV",
+   "loai": "khach_hang",
+   "phuong_cu_trong_file": "P. Tân Phước",
+   "phuong_moi": "P. Tân Phước",
+   "ghi_chu": "Xác định theo vị trí ký hiệu trạm trên bản đồ v2 (ranh giới phường/xã mới)."
+  },
+  "tba_kh_fuco": {
+   "ten": "Fuco",
+   "cap": "110kV",
+   "loai": "khach_hang",
+   "phuong_cu_trong_file": "P. Tân Phước",
+   "phuong_moi": "P. Tân Phước",
+   "ghi_chu": "Xác định theo vị trí ký hiệu trạm trên bản đồ v2 (ranh giới phường/xã mới)."
+  },
+  "tba_kh_lsb_long_son": {
+   "ten": "LSB Long Sơn",
+   "cap": "110kV",
+   "loai": "khach_hang",
+   "phuong_cu_trong_file": "Xã Long Sơn",
+   "phuong_moi": "Xã Long Sơn",
+   "ghi_chu": "Xác định theo vị trí ký hiệu trạm trên bản đồ v2 (ranh giới phường/xã mới)."
+  },
+  "tba_lc_ngai_giao": {
+   "ten": "Ngãi Giao (PC Đất Đỏ)",
+   "cap": "110kV",
+   "loai": "lan_can",
+   "phuong_cu_trong_file": "H. Châu Đức",
+   "phuong_moi": null,
+   "ghi_chu": "Trạm lưới lân cận, nằm ngoài địa bàn Công ty Điện lực Vũng Tàu."
+  },
+  "tba_lc_long_dat": {
+   "ten": "Long Đất (PC Đất Đỏ)",
+   "cap": "110kV",
+   "loai": "lan_can",
+   "phuong_cu_trong_file": "H. Long Đất",
+   "phuong_moi": null,
+   "ghi_chu": "Trạm lưới lân cận, nằm ngoài địa bàn Công ty Điện lực Vũng Tàu."
+  },
+  "tba_lc_an_ngai": {
+   "ten": "An Ngãi (PC Đất Đỏ)",
+   "cap": "110kV",
+   "loai": "lan_can",
+   "phuong_cu_trong_file": "H. Long Đất",
+   "phuong_moi": null,
+   "ghi_chu": "Trạm lưới lân cận, nằm ngoài địa bàn Công ty Điện lực Vũng Tàu."
+  }
+ }
+}

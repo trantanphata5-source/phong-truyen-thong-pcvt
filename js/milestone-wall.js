@@ -51,7 +51,7 @@ export class MilestoneWallBuilder {
     const rotYWest = -Math.PI / 2;
 
     // 1.1 Dòng đầu "CHẶNG ĐƯỜNG MỚI" ở y = 5.2
-    this.addHeaderBanner(westGroup, xWest, 5.2, 0, rotYWest, 'CHẶNG ĐƯỜNG MỚI');
+    // GĐ6-fix2 E1: đã bỏ banner "CHẶNG ĐƯỜNG MỚI" (chuyển lên bảng tiêu đề khu 3)
 
     // 1.2 Đường dòng thời gian xanh EVN ở y = 2.25, chạy từ z = -10.5 đến +10.5
     const ledLength = 21.0;
@@ -130,7 +130,7 @@ export class MilestoneWallBuilder {
 
       const mainExhibit = this.exhibitBuilder.createFramedExhibit(
         mainItem,
-        { w: m.mainSize.w, h: m.mainSize.h, frameType: 'gold_honor' },
+        { w: m.mainSize.w, h: m.mainSize.h, frameType: 'gold_honor', legacyPlaque: true },
         rotYWest
       );
       mainExhibit.position.set(xWest, 3.60, m.z + m.mainOffsetZ);
@@ -152,7 +152,7 @@ export class MilestoneWallBuilder {
           };
           const smExhibit = this.exhibitBuilder.createFramedExhibit(
             smItem,
-            { w: 1.4, h: 0.95, frameType: 'cert' },
+            { w: 1.4, h: 0.95, frameType: 'cert', legacyPlaque: true },
             rotYWest
           );
           smExhibit.position.set(xWest, 3.60, m.z + m.smallOffsetZ);
@@ -173,7 +173,7 @@ export class MilestoneWallBuilder {
             };
             const smExhibit = this.exhibitBuilder.createFramedExhibit(
               smItem,
-              { w: 1.3, h: 0.82, frameType: 'cert' },
+              { w: 1.3, h: 0.82, frameType: 'cert', legacyPlaque: true },
               rotYWest
             );
             smExhibit.position.set(xWest, yOffsets[idx], m.z + m.smallOffsetZ);
@@ -225,7 +225,7 @@ export class MilestoneWallBuilder {
 
       const exhibit = this.exhibitBuilder.createFramedExhibit(
         it,
-        { w, h, frameType: 'gold_honor' },
+        { w, h, frameType: 'gold_honor', legacyPlaque: true },
         rotYEast
       );
       exhibit.position.set(xEast, 2.6, zPos);
@@ -367,6 +367,7 @@ export class MilestoneWallBuilder {
 
     // Kích thước card trong 3D: rộng 3.8m, cao 1.30m
     const mesh = new THREE.Mesh(new THREE.PlaneGeometry(3.8, 1.30), mat);
+    mesh.userData = { isBoard: true, boardW: 3.8, boardH: 1.30, kind: 'milestone_card' };
     mesh.position.set(x, y, z);
     mesh.rotation.y = rotY;
     parent.add(mesh);

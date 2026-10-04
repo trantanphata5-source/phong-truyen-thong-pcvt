@@ -1,0 +1,373 @@
+{
+ "stats": {
+  "counts": {
+   "wall_k1_far": 40,
+   "wall_k1_north": 17,
+   "partition_k1": 40,
+   "wall_k1_south": 9,
+   "wall_k2_back": 30,
+   "wall_k2_west": 40,
+   "wall_k2_east": 41,
+   "wall_k3_north": 15,
+   "wall_k3_far": 20,
+   "wall_k3_south": 5,
+   "wall_k4_east": 7,
+   "wall_k4_west_hcm": 4,
+   "wall_k6_west": 14,
+   "wall_k6_east_hcm": 8
+  },
+  "framesOnWall": 0,
+  "framesOnWallDetails": [],
+  "rowGap": 0,
+  "rowGapReport": [
+   {
+    "face": "wall_k1_far|1.57",
+    "rowGap": 0.475,
+    "low": 2.085,
+    "board": 0.68
+   },
+   {
+    "face": "wall_k1_north|0.00",
+    "rowGap": 0.475,
+    "low": 2.085,
+    "board": 0.31
+   },
+   {
+    "face": "partition_k1|-1.57",
+    "rowGap": 0.365,
+    "low": 1.36,
+    "board": 0.265
+   },
+   {
+    "face": "partition_k1|1.57",
+    "rowGap": 0.367,
+    "low": 1.36,
+    "board": 0.267
+   },
+   {
+    "face": "wall_k1_south|3.14",
+    "rowGap": 0.425,
+    "low": 2.06,
+    "board": 0.285
+   },
+   {
+    "face": "wall_k2_back|0.00",
+    "rowGap": 0.375,
+    "low": 2.035,
+    "board": 0.63
+   },
+   {
+    "face": "wall_k2_west|1.57",
+    "rowGap": 0.52,
+    "low": 2.107,
+    "board": 0.332
+   },
+   {
+    "face": "wall_k2_east|-1.57",
+    "rowGap": 0.541,
+    "low": 2.107,
+    "board": 0.354
+   },
+   {
+    "face": "wall_k3_north|0.00",
+    "rowGap": 0.34,
+    "low": 1.85,
+    "board": 0.31
+   },
+   {
+    "face": "wall_k3_far|-1.57",
+    "rowGap": 0.34,
+    "low": 1.85,
+    "board": 0.31
+   },
+   {
+    "face": "wall_k3_south|3.14",
+    "rowGap": 0.34,
+    "low": 1.85,
+    "board": 0.31
+   },
+   {
+    "face": "wall_k4_east|-1.57",
+    "rowGap": null,
+    "low": 2.65,
+    "board": 0.81
+   },
+   {
+    "face": "wall_k4_west_hcm|1.57",
+    "rowGap": null,
+    "low": 2.65,
+    "board": 0.81
+   },
+   {
+    "face": "wall_k6_west|1.57",
+    "rowGap": null,
+    "low": 2.65,
+    "board": 0.81
+   },
+   {
+    "face": "wall_k6_east_hcm|-1.57",
+    "rowGap": null,
+    "low": 2.65,
+    "board": 0.81
+   }
+  ],
+  "insideZone": 0,
+  "stretched": 0,
+  "boardOverlap": 0,
+  "boardOverlapDetails": [],
+  "overlapWalls": 0,
+  "layout": [
+   {
+    "wallId": "wall_k3_north",
+    "items": 15,
+    "columns": 8,
+    "scale": 1,
+    "usable": 28.4,
+    "gap": 1.6,
+    "rangeMin": -14.2,
+    "rangeMax": 14.2,
+    "zone": "khu3"
+   },
+   {
+    "wallId": "wall_k3_far",
+    "items": 20,
+    "columns": 10,
+    "scale": 1,
+    "usable": 46.4,
+    "gap": 1.6,
+    "rangeMin": -23.2,
+    "rangeMax": 23.2,
+    "zone": "khu3"
+   },
+   {
+    "wallId": "wall_k3_south",
+    "items": 5,
+    "columns": 3,
+    "scale": 1,
+    "usable": 12.939999999999992,
+    "gap": 1.6,
+    "rangeMin": -6.199999999999992,
+    "rangeMax": 6.74,
+    "zone": "khu3"
+   },
+   {
+    "wallId": "wall_k4_east",
+    "zone": "khu4",
+    "items": 7,
+    "columns": 7,
+    "scale": 1,
+    "usable": 41.00000000000001,
+    "gap": 1.6,
+    "rangeMin": -20.8,
+    "rangeMax": 20.200000000000006
+   },
+   {
+    "wallId": "wall_k4_west_hcm",
+    "zone": "khu4",
+    "items": 4,
+    "columns": 4,
+    "scale": 1,
+    "usable": 37.6,
+    "gap": 1.6,
+    "rangeMin": -18.8,
+    "rangeMax": 18.8
+   },
+   {
+    "wallId": "wall_k6_west",
+    "zone": "khu6",
+    "items": 14,
+    "columns": 14,
+    "scale": 1,
+    "usable": 41.00000000000001,
+    "gap": 1.054446153846154,
+    "rangeMin": -20.200000000000006,
+    "rangeMax": 20.8
+   },
+   {
+    "wallId": "wall_k6_east_hcm",
+    "zone": "khu6",
+    "items": 8,
+    "columns": 8,
+    "scale": 1,
+    "usable": 37.6,
+    "gap": 1.6,
+    "rangeMin": -18.8,
+    "rangeMax": 18.8
+   }
+  ],
+  "khu46": {
+   "wall_k4_east": 7,
+   "wall_k4_west_hcm": 4,
+   "wall_k6_west": 14,
+   "wall_k6_east_hcm": 8
+  },
+  "occluders": 614
+ },
+ "console_errors": [],
+ "cards": {
+  "card_phu_my": {
+   "text": "PHƯỜNG Phường Phú Mỹ Loại đơn vị: Phường Trực thuộc: Thành phố Hồ Chí Minh Đơn vị quản lý điện: Công ty Điện lực Vũng Tàu Trạm biến áp trên địa bàn: 1 trạm 500kV, 2 trạm 220kV, 4 trạm 110kV; 9 trạm khách hàng 110 kV Xem trên bản đồ 2D",
+   "pulses": 16
+  },
+  "card_con_dao": {
+   "text": "ĐẶC KHU Đặc khu Côn Đảo Loại đơn vị: Đặc khu Trực thuộc: Thành phố Hồ Chí Minh Đơn vị quản lý điện: Điện lực Đặc khu Côn Đảo – Công ty Điện lực Vũng Tàu Trạm biến áp trên địa bàn: 1 trạm 110kV Xem trên bản đồ 2D",
+   "pulses": 1
+  },
+  "card_tram_220_vung_tau": {
+   "text": "220KV Vũng Tàu Cấp điện áp: 220kV Phân loại: Trạm lưới truyền tải Trạng thái: Hiện trạng Địa bàn: Phường Phước Thắng – TP. Hồ Chí Minh Xem trên bản đồ 2D",
+   "pulses": 0
+  },
+  "card_tram_ngai_giao": {
+   "text": "110KV Ngãi Giao (PC Đất Đỏ) Cấp điện áp: 110kV Phân loại: Trạm lân cận Trạng thái: Hiện trạng Địa bàn: Ngoài địa bàn Công ty (lưới lân cận) Xem trên bản đồ 2D",
+   "pulses": 0
+  }
+ },
+ "cabinets": {
+  "cabinets": [
+   {
+    "id": "AlbumCabinet_1",
+    "cx": -4.6,
+    "cz": -6.8,
+    "minDist": 3.4205262752974135
+   },
+   {
+    "id": "AlbumCabinet_2",
+    "cx": 4.6,
+    "cz": -6.8,
+    "minDist": 3.4205262752974135
+   }
+  ],
+  "boxOverlaps": []
+ },
+ "walk": [
+  {
+   "from": [
+    18,
+    31
+   ],
+   "to": [
+    34,
+    31
+   ],
+   "end": [
+    34,
+    31
+   ],
+   "inWall": 0
+  },
+  {
+   "from": [
+    -18,
+    31
+   ],
+   "to": [
+    -34,
+    31
+   ],
+   "end": [
+    -34,
+    31
+   ],
+   "inWall": 0
+  },
+  {
+   "from": [
+    0,
+    26
+   ],
+   "to": [
+    40,
+    31
+   ],
+   "end": [
+    40,
+    31
+   ],
+   "inWall": 0
+  }
+ ],
+ "click": [
+  {
+   "wall": "wall_k1_far",
+   "id": "atl_0000_034",
+   "startDist": 52.4,
+   "end": [
+    -47.1,
+    8.38
+   ],
+   "inFront": true,
+   "frontDist": 2.2,
+   "lateral": 0,
+   "stepsInsideWall": 0,
+   "steps": 30
+  },
+  {
+   "wall": "wall_k3_far",
+   "id": "pcvt_054_2026-05-06",
+   "startDist": 57,
+   "end": [
+    47.1,
+    -2.63
+   ],
+   "inFront": true,
+   "frontDist": 2.2,
+   "lateral": 0,
+   "stepsInsideWall": 0,
+   "steps": 30
+  },
+  {
+   "wall": "wall_k4_east",
+   "id": "dang_bo_016_2026-03-03",
+   "startDist": 59.6,
+   "end": [
+    47.1,
+    59.41
+   ],
+   "inFront": true,
+   "frontDist": 2.2,
+   "lateral": 0,
+   "stepsInsideWall": 0,
+   "steps": 55
+  },
+  {
+   "wall": "wall_k6_west",
+   "id": "cong_doan_014_2026-03-10",
+   "startDist": 58.7,
+   "end": [
+    -47.1,
+    57.86
+   ],
+   "inFront": true,
+   "frontDist": 2.2,
+   "lateral": 0,
+   "stepsInsideWall": 0,
+   "steps": 55
+  }
+ ],
+ "related": {
+  "withRelated": 151,
+  "sample": [
+   [
+    "pcvt_001_2025-07-23",
+    1
+   ],
+   [
+    "pcvt_002_2025-07-23",
+    1
+   ],
+   [
+    "pcvt_003_2025-08-04",
+    2
+   ],
+   [
+    "pcvt_004_2025-08-04",
+    2
+   ],
+   [
+    "pcvt_005_2025-08-04",
+    2
+   ]
+  ],
+  "max": 12
+ }
+}

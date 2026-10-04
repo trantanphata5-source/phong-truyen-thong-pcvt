@@ -473,6 +473,64 @@ export class GridMapTable {
     if (cameraPos) {
       this.updateTilesLOD(cameraPos);
     }
+    this.updatePulses();
+  }
+
+  /**
+   * GĐ6-fix2 D: nhấp nháy (pulse) các ghim trạm trong tram_ids của một phường/xã trong 2 giây.
+   * Vẽ vòng sáng lan tỏa trên mặt sa bàn, tự xóa sau 2 s.
+   */
+  pulseTrams(ids) {
+    this.clearPulses();
+    const list = this.gridData?.tram || [];
+    const idSet = new Set(ids || []);
+    if (!this.substationGroup || idSet.size === 0) return 0;
+    this._pulses = this._pulses || [];
+    const start = performance.now();
+    let n = 0;
+    list.forEach(t => {
+      if (!idSet.has(t.id)) return;
+      const pos = this.mapToLocal(t.x, t.y, 0.02);
+      const mat = new THREE.MeshBasicMaterial({ color: 0xfacc15, transparent: true, opacity: 1, depthTest: false, side: THREE.DoubleSide });
+      const ring = new THREE.Mesh(new THREE.RingGeometry(0.018, 0.026, 32), mat);
+      ring.rotation.x = -Math.PI / 2;
+      ring.position.set(pos.x, 0.03, pos.z);
+      ring.renderOrder = 50;
+      ring.userData.isPulseRing = true;
+      this.substationGroup.add(ring);
+      this._pulses.push({ ring, start });
+      n++;
+    });
+    return n;
+  }
+
+  clearPulses() {
+    (this._pulses || []).forEach(p => {
+      p.ring.parent?.remove(p.ring);
+      p.ring.geometry.dispose();
+      p.ring.material.dispose();
+    });
+    this._pulses = [];
+  }
+
+  updatePulses() {
+    if (!this._pulses || this._pulses.length === 0) return;
+    const now = performance.now();
+    const alive = [];
+    this._pulses.forEach(p => {
+      const age = (now - p.start) / 1000;
+      if (age >= 2.0) {
+        p.ring.parent?.remove(p.ring);
+        p.ring.geometry.dispose();
+        p.ring.material.dispose();
+        return;
+      }
+      const ph = age % 1.0;                    // 2 nhịp trong 2 giây
+      p.ring.scale.setScalar(1 + ph * 2.6);
+      p.ring.material.opacity = 1 - ph;
+      alive.push(p);
+    });
+    this._pulses = alive;
   }
 
   // ===========================================================================

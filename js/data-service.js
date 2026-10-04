@@ -34,6 +34,8 @@ export class DataService {
       await this.loadNarratives();
       // GĐ6-fix1 B: bố trí khu 3 theo dòng thời gian; mọi id trong file được treo
       await this.loadKhu3Layout();
+      // GĐ6-fix2 B1: danh sách ảnh treo tường khu 4, khu 6 (+ ẩn ảnh không treo)
+      await this.loadAnhTreoTuong();
 
       this.items = this.allItems.filter(it => it.treo !== false);
       this.filteredItems = [...this.items];
@@ -95,6 +97,41 @@ export class DataService {
     }
   }
 
+  /**
+   * GĐ6-fix2 B1. Khu 4/6: id có trong tuong[].thu_tu_anh → treo = true, mọi ảnh khác → treo = false.
+   * Khu 3: ảnh không có trong khu3_bo_tri.json và không thuộc vách mốc son → treo = false.
+   * Ảnh treo=false vẫn nằm trong allItems (album, màn LED khu 4, "Ảnh cùng sự kiện").
+   */
+  async loadAnhTreoTuong() {
+    this.anhTreoTuong = null;
+    try {
+      const res = await fetch('assets/anh_treo_tuong.json');
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+      this.anhTreoTuong = await res.json();
+      const hung = new Set();
+      for (const wall of this.anhTreoTuong.tuong || []) {
+        for (const a of wall.thu_tu_anh || []) hung.add(a.id);
+      }
+      const k3 = new Set();
+      for (const wall of (this.khu3Layout?.tuong || [])) {
+        for (const a of wall.thu_tu_anh || []) k3.add(a.id);
+      }
+      const count = { khu3: 0, khu4: 0, khu6: 0 };
+      for (const it of this.allItems) {
+        if (it.khu === 'khu4' || it.khu === 'khu6') {
+          it.treo = hung.has(it.id);
+          if (it.treo) count[it.khu]++;
+        } else if (it.khu === 'khu3' && this.khu3Layout) {
+          it.treo = k3.has(it.id) || !!it.vach_moc_son;
+          if (k3.has(it.id)) count.khu3++;
+        }
+      }
+      console.log(`[DataService] Ảnh treo tường: khu3 ${count.khu3}, khu4 ${count.khu4}, khu6 ${count.khu6} (các ảnh còn lại treo=false)`);
+    } catch (err) {
+      console.warn('[DataService] Không nạp được assets/anh_treo_tuong.json:', err);
+    }
+  }
+
   /** Tìm item có thuyết minh theo đường dẫn ảnh (album) */
   findNarrativeItemByPath(path) {
     if (!path || !this.narrativeByPath) return null;
@@ -111,8 +148,9 @@ export class DataService {
     if (!item) return [];
     // Với ảnh có event_folder: trả về các ảnh cùng sự kiện
     if (item.event_folder) {
-      const sameEvent = this.items.filter(it => it.event_folder === item.event_folder && it.id !== item.id);
-      if (sameEvent.length > 0) return sameEvent.slice(0, 6);
+      // GĐ6-fix2 B1: dùng allItems (kể cả ảnh treo=false), giới hạn 12 ảnh
+      const sameEvent = this.allItems.filter(it => it.event_folder === item.event_folder && it.id !== item.id);
+      if (sameEvent.length > 0) return sameEvent.slice(0, 12);
     }
     // Với bằng khen/cờ hoặc ảnh không có event_folder: cùng năm, cùng khu
     return this.items

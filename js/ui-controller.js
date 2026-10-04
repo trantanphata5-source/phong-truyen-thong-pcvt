@@ -716,12 +716,9 @@ export class UIController {
 
     // 5. 2 Tủ Album xoay ±45°
     svgParts.push(`
-      <g transform="translate(-6.5, -6.5) rotate(45)" pointer-events="none">
+      ${ALBUM_CABINETS.map(c => `<g transform="translate(${c.position.x}, ${c.position.z}) rotate(${c.rotY > 0 ? 45 : -45})" pointer-events="none">
         <rect x="-1.1" y="-0.45" width="2.2" height="0.9" rx="0.2" fill="#D4AF37" stroke="#F6D26B" stroke-width="0.25" />
-      </g>
-      <g transform="translate(6.5, -6.5) rotate(-45)" pointer-events="none">
-        <rect x="-1.1" y="-0.45" width="2.2" height="0.9" rx="0.2" fill="#D4AF37" stroke="#F6D26B" stroke-width="0.25" />
-      </g>
+      </g>`).join('')}
     `);
 
     // 6. Sa bàn lưới điện (26, 0)

@@ -63,13 +63,13 @@ export class ZoneScreenSlideshow {
       pending++;
       this.logos.coDang.onload = checkDone;
       this.logos.coDang.onerror = checkDone;
-      this.logos.coDang.src = 'assets/logo/co_dang.png';
+      this.logos.coDang.src = 'assets/logo/co_dang_phang.png';
 
       this.logos.coQuocKy = new Image();
       pending++;
       this.logos.coQuocKy.onload = checkDone;
       this.logos.coQuocKy.onerror = checkDone;
-      this.logos.coQuocKy.src = 'assets/logo/co_to_quoc.png';
+      this.logos.coQuocKy.src = 'assets/logo/quoc_ky_phang.png';
     } else {
       this.logos.congDoan = new Image();
       pending++;
@@ -247,10 +247,12 @@ export class ZoneScreenSlideshow {
       // Cờ Đảng bên trái (tỷ lệ 3:2, 165 x 110px)
       if (this.logos.coDang && this.logos.coDang.complete) {
         ctx.drawImage(this.logos.coDang, 48, 25, 165, 110);
+        ctx.strokeStyle = '#facc15'; ctx.lineWidth = 2; ctx.strokeRect(48, 25, 165, 110);
       }
       // Quốc kỳ bên phải (165 x 110px)
       if (this.logos.coQuocKy && this.logos.coQuocKy.complete) {
         ctx.drawImage(this.logos.coQuocKy, w - 48 - 165, 25, 165, 110);
+        ctx.strokeStyle = '#facc15'; ctx.lineWidth = 2; ctx.strokeRect(w - 48 - 165, 25, 165, 110);
       }
 
       // Tiêu đề trung tâm

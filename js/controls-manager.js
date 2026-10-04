@@ -1,5 +1,5 @@
 import * as THREE from 'three';
-import { EYE_HEIGHT, buildCollisionBoxes, WALKABLE_REGIONS, HALL_TARGETS } from './layout-config.js';
+import { EYE_HEIGHT, buildCollisionBoxes, WALKABLE_REGIONS, HALL_TARGETS, ALBUM_CABINETS } from './layout-config.js';
 
 /**
  * Controls Manager (Artsteps Standard)
@@ -50,15 +50,15 @@ export class ControlsManager {
     // Museum Wall & Partition Collision Boxes (generated from layout-config.js)
     this.collisionWalls = buildCollisionBoxes();
 
-    // GĐ4: Two Album Cabinets (rotated ±45°) — approximate AABB
-    // Cabinet 1 at (-6.5, -6.5), rotated +45°, 2.2×0.9 → AABB ~1.8×1.8
-    this.collisionWalls.push(
-      { id: 'AlbumCabinet_1', minX: -7.5, maxX: -5.5, minZ: -7.5, maxZ: -5.5 }
-    );
-    // Cabinet 2 at (6.5, -6.5), rotated -45°, same AABB
-    this.collisionWalls.push(
-      { id: 'AlbumCabinet_2', minX: 5.5, maxX: 7.5, minZ: -7.5, maxZ: -5.5 }
-    );
+    // GĐ6-fix2 H: 2 tủ album (xoay ±45°) — hộp va chạm ±0,9 m quanh tâm, đọc từ ALBUM_CABINETS
+    ALBUM_CABINETS.forEach((cab, i) => {
+      const hb = 0.9;
+      this.collisionWalls.push({
+        id: `AlbumCabinet_${i + 1}`,
+        minX: cab.position.x - hb, maxX: cab.position.x + hb,
+        minZ: cab.position.z - hb, maxZ: cab.position.z + hb
+      });
+    });
 
     // Player collision radius (50cm)
     this.playerRadius = 0.5;
@@ -258,8 +258,9 @@ export class ControlsManager {
 
       if (progress >= 1.0) {
         this.isGliding = false;
-        if (this.glideTween.onComplete) this.glideTween.onComplete();
-        this.glideTween = null;
+        const done = this.glideTween.onComplete;
+        this.glideTween = null;   // xóa trước khi gọi callback để chặng bay kế tiếp (nếu có) không bị xóa mất
+        if (done) done();
       }
     }
 
@@ -317,10 +318,98 @@ export class ControlsManager {
   /**
    * Artsteps Feature: Point & Click to Walk
    */
+  // ---------------------------------------------------------------------------
+  // GĐ6-fix2 G3: kiểm tra đường đi (đoạn thẳng) với mọi hộp va chạm (nới thêm playerRadius)
+  // Trả về tỷ lệ t ∈ [0,1] của điểm chạm hộp đầu tiên, hoặc null nếu đường thông.
+  // ---------------------------------------------------------------------------
+  firstHitOnSegment(ax, az, bx, bz) {
+    const r = this.playerRadius;
+    const dx = bx - ax, dz = bz - az;
+    let best = null;
+    for (const w of this.collisionWalls) {
+      let t0 = 0, t1 = 1;
+      const slabs = [
+        [ax, dx, w.minX - r, w.maxX + r],
+        [az, dz, w.minZ - r, w.maxZ + r]
+      ];
+      let hit = true;
+      for (const [o, d, lo, hi] of slabs) {
+        if (Math.abs(d) < 1e-9) {
+          if (o < lo || o > hi) { hit = false; break; }
+        } else {
+          let ta = (lo - o) / d, tb = (hi - o) / d;
+          if (ta > tb) { const s = ta; ta = tb; tb = s; }
+          t0 = Math.max(t0, ta);
+          t1 = Math.min(t1, tb);
+          if (t0 > t1) { hit = false; break; }
+        }
+      }
+      if (hit && (best === null || t0 < best)) best = t0;
+    }
+    return best;
+  }
+
+  segmentClear(ax, az, bx, bz) {
+    return this.firstHitOnSegment(ax, az, bx, bz) === null;
+  }
+
+  /**
+   * Tìm đường từ (ax,az) tới (bx,bz) qua các điểm trung gian (cửa khu / hành lang) khi
+   * đường thẳng cắt tường. Dijkstra trên đồ thị nhìn thấy nhau. Trả về danh sách điểm
+   * trung gian (không gồm điểm đầu/cuối), rỗng nếu đi thẳng được; null nếu không có đường.
+   */
+  findWaypointPath(ax, az, bx, bz) {
+    if (this.segmentClear(ax, az, bx, bz)) return [];
+    const nodes = [];
+    for (const key of Object.keys(HALL_TARGETS)) nodes.push({ x: HALL_TARGETS[key].x, z: HALL_TARGETS[key].z, key });
+    nodes.push({ x: -36, z: 31.5, key: 'hall_w' }, { x: 36, z: 31.5, key: 'hall_e' }, { x: 0, z: 31.5, key: 'hall_c' });
+    const n = nodes.length;
+    const dist = new Array(n).fill(Infinity);
+    const prev = new Array(n).fill(-1);
+    const done = new Array(n).fill(false);
+    for (let i = 0; i < n; i++) {
+      if (this.segmentClear(ax, az, nodes[i].x, nodes[i].z)) dist[i] = Math.hypot(nodes[i].x - ax, nodes[i].z - az);
+    }
+    for (;;) {
+      let u = -1;
+      for (let i = 0; i < n; i++) if (!done[i] && dist[i] < Infinity && (u < 0 || dist[i] < dist[u])) u = i;
+      if (u < 0) break;
+      done[u] = true;
+      for (let v = 0; v < n; v++) {
+        if (done[v]) continue;
+        if (!this.segmentClear(nodes[u].x, nodes[u].z, nodes[v].x, nodes[v].z)) continue;
+        const nd = dist[u] + Math.hypot(nodes[u].x - nodes[v].x, nodes[u].z - nodes[v].z);
+        if (nd < dist[v]) { dist[v] = nd; prev[v] = u; }
+      }
+    }
+    let bestI = -1, bestD = Infinity;
+    for (let i = 0; i < n; i++) {
+      if (dist[i] === Infinity) continue;
+      if (!this.segmentClear(nodes[i].x, nodes[i].z, bx, bz)) continue;
+      const d = dist[i] + Math.hypot(nodes[i].x - bx, nodes[i].z - bz);
+      if (d < bestD) { bestD = d; bestI = i; }
+    }
+    if (bestI < 0) return null;
+    const path = [];
+    for (let i = bestI; i >= 0; i = prev[i]) path.unshift({ x: nodes[i].x, z: nodes[i].z });
+    return path;
+  }
+
   glideToPoint(targetX, targetZ, duration = 1.4, onComplete) {
     if (this.isPositionBlocked(targetX, targetZ)) return;
 
     const startPos = this.camera.position.clone();
+    // GĐ6-fix2 G3: nếu đoạn thẳng cắt hộp va chạm thì dừng cách vật cản 0,6 m (không bay xuyên tường)
+    const hitT = this.firstHitOnSegment(startPos.x, startPos.z, targetX, targetZ);
+    if (hitT !== null) {
+      const total = Math.hypot(targetX - startPos.x, targetZ - startPos.z);
+      const stopDist = total * hitT - 0.6;
+      if (stopDist < 0.5) return;
+      const k = stopDist / total;
+      targetX = startPos.x + (targetX - startPos.x) * k;
+      targetZ = startPos.z + (targetZ - startPos.z) * k;
+      if (this.isPositionBlocked(targetX, targetZ)) return;
+    }
     const endPos = new THREE.Vector3(targetX, this.eyeHeight, targetZ);
 
     // Rotate slightly towards walk direction
@@ -342,7 +431,7 @@ export class ControlsManager {
     const exhibitPos = new THREE.Vector3();
     exhibitGroup.getWorldPosition(exhibitPos);
 
-    // Get outward normal vector perpendicular to artwork
+    // Get outward normal vector perpendicular to artwork (mặt trước tường = cùng phía pháp tuyến khung)
     const forward = new THREE.Vector3(0, 0, 1).applyQuaternion(exhibitGroup.quaternion);
 
     // Viewing distance: 2.2m directly in front (ideal framing)
@@ -360,8 +449,31 @@ export class ControlsManager {
     const endYaw = Math.atan2(-lookDir.x, -lookDir.z);
     const endPitch = Math.asin(lookDir.y); // equals 0, looking directly perpendicular
 
-    this.startGlide(this.camera.position.clone(), targetPos, this.currentYaw, endYaw, this.currentPitch, endPitch, duration, onComplete);
+    const cam = this.camera.position;
+    // GĐ6-fix2 G4: nếu đường bay thẳng cắt tường thì bay qua các điểm trung gian (cửa khu / hành lang)
+    const via = this.findWaypointPath(cam.x, cam.z, targetPos.x, targetPos.z);
+    this.lastExhibitRoute = via ? via.map(p => ({ ...p })) : null;
     this.audioService?.playHoverSound();
+
+    if (!via || via.length === 0) {
+      this.startGlide(cam.clone(), targetPos, this.currentYaw, endYaw, this.currentPitch, endPitch, duration, onComplete);
+      return;
+    }
+
+    // Bay từng chặng qua các điểm trung gian, chặng cuối nhìn thẳng vào ảnh
+    const legs = via.map(p => new THREE.Vector3(p.x, this.eyeHeight, p.z));
+    legs.push(targetPos);
+    const runLeg = (i) => {
+      const from = this.camera.position.clone();
+      const to = legs[i];
+      const last = i === legs.length - 1;
+      const d = new THREE.Vector3().subVectors(to, from);
+      const legYaw = last ? endYaw : Math.atan2(-d.x, -d.z);
+      const legPitch = last ? endPitch : 0;
+      const legDur = last ? duration : Math.max(0.6, Math.min(1.4, d.length() / 30));
+      this.startGlide(from, to, this.currentYaw, legYaw, this.currentPitch, legPitch, legDur, last ? onComplete : () => runLeg(i + 1));
+    };
+    runLeg(0);
   }
 
   teleportToHall(hallId) {
@@ -385,10 +497,10 @@ export class ControlsManager {
     this.resetKeys();
     // GĐ4: Two cabinets at (±6.5, -6.5) rotated ±π/4 (on dais y=0.35)
     // Determine which cabinet based on albumId
-    const cabinetConfigs = [
-      { cx: -6.5, cz: -6.5, rotY: Math.PI / 4,  albums: ['souvenir', 'awards_flags'] },
-      { cx:  6.5, cz: -6.5, rotY: -Math.PI / 4, albums: ['pcvt', 'doan_the'] }
-    ];
+    // GĐ6-fix2 H: tọa độ tủ đọc từ ALBUM_CABINETS
+    const cabinetConfigs = ALBUM_CABINETS.map(c => ({
+      cx: c.position.x, cz: c.position.z, rotY: c.rotY, albums: c.albums
+    }));
     let cab = cabinetConfigs[0];
     for (const c of cabinetConfigs) {
       if (c.albums.includes(albumId)) { cab = c; break; }

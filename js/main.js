@@ -121,6 +121,8 @@ class HeritageApp {
       this.exhibitBuilder = new ExhibitBuilder(this.scene);
       // GĐ6-fix1: bố trí khu 3 theo dòng thời gian (docs/khu3_bo_tri.json)
       this.exhibitBuilder.khu3Layout = this.dataService.khu3Layout || null;
+      // GĐ6-fix2 B: danh sách ảnh treo tường khu 4/6 (assets/anh_treo_tuong.json)
+      this.exhibitBuilder.anhTreoTuong = this.dataService.anhTreoTuong || null;
       // GĐ3-fix: truyền raw data (chứa toàn bộ items), exhibitBuilder tự lọc treo
       this.exhibitBuilder.buildAllExhibits(this.dataService.raw, (done, total) => {
         const pct = 55 + (done / total) * 30;
@@ -155,6 +157,14 @@ class HeritageApp {
       const gridData = await this.gridMapTable.loadData();
       if (gridData) {
         this.gridMapTable.build(gridData);
+      }
+      // GĐ6-fix2 D: địa bàn hành chính (phường/xã mới, TP. Hồ Chí Minh)
+      try {
+        const rDb = await fetch('assets/grid/dia_ban_hanh_chinh.json');
+        this.diaBanHanhChinh = rDb.ok ? await rDb.json() : null;
+      } catch (err) {
+        console.warn('Không nạp được dia_ban_hanh_chinh.json', err);
+        this.diaBanHanhChinh = null;
       }
       this.initGridMapUI();
 
@@ -203,6 +213,10 @@ class HeritageApp {
       }
       window.assertNoStretchedText = () => this.exhibitBuilder.assertNoStretchedText(this.scene);
       window.assertAllInsideBoard = () => this.gridMapTable.assertAllInsideBoard();
+      window.assertFramesOnWall = () => this.exhibitBuilder.assertFramesOnWall();
+      window.assertNoBoardOverlap = () => this.assertNoBoardOverlap();
+      this.buildOccluders();
+      this.assertNoBoardOverlap();
       this.updateZoneCulling();
 
       this.uiController.updateLoadingProgress(100, 'Phòng truyền thống đã sẵn sàng!');
@@ -262,6 +276,8 @@ class HeritageApp {
   }
 
   checkRaycast() {
+    this.floorHitPoint = null;   // GĐ6-fix2 G: không dùng điểm sàn cũ
+    this._occHit = undefined;
     if (!this.exhibitBuilder || this.exhibitBuilder.exhibitMeshes.length === 0) return;
 
     this.raycaster.setFromCamera(this.mouse, this.camera);
@@ -384,7 +400,7 @@ class HeritageApp {
       const visibleExhibits = this.exhibitBuilder.exhibitMeshes.filter(m => m.parent && m.parent.visible !== false && m.parent.parent && m.parent.parent.visible !== false);
       const exhibitHits = this.raycaster.intersectObjects(visibleExhibits, false);
 
-      if (exhibitHits.length > 0 && exhibitHits[0].distance < 16.0) {
+      if (exhibitHits.length > 0 && exhibitHits[0].distance < 40.0 && this.isLineClear(exhibitHits[0].distance)) {
         const hit = exhibitHits[0].object;
         if (this.hoveredExhibit !== hit) {
           this.hoveredExhibit = hit;
@@ -458,7 +474,7 @@ class HeritageApp {
     // 2. Check Walkable Floor
     if (this.architect.floorMesh) {
       const floorHits = this.raycaster.intersectObject(this.architect.floorMesh, false);
-      if (floorHits.length > 0) {
+      if (floorHits.length > 0 && this.floorIsFirstHit()) {
         const hit = floorHits[0];
         this.floorHitPoint = hit.point;
         this.container.style.cursor = 'crosshair';
@@ -473,6 +489,110 @@ class HeritageApp {
 
     if (this.architect.floorMarker) this.architect.floorMarker.visible = false;
     this.container.style.cursor = 'grab';
+  }
+
+  // ===========================================================================
+  // GĐ6-fix2 G: vật cản cho tia chọn (chặn click xuyên tường)
+  // ===========================================================================
+  buildOccluders() {
+    this.scene.updateMatrixWorld(true);
+    const list = [];
+    const box = new THREE.Box3();
+    const inExhibit = (o) => { for (let p = o; p; p = p.parent) { if (p.name && p.name.startsWith('Exhibit_')) return true; } return false; };
+    this.scene.traverse(o => {
+      if (!o.isMesh || o.userData?.isExhibit) return;
+      if (o === this.architect.floorMesh || o === this.architect.floorMarker) return;
+      const m = Array.isArray(o.material) ? o.material[0] : o.material;
+      if (!m || m.visible === false || (m.transparent && m.opacity < 0.3)) return;
+      if (inExhibit(o)) return;
+      box.setFromObject(o);
+      if (!isFinite(box.max.y) || box.max.y < 1.5 || box.min.y > 7.0) return;
+      list.push(o);
+    });
+    if (this.architect.floorMesh) list.push(this.architect.floorMesh);
+    this.architect.occluders = list;
+    console.log(`[GD6-fix2] occluders: ${list.length} mesh (tường, vách, bảng, màn hình, tủ, sàn)`);
+  }
+
+  _firstOccluderHit() {
+    if (this._occHit !== undefined) return this._occHit;
+    let res = null;
+    const occ = this.architect?.occluders;
+    if (occ && occ.length) {
+      const hits = this.raycaster.intersectObjects(occ, false);
+      for (const h of hits) {
+        let vis = true;
+        for (let p = h.object; p; p = p.parent) { if (p.visible === false) { vis = false; break; } }
+        if (vis) { res = h; break; }
+      }
+    }
+    this._occHit = res;
+    return res;
+  }
+
+  /** Không có vật cản nào gần hơn khoảng cách dist (tia tới triển lãm không xuyên tường) */
+  isLineClear(dist) {
+    const first = this._firstOccluderHit();
+    return !first || first.distance >= dist - 0.03;
+  }
+
+  /** Chỉ cho đi tới / hiện vòng đích khi điểm va chạm đầu tiên của tia là sàn */
+  floorIsFirstHit() {
+    const first = this._firstOccluderHit();
+    return !first || first.object === this.architect.floorMesh;
+  }
+
+  // ===========================================================================
+  // GĐ6-fix2 E3: các bảng (biển khu, bảng tiêu đề tường, khẩu hiệu, màn hình, thẻ mốc son)
+  // trên cùng một mặt phẳng cách nhau ≥ 0,15 m và nằm trong chiều cao tường/vách
+  // ===========================================================================
+  assertNoBoardOverlap() {
+    console.log('\n=== KIỂM TRA CHỒNG BẢNG (assertNoBoardOverlap) ===');
+    this.scene.updateMatrixWorld(true);
+    const boards = [];
+    const q = new THREE.Quaternion(), pos = new THREE.Vector3(), sc = new THREE.Vector3();
+    this.scene.traverse(o => {
+      if (!o.isMesh) return;
+      const ud = o.userData || {};
+      const ok = ud.isBoard || ud.isZoneScreen || ud.isHCMScreen || (ud.isTextPlane && !(o.name || '').startsWith('Plaque_'));
+      if (!ok) return;
+      const gp = o.geometry?.parameters;
+      if (!gp || !gp.width || !gp.height) return;
+      o.matrixWorld.decompose(pos, q, sc);
+      const n = new THREE.Vector3(0, 0, 1).applyQuaternion(q);
+      if (Math.abs(n.y) > 0.01) return;
+      const t = new THREE.Vector3(n.z, 0, -n.x);
+      boards.push({
+        name: o.name || ud.kind || 'board', n, pos: pos.clone(),
+        u: pos.dot(t), d: pos.dot(n), y: pos.y, w: gp.width * sc.x, h: gp.height * sc.y
+      });
+    });
+    const errors = [];
+    for (let i = 0; i < boards.length; i++) {
+      for (let j = i + 1; j < boards.length; j++) {
+        const a = boards[i], b = boards[j];
+        if (a.n.dot(b.n) < 0.999) continue;
+        if (Math.abs(a.d - b.d) > 0.3) continue;
+        const gapU = Math.abs(a.u - b.u) - (a.w + b.w) / 2;
+        const gapY = Math.abs(a.y - b.y) - (a.h + b.h) / 2;
+        if (Math.max(gapU, gapY) < 0.15 - 1e-6) {
+          errors.push(`${a.name} ↔ ${b.name}: khe ${Math.max(gapU, gapY).toFixed(3)} m < 0,15 m`);
+        }
+      }
+    }
+    const boxes = this.exhibitBuilder?.collisionBoxes || [];
+    const heightOf = (id) => id.startsWith('partition_k1') ? 5.2 : (id.startsWith('partition_k3') ? 6.8 : 8.0);
+    for (const b of boards) {
+      const qx = b.pos.x - b.n.x * 0.25, qz = b.pos.z - b.n.z * 0.25;
+      const wall = boxes.find(bx => qx >= bx.minX && qx <= bx.maxX && qz >= bx.minZ && qz <= bx.maxZ);
+      if (!wall) continue;
+      const top = b.y + b.h / 2;
+      if (top > heightOf(wall.id) + 1e-6) errors.push(`${b.name}: mép trên ${top.toFixed(2)} m vượt tường ${wall.id} (${heightOf(wall.id)} m)`);
+    }
+    errors.forEach(e => console.warn(`[assertNoBoardOverlap] ${e}`));
+    console.log(`=> KẾT QUẢ assertNoBoardOverlap: đã kiểm ${boards.length} bảng, ${errors.length} lỗi ${errors.length === 0 ? '✓ ĐẠT' : '✗'}\n`);
+    this.boardOverlapErrors = errors;
+    return errors.length;
   }
 
   onCanvasClick(e) {
@@ -932,18 +1052,47 @@ class HeritageApp {
     const trangthaiEl = document.getElementById('grid-info-trangthai');
     const phuongEl = document.getElementById('grid-info-phuong');
     const extraEl = document.getElementById('grid-info-extra');
-
     const extraRow = document.getElementById('grid-info-extra-row');
+    const setLabels = (a, b, c, d) => {
+      [a, b, c, d].forEach((txt, i) => {
+        const el = document.getElementById(`grid-info-label-${i + 1}`);
+        if (el) el.textContent = txt;
+      });
+    };
+    // Huy hiệu về kiểu mặc định (thẻ phường có thể đã đổi màu)
+    badgeEl.removeAttribute('style');
+    if (extraEl) extraEl.style.fontSize = '';
+    const diaBan = this.diaBanHanhChinh;
 
     if (userData.isGridTram && userData.tramData) {
       const t = userData.tramData;
+      setLabels('Cấp điện áp:', 'Phân loại:', 'Trạng thái:', 'Địa bàn:');
       titleEl.textContent = t.ten;
       capEl.textContent = t.cap;
       loaiEl.textContent = t.loai === 'khach_hang' ? '110kV Khách hàng' : (t.loai === 'lan_can' ? 'Trạm lân cận' : 'Trạm lưới truyền tải');
       trangthaiEl.textContent = t.trang_thai === 'quy_hoach' ? 'Quy hoạch' : 'Hiện trạng';
-      phuongEl.textContent = t.phuong || 'Tỉnh Bà Rịa – Vũng Tàu';
-      extraEl.textContent = `Tọa độ bản vẽ CAD: (${t.pt ? t.pt[0].toFixed(1) : ''}, ${t.pt ? t.pt[1].toFixed(1) : ''})`;
-      if (extraRow) extraRow.style.display = '';
+
+      // GĐ6-fix2 D: địa bàn lấy từ dia_ban_hanh_chinh.json (phường/xã mới thuộc TP. Hồ Chí Minh)
+      const tb = diaBan?.tram?.[t.id];
+      let note = '';
+      if (tb) {
+        if (tb.phuong_moi) {
+          const full = diaBan.phuong?.[tb.phuong_moi]?.ten_day_du || tb.phuong_moi;
+          phuongEl.textContent = `${full} – TP. Hồ Chí Minh`;
+        } else {
+          phuongEl.textContent = 'Ngoài địa bàn Công ty (lưới lân cận)';
+        }
+        if ((tb.ghi_chu || '').includes('CHỜ XÁC NHẬN')) note = '[CHỜ XÁC NHẬN]';
+      } else {
+        phuongEl.textContent = 'Ngoài địa bàn Công ty (lưới lân cận)';
+      }
+      if (note) {
+        extraEl.textContent = note;
+        extraEl.style.fontSize = '0.72em';
+        if (extraRow) extraRow.style.display = '';
+      } else if (extraRow) {
+        extraRow.style.display = 'none';
+      }
 
       badgeEl.className = 'grid-info-badge';
       if (t.cap === '500kV') badgeEl.classList.add('badge-500');
@@ -953,31 +1102,40 @@ class HeritageApp {
       badgeEl.textContent = t.cap;
     } else if (userData.isGridCoSo && userData.coSoData) {
       const cs = userData.coSoData;
+      setLabels('Cấp điện áp:', 'Phân loại:', 'Trạng thái:', 'Địa bàn:');
       titleEl.textContent = cs.ten;
       capEl.textContent = 'Cơ sở PCVT';
       loaiEl.textContent = 'Trụ sở / Đơn vị trực thuộc';
       trangthaiEl.textContent = 'Đang hoạt động';
-      phuongEl.textContent = cs.phuong || 'P. Vũng Tàu';
-      // Mục B.4: Không hiển thị trường địa chỉ cho cơ sở PCVT
+      phuongEl.textContent = cs.phuong || '';
+      // Mục B.4: Không hiển thị tọa độ bản vẽ CAD cho cơ sở PCVT
       if (extraRow) extraRow.style.display = 'none';
 
       badgeEl.className = 'grid-info-badge badge-coso';
       badgeEl.textContent = 'PCVT';
     } else if (userData.isGridPhuong && userData.phuongData) {
       const p = userData.phuongData;
-      titleEl.textContent = p.ten;
-      capEl.textContent = 'Đơn vị hành chính';
-      loaiEl.textContent = 'Địa bàn quản lý điện lực';
-      trangthaiEl.textContent = 'Tỉnh Bà Rịa – Vũng Tàu';
-      phuongEl.textContent = p.ten;
+      const info = diaBan?.phuong?.[p.ten];
+      setLabels('Loại đơn vị:', 'Trực thuộc:', 'Đơn vị quản lý điện:', 'Trạm biến áp trên địa bàn:');
+      titleEl.textContent = info?.ten_day_du || p.ten;
+      capEl.textContent = info?.loai_don_vi || '';
+      loaiEl.textContent = info?.truc_thuoc || 'Thành phố Hồ Chí Minh';
+      trangthaiEl.textContent = info?.don_vi_quan_ly_dien || 'Công ty Điện lực Vũng Tàu';
+      phuongEl.textContent = info?.tram_tren_dia_ban || '';
       if (extraRow) extraRow.style.display = 'none';
 
       badgeEl.className = 'grid-info-badge';
       badgeEl.style.background = '#1e40a0';
       badgeEl.style.color = '#ffffff';
-      badgeEl.textContent = 'ĐỊA BÀN';
+      badgeEl.textContent = (info?.loai_don_vi || 'Phường').toUpperCase();
+
+      // Nhấp phường/xã → các ghim trạm trong tram_ids nhấp nháy 2 giây
+      if (info?.tram_ids?.length && this.gridMapTable?.pulseTrams) {
+        this.gridMapTable.pulseTrams(info.tram_ids);
+      }
     } else if (userData.isGridDBGT && userData.dbgtData) {
       const d = userData.dbgtData;
+      setLabels('Cấp điện áp:', 'Phân loại:', 'Trạng thái:', 'Địa bàn:');
       titleEl.textContent = d.ten;
       capEl.textContent = 'Công trình ĐBGT';
       loaiEl.textContent = 'Đồng bộ giao thông';
@@ -990,6 +1148,7 @@ class HeritageApp {
       trangthaiEl.textContent = statusMap[d.trang_thai] || d.trang_thai;
       phuongEl.textContent = 'Địa bàn đồng bộ giao thông';
       extraEl.textContent = 'Phối hợp đồng bộ hạ tầng lưới điện';
+      if (extraRow) extraRow.style.display = '';
 
       badgeEl.className = 'grid-info-badge badge-dbgt';
       badgeEl.textContent = 'ĐBGT';

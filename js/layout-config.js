@@ -107,9 +107,9 @@ export const WALLS = [
   // Tường Bắc z = −25
   { id: 'wall_k1_north', zone: 'khu1', w: 32, h: WALL_HEIGHT, d: WALL_THICKNESS,
     x: -34, z: -25, rotY: 0 },
-  // Tường Nam z = 25 — GĐ6-fix1 E1: cắt còn 16 m (x −34 → −18), mở ra trước cửa khu 6
+  // Tường Nam z = 25 — GĐ6-fix2 A1: giữ nửa phía trong x −50 → −34, bỏ nửa sát sảnh (mở lối sảnh ↔ hành lang)
   { id: 'wall_k1_south', zone: 'khu1', w: 16, h: WALL_HEIGHT, d: WALL_THICKNESS,
-    x: -26, z: 25, rotY: 0, cutEnd: 'west' },
+    x: -42, z: 25, rotY: 0, cutEnd: 'east' },
 
   // ============ KHU 3 · Đông ============
   // Tường xa x = 50
@@ -118,9 +118,9 @@ export const WALLS = [
   // Tường Bắc z = −25
   { id: 'wall_k3_north', zone: 'khu3', w: 32, h: WALL_HEIGHT, d: WALL_THICKNESS,
     x: 34, z: -25, rotY: 0 },
-  // Tường Nam z = 25 — GĐ6-fix1 E1: cắt còn 16 m (x 18 → 34), mở thẳng ra hành lang trước cửa khu 4
+  // Tường Nam z = 25 — GĐ6-fix2 A1: giữ nửa phía trong x 34 → 50, bỏ nửa sát sảnh
   { id: 'wall_k3_south', zone: 'khu3', w: 16, h: WALL_HEIGHT, d: WALL_THICKNESS,
-    x: 26, z: 25, rotY: 0, cutEnd: 'east' },
+    x: 42, z: 25, rotY: 0, cutEnd: 'west' },
 
   // ============ KHU 4 · Đông Nam ============
   // Tường Đông x = 50 (chung với khu 3 ở phía trên)
@@ -268,14 +268,14 @@ export const HALL_TARGETS = {
 export const ALBUM_CABINETS = [
   {
     id: 'cabinet_1',
-    position: { x: -6.5, z: -6.5 },
+    position: { x: -4.6, z: -6.8 },
     rotY: Math.PI / 4,
     label: 'KÝ ỨC & VINH DANH',
     albums: ['souvenir', 'awards_flags'],
   },
   {
     id: 'cabinet_2',
-    position: { x: 6.5, z: -6.5 },
+    position: { x: 4.6, z: -6.8 },
     rotY: -Math.PI / 4,
     label: 'HÔM NAY & ĐOÀN THỂ',
     albums: ['pcvt', 'doan_the'],
