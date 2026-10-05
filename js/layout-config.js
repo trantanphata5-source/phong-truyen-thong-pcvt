@@ -223,6 +223,14 @@ export function buildCollisionBoxes() {
     maxZ: 2.3,
   });
 
+  // GĐ6-fix3 C: chậu cây đã dời (khu 1 & khu 3, góc Nam) — hộp va chạm 0,7 × 0,7 m
+  for (const [id, cx, cz] of [
+    ['pot_k3_a', 35.3, 23.8], ['pot_k3_b', 48.9, 23.9],
+    ['pot_k1_a', -35.3, 23.8], ['pot_k1_b', -48.9, 23.9],
+  ]) {
+    boxes.push({ id, minX: cx - 0.35, maxX: cx + 0.35, minZ: cz - 0.35, maxZ: cz + 0.35 });
+  }
+
   return boxes;
 }
 

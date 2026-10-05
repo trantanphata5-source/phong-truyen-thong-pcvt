@@ -1,0 +1,357 @@
+{
+ "stats": {
+  "counts": {
+   "wall_k1_far": 40,
+   "wall_k1_north": 17,
+   "partition_k1": 40,
+   "wall_k1_south": 9,
+   "wall_k2_back": 30,
+   "wall_k2_west": 40,
+   "wall_k2_east": 41,
+   "wall_k3_north": 22,
+   "wall_k3_far": 32,
+   "wall_k3_south": 10,
+   "wall_k4_east": 12,
+   "wall_k4_west_hcm": 11,
+   "wall_k6_west": 32,
+   "wall_k6_east_hcm": 30
+  },
+  "framesOnWall": 0,
+  "framesOnWallDetails": [],
+  "rowGap": 0,
+  "rowGapReport": [
+   {
+    "face": "wall_k1_far|1.57",
+    "rowGap": 0.475,
+    "low": 2.085,
+    "board": 0.68
+   },
+   {
+    "face": "wall_k1_north|0.00",
+    "rowGap": 0.475,
+    "low": 2.085,
+    "board": 0.31
+   },
+   {
+    "face": "partition_k1|-1.57",
+    "rowGap": 0.365,
+    "low": 1.36,
+    "board": 0.265
+   },
+   {
+    "face": "partition_k1|1.57",
+    "rowGap": 0.367,
+    "low": 1.36,
+    "board": 0.267
+   },
+   {
+    "face": "wall_k1_south|3.14",
+    "rowGap": 0.425,
+    "low": 2.06,
+    "board": 0.285
+   },
+   {
+    "face": "wall_k2_back|0.00",
+    "rowGap": 0.375,
+    "low": 2.035,
+    "board": 0.63
+   },
+   {
+    "face": "wall_k2_west|1.57",
+    "rowGap": 0.52,
+    "low": 2.107,
+    "board": 0.332
+   },
+   {
+    "face": "wall_k2_east|-1.57",
+    "rowGap": 0.541,
+    "low": 2.107,
+    "board": 0.354
+   },
+   {
+    "face": "wall_k3_north|0.00",
+    "rowGap": 0.34,
+    "low": 1.85,
+    "board": 0.31
+   },
+   {
+    "face": "wall_k3_far|-1.57",
+    "rowGap": 0.34,
+    "low": 1.85,
+    "board": 0.31
+   },
+   {
+    "face": "wall_k3_south|3.14",
+    "rowGap": 0.34,
+    "low": 1.85,
+    "board": 0.31
+   },
+   {
+    "face": "wall_k4_east|-1.57",
+    "rowGap": null,
+    "low": 2.55,
+    "board": 0.71
+   },
+   {
+    "face": "wall_k4_west_hcm|1.57",
+    "rowGap": null,
+    "low": 2.55,
+    "board": 0.71
+   },
+   {
+    "face": "wall_k6_west|1.57",
+    "rowGap": 0.34,
+    "low": 1.85,
+    "board": 0.31
+   },
+   {
+    "face": "wall_k6_east_hcm|-1.57",
+    "rowGap": 0.34,
+    "low": 1.85,
+    "board": 0.31
+   }
+  ],
+  "insideZone": 0,
+  "stretched": 0,
+  "boardOverlap": 0,
+  "boardOverlapDetails": [],
+  "overlapWalls": 0,
+  "layout": [
+   {
+    "wallId": "wall_k3_north",
+    "items": 22,
+    "columns": 11,
+    "scale": 1,
+    "usable": 28.4,
+    "gap": 0.8223799999999993,
+    "rangeMin": -14.2,
+    "rangeMax": 14.2,
+    "zone": "khu3"
+   },
+   {
+    "wallId": "wall_k3_far",
+    "items": 32,
+    "columns": 16,
+    "scale": 1,
+    "usable": 45.55,
+    "gap": 1.0835799999999993,
+    "rangeMin": -23.2,
+    "rangeMax": 22.349999999999998,
+    "zone": "khu3"
+   },
+   {
+    "wallId": "wall_k3_south",
+    "items": 10,
+    "columns": 5,
+    "scale": 1,
+    "usable": 12.089999999999996,
+    "gap": 0.8945499999999988,
+    "rangeMin": -5.349999999999997,
+    "rangeMax": 6.74,
+    "zone": "khu3"
+   },
+   {
+    "wallId": "wall_k4_east",
+    "zone": "khu4",
+    "items": 12,
+    "columns": 12,
+    "scale": 1,
+    "usable": 41.00000000000001,
+    "gap": 1.1971818181818181,
+    "rangeMin": -20.8,
+    "rangeMax": 20.200000000000006
+   },
+   {
+    "wallId": "wall_k4_west_hcm",
+    "zone": "khu4",
+    "items": 11,
+    "columns": 11,
+    "scale": 1,
+    "usable": 37.6,
+    "gap": 0.6045999999999996,
+    "rangeMin": -18.8,
+    "rangeMax": 18.8
+   },
+   {
+    "wallId": "wall_k6_west",
+    "items": 32,
+    "columns": 16,
+    "scale": 1,
+    "usable": 41.00000000000001,
+    "gap": 0.7958666666666668,
+    "rangeMin": -20.200000000000006,
+    "rangeMax": 20.8,
+    "zone": "khu6"
+   },
+   {
+    "wallId": "wall_k6_east_hcm",
+    "items": 30,
+    "columns": 15,
+    "scale": 1,
+    "usable": 37.6,
+    "gap": 0.8332357142857142,
+    "rangeMin": -18.8,
+    "rangeMax": 18.8,
+    "zone": "khu6"
+   }
+  ],
+  "khu46": {
+   "wall_k4_east": 12,
+   "wall_k4_west_hcm": 11,
+   "wall_k6_west": 32,
+   "wall_k6_east_hcm": 30
+  },
+  "occluders": 612
+ },
+ "console_errors": [],
+ "clicks": {
+  "dang_bo_020_2026-04-18": {
+   "title": "Côn Đảo – hành trình về nguồn đầy xúc động",
+   "khu": "khu4",
+   "mounted": true,
+   "wall": "wall_k3_far",
+   "zone": "khu3",
+   "narr": true,
+   "keys": [
+    "id",
+    "source",
+    "khu",
+    "src_name",
+    "new_name",
+    "year",
+    "date",
+    "org_code",
+    "org_name",
+    "item_type",
+    "caption",
+    "aspect_ratio",
+    "treo",
+    "wall_path",
+    "thumb_path",
+    "full_path",
+    "event_folder",
+    "vach_moc_son",
+    "tieu_de",
+    "thuyet_minh",
+    "tm_ngay"
+   ]
+  },
+  "cong_doan_015_2026-03-10": {
+   "title": "Rộn ràng sắc áo dài – ấm áp ngày 8/3",
+   "khu": "khu6",
+   "mounted": true,
+   "wall": "wall_k3_far",
+   "zone": "khu3",
+   "narr": true,
+   "keys": [
+    "id",
+    "source",
+    "khu",
+    "src_name",
+    "new_name",
+    "year",
+    "date",
+    "org_code",
+    "org_name",
+    "item_type",
+    "caption",
+    "aspect_ratio",
+    "treo",
+    "wall_path",
+    "thumb_path",
+    "full_path",
+    "event_folder",
+    "vach_moc_son",
+    "tieu_de",
+    "thuyet_minh",
+    "tm_ngay"
+   ]
+  },
+  "pcvt_103_2026-03-27": {
+   "title": "Sáng tạo xanh – Tương lai xanh: đi bộ hưởng ứng Giờ Trái Đất 2026",
+   "khu": "khu3",
+   "mounted": true,
+   "wall": "wall_k3_far",
+   "zone": "khu3",
+   "narr": true,
+   "keys": [
+    "id",
+    "source",
+    "khu",
+    "src_name",
+    "new_name",
+    "year",
+    "date",
+    "org_code",
+    "org_name",
+    "item_type",
+    "caption",
+    "aspect_ratio",
+    "treo",
+    "wall_path",
+    "thumb_path",
+    "full_path",
+    "event_folder",
+    "vach_moc_son",
+    "nguon_goc",
+    "tieu_de",
+    "thuyet_minh",
+    "tm_ngay"
+   ]
+  },
+  "doan_tn_036_2026-08-04": {
+   "title": "Công trình thanh niên: cải tạo điện sinh hoạt tại xã Long Sơn, Châu Pha",
+   "khu": "khu6",
+   "mounted": true,
+   "wall": "wall_k6_east_hcm",
+   "zone": "khu6",
+   "narr": true,
+   "keys": [
+    "id",
+    "source",
+    "khu",
+    "src_name",
+    "new_name",
+    "year",
+    "date",
+    "org_code",
+    "org_name",
+    "item_type",
+    "caption",
+    "aspect_ratio",
+    "treo",
+    "wall_path",
+    "thumb_path",
+    "full_path",
+    "event_folder",
+    "vach_moc_son",
+    "nguon_goc",
+    "tieu_de",
+    "thuyet_minh",
+    "tm_ngay"
+   ]
+  }
+ },
+ "dup": {
+  "dupIds": [
+   "cong_doan_004_2025-08-28",
+   "cong_doan_007_2025-10-18",
+   "cong_doan_009_2025-10-18",
+   "cong_doan_013_2026-01-31",
+   "cong_doan_015_2026-01-31",
+   "cong_doan_022_2026-08-24",
+   "cong_doan_023_2026-08-24",
+   "cong_doan_024_2026-09-24"
+  ],
+  "dupOnWall": 0,
+  "twiceOnWalls": 0,
+  "albums": {
+   "souvenir": 108,
+   "souvenir_photos": 108,
+   "awards_flags": 211,
+   "gift_paintings": 211,
+   "pcvt": 106,
+   "doan_the": 141
+  }
+ }
+}

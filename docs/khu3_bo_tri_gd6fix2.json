@@ -1,13 +1,13 @@
 {
- "phien_ban": "GĐ6-fix3 (05/10/2026)",
- "ghi_chu": "Khu 3 là khu tổng hợp của toàn Công ty nên có thêm ảnh tiêu biểu của Đảng bộ, Công đoàn, Đoàn TN (trường anh_noi_bat_tu). Các ảnh này là ảnh KHÁC với ảnh treo ở khu 4/khu 6. Thứ tự trái→phải theo hướng người xem; treo theo CỘT (ảnh 1 tầng trên, ảnh 2 tầng dưới). Sự kiện đã có trên vách mốc son thì không treo lại.",
+ "phien_ban": "GĐ6-fix2 (05/10/2026)",
+ "ghi_chu": "Mỗi sự kiện chỉ 1 ảnh, sự kiện quan trọng 2 ảnh; ảnh đã có trên vách mốc son được tính trước (sự kiện đã có trên vách mốc son thì tường bao không treo thêm). Ảnh không có trong file này: treo=false, vẫn xem được trong album và thẻ \"Ảnh cùng sự kiện\". Thứ tự trái→phải theo hướng người xem; treo theo CỘT (ảnh 1 tầng trên, ảnh 2 tầng dưới). wall_k3_south_half = đoạn tường Nam x 34→50 (sau khi đảo).",
  "tuong": [
   {
    "tuong": "wall_k3_north",
    "rotY": "0",
    "bang_tieu_de": "THÁNG 7/2025 – THÁNG 2/2026 · NHỮNG NGÀY ĐẦU THÀNH LẬP",
-   "dong_phu": "Ổn định tổ chức · Đại hội Đoàn · Đón Xuân Bính Ngọ 2026",
-   "so_anh": 22,
+   "dong_phu": "Công bố thành lập Công ty · Ổn định tổ chức · Đón Xuân Bính Ngọ 2026",
+   "so_anh": 15,
    "thu_tu_anh": [
     {
      "id": "pcvt_001_2025-07-23",
@@ -35,28 +35,6 @@
      "tieu_de": "Lãnh đạo EVNHCMC rà soát danh mục dự án ĐTXD 2025 – 2026"
     },
     {
-     "id": "pcvt_101_2025-09-08",
-     "ngay": "2025-09-08",
-     "tieu_de": "Đoàn Ban Kỹ thuật An toàn EVN kiểm tra công tác PCCC và an toàn điện trong nhân dân"
-    },
-    {
-     "id": "pcvt_102_2025-09-08",
-     "ngay": "2025-09-08",
-     "tieu_de": "Đoàn Ban Kỹ thuật An toàn EVN kiểm tra công tác PCCC và an toàn điện trong nhân dân"
-    },
-    {
-     "id": "doan_tn_008_2025-10-06",
-     "ngay": "2025-10-06",
-     "tieu_de": "Đoàn cơ sở Công ty tham dự Đại hội đại biểu Đoàn",
-     "anh_noi_bat_tu": "khu6 / doan_tn"
-    },
-    {
-     "id": "cong_doan_010_2025-10-18",
-     "ngay": "2025-10-18",
-     "tieu_de": "Giải Pickleball PC Vũng Tàu lần thứ I – 2025",
-     "anh_noi_bat_tu": "khu6 / cong_doan"
-    },
-    {
      "id": "pcvt_018_2025-11-28",
      "ngay": "2025-11-28",
      "tieu_de": "Công nhân tăng cường thi sát hạch nghề, nâng – giữ bậc 2025"
@@ -72,12 +50,6 @@
      "tieu_de": "Lễ công bố quyết định về công tác cán bộ"
     },
     {
-     "id": "doan_tn_011_2026-01-17",
-     "ngay": "2026-01-17",
-     "tieu_de": "Góp sức Xuân tình nguyện 2026 – Đoàn cơ sở Công ty",
-     "anh_noi_bat_tu": "khu6 / doan_tn"
-    },
-    {
      "id": "pcvt_022_2026-01-22",
      "ngay": "2026-01-22",
      "tieu_de": "Giải đi bộ lần I năm 2026 – chinh phục thử thách"
@@ -89,11 +61,6 @@
     },
     {
      "id": "pcvt_026_2026-01-31",
-     "ngay": "2026-01-31",
-     "tieu_de": "Vinh danh hai \"đôi chân vàng\" của Công ty Điện lực Vũng Tàu"
-    },
-    {
-     "id": "pcvt_027_2026-01-31",
      "ngay": "2026-01-31",
      "tieu_de": "Vinh danh hai \"đôi chân vàng\" của Công ty Điện lực Vũng Tàu"
     },
@@ -116,11 +83,6 @@
      "id": "pcvt_034_2026-02-12",
      "ngay": "2026-02-12",
      "tieu_de": "Côn Đảo sẵn sàng đảm bảo điện an toàn, ổn định"
-    },
-    {
-     "id": "pcvt_035_2026-02-12",
-     "ngay": "2026-02-12",
-     "tieu_de": "Côn Đảo sẵn sàng đảm bảo điện an toàn, ổn định"
     }
    ]
   },
@@ -128,21 +90,9 @@
    "tuong": "wall_k3_far",
    "rotY": "-PI/2",
    "bang_tieu_de": "THÁNG 3/2026 – THÁNG 7/2026 · VỮNG BƯỚC NĂM ĐẦU TIÊN",
-   "dong_phu": "Về nguồn · Hội thao · Giờ Trái Đất · Côn Đảo về nguồn · Tròn 1 năm thành lập",
-   "so_anh": 32,
+   "dong_phu": "Hội thao · Hội nghị khách hàng · Tròn 1 năm thành lập · Điện lực Đặc khu Côn Đảo",
+   "so_anh": 20,
    "thu_tu_anh": [
-    {
-     "id": "dang_bo_015_2026-03-02",
-     "ngay": "2026-03-02",
-     "tieu_de": "Đảng bộ Công ty – hành trình về nguồn, thắp sáng lý tưởng",
-     "anh_noi_bat_tu": "khu4 / dang_bo"
-    },
-    {
-     "id": "cong_doan_015_2026-03-10",
-     "ngay": "2026-03-10",
-     "tieu_de": "Rộn ràng sắc áo dài – ấm áp ngày 8/3",
-     "anh_noi_bat_tu": "khu6 / cong_doan"
-    },
     {
      "id": "pcvt_037_2026-03-14",
      "ngay": "2026-03-14",
@@ -164,20 +114,9 @@
      "tieu_de": "Giải Nhất toàn đoàn Hội thao CNVC-LĐ EVNHCMC 2026"
     },
     {
-     "id": "pcvt_044_2026-03-25",
-     "ngay": "2026-03-25",
-     "tieu_de": "Hội nghị các giải pháp cung ứng điện và dịch vụ điện"
-    },
-    {
      "id": "pcvt_045_2026-03-25",
      "ngay": "2026-03-25",
      "tieu_de": "Hội nghị các giải pháp cung ứng điện và dịch vụ điện"
-    },
-    {
-     "id": "doan_tn_017_2026-03-26",
-     "ngay": "2026-03-26",
-     "tieu_de": "Rực cháy khát vọng tuổi trẻ PC Vũng Tàu – Ngày Đoàn viên",
-     "anh_noi_bat_tu": "khu6 / doan_tn"
     },
     {
      "id": "pcvt_047_2026-03-27",
@@ -185,25 +124,9 @@
      "tieu_de": "Hưởng ứng Giờ Trái Đất 2026 tại Côn Đảo"
     },
     {
-     "id": "pcvt_103_2026-03-27",
-     "ngay": "2026-03-27",
-     "tieu_de": "Sáng tạo xanh – Tương lai xanh: đi bộ hưởng ứng Giờ Trái Đất 2026"
-    },
-    {
-     "id": "pcvt_104_2026-03-27",
-     "ngay": "2026-03-27",
-     "tieu_de": "Sáng tạo xanh – Tương lai xanh: đi bộ hưởng ứng Giờ Trái Đất 2026"
-    },
-    {
      "id": "pcvt_052_2026-04-14",
      "ngay": "2026-04-14",
      "tieu_de": "Phó Giám đốc Kinh doanh làm việc với Đội Quản lý Thu ghi"
-    },
-    {
-     "id": "dang_bo_020_2026-04-18",
-     "ngay": "2026-04-18",
-     "tieu_de": "Côn Đảo – hành trình về nguồn đầy xúc động",
-     "anh_noi_bat_tu": "khu4 / dang_bo"
     },
     {
      "id": "pcvt_053_2026-05-04",
@@ -226,11 +149,6 @@
      "tieu_de": "Chăm lo sức khỏe CBCNV tại Đặc khu Côn Đảo"
     },
     {
-     "id": "pcvt_057_2026-05-15",
-     "ngay": "2026-05-15",
-     "tieu_de": "Chăm lo sức khỏe CBCNV tại Đặc khu Côn Đảo"
-    },
-    {
      "id": "pcvt_058_2026-05-22",
      "ngay": "2026-05-22",
      "tieu_de": "Hưởng ứng Tháng hành động về An toàn, vệ sinh lao động"
@@ -241,17 +159,12 @@
      "tieu_de": "Khởi đầu tuần mới lan tỏa năng lượng tích cực"
     },
     {
-     "id": "pcvt_105_2026-05-30",
-     "ngay": "2026-05-30",
-     "tieu_de": "Côn Đảo: Ngày thứ Bảy tình nguyện – Năng suất cao"
-    },
-    {
      "id": "pcvt_062_2026-05-31",
      "ngay": "2026-05-31",
      "tieu_de": "Lễ chào cờ đầu tuần – tri ân và chia tay"
     },
     {
-     "id": "pcvt_063_2026-06-11",
+     "id": "pcvt_064_2026-06-11",
      "ngay": "2026-06-11",
      "tieu_de": "Điện lực Côn Đảo tiếp sức mùa thi"
     },
@@ -271,17 +184,7 @@
      "tieu_de": "Lễ công bố thành lập Điện lực Đặc khu Côn Đảo"
     },
     {
-     "id": "pcvt_074_2026-07-06",
-     "ngay": "2026-07-06",
-     "tieu_de": "Lễ công bố thành lập Điện lực Đặc khu Côn Đảo"
-    },
-    {
      "id": "pcvt_078_2026-07-13",
-     "ngay": "2026-07-13",
-     "tieu_de": "Huấn luyện sơ cứu, cấp cứu năm 2026"
-    },
-    {
-     "id": "pcvt_079_2026-07-13",
      "ngay": "2026-07-13",
      "tieu_de": "Huấn luyện sơ cứu, cấp cứu năm 2026"
     },
@@ -289,11 +192,6 @@
      "id": "pcvt_084_2026-07-19",
      "ngay": "2026-07-19",
      "tieu_de": "Khóa đào tạo gắn kết văn hóa Cụm 3 tại PC Vũng Tàu"
-    },
-    {
-     "id": "pcvt_106_2026-07-19",
-     "ngay": "2026-07-19",
-     "tieu_de": "Tri ân khách hàng: cài app liền tay – nhận ngay quà tặng"
     }
    ]
   },
@@ -301,36 +199,18 @@
    "tuong": "wall_k3_south_half",
    "rotY": "PI",
    "bang_tieu_de": "THÁNG 8/2026 – THÁNG 9/2026 · TIẾP BƯỚC CHẶNG ĐƯỜNG MỚI",
-   "dong_phu": "Công trình thanh niên · Bữa cơm Công đoàn · ISO 9001:2015 · Mùa mưa bão",
-   "so_anh": 10,
+   "dong_phu": "Đối thoại người lao động · Đào tạo ISO 9001:2015 · Sẵn sàng mùa mưa bão",
+   "so_anh": 5,
    "thu_tu_anh": [
-    {
-     "id": "doan_tn_039_2026-08-04",
-     "ngay": "2026-08-04",
-     "tieu_de": "Công trình thanh niên: cải tạo điện sinh hoạt tại xã Long Sơn, Châu Pha",
-     "anh_noi_bat_tu": "khu6 / doan_tn"
-    },
     {
      "id": "pcvt_087_2026-08-04",
      "ngay": "2026-08-04",
      "tieu_de": "Hội nghị đối thoại người lao động năm 2026"
     },
     {
-     "id": "dang_bo_046_2026-08-09",
-     "ngay": "2026-08-09",
-     "tieu_de": "Chi bộ 3 – hành trình về nguồn ý nghĩa",
-     "anh_noi_bat_tu": "khu4 / dang_bo"
-    },
-    {
      "id": "pcvt_090_2026-08-09",
      "ngay": "2026-08-09",
      "tieu_de": "Hành trình tái tạo năng lượng tại Nhà máy Thủy điện Trị An"
-    },
-    {
-     "id": "cong_doan_019_2026-08-24",
-     "ngay": "2026-08-24",
-     "tieu_de": "Bữa cơm Công đoàn 2026 – ấm áp một mâm cơm, gắn kết một tập thể",
-     "anh_noi_bat_tu": "khu6 / cong_doan"
     },
     {
      "id": "pcvt_093_2026-09-10",
@@ -346,18 +226,6 @@
      "id": "pcvt_098_2026-09-20",
      "ngay": "2026-09-20",
      "tieu_de": "Chủ động đảm bảo an toàn lưới điện mùa mưa"
-    },
-    {
-     "id": "doan_tn_025_2026-09-23",
-     "ngay": "2026-09-23",
-     "tieu_de": "Đoàn Thanh niên Công ty – hành trình về nguồn",
-     "anh_noi_bat_tu": "khu6 / doan_tn"
-    },
-    {
-     "id": "cong_doan_023_2026-09-24",
-     "ngay": "2026-09-24",
-     "tieu_de": "Đêm hội trăng rằm – trao yêu thương, gắn kết gia đình",
-     "anh_noi_bat_tu": "khu6 / cong_doan"
     }
    ]
   }

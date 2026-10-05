@@ -46,6 +46,10 @@ export class ExhibitBuilder {
     this.K3_SLOGAN_Y = 7.30;
     this.K46_ROW_Y = 3.70;
     this.K46_FRAME_H = 1.30;
+    // GĐ6-fix3 A2: khu 4 treo 1 tầng khung cao 1,50 m; khu 6 treo 2 tầng theo cột giống khu 3
+    this.K4_FRAME_H = 1.50;
+    this.K4_MIN_GAP = 0.40;
+    this.zoneReports = {};
     this.K3_MIN_GAP = 0.35;
     this.K46_MIN_GAP = 0.50;
     this.MAX_GAP = 1.60;
@@ -124,10 +128,11 @@ export class ExhibitBuilder {
   // ===========================================================================
   // KÍCH THƯỚC KHUNG (Section A)
   // ===========================================================================
-  getFrameSize(item) {
+  getFrameSize(item, zone) {
     const ar = item.aspect_ratio || 1.33;
     const src = item.source;
-    const khu = item.khu;
+    // GĐ6-fix3 A2: cỡ khung theo TƯỜNG đang treo (zone), không theo item.khu
+    const khu = zone || item.khu;
 
     // Huân chương / TTCP (khu 2): 1.4 × 1.0
     if (src === 'bang_khen' && ['CTN', 'TTCP'].includes(item.org_code)) {
@@ -150,12 +155,12 @@ export class ExhibitBuilder {
       return { w: h * ar, h, frameType: 'cert' };
     }
     // GĐ6-fix2 B2: khu 3 cao 1,10 m (rộng = h × tỷ lệ)
-    if (khu === 'khu3') {
+    if (khu === 'khu3' || khu === 'khu6') {
       const h = this.K3_FRAME_H;
       return { w: h * ar, h, frameType: 'cert' };
     }
     // GĐ6-fix2 B2: khu 4, 6 cao 1,30 m (1 tầng)
-    const h2 = this.K46_FRAME_H;
+    const h2 = this.K4_FRAME_H;   // khu 4: 1 tầng, khung cao 1,50 m
     return { w: h2 * ar, h: h2, frameType: 'cert' };
   }
 
@@ -366,14 +371,15 @@ export class ExhibitBuilder {
   // đoạn tường còn lại (lề ≥ 1,2 m từ mặt tường vuông góc / nẹp cắt / tường xa).
   // Không bỏ ảnh: nếu phải thu nhỏ dưới 90% thì chỉ cảnh báo.
   // ===========================================================================
-  mountWallColumns(wallCfg, items, parent, onDone, seqStart = 0) {
+  mountWallColumns(wallCfg, items, parent, onDone, seqStart = 0, zone = 'khu3') {
     if (!items.length) return 0;
     const { x: baseX, z: baseZ, rotY, thickness, id: wallId } = wallCfg;
     const nx = Math.sin(rotY), nz = Math.cos(rotY);
     const tx = Math.cos(rotY), tz = -Math.sin(rotY);
     const standOff = thickness / 2 + 0.04 + 0.06;
 
-    const baseSizes = items.map(it => this.getFrameSize(it));
+    const baseSizes = items.map(it => this.getFrameSize(it, zone));
+    const barColor = wallId === 'wall_k6_east_hcm' ? '#0EA5E9' : (wallId === 'wall_k6_west' ? '#1D4ED8' : undefined);
     const cols = [];
     for (let i = 0; i < items.length; i += 2) {
       cols.push({ top: i, bottom: (i + 1 < items.length) ? i + 1 : null });
@@ -386,12 +392,13 @@ export class ExhibitBuilder {
     const scale = lay.scale;
 
     const rep = { wallId, items: items.length, columns: n, scale, usable: range.max - range.min, gap: lay.gap, rangeMin: range.min, rangeMax: range.max };
-    this.khu3Report.walls.push(rep);
-    this.wallLayoutReport.push({ ...rep, zone: 'khu3' });
+    if (zone === 'khu3') this.khu3Report.walls.push(rep);
+    else (this.zoneReports[zone] = this.zoneReports[zone] || { walls: [], sequence: [] }).walls.push(rep);
+    this.wallLayoutReport.push({ ...rep, zone });
     if (scale < 0.9) {
-      console.warn(`[khu3] BÁO LẠI: tường ${wallId} phải thu nhỏ khung còn ${(scale * 100).toFixed(1)}% (< 90%). Không bỏ ảnh.`);
+      console.warn(`[${zone}] BÁO LẠI: tường ${wallId} phải thu nhỏ khung còn ${(scale * 100).toFixed(1)}% (< 90%). Không bỏ ảnh.`);
     } else {
-      console.log(`[khu3] Tường ${wallId}: ${items.length} ảnh / ${n} cột, tỷ lệ khung ${(scale * 100).toFixed(1)}%, khe ${lay.gap.toFixed(2)} m`);
+      console.log(`[${zone}] Tường ${wallId}: ${items.length} ảnh / ${n} cột, tỷ lệ khung ${(scale * 100).toFixed(1)}%, khe ${lay.gap.toFixed(2)} m`);
     }
 
     const yTop = this.K3_ROW_Y_TOP;
@@ -401,7 +408,7 @@ export class ExhibitBuilder {
       const place = (idx, y, row) => {
         const item = items[idx];
         const sz = baseSizes[idx];
-        const size = { ...sz, w: sz.w * scale, h: sz.h * scale };
+        const size = { ...sz, w: sz.w * scale, h: sz.h * scale, zone, barColor };
         const posX = baseX + nx * standOff + tx * center;
         const posZ = baseZ + nz * standOff + tz * center;
         const exhibit = this.createExhibit(item, size, rotY);
@@ -409,7 +416,7 @@ export class ExhibitBuilder {
         parent.add(exhibit);
         this.recordMount(wallCfg, item, size, center, exhibit, posX, y, posZ,
           { column: ci, row, order: seqStart + idx });
-        this.khu3Report.sequence.push({ id: item.id, date: item.date, wallId, column: ci, row, order: seqStart + idx });
+        (zone === 'khu3' ? this.khu3Report : this.zoneReports[zone]).sequence.push({ id: item.id, date: item.date, wallId, column: ci, row, order: seqStart + idx });
         if (onDone) onDone();
       };
       place(c.top, yTop, 'top');
@@ -429,9 +436,9 @@ export class ExhibitBuilder {
     const tx = Math.cos(rotY), tz = -Math.sin(rotY);
     const standOff = thickness / 2 + 0.04 + 0.06;
 
-    const baseSizes = items.map(it => this.getFrameSize(it));
+    const baseSizes = items.map(it => this.getFrameSize(it, zone));
     const range = this.usableRange(wallCfg);
-    const lay = this.layoutRow(baseSizes.map(s => Math.max(1.08, s.w)), range.min, range.max, this.K46_MIN_GAP, this.MAX_GAP);
+    const lay = this.layoutRow(baseSizes.map(s => Math.max(1.08, s.w)), range.min, range.max, this.K4_MIN_GAP, this.MAX_GAP);
     const rep = { wallId, zone, items: items.length, columns: items.length, scale: lay.scale, usable: range.max - range.min, gap: lay.gap, rangeMin: range.min, rangeMax: range.max };
     this.wallLayoutReport.push(rep);
     if (lay.scale < 0.9) console.warn(`[${zone}] BÁO LẠI: tường ${wallId} thu nhỏ khung còn ${(lay.scale * 100).toFixed(1)}% (< 90%)`);
@@ -440,7 +447,7 @@ export class ExhibitBuilder {
     items.forEach((item, idx) => {
       const sz = baseSizes[idx];
       const size = { ...sz, w: sz.w * lay.scale, h: sz.h * lay.scale,
-        barColor: wallId === 'wall_k6_east_hcm' ? '#0EA5E9' : (wallId === 'wall_k6_west' ? '#1D4ED8' : undefined) };
+        zone, barColor: undefined };
       const center = lay.centers[idx];
       const posX = baseX + nx * standOff + tx * center;
       const posZ = baseZ + nz * standOff + tz * center;
@@ -635,7 +642,8 @@ export class ExhibitBuilder {
       wall_k3_south:      { id: 'wall_k3_south', rotY: Math.PI },
       wall_k3_south_half: { id: 'wall_k3_south', rotY: Math.PI },
     };
-    const itemById = new Map(items.map(it => [it.id, it]));
+    // GĐ6-fix3 A2.1: khu 3 (và khu 4/6) lấy ảnh từ TOÀN BỘ dữ liệu (kể cả ảnh tiêu biểu lấy từ khu 4/6)
+    const itemById = new Map((roomData.items || items).map(it => [it.id, it]));
     this.khu3WallTitles = {};
     let k3Seq = 0, k3Hung = 0;
     const k3Placed = new Set();
@@ -691,14 +699,15 @@ export class ExhibitBuilder {
     console.log(`khu6 ${khu6.length}`);
 
     // Tường Tây x = −50
-    this.khu46Counts.wall_k6_west = this.mountWallSingleRow(
-      this.wallCfgFromId('wall_k6_west', Math.PI / 2), k4k6.wall_k6_west || [], this.zoneGroups.khu6, onDone, 'khu6');
+    // GĐ6-fix3 A2.2: khu 6 treo 2 tầng theo cột (giống khu 3)
+    this.khu46Counts.wall_k6_west = this.mountWallColumns(
+      this.wallCfgFromId('wall_k6_west', Math.PI / 2), k4k6.wall_k6_west || [], this.zoneGroups.khu6, onDone, 0, 'khu6');
 
     // Tường Đông: mặt ngoài tường HCM Tây (x=−22)
-    this.khu46Counts.wall_k6_east_hcm = this.mountWallSingleRow({
+    this.khu46Counts.wall_k6_east_hcm = this.mountWallColumns({
       id: 'wall_k6_east_hcm',
       x: -22, z: 60, rotY: -Math.PI / 2, wallLength: 40, thickness: WALL_THICKNESS
-    }, k4k6.wall_k6_east_hcm || [], this.zoneGroups.khu6, onDone, 'khu6');
+    }, k4k6.wall_k6_east_hcm || [], this.zoneGroups.khu6, onDone, 100, 'khu6');
     console.log('[GD6-fix2] Số ảnh trên tường:', JSON.stringify({
       khu3: this.khu3Report.walls.map(w => `${w.wallId}:${w.items}`),
       khu4: [this.khu46Counts.wall_k4_east, this.khu46Counts.wall_k4_west_hcm],
@@ -754,6 +763,10 @@ export class ExhibitBuilder {
 
     const k3 = this.khu3WallTitles || {};
     const k3t = (fk, fallback) => k3[fk] || fallback;
+    // GĐ6-fix3 A2.3: tiêu đề & dòng phụ khu 4/6 lấy từ assets/anh_treo_tuong.json (bỏ chuỗi ghi cứng)
+    const k46Map = {};
+    for (const w of (this.anhTreoTuong?.tuong || [])) k46Map[w.tuong] = { title: w.bang_tieu_de || '', sub: w.dong_phu || '' };
+    const k46t = (id) => k46Map[id] || { title: '', sub: '' };
 
     const fk = (id, rotY) => this.faceKeyOf(id, rotY);
     const configs = [
@@ -785,21 +798,17 @@ export class ExhibitBuilder {
         slogan: 'ĐOÀN KẾT – ĐỔI MỚI – HIỆU QUẢ' },
       // ---------------- KHU 4 (GĐ6-fix2 B1: bỏ số ảnh cứng, logo búa liềm vàng) ----------------
       { face: fk('wall_k4_east', -Math.PI / 2), zone: 'khu4', colors: COLORS.khu4, logo: 'assets/logo/bua_liem_vang.png',
-        title: '02/2026 – 04/2026 · Hoạt động Đảng bộ Công ty',
-        sub: 'Về nguồn • Kết nạp đảng viên • Chi bộ Côn Đảo',
+        ...k46t('wall_k4_east'),
         slogan: 'ĐẢNG CỘNG SẢN VIỆT NAM QUANG VINH MUÔN NĂM' },
       { face: fk('wall_k4_west_hcm', Math.PI / 2), zone: 'khu4', colors: COLORS.khu4, logo: 'assets/logo/bua_liem_vang.png',
-        title: '05/2026 – 08/2026 · Xây dựng Đảng bộ trong sạch, vững mạnh',
-        sub: 'Học tập 65 sự kiện về Bác • Sơ kết 6 tháng • Tri ân 27/7 • Chi bộ 3 về nguồn',
+        ...k46t('wall_k4_west_hcm'),
         slogan: 'HỌC TẬP VÀ LÀM THEO TƯ TƯỞNG, ĐẠO ĐỨC, PHONG CÁCH HỒ CHÍ MINH' },
       // ---------------- KHU 6 (GĐ6-fix2 B1: bỏ số ảnh cứng) ----------------
       { face: fk('wall_k6_west', Math.PI / 2), zone: 'khu6', colors: COLORS.khu6cd, logo: 'assets/logo/logo_cong_doan.png',
-        title: '08/2025 – 09/2026 · Công đoàn Công ty – chăm lo, đồng hành',
-        sub: 'Bữa cơm Công đoàn • Ngày Phụ nữ 8/3 • Thể thao • Đêm hội trăng rằm',
+        ...k46t('wall_k6_west'),
         slogan: 'ĐOÀN KẾT – SÁNG TẠO – CHĂM LO – BẢO VỆ' },
       { face: fk('wall_k6_east_hcm', -Math.PI / 2), zone: 'khu6', colors: COLORS.khu6dtn, logo: 'assets/logo/logo_doan_tn.png',
-        title: '10/2025 – 09/2026 · Tuổi trẻ PCVT xung kích, tình nguyện',
-        sub: 'Đại hội đại biểu Đoàn • Xuân tình nguyện 2026 • Ngày Đoàn viên 26/3 • Về nguồn',
+        ...k46t('wall_k6_east_hcm'),
         slogan: 'TUỔI TRẺ PCVT – XUNG KÍCH, SÁNG TẠO, TÌNH NGUYỆN' },
     ];
 
@@ -817,7 +826,7 @@ export class ExhibitBuilder {
       const blockCenter = (face.maxU + face.minU) / 2;
       const isPart = !!cfg.partition;
       const boardH = isPart ? this.PARTITION_BOARD_H : this.WALL_BOARD_H;
-      const boardY = isPart ? this.PARTITION_BOARD_Y : (cfg.zone === 'khu3' ? this.K3_BOARD_Y : this.WALL_BOARD_Y);
+      const boardY = isPart ? this.PARTITION_BOARD_Y : ((cfg.zone === 'khu3' || cfg.zone === 'khu6') ? this.K3_BOARD_Y : this.WALL_BOARD_Y);
       const maxW = isPart ? 10 : 14;
       const boardW = Math.min(maxW, Math.max(8, 0.45 * blockLen));
 
@@ -986,7 +995,7 @@ export class ExhibitBuilder {
           new THREE.MeshBasicMaterial({ map: sTex, transparent: true, depthWrite: false, side: THREE.FrontSide })
         );
         const sSurf = wc.thickness / 2 + 0.03;
-        const sloganY = cfg.zone === 'khu3' ? this.K3_SLOGAN_Y : this.SLOGAN_Y;
+        const sloganY = (cfg.zone === 'khu3' || cfg.zone === 'khu6') ? this.K3_SLOGAN_Y : this.SLOGAN_Y;
         sMesh.position.set(wc.x + nx * sSurf + tx * blockCenter, sloganY, wc.z + nz * sSurf + tz * blockCenter);
         sMesh.rotation.y = wc.rotY;
         sMesh.name = `WallSlogan_${cfg.face}`;
@@ -1034,7 +1043,7 @@ export class ExhibitBuilder {
       const rec = { face: faceKey, rowGap: null, bottomPlaque: null, boardGap: null };
 
       // GĐ6-fix2 C: khu 3/4/6 dùng biển tên lớn (mép dưới = tâm − h/2 − 0,40); khu 1/2 giữ biển cũ (0,215)
-      const bigPlaque = exhibits.some(e => this.usesBigPlaque(e.item));
+      const bigPlaque = exhibits.some(e => this.usesBigPlaque(e.item, e.size?.zone));
       const drop = bigPlaque ? 0.40 : 0.215;
       const minGapReq = bigPlaque ? 0.25 : 0.30;
       const minLowReq = bigPlaque ? 1.80 : 1.95;
@@ -1074,8 +1083,8 @@ export class ExhibitBuilder {
   }
 
   /** Khu 3/4/6 dùng biển tên lớn 0,30 m (GĐ6-fix2 C) */
-  usesBigPlaque(item) {
-    return ['khu3', 'khu4', 'khu6'].includes(item.khu);
+  usesBigPlaque(item, zone) {
+    return ['khu3', 'khu4', 'khu6'].includes(zone || item.khu);
   }
 
   // ===========================================================================
@@ -1105,7 +1114,7 @@ export class ExhibitBuilder {
     for (const ex of this.mountedExhibits) {
       const cfg = this.faceMounts[ex.faceKey]?.cfg;
       if (!cfg) continue;
-      const halfW = this.usesBigPlaque(ex.item)
+      const halfW = this.usesBigPlaque(ex.item, ex.size?.zone)
         ? Math.max(ex.size.w + 0.12, 1.2) / 2 : ex.size.w / 2 + 0.06;
       check(`${ex.item.id}@${ex.wallId}`, cfg, ex.localOffset, halfW, ex.posX, ex.posZ);
     }
@@ -1133,7 +1142,7 @@ export class ExhibitBuilder {
     let totalErrors = 0;
 
     for (const ex of this.mountedExhibits) {
-      const khu = ex.item.khu;
+      const khu = ex.size?.zone || ex.item.khu;
       const zoneCfg = ZONES[khu];
       if (!zoneCfg || !zoneCfg.bounds) continue;
 
@@ -1181,7 +1190,8 @@ export class ExhibitBuilder {
 
     const { w, h, frameType } = size;
     const depth = 0.08;
-    const isKhu3 = item.khu === 'khu3';
+    const zone = size.zone || item.khu;   // GĐ6-fix3 A2: kiểu khung/biển tên theo tường đang treo
+    const isKhu3 = zone === 'khu3';
     const isHonor = frameType === 'gold_honor';
 
     let frameMat;
@@ -1211,9 +1221,9 @@ export class ExhibitBuilder {
     group.add(picMesh);
 
     // 3. Mesh 3: Biển tên
-    const big = this.usesBigPlaque(item) && !size.legacyPlaque;
+    const big = this.usesBigPlaque(item, zone) && !size.legacyPlaque;
     if (big) {
-      this.addBigPlaque(group, item, w, h, depth, size.barColor);
+      this.addBigPlaque(group, item, w, h, depth, size.barColor, zone);
     } else {
       const plaqueStyle = isKhu3 ? 'khu3' : ((frameType === 'cert_flag') ? 'flag' : 'cert');
       this.addPlaque(group, item, w, h, depth, plaqueStyle);
@@ -1230,7 +1240,7 @@ export class ExhibitBuilder {
   // GĐ6-fix2 C: BIỂN TÊN LỚN khu 3/4/6 — rộng max(w+0,12; 1,2) m, cao 0,30 m, cách khung 0,04 m
   //  canvas cao 256 px; tiêu đề đậm #0F172A cao chữ ≈ 0,075 m (2 dòng 0,065); ngày dd/mm/yyyy #475569 ≈ 0,05 m
   // ===========================================================================
-  addBigPlaque(group, item, w, h, depth, barColor) {
+  addBigPlaque(group, item, w, h, depth, barColor, zone = item.khu) {
     const plaqueW = Math.max(w + 0.12, 1.2);
     const plaqueH = 0.30;
     const canvasH = 256;
@@ -1241,8 +1251,8 @@ export class ExhibitBuilder {
     const ctx = canvas.getContext('2d');
 
     let bg = '#ffffff', bar = '#1E40A0';
-    if (item.khu === 'khu4') { bg = '#FFF7E6'; bar = '#B91C1C'; }
-    else if (item.khu === 'khu6') { bg = '#ffffff'; bar = barColor || '#1D4ED8'; }
+    if (zone === 'khu4') { bg = '#FFF7E6'; bar = '#B91C1C'; }
+    else if (zone === 'khu6') { bg = '#ffffff'; bar = barColor || '#1D4ED8'; }
     ctx.fillStyle = bg;
     ctx.fillRect(0, 0, canvasW, canvasH);
     ctx.fillStyle = bar;

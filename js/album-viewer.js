@@ -84,6 +84,7 @@ export class AlbumViewer {
           if (raw.albums['gift_paintings']) this.albumMap['awards_flags'] = raw.albums['gift_paintings'];
         }
 
+        this.applyFix3Changes();
         console.log('✅ Albums data loaded successfully:', Object.keys(this.albumMap));
       } else {
         console.error('Failed to fetch albums_data.json, status:', resp.status);
@@ -93,6 +94,55 @@ export class AlbumViewer {
     }
 
     this.bindEvents();
+  }
+
+  /**
+   * GĐ6-fix3 A2.5 + A1.3: (1) thêm ảnh bổ sung vào album (khu 3 → pcvt, khu 4/6 → doan_the) — chỉ GHI THÊM;
+   * (2) bỏ các trang là ảnh trùng (an_trung) và dịch lại chỉ số chương.
+   */
+  applyFix3Changes() {
+    const ds = this.app?.dataService;
+    if (!ds || !this.data) return;
+    const dupPaths = new Set();
+    (ds.duplicateItems || []).forEach(it => [it.full_path, it.thumb_path].forEach(p => p && dupPaths.add(p)));
+    let removed = 0;
+    if (dupPaths.size) {
+      for (const album of this.data) {
+        const pages = album.pages || [];
+        const removedIdx = [];
+        pages.forEach((pg, i) => { if (dupPaths.has(pg.full) || dupPaths.has(pg.thumb)) removedIdx.push(i); });
+        if (!removedIdx.length) continue;
+        const before = (n) => removedIdx.filter(i => i < n).length;
+        (album.chapters || []).forEach(ch => {
+          const s = ch.start || 0, e = ch.end ?? s;
+          const removedIn = removedIdx.filter(i => i >= s && i <= e).length;
+          ch.start = s - before(s);
+          ch.end = Math.max(ch.start, e - before(e + 1) + (removedIn ? 0 : 0) - 0);
+        });
+        album.pages = pages.filter((_, i) => !removedIdx.includes(i));
+        removed += removedIdx.length;
+      }
+    }
+    const toPage = (it) => ({
+      full: it.full_path, thumb: it.thumb_path,
+      caption: it.tieu_de || it.caption || '', date: it.date || String(it.year || '')
+    });
+    const addTo = (albumId, items, chapterTitle) => {
+      const album = this.albumMap[albumId];
+      if (!album || !items.length) return 0;
+      const have = new Set((album.pages || []).map(p => p.full));
+      const add = items.filter(it => it.full_path && !have.has(it.full_path)).map(toPage);
+      if (!add.length) return 0;
+      album.pages = album.pages || [];
+      const start = album.pages.length;
+      album.pages.push(...add);
+      (album.chapters = album.chapters || []).push({ title: chapterTitle, start, end: album.pages.length - 1 });
+      return add.length;
+    };
+    const extras = ds.extraItems || [];
+    const nA = addTo('pcvt', extras.filter(it => it.khu === 'khu3'), 'Ảnh bổ sung');
+    const nB = addTo('doan_the', extras.filter(it => it.khu === 'khu4' || it.khu === 'khu6'), 'Ảnh bổ sung');
+    console.log(`[Album] GĐ 6-fix3: +${nA} trang (pcvt), +${nB} trang (doan_the), đã bỏ ${removed} trang ảnh trùng`);
   }
 
   bindEvents() {

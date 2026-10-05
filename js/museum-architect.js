@@ -312,6 +312,19 @@ export class MuseumArchitect {
     return group;
   }
 
+  /**
+   * G?6-fix3 B: m?t ngo?i t??ng HCM (h??ng khu 4 / khu 6) d?ng ??ng v?t li?u c?a
+   * wall_k4_east / wall_k6_west (this.matWall); c?c m?t c?n l?i gi? ?? #6B1520.
+   * C? hai t??ng HCM xoay ?90? n?n m?t local -z (ch? s? 5) quay ra ph?a khu 4/6.
+   */
+  applyHCMOuterFace(group) {
+    const box = group.children[0];
+    if (!box || !box.isMesh) return;
+    const mats = new Array(6).fill(this.matHCMWall);
+    mats[5] = this.matWall;
+    box.material = mats;
+  }
+
   buildOuterWalls(parent) {
     // Dựng tường từ layout-config.js
     for (const wall of WALLS) {
@@ -1504,13 +1517,13 @@ export class MuseumArchitect {
         [-16.93, -15.00], [16.93, -15.00]
       ],
       khu1: [
-        [-48.93, -23.93], [-33.00, 23.93],
-        [-19.00, -23.93], [-19.00, 23.93],
+        [-48.93, -23.93], [-35.30, 23.80],
+        [-19.00, -23.93], [-48.90, 23.90],
         [-35.00, -12.43], [-35.00, 12.43]
       ],
       khu3: [
-        [48.93, -23.93], [33.00, 23.93],
-        [19.00, -23.93], [19.00, 23.93]
+        [48.93, -23.93], [35.30, 23.80],
+        [19.00, -23.93], [48.90, 23.90]
       ],
       khu4: [
         [48.93, 39.00], [48.93, 80.93],
@@ -2179,8 +2192,10 @@ export class MuseumArchitect {
     // --- OUTER WALLS (Kiến trúc không bao giờ bị ẩn, dùng chung với Khu 4 & 6) ---
     // West wall (X = -22, chung với Khu 6)
     hcmArch.add(this.createWallMesh(44, h, 1.2, -22, h/2, 60, Math.PI/2, this.matHCMWall, 'Wall_HCM_West'));
+    this.applyHCMOuterFace(hcmArch.children[hcmArch.children.length - 1]);
     // East wall (X = 22, chung với Khu 4)
     hcmArch.add(this.createWallMesh(44, h, 1.2, 22, h/2, 60, -Math.PI/2, this.matHCMWall, 'Wall_HCM_East'));
+    this.applyHCMOuterFace(hcmArch.children[hcmArch.children.length - 1]);
     // Far South wall (Z = 82)
     hcmArch.add(this.createWallMesh(44, h, 1.2, 0, h/2, 82, 0, this.matHCMWall, 'Wall_HCM_South'));
 

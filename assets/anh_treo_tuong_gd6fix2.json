@@ -1,0 +1,1031 @@
+{
+ "phien_ban": "GĐ6-fix2 (05/10/2026)",
+ "quy_tac": "1 ảnh/sự kiện; sự kiện quan trọng 2 ảnh; ưu tiên ảnh ngang (tỷ lệ 1,3–1,9). Ảnh không có tên ở đây → treo=false (vẫn ở album, màn LED khu 4 và thẻ \"Ảnh cùng sự kiện\").",
+ "khu3": "Xem docs/khu3_bo_tri.json",
+ "tuong": [
+  {
+   "tuong": "wall_k4_east",
+   "rotY": "-PI/2",
+   "khu": "khu4",
+   "so_anh": 7,
+   "thu_tu_anh": [
+    {
+     "id": "dang_bo_001_2026-02-06",
+     "ngay": "2026-02-06",
+     "tieu_de": "Đảng bộ Công ty nghiêm túc học tập, quán triệt Nghị quyết"
+    },
+    {
+     "id": "dang_bo_006_2026-03-02",
+     "ngay": "2026-03-02",
+     "tieu_de": "Đảng bộ Công ty – hành trình về nguồn, thắp sáng lý tưởng"
+    },
+    {
+     "id": "dang_bo_007_2026-03-02",
+     "ngay": "2026-03-02",
+     "tieu_de": "Đảng bộ Công ty – hành trình về nguồn, thắp sáng lý tưởng"
+    },
+    {
+     "id": "dang_bo_016_2026-03-03",
+     "ngay": "2026-03-03",
+     "tieu_de": "Chi bộ 2 tổ chức Lễ kết nạp đảng viên mới"
+    },
+    {
+     "id": "dang_bo_017_2026-03-03",
+     "ngay": "2026-03-03",
+     "tieu_de": "Chi bộ 2 tổ chức Lễ kết nạp đảng viên mới"
+    },
+    {
+     "id": "dang_bo_020_2026-04-18",
+     "ngay": "2026-04-18",
+     "tieu_de": "Côn Đảo – hành trình về nguồn đầy xúc động"
+    },
+    {
+     "id": "dang_bo_021_2026-04-18",
+     "ngay": "2026-04-18",
+     "tieu_de": "Côn Đảo – hành trình về nguồn đầy xúc động"
+    }
+   ]
+  },
+  {
+   "tuong": "wall_k4_west_hcm",
+   "rotY": "PI/2",
+   "khu": "khu4",
+   "so_anh": 4,
+   "thu_tu_anh": [
+    {
+     "id": "dang_bo_041_2026-05-19",
+     "ngay": "2026-05-19",
+     "tieu_de": "Hành trình vĩ đại của Chủ tịch Hồ Chí Minh qua 65 sự kiện"
+    },
+    {
+     "id": "dang_bo_042_2026-07-16",
+     "ngay": "2026-07-16",
+     "tieu_de": "Hội nghị sơ kết 6 tháng đầu năm"
+    },
+    {
+     "id": "dang_bo_044_2026-07-27",
+     "ngay": "2026-07-27",
+     "tieu_de": "Tri ân các anh hùng liệt sĩ nhân Ngày Thương binh – Liệt sĩ 27/7"
+    },
+    {
+     "id": "dang_bo_046_2026-08-09",
+     "ngay": "2026-08-09",
+     "tieu_de": "Chi bộ 3 – hành trình về nguồn ý nghĩa"
+    }
+   ]
+  },
+  {
+   "tuong": "wall_k6_west",
+   "rotY": "PI/2",
+   "khu": "khu6",
+   "nguon": "cong_doan",
+   "so_anh": 14,
+   "thu_tu_anh": [
+    {
+     "id": "cong_doan_002_2025-08-28",
+     "ngay": "2025-08-28",
+     "tieu_de": "Bữa cơm Công đoàn – chia sẻ, đoàn kết, gắn bó"
+    },
+    {
+     "id": "cong_doan_003_2025-08-28",
+     "ngay": "2025-08-28",
+     "tieu_de": "Bữa cơm Công đoàn – chia sẻ, đoàn kết, gắn bó"
+    },
+    {
+     "id": "cong_doan_003_2025-10-18",
+     "ngay": "2025-10-18",
+     "tieu_de": "Giải Pickleball PC Vũng Tàu lần thứ I – 2025"
+    },
+    {
+     "id": "cong_doan_004_2025-10-18",
+     "ngay": "2025-10-18",
+     "tieu_de": "Giải Pickleball PC Vũng Tàu lần thứ I – 2025"
+    },
+    {
+     "id": "cong_doan_005_2026-01-31",
+     "ngay": "2026-01-31",
+     "tieu_de": "Trao quà gia đình chính sách – Xuân chia sẻ 2026"
+    },
+    {
+     "id": "cong_doan_007_2026-03-04",
+     "ngay": "2026-03-04",
+     "tieu_de": "Công ty hưởng ứng Lễ hội Áo dài năm 2026"
+    },
+    {
+     "id": "cong_doan_010_2026-03-09",
+     "ngay": "2026-03-09",
+     "tieu_de": "Hội thi nấu ăn nhân dịp Quốc tế Phụ nữ 8/3"
+    },
+    {
+     "id": "cong_doan_014_2026-03-10",
+     "ngay": "2026-03-10",
+     "tieu_de": "Rộn ràng sắc áo dài – ấm áp ngày 8/3"
+    },
+    {
+     "id": "cong_doan_017_2026-04-11",
+     "ngay": "2026-04-11",
+     "tieu_de": "Giải bóng đá truyền thống EVNHCMC 2026 – trận mở màn"
+    },
+    {
+     "id": "cong_doan_020_2026-05-12",
+     "ngay": "2026-05-12",
+     "tieu_de": "Trận đấu đầu tiên của đội bóng nữ Công ty"
+    },
+    {
+     "id": "cong_doan_017_2026-08-24",
+     "ngay": "2026-08-24",
+     "tieu_de": "Bữa cơm Công đoàn 2026 – ấm áp một mâm cơm, gắn kết một tập thể"
+    },
+    {
+     "id": "cong_doan_018_2026-08-24",
+     "ngay": "2026-08-24",
+     "tieu_de": "Bữa cơm Công đoàn 2026 – ấm áp một mâm cơm, gắn kết một tập thể"
+    },
+    {
+     "id": "cong_doan_022_2026-09-24",
+     "ngay": "2026-09-24",
+     "tieu_de": "Đêm hội trăng rằm – trao yêu thương, gắn kết gia đình"
+    },
+    {
+     "id": "cong_doan_023_2026-09-24",
+     "ngay": "2026-09-24",
+     "tieu_de": "Đêm hội trăng rằm – trao yêu thương, gắn kết gia đình"
+    }
+   ]
+  },
+  {
+   "tuong": "wall_k6_east_hcm",
+   "rotY": "-PI/2",
+   "khu": "khu6",
+   "nguon": "doan_tn",
+   "so_anh": 8,
+   "thu_tu_anh": [
+    {
+     "id": "doan_tn_001_2025-10-06",
+     "ngay": "2025-10-06",
+     "tieu_de": "Đoàn cơ sở Công ty tham dự Đại hội đại biểu Đoàn"
+    },
+    {
+     "id": "doan_tn_002_2025-10-06",
+     "ngay": "2025-10-06",
+     "tieu_de": "Đoàn cơ sở Công ty tham dự Đại hội đại biểu Đoàn"
+    },
+    {
+     "id": "doan_tn_009_2025-12-06",
+     "ngay": "2025-12-06",
+     "tieu_de": "Cùng thay avatar hưởng ứng Tuần lễ Hồng EVN"
+    },
+    {
+     "id": "doan_tn_010_2026-01-17",
+     "ngay": "2026-01-17",
+     "tieu_de": "Góp sức Xuân tình nguyện 2026 – Đoàn cơ sở Công ty"
+    },
+    {
+     "id": "doan_tn_015_2026-03-26",
+     "ngay": "2026-03-26",
+     "tieu_de": "Rực cháy khát vọng tuổi trẻ PC Vũng Tàu – Ngày Đoàn viên"
+    },
+    {
+     "id": "doan_tn_016_2026-03-26",
+     "ngay": "2026-03-26",
+     "tieu_de": "Rực cháy khát vọng tuổi trẻ PC Vũng Tàu – Ngày Đoàn viên"
+    },
+    {
+     "id": "doan_tn_020_2026-06-25",
+     "ngay": "2026-06-25",
+     "tieu_de": "Tuổi trẻ PCVT mang năng lượng an toàn, tiết kiệm và số hóa đến xã Châu Pha"
+    },
+    {
+     "id": "doan_tn_023_2026-09-23",
+     "ngay": "2026-09-23",
+     "tieu_de": "Đoàn Thanh niên Công ty – hành trình về nguồn"
+    }
+   ]
+  }
+ ],
+ "bang_su_kien": [
+  {
+   "khu": "khu3",
+   "nguon": "pcvt",
+   "ngay": "2025-07-23",
+   "su_kien": "Trao đổi nghiệp vụ Tổ chức & Nhân sự giữa PC Thủ Đức và PC Vũng Tàu",
+   "tong_anh": 2,
+   "da_tren_vach_moc_son": 0,
+   "quan_trong": false,
+   "treo_tuong": [
+    "pcvt_001_2025-07-23"
+   ]
+  },
+  {
+   "khu": "khu3",
+   "nguon": "pcvt",
+   "ngay": "2025-08-04",
+   "su_kien": "Công bố quyết định thành lập Công ty Điện lực Vũng Tàu",
+   "tong_anh": 3,
+   "da_tren_vach_moc_son": 3,
+   "quan_trong": false,
+   "treo_tuong": []
+  },
+  {
+   "khu": "khu3",
+   "nguon": "pcvt",
+   "ngay": "2025-08-05",
+   "su_kien": "Chúc mừng sinh nhật nhân viên – nét văn hóa doanh nghiệp",
+   "tong_anh": 1,
+   "da_tren_vach_moc_son": 0,
+   "quan_trong": false,
+   "treo_tuong": [
+    "pcvt_006_2025-08-05"
+   ]
+  },
+  {
+   "khu": "khu3",
+   "nguon": "pcvt",
+   "ngay": "2025-08-11",
+   "su_kien": "Hội thi, kiểm tra sát hạch an toàn điện năm 2025",
+   "tong_anh": 2,
+   "da_tren_vach_moc_son": 0,
+   "quan_trong": false,
+   "treo_tuong": [
+    "pcvt_007_2025-08-11"
+   ]
+  },
+  {
+   "khu": "khu3",
+   "nguon": "pcvt",
+   "ngay": "2025-08-13",
+   "su_kien": "Đoàn công tác EVNHCMC kiểm tra các công trình đầu tư xây dựng",
+   "tong_anh": 2,
+   "da_tren_vach_moc_son": 1,
+   "quan_trong": false,
+   "treo_tuong": []
+  },
+  {
+   "khu": "khu3",
+   "nguon": "pcvt",
+   "ngay": "2025-08-20",
+   "su_kien": "Tập huấn ứng dụng hiện trường CMIS Mobile",
+   "tong_anh": 1,
+   "da_tren_vach_moc_son": 0,
+   "quan_trong": false,
+   "treo_tuong": [
+    "pcvt_011_2025-08-20"
+   ]
+  },
+  {
+   "khu": "khu3",
+   "nguon": "pcvt",
+   "ngay": "2025-08-27",
+   "su_kien": "Chủ tịch HĐTV EVNHCMC Phạm Quốc Bảo làm việc với Công ty",
+   "tong_anh": 2,
+   "da_tren_vach_moc_son": 1,
+   "quan_trong": false,
+   "treo_tuong": []
+  },
+  {
+   "khu": "khu6",
+   "nguon": "cong_doan",
+   "ngay": "2025-08-28",
+   "su_kien": "Bữa cơm Công đoàn – chia sẻ, đoàn kết, gắn bó",
+   "tong_anh": 5,
+   "da_tren_vach_moc_son": 0,
+   "quan_trong": true,
+   "treo_tuong": [
+    "cong_doan_002_2025-08-28",
+    "cong_doan_003_2025-08-28"
+   ]
+  },
+  {
+   "khu": "khu3",
+   "nguon": "pcvt",
+   "ngay": "2025-08-29",
+   "su_kien": "Hội nghị đối thoại người lao động",
+   "tong_anh": 3,
+   "da_tren_vach_moc_son": 1,
+   "quan_trong": false,
+   "treo_tuong": []
+  },
+  {
+   "khu": "khu3",
+   "nguon": "pcvt",
+   "ngay": "2025-09-04",
+   "su_kien": "Lãnh đạo EVNHCMC rà soát danh mục dự án ĐTXD 2025 – 2026",
+   "tong_anh": 1,
+   "da_tren_vach_moc_son": 0,
+   "quan_trong": false,
+   "treo_tuong": [
+    "pcvt_017_2025-09-04"
+   ]
+  },
+  {
+   "khu": "khu6",
+   "nguon": "doan_tn",
+   "ngay": "2025-10-06",
+   "su_kien": "Đoàn cơ sở Công ty tham dự Đại hội đại biểu Đoàn",
+   "tong_anh": 8,
+   "da_tren_vach_moc_son": 0,
+   "quan_trong": true,
+   "treo_tuong": [
+    "doan_tn_001_2025-10-06",
+    "doan_tn_002_2025-10-06"
+   ]
+  },
+  {
+   "khu": "khu6",
+   "nguon": "cong_doan",
+   "ngay": "2025-10-18",
+   "su_kien": "Giải Pickleball PC Vũng Tàu lần thứ I – 2025",
+   "tong_anh": 9,
+   "da_tren_vach_moc_son": 0,
+   "quan_trong": true,
+   "treo_tuong": [
+    "cong_doan_003_2025-10-18",
+    "cong_doan_004_2025-10-18"
+   ]
+  },
+  {
+   "khu": "khu3",
+   "nguon": "pcvt",
+   "ngay": "2025-11-28",
+   "su_kien": "Công nhân tăng cường thi sát hạch nghề, nâng – giữ bậc 2025",
+   "tong_anh": 1,
+   "da_tren_vach_moc_son": 0,
+   "quan_trong": false,
+   "treo_tuong": [
+    "pcvt_018_2025-11-28"
+   ]
+  },
+  {
+   "khu": "khu6",
+   "nguon": "doan_tn",
+   "ngay": "2025-12-06",
+   "su_kien": "Cùng thay avatar hưởng ứng Tuần lễ Hồng EVN",
+   "tong_anh": 1,
+   "da_tren_vach_moc_son": 0,
+   "quan_trong": false,
+   "treo_tuong": [
+    "doan_tn_009_2025-12-06"
+   ]
+  },
+  {
+   "khu": "khu3",
+   "nguon": "pcvt",
+   "ngay": "2026-01-16",
+   "su_kien": "Đồng chí Nguyễn Ngọc Tuyến nhận nhiệm vụ Giám đốc Công ty",
+   "tong_anh": 3,
+   "da_tren_vach_moc_son": 2,
+   "quan_trong": false,
+   "treo_tuong": []
+  },
+  {
+   "khu": "khu3",
+   "nguon": "pcvt",
+   "ngay": "2026-01-15",
+   "su_kien": "Lễ công bố quyết định về công tác cán bộ",
+   "tong_anh": 2,
+   "da_tren_vach_moc_son": 0,
+   "quan_trong": true,
+   "treo_tuong": [
+    "pcvt_019_2026-01-15",
+    "pcvt_020_2026-01-15"
+   ]
+  },
+  {
+   "khu": "khu6",
+   "nguon": "doan_tn",
+   "ngay": "2026-01-17",
+   "su_kien": "Góp sức Xuân tình nguyện 2026 – Đoàn cơ sở Công ty",
+   "tong_anh": 5,
+   "da_tren_vach_moc_son": 0,
+   "quan_trong": false,
+   "treo_tuong": [
+    "doan_tn_010_2026-01-17"
+   ]
+  },
+  {
+   "khu": "khu3",
+   "nguon": "pcvt",
+   "ngay": "2026-01-22",
+   "su_kien": "Giải đi bộ lần I năm 2026 – chinh phục thử thách",
+   "tong_anh": 4,
+   "da_tren_vach_moc_son": 0,
+   "quan_trong": true,
+   "treo_tuong": [
+    "pcvt_022_2026-01-22",
+    "pcvt_023_2026-01-22"
+   ]
+  },
+  {
+   "khu": "khu6",
+   "nguon": "cong_doan",
+   "ngay": "2026-01-31",
+   "su_kien": "Trao quà gia đình chính sách – Xuân chia sẻ 2026",
+   "tong_anh": 6,
+   "da_tren_vach_moc_son": 0,
+   "quan_trong": false,
+   "treo_tuong": [
+    "cong_doan_005_2026-01-31"
+   ]
+  },
+  {
+   "khu": "khu3",
+   "nguon": "pcvt",
+   "ngay": "2026-01-31",
+   "su_kien": "Vinh danh hai \"đôi chân vàng\" của Công ty Điện lực Vũng Tàu",
+   "tong_anh": 2,
+   "da_tren_vach_moc_son": 0,
+   "quan_trong": false,
+   "treo_tuong": [
+    "pcvt_026_2026-01-31"
+   ]
+  },
+  {
+   "khu": "khu3",
+   "nguon": "pcvt",
+   "ngay": "2026-02-01",
+   "su_kien": "Lễ chào cờ tháng 02/2026 kết nối 5 điểm cầu",
+   "tong_anh": 1,
+   "da_tren_vach_moc_son": 0,
+   "quan_trong": false,
+   "treo_tuong": [
+    "pcvt_028_2026-02-01"
+   ]
+  },
+  {
+   "khu": "khu3",
+   "nguon": "pcvt",
+   "ngay": "2026-02-02",
+   "su_kien": "Lan tỏa khí thế Xuân 2026 từ Côn Đảo",
+   "tong_anh": 3,
+   "da_tren_vach_moc_son": 0,
+   "quan_trong": false,
+   "treo_tuong": [
+    "pcvt_029_2026-02-02"
+   ]
+  },
+  {
+   "khu": "khu4",
+   "nguon": "dang_bo",
+   "ngay": "2026-02-06",
+   "su_kien": "Đảng bộ Công ty nghiêm túc học tập, quán triệt Nghị quyết",
+   "tong_anh": 5,
+   "da_tren_vach_moc_son": 0,
+   "quan_trong": false,
+   "treo_tuong": [
+    "dang_bo_001_2026-02-06"
+   ]
+  },
+  {
+   "khu": "khu3",
+   "nguon": "pcvt",
+   "ngay": "2026-02-07",
+   "su_kien": "Sắc xuân 2026 tại Đội QLVH Tổng hợp Đặc khu Côn Đảo",
+   "tong_anh": 2,
+   "da_tren_vach_moc_son": 0,
+   "quan_trong": false,
+   "treo_tuong": [
+    "pcvt_033_2026-02-07"
+   ]
+  },
+  {
+   "khu": "khu3",
+   "nguon": "pcvt",
+   "ngay": "2026-02-12",
+   "su_kien": "Côn Đảo sẵn sàng đảm bảo điện an toàn, ổn định",
+   "tong_anh": 2,
+   "da_tren_vach_moc_son": 0,
+   "quan_trong": false,
+   "treo_tuong": [
+    "pcvt_034_2026-02-12"
+   ]
+  },
+  {
+   "khu": "khu4",
+   "nguon": "dang_bo",
+   "ngay": "2026-03-02",
+   "su_kien": "Đảng bộ Công ty – hành trình về nguồn, thắp sáng lý tưởng",
+   "tong_anh": 10,
+   "da_tren_vach_moc_son": 0,
+   "quan_trong": true,
+   "treo_tuong": [
+    "dang_bo_006_2026-03-02",
+    "dang_bo_007_2026-03-02"
+   ]
+  },
+  {
+   "khu": "khu4",
+   "nguon": "dang_bo",
+   "ngay": "2026-03-03",
+   "su_kien": "Chi bộ 2 tổ chức Lễ kết nạp đảng viên mới",
+   "tong_anh": 4,
+   "da_tren_vach_moc_son": 0,
+   "quan_trong": true,
+   "treo_tuong": [
+    "dang_bo_016_2026-03-03",
+    "dang_bo_017_2026-03-03"
+   ]
+  },
+  {
+   "khu": "khu6",
+   "nguon": "cong_doan",
+   "ngay": "2026-03-04",
+   "su_kien": "Công ty hưởng ứng Lễ hội Áo dài năm 2026",
+   "tong_anh": 3,
+   "da_tren_vach_moc_son": 0,
+   "quan_trong": false,
+   "treo_tuong": [
+    "cong_doan_007_2026-03-04"
+   ]
+  },
+  {
+   "khu": "khu6",
+   "nguon": "cong_doan",
+   "ngay": "2026-03-09",
+   "su_kien": "Hội thi nấu ăn nhân dịp Quốc tế Phụ nữ 8/3",
+   "tong_anh": 4,
+   "da_tren_vach_moc_son": 0,
+   "quan_trong": false,
+   "treo_tuong": [
+    "cong_doan_010_2026-03-09"
+   ]
+  },
+  {
+   "khu": "khu6",
+   "nguon": "cong_doan",
+   "ngay": "2026-03-10",
+   "su_kien": "Rộn ràng sắc áo dài – ấm áp ngày 8/3",
+   "tong_anh": 3,
+   "da_tren_vach_moc_son": 0,
+   "quan_trong": false,
+   "treo_tuong": [
+    "cong_doan_014_2026-03-10"
+   ]
+  },
+  {
+   "khu": "khu3",
+   "nguon": "pcvt",
+   "ngay": "2026-03-14",
+   "su_kien": "Đảm bảo điện phục vụ Ngày hội non sông 15/3/2026",
+   "tong_anh": 2,
+   "da_tren_vach_moc_son": 0,
+   "quan_trong": false,
+   "treo_tuong": [
+    "pcvt_037_2026-03-14"
+   ]
+  },
+  {
+   "khu": "khu3",
+   "nguon": "pcvt",
+   "ngay": "2026-03-17",
+   "su_kien": "Nhịp nhàng phối hợp trên tuyến 480 Thanh Bình",
+   "tong_anh": 4,
+   "da_tren_vach_moc_son": 0,
+   "quan_trong": false,
+   "treo_tuong": [
+    "pcvt_038_2026-03-17"
+   ]
+  },
+  {
+   "khu": "khu3",
+   "nguon": "pcvt",
+   "ngay": "2026-03-20",
+   "su_kien": "Giải Nhất toàn đoàn Hội thao CNVC-LĐ EVNHCMC 2026",
+   "tong_anh": 2,
+   "da_tren_vach_moc_son": 0,
+   "quan_trong": true,
+   "treo_tuong": [
+    "pcvt_042_2026-03-20",
+    "pcvt_043_2026-03-20"
+   ]
+  },
+  {
+   "khu": "khu3",
+   "nguon": "pcvt",
+   "ngay": "2026-03-25",
+   "su_kien": "Hội nghị các giải pháp cung ứng điện và dịch vụ điện",
+   "tong_anh": 3,
+   "da_tren_vach_moc_son": 0,
+   "quan_trong": false,
+   "treo_tuong": [
+    "pcvt_045_2026-03-25"
+   ]
+  },
+  {
+   "khu": "khu6",
+   "nguon": "doan_tn",
+   "ngay": "2026-03-26",
+   "su_kien": "Rực cháy khát vọng tuổi trẻ PC Vũng Tàu – Ngày Đoàn viên",
+   "tong_anh": 5,
+   "da_tren_vach_moc_son": 0,
+   "quan_trong": true,
+   "treo_tuong": [
+    "doan_tn_015_2026-03-26",
+    "doan_tn_016_2026-03-26"
+   ]
+  },
+  {
+   "khu": "khu3",
+   "nguon": "pcvt",
+   "ngay": "2026-03-27",
+   "su_kien": "Hưởng ứng Giờ Trái Đất 2026 tại Côn Đảo",
+   "tong_anh": 2,
+   "da_tren_vach_moc_son": 0,
+   "quan_trong": false,
+   "treo_tuong": [
+    "pcvt_047_2026-03-27"
+   ]
+  },
+  {
+   "khu": "khu3",
+   "nguon": "pcvt",
+   "ngay": "2026-04-03",
+   "su_kien": "Tổng Giám đốc EVNHCMC làm việc với PC Vũng Tàu và PC Đất Đỏ",
+   "tong_anh": 3,
+   "da_tren_vach_moc_son": 1,
+   "quan_trong": false,
+   "treo_tuong": []
+  },
+  {
+   "khu": "khu6",
+   "nguon": "cong_doan",
+   "ngay": "2026-04-11",
+   "su_kien": "Giải bóng đá truyền thống EVNHCMC 2026 – trận mở màn",
+   "tong_anh": 3,
+   "da_tren_vach_moc_son": 0,
+   "quan_trong": false,
+   "treo_tuong": [
+    "cong_doan_017_2026-04-11"
+   ]
+  },
+  {
+   "khu": "khu3",
+   "nguon": "pcvt",
+   "ngay": "2026-04-14",
+   "su_kien": "Phó Giám đốc Kinh doanh làm việc với Đội Quản lý Thu ghi",
+   "tong_anh": 1,
+   "da_tren_vach_moc_son": 0,
+   "quan_trong": false,
+   "treo_tuong": [
+    "pcvt_052_2026-04-14"
+   ]
+  },
+  {
+   "khu": "khu4",
+   "nguon": "dang_bo",
+   "ngay": "2026-04-18",
+   "su_kien": "Côn Đảo – hành trình về nguồn đầy xúc động",
+   "tong_anh": 21,
+   "da_tren_vach_moc_son": 0,
+   "quan_trong": true,
+   "treo_tuong": [
+    "dang_bo_020_2026-04-18",
+    "dang_bo_021_2026-04-18"
+   ]
+  },
+  {
+   "khu": "khu3",
+   "nguon": "pcvt",
+   "ngay": "2026-05-04",
+   "su_kien": "Người giữ lửa thầm lặng phía sau những dòng điện",
+   "tong_anh": 1,
+   "da_tren_vach_moc_son": 0,
+   "quan_trong": false,
+   "treo_tuong": [
+    "pcvt_053_2026-05-04"
+   ]
+  },
+  {
+   "khu": "khu3",
+   "nguon": "pcvt",
+   "ngay": "2026-05-06",
+   "su_kien": "Người giữ nhịp hậu phương bên sóng biển Vũng Tàu",
+   "tong_anh": 1,
+   "da_tren_vach_moc_son": 0,
+   "quan_trong": false,
+   "treo_tuong": [
+    "pcvt_054_2026-05-06"
+   ]
+  },
+  {
+   "khu": "khu3",
+   "nguon": "pcvt",
+   "ngay": "2026-05-11",
+   "su_kien": "Công ty đẩy mạnh hoàn thiện hệ thống đo đếm",
+   "tong_anh": 1,
+   "da_tren_vach_moc_son": 0,
+   "quan_trong": false,
+   "treo_tuong": [
+    "pcvt_055_2026-05-11"
+   ]
+  },
+  {
+   "khu": "khu6",
+   "nguon": "cong_doan",
+   "ngay": "2026-05-12",
+   "su_kien": "Trận đấu đầu tiên của đội bóng nữ Công ty",
+   "tong_anh": 2,
+   "da_tren_vach_moc_son": 0,
+   "quan_trong": false,
+   "treo_tuong": [
+    "cong_doan_020_2026-05-12"
+   ]
+  },
+  {
+   "khu": "khu3",
+   "nguon": "pcvt",
+   "ngay": "2026-05-15",
+   "su_kien": "Chăm lo sức khỏe CBCNV tại Đặc khu Côn Đảo",
+   "tong_anh": 2,
+   "da_tren_vach_moc_son": 0,
+   "quan_trong": false,
+   "treo_tuong": [
+    "pcvt_056_2026-05-15"
+   ]
+  },
+  {
+   "khu": "khu4",
+   "nguon": "dang_bo",
+   "ngay": "2026-05-19",
+   "su_kien": "Hành trình vĩ đại của Chủ tịch Hồ Chí Minh qua 65 sự kiện",
+   "tong_anh": 1,
+   "da_tren_vach_moc_son": 0,
+   "quan_trong": false,
+   "treo_tuong": [
+    "dang_bo_041_2026-05-19"
+   ]
+  },
+  {
+   "khu": "khu3",
+   "nguon": "pcvt",
+   "ngay": "2026-05-22",
+   "su_kien": "Hưởng ứng Tháng hành động về An toàn, vệ sinh lao động",
+   "tong_anh": 1,
+   "da_tren_vach_moc_son": 0,
+   "quan_trong": false,
+   "treo_tuong": [
+    "pcvt_058_2026-05-22"
+   ]
+  },
+  {
+   "khu": "khu3",
+   "nguon": "pcvt",
+   "ngay": "2026-05-24",
+   "su_kien": "Khởi đầu tuần mới lan tỏa năng lượng tích cực",
+   "tong_anh": 3,
+   "da_tren_vach_moc_son": 0,
+   "quan_trong": false,
+   "treo_tuong": [
+    "pcvt_059_2026-05-24"
+   ]
+  },
+  {
+   "khu": "khu3",
+   "nguon": "pcvt",
+   "ngay": "2026-05-31",
+   "su_kien": "Lễ chào cờ đầu tuần – tri ân và chia tay",
+   "tong_anh": 1,
+   "da_tren_vach_moc_son": 0,
+   "quan_trong": false,
+   "treo_tuong": [
+    "pcvt_062_2026-05-31"
+   ]
+  },
+  {
+   "khu": "khu3",
+   "nguon": "pcvt",
+   "ngay": "2026-06-11",
+   "su_kien": "Điện lực Côn Đảo tiếp sức mùa thi",
+   "tong_anh": 3,
+   "da_tren_vach_moc_son": 0,
+   "quan_trong": false,
+   "treo_tuong": [
+    "pcvt_064_2026-06-11"
+   ]
+  },
+  {
+   "khu": "khu3",
+   "nguon": "pcvt",
+   "ngay": "2026-06-15",
+   "su_kien": "Họp mặt An toàn vệ sinh viên năm 2026 và tuyên dương An toàn vệ sinh viên tiêu biểu năm 2026",
+   "tong_anh": 3,
+   "da_tren_vach_moc_son": 0,
+   "quan_trong": true,
+   "treo_tuong": [
+    "pcvt_066_2026-06-15",
+    "pcvt_067_2026-06-15"
+   ]
+  },
+  {
+   "khu": "khu6",
+   "nguon": "doan_tn",
+   "ngay": "2026-06-25",
+   "su_kien": "Tuổi trẻ PCVT mang năng lượng an toàn, tiết kiệm và số hóa đến xã Châu Pha",
+   "tong_anh": 2,
+   "da_tren_vach_moc_son": 0,
+   "quan_trong": false,
+   "treo_tuong": [
+    "doan_tn_020_2026-06-25"
+   ]
+  },
+  {
+   "khu": "khu3",
+   "nguon": "pcvt",
+   "ngay": "2026-07-01",
+   "su_kien": "Hội diễn Karaoke CBCNV mừng 1 năm thành lập Công ty",
+   "tong_anh": 4,
+   "da_tren_vach_moc_son": 3,
+   "quan_trong": false,
+   "treo_tuong": []
+  },
+  {
+   "khu": "khu3",
+   "nguon": "pcvt",
+   "ngay": "2026-07-06",
+   "su_kien": "Lễ công bố thành lập Điện lực Đặc khu Côn Đảo",
+   "tong_anh": 2,
+   "da_tren_vach_moc_son": 0,
+   "quan_trong": false,
+   "treo_tuong": [
+    "pcvt_073_2026-07-06"
+   ]
+  },
+  {
+   "khu": "khu3",
+   "nguon": "pcvt",
+   "ngay": "2026-07-08",
+   "su_kien": "Điện lực Đặc khu Côn Đảo – dấu mốc mới, khởi đầu chặng đường phát triển",
+   "tong_anh": 3,
+   "da_tren_vach_moc_son": 1,
+   "quan_trong": false,
+   "treo_tuong": []
+  },
+  {
+   "khu": "khu3",
+   "nguon": "pcvt",
+   "ngay": "2026-07-13",
+   "su_kien": "Huấn luyện sơ cứu, cấp cứu năm 2026",
+   "tong_anh": 2,
+   "da_tren_vach_moc_son": 0,
+   "quan_trong": false,
+   "treo_tuong": [
+    "pcvt_078_2026-07-13"
+   ]
+  },
+  {
+   "khu": "khu4",
+   "nguon": "dang_bo",
+   "ngay": "2026-07-16",
+   "su_kien": "Hội nghị sơ kết 6 tháng đầu năm",
+   "tong_anh": 2,
+   "da_tren_vach_moc_son": 0,
+   "quan_trong": false,
+   "treo_tuong": [
+    "dang_bo_042_2026-07-16"
+   ]
+  },
+  {
+   "khu": "khu3",
+   "nguon": "pcvt",
+   "ngay": "2026-07-16",
+   "su_kien": "Hội nghị sơ kết 6 tháng đầu năm",
+   "tong_anh": 4,
+   "da_tren_vach_moc_son": 1,
+   "quan_trong": false,
+   "treo_tuong": []
+  },
+  {
+   "khu": "khu3",
+   "nguon": "pcvt",
+   "ngay": "2026-07-19",
+   "su_kien": "Khóa đào tạo gắn kết văn hóa Cụm 3 tại PC Vũng Tàu",
+   "tong_anh": 3,
+   "da_tren_vach_moc_son": 0,
+   "quan_trong": false,
+   "treo_tuong": [
+    "pcvt_084_2026-07-19"
+   ]
+  },
+  {
+   "khu": "khu4",
+   "nguon": "dang_bo",
+   "ngay": "2026-07-27",
+   "su_kien": "Tri ân các anh hùng liệt sĩ nhân Ngày Thương binh – Liệt sĩ 27/7",
+   "tong_anh": 2,
+   "da_tren_vach_moc_son": 0,
+   "quan_trong": false,
+   "treo_tuong": [
+    "dang_bo_044_2026-07-27"
+   ]
+  },
+  {
+   "khu": "khu3",
+   "nguon": "pcvt",
+   "ngay": "2026-08-04",
+   "su_kien": "Hội nghị đối thoại người lao động năm 2026",
+   "tong_anh": 3,
+   "da_tren_vach_moc_son": 0,
+   "quan_trong": false,
+   "treo_tuong": [
+    "pcvt_087_2026-08-04"
+   ]
+  },
+  {
+   "khu": "khu4",
+   "nguon": "dang_bo",
+   "ngay": "2026-08-09",
+   "su_kien": "Chi bộ 3 – hành trình về nguồn ý nghĩa",
+   "tong_anh": 4,
+   "da_tren_vach_moc_son": 0,
+   "quan_trong": false,
+   "treo_tuong": [
+    "dang_bo_046_2026-08-09"
+   ]
+  },
+  {
+   "khu": "khu3",
+   "nguon": "pcvt",
+   "ngay": "2026-08-09",
+   "su_kien": "Hành trình tái tạo năng lượng tại Nhà máy Thủy điện Trị An",
+   "tong_anh": 3,
+   "da_tren_vach_moc_son": 0,
+   "quan_trong": false,
+   "treo_tuong": [
+    "pcvt_090_2026-08-09"
+   ]
+  },
+  {
+   "khu": "khu6",
+   "nguon": "cong_doan",
+   "ngay": "2026-08-24",
+   "su_kien": "Bữa cơm Công đoàn 2026 – ấm áp một mâm cơm, gắn kết một tập thể",
+   "tong_anh": 6,
+   "da_tren_vach_moc_son": 0,
+   "quan_trong": true,
+   "treo_tuong": [
+    "cong_doan_017_2026-08-24",
+    "cong_doan_018_2026-08-24"
+   ]
+  },
+  {
+   "khu": "khu3",
+   "nguon": "pcvt",
+   "ngay": "2026-09-10",
+   "su_kien": "Côn Đảo cùng bước – lan tỏa năng lượng tích cực",
+   "tong_anh": 2,
+   "da_tren_vach_moc_son": 0,
+   "quan_trong": false,
+   "treo_tuong": [
+    "pcvt_093_2026-09-10"
+   ]
+  },
+  {
+   "khu": "khu3",
+   "nguon": "pcvt",
+   "ngay": "2026-09-15",
+   "su_kien": "Khóa đào tạo ISO 9001:2015 nâng cao hiệu quả vận hành",
+   "tong_anh": 3,
+   "da_tren_vach_moc_son": 0,
+   "quan_trong": false,
+   "treo_tuong": [
+    "pcvt_095_2026-09-15"
+   ]
+  },
+  {
+   "khu": "khu3",
+   "nguon": "pcvt",
+   "ngay": "2026-09-20",
+   "su_kien": "Chủ động đảm bảo an toàn lưới điện mùa mưa",
+   "tong_anh": 3,
+   "da_tren_vach_moc_son": 0,
+   "quan_trong": false,
+   "treo_tuong": [
+    "pcvt_098_2026-09-20"
+   ]
+  },
+  {
+   "khu": "khu6",
+   "nguon": "doan_tn",
+   "ngay": "2026-09-23",
+   "su_kien": "Đoàn Thanh niên Công ty – hành trình về nguồn",
+   "tong_anh": 4,
+   "da_tren_vach_moc_son": 0,
+   "quan_trong": false,
+   "treo_tuong": [
+    "doan_tn_023_2026-09-23"
+   ]
+  },
+  {
+   "khu": "khu6",
+   "nguon": "cong_doan",
+   "ngay": "2026-09-24",
+   "su_kien": "Đêm hội trăng rằm – trao yêu thương, gắn kết gia đình",
+   "tong_anh": 5,
+   "da_tren_vach_moc_son": 0,
+   "quan_trong": true,
+   "treo_tuong": [
+    "cong_doan_022_2026-09-24",
+    "cong_doan_023_2026-09-24"
+   ]
+  }
+ ]
+}

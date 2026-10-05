@@ -28,6 +28,8 @@ export class DataService {
       if (!response.ok) throw new Error(`HTTP error ${response.status}`);
       this.raw = await response.json();
       this.allItems = this.raw.items || [];
+      // GĐ6-fix3 A1.1: gộp ảnh bổ sung (KHÔNG sửa room_data.json) — phải làm TRƯỚC loadNarratives()
+      await this.loadAnhBoSung();
       this.allItems.forEach(item => this.itemsById.set(item.id, item));
 
       // GĐ6-fix1 A1: gộp thuyết minh lúc chạy (KHÔNG ghi đè room_data.json)
@@ -44,6 +46,29 @@ export class DataService {
     } catch (err) {
       console.error('Failed to load room_data.json:', err);
       throw err;
+    }
+  }
+
+  /** GĐ6-fix3 A1.1: nối assets/anh_bo_sung.json vào allItems; trùng id → báo lỗi và bỏ qua */
+  async loadAnhBoSung() {
+    this.extraItems = [];
+    try {
+      const res = await fetch('assets/anh_bo_sung.json');
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+      const data = await res.json();
+      const have = new Set(this.allItems.map(it => it.id));
+      for (const it of data.items || []) {
+        if (have.has(it.id)) {
+          console.error(`[DataService] Ảnh bổ sung trùng id ${it.id} — bỏ qua`);
+          continue;
+        }
+        have.add(it.id);
+        this.allItems.push(it);
+        this.extraItems.push(it);
+      }
+      console.log(`[DataService] Gộp ảnh bổ sung: ${this.extraItems.length}/${(data.items || []).length}`);
+    } catch (err) {
+      console.warn('[DataService] Không nạp được assets/anh_bo_sung.json:', err);
     }
   }
 
@@ -119,14 +144,29 @@ export class DataService {
       const count = { khu3: 0, khu4: 0, khu6: 0 };
       for (const it of this.allItems) {
         if (it.khu === 'khu4' || it.khu === 'khu6') {
-          it.treo = hung.has(it.id);
-          if (it.treo) count[it.khu]++;
+          // GĐ6-fix3 A1.2: ảnh tiêu biểu của khu 3 lấy từ khu 4/6 cũng phải treo
+          it.treo = hung.has(it.id) || k3.has(it.id);
+          if (hung.has(it.id)) count[it.khu]++;
         } else if (it.khu === 'khu3' && this.khu3Layout) {
           it.treo = k3.has(it.id) || !!it.vach_moc_son;
           if (k3.has(it.id)) count.khu3++;
         }
       }
-      console.log(`[DataService] Ảnh treo tường: khu3 ${count.khu3}, khu4 ${count.khu4}, khu6 ${count.khu6} (các ảnh còn lại treo=false)`);
+      // GĐ6-fix3 A1.3: ảnh trùng (cùng md5): id bên trái → an_trung = true, bỏ khỏi album/"Ảnh cùng sự kiện"/màn LED
+      const dupCap = this.anhTreoTuong.anh_trung_lap?.cap || {};
+      this.duplicateItems = [];
+      for (const dupId of Object.keys(dupCap)) {
+        const it = this.itemsById.get(dupId);
+        if (!it) continue;
+        it.an_trung = true;
+        it.treo = false;
+        this.duplicateItems.push(it);
+      }
+      if (this.duplicateItems.length) {
+        this.allItems = this.allItems.filter(it => !it.an_trung);
+        this.raw.items = this.allItems;
+      }
+      console.log(`[DataService] Ảnh treo tường: khu3 ${count.khu3}, khu4 ${count.khu4}, khu6 ${count.khu6} (các ảnh còn lại treo=false); ảnh trùng bị ẩn: ${this.duplicateItems.length}`);
     } catch (err) {
       console.warn('[DataService] Không nạp được assets/anh_treo_tuong.json:', err);
     }
