@@ -141,6 +141,9 @@
 
 
     <div class="header-right">
+      <button id="btn-ribbon-toggle" class="header-icon-btn active" title="Hiện/Ẩn thanh hiện vật (Phím H)">
+        <i data-lucide="gallery-horizontal"></i>
+      </button>
       <button id="btn-filter-toggle" class="header-icon-btn" title="Tìm kiếm & Danh mục hiện vật">
         <i data-lucide="search"></i>
         <span class="badge-count" id="filter-badge">0</span>
@@ -243,6 +246,12 @@
 
   <!-- Artsteps Bottom Guided Tour Ribbon -->
   <footer class="tour-ribbon" id="tour-ribbon">
+    <!-- Collapse / Expand Toggle Tab -->
+    <button id="btn-toggle-tour-ribbon" class="tour-ribbon-toggle" title="Ẩn thanh hiện vật (Phím H)" aria-label="Ẩn thanh hiện vật">
+      <i data-lucide="chevron-down" id="icon-toggle-ribbon"></i>
+      <span id="text-toggle-ribbon">Ẩn thanh hiện vật</span>
+    </button>
+
     <div class="tour-controls">
       <button id="btn-tour-prev" class="tour-nav-btn" title="Hiện vật trước">
         <i data-lucide="chevron-left"></i>
@@ -258,6 +267,10 @@
         <span class="step-num" id="tour-step-text">1 / ...</span>
         <span class="step-label">HIỆN VẬT</span>
       </div>
+
+      <button id="btn-tour-minimize" class="tour-nav-btn tour-minimize-btn" title="Ẩn thanh hiện vật (Phím H)">
+        <i data-lucide="chevron-down"></i>
+      </button>
     </div>
 
     <!-- Scrollable Carousel Strip of Exhibit Thumbnails -->
@@ -602,8 +615,8 @@
         <div class="help-step">
           <div class="step-icon"><i data-lucide="play"></i></div>
           <div class="step-info">
-            <strong>Thanh Tham Quan Tự Động (Tour Ribbon)</strong>
-            <p>Sử dụng thanh ảnh bên dưới để bấm chuyển nhanh giữa các hiện vật hoặc bấm nút Play để tham quan tự động.</p>
+            <strong>Thanh Tham Quan Hiện Vật (Tour Ribbon)</strong>
+            <p>Sử dụng thanh ảnh bên dưới để bấm chuyển nhanh giữa các hiện vật hoặc bấm nút Play để tham quan tự động. Nhấn <b>Phím H</b> hoặc nút mũi tên để ẩn/hiện thanh hiện vật.</p>
           </div>
         </div>
       </div>

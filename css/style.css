@@ -823,6 +823,92 @@ html, body {
   align-items: center;
   padding: 0 20px;
   gap: 16px;
+  transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.tour-ribbon.collapsed {
+  transform: translateY(calc(100% - 2px));
+}
+
+.tour-ribbon.collapsed .tour-controls,
+.tour-ribbon.collapsed .tour-carousel {
+  pointer-events: none;
+}
+
+/* Collapse / Expand Toggle Tab */
+.tour-ribbon-toggle {
+  position: absolute;
+  top: -30px;
+  left: 20px;
+  height: 30px;
+  padding: 0 12px;
+  background: rgba(7, 12, 24, 0.95);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid var(--border-subtle);
+  border-bottom: 1px solid rgba(7, 12, 24, 0.95);
+  border-radius: 8px 8px 0 0;
+  color: var(--text-sub);
+  font-family: var(--font-main, sans-serif);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.3px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+  box-shadow: 0 -4px 16px rgba(0, 0, 0, 0.45);
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  user-select: none;
+  z-index: 10;
+}
+
+.tour-ribbon-toggle:hover {
+  background: rgba(14, 23, 42, 0.98);
+  color: var(--gold-400);
+  border-color: rgba(234, 179, 8, 0.45);
+  box-shadow: 0 -4px 20px rgba(234, 179, 8, 0.25);
+}
+
+.tour-ribbon-toggle svg {
+  width: 14px;
+  height: 14px;
+  transition: transform 0.2s ease;
+}
+
+.tour-ribbon.collapsed .tour-ribbon-toggle {
+  border-bottom: 1px solid rgba(234, 179, 8, 0.4);
+  border-color: rgba(234, 179, 8, 0.4);
+  color: var(--gold-400);
+  background: rgba(10, 16, 30, 0.96);
+  box-shadow: 0 0 18px rgba(234, 179, 8, 0.25), 0 -4px 16px rgba(0, 0, 0, 0.6);
+}
+
+.tour-ribbon.collapsed .tour-ribbon-toggle:hover {
+  background: rgba(18, 28, 52, 0.98);
+  border-color: var(--gold-400);
+  box-shadow: 0 0 24px rgba(234, 179, 8, 0.45), 0 -4px 20px rgba(0, 0, 0, 0.7);
+}
+
+.tour-minimize-btn {
+  margin-left: 4px;
+}
+
+body.ribbon-collapsed .grid-table-hud {
+  bottom: 20px;
+}
+
+body.ribbon-collapsed .exhibit-card {
+  max-height: calc(100vh - 95px);
+}
+
+@media (max-width: 640px) {
+  .tour-ribbon-toggle span {
+    display: none;
+  }
+  .tour-ribbon-toggle {
+    padding: 0 8px;
+  }
 }
 
 .tour-controls {

@@ -73,6 +73,11 @@ export class UIController {
 
       // Tour Ribbon
       tourRibbon: document.getElementById('tour-ribbon'),
+      btnToggleTourRibbon: document.getElementById('btn-toggle-tour-ribbon'),
+      btnTourMinimize: document.getElementById('btn-tour-minimize'),
+      btnRibbonToggle: document.getElementById('btn-ribbon-toggle'),
+      iconToggleRibbon: document.getElementById('icon-toggle-ribbon'),
+      textToggleRibbon: document.getElementById('text-toggle-ribbon'),
       btnTourPrev: document.getElementById('btn-tour-prev'),
       btnTourPlay: document.getElementById('btn-tour-play'),
       iconTourPlay: document.getElementById('icon-tour-play'),
@@ -310,15 +315,44 @@ export class UIController {
       this.audioService.playClickSound();
     });
 
-    // Escape Key Handler
+    // Tour Ribbon Toggle
+    this.dom.btnToggleTourRibbon?.addEventListener('click', () => this.toggleTourRibbon());
+    this.dom.btnTourMinimize?.addEventListener('click', () => this.toggleTourRibbon());
+    this.dom.btnRibbonToggle?.addEventListener('click', () => this.toggleTourRibbon());
+
+    // Keyboard Shortcuts (Escape, H)
     window.addEventListener('keydown', (e) => {
+      if (e.target && (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA')) return;
       if (e.key === 'Escape') {
         this.hideExhibitCard();
         this.dom.catalogDrawer?.classList.add('hidden');
         this.dom.lightboxModal?.classList.add('hidden');
         this.dom.helpModal?.classList.add('hidden');
+      } else if (e.key === 'h' || e.key === 'H') {
+        this.toggleTourRibbon();
       }
     });
+  }
+
+  toggleTourRibbon(forceState) {
+    if (!this.dom.tourRibbon) return;
+    const shouldCollapse = forceState !== undefined ? !forceState : !this.dom.tourRibbon.classList.contains('collapsed');
+    this.dom.tourRibbon.classList.toggle('collapsed', shouldCollapse);
+    document.body.classList.toggle('ribbon-collapsed', shouldCollapse);
+    if (this.dom.btnRibbonToggle) {
+      this.dom.btnRibbonToggle.classList.toggle('active', !shouldCollapse);
+    }
+    if (this.dom.iconToggleRibbon) {
+      this.dom.iconToggleRibbon.setAttribute('data-lucide', shouldCollapse ? 'chevron-up' : 'chevron-down');
+    }
+    if (this.dom.textToggleRibbon) {
+      this.dom.textToggleRibbon.textContent = shouldCollapse ? 'Hi\u1EC7n thanh hi\u1EC7n v\u1EADt' : '\u1EA8n thanh hi\u1EC7n v\u1EADt';
+    }
+    if (this.dom.btnToggleTourRibbon) {
+      this.dom.btnToggleTourRibbon.setAttribute('title', shouldCollapse ? 'Hi\u1EC7n thanh hi\u1EC7n v\u1EADt (Ph\u00EDm H)' : '\u1EA8n thanh hi\u1EC7n v\u1EADt (Ph\u00EDm H)');
+    }
+    if (window.lucide) window.lucide.createIcons();
+    this.audioService?.playClickSound();
   }
 
   updateLoadingProgress(percent, text) {
