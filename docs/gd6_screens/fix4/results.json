@@ -1,0 +1,277 @@
+{
+  "stats": {
+    "counts": {
+      "wall_k1_far": 40,
+      "wall_k1_north": 17,
+      "partition_k1": 40,
+      "wall_k1_south": 9,
+      "wall_k2_back": 30,
+      "wall_k2_west": 40,
+      "wall_k2_east": 41,
+      "wall_k3_north": 20,
+      "wall_k3_far": 32,
+      "partition_k3": 16,
+      "wall_k3_south": 10,
+      "wall_k4_east": 12,
+      "wall_k4_west_hcm": 11,
+      "wall_k6_west": 32,
+      "wall_k6_east_hcm": 30
+    },
+    "faceCounts": {
+      "wall_k1_far|1.57": 40,
+      "wall_k1_north|0.00": 17,
+      "partition_k1|-1.57": 20,
+      "partition_k1|1.57": 20,
+      "wall_k1_south|3.14": 9,
+      "wall_k2_back|0.00": 30,
+      "wall_k2_west|1.57": 40,
+      "wall_k2_east|-1.57": 41,
+      "wall_k3_north|0.00": 20,
+      "wall_k3_far|-1.57": 32,
+      "partition_k3|1.57": 16,
+      "wall_k3_south|3.14": 10,
+      "wall_k4_east|-1.57": 12,
+      "wall_k4_west_hcm|1.57": 11,
+      "wall_k6_west|1.57": 32,
+      "wall_k6_east_hcm|-1.57": 30
+    },
+    "duplicates": [],
+    "k4East": {
+      "total": 12,
+      "hasDangBo001": false,
+      "hasDangBo002": true
+    },
+    "partK3East": {
+      "total": 16,
+      "itemIds": [
+        "pcvt_009_2025-08-13",
+        "pcvt_010_2025-08-13",
+        "pcvt_012_2025-08-27",
+        "pcvt_013_2025-08-27",
+        "pcvt_014_2025-08-29",
+        "pcvt_016_2025-08-29",
+        "pcvt_101_2025-09-08",
+        "pcvt_102_2025-09-08",
+        "dang_bo_001_2026-02-06",
+        "dang_bo_005_2026-02-06",
+        "pcvt_049_2026-04-03",
+        "pcvt_050_2026-04-03",
+        "pcvt_075_2026-07-08",
+        "pcvt_077_2026-07-08",
+        "pcvt_080_2026-07-16",
+        "pcvt_081_2026-07-16"
+      ],
+      "board": {
+        "face": "partition_k3|1.57",
+        "title": "NHỮNG DẤU ẤN NĂM ĐẦU THÀNH LẬP",
+        "sub": "Lãnh đạo EVNHCMC, EVN làm việc với Công ty · Đối thoại người lao động · Đảng bộ quán triệt Nghị quyết · Điện lực Đặc khu Côn Đảo · Sơ kết 6 tháng",
+        "w": 9.774000000000003,
+        "h": 0.9,
+        "y": 6.2,
+        "titlePx": 125,
+        "subPx": 33,
+        "titleLines": 1,
+        "titleCapM": 0.215,
+        "subCapM": 0.057
+      },
+      "minZ": -9.823200000000002,
+      "maxZ": 9.6681,
+      "minY": 2.8,
+      "maxY": 4.7
+    },
+    "framesOnWall": 0,
+    "framesOnWallDetails": [],
+    "rowGap": 0,
+    "rowGapReport": [
+      {
+        "face": "wall_k1_far|1.57",
+        "rowGap": 0.475,
+        "low": 2.085,
+        "board": 0.68
+      },
+      {
+        "face": "wall_k1_north|0.00",
+        "rowGap": 0.475,
+        "low": 2.085,
+        "board": 0.31
+      },
+      {
+        "face": "partition_k1|-1.57",
+        "rowGap": 0.365,
+        "low": 1.36,
+        "board": 0.265
+      },
+      {
+        "face": "partition_k1|1.57",
+        "rowGap": 0.367,
+        "low": 1.36,
+        "board": 0.267
+      },
+      {
+        "face": "wall_k1_south|3.14",
+        "rowGap": 0.425,
+        "low": 2.06,
+        "board": 0.285
+      },
+      {
+        "face": "wall_k2_back|0.00",
+        "rowGap": 0.375,
+        "low": 2.035,
+        "board": 0.63
+      },
+      {
+        "face": "wall_k2_west|1.57",
+        "rowGap": 0.52,
+        "low": 2.107,
+        "board": 0.332
+      },
+      {
+        "face": "wall_k2_east|-1.57",
+        "rowGap": 0.541,
+        "low": 2.107,
+        "board": 0.354
+      },
+      {
+        "face": "wall_k3_north|0.00",
+        "rowGap": 0.34,
+        "low": 1.85,
+        "board": 0.31
+      },
+      {
+        "face": "wall_k3_far|-1.57",
+        "rowGap": 0.34,
+        "low": 1.85,
+        "board": 0.31
+      },
+      {
+        "face": "partition_k3|1.57",
+        "rowGap": 0.34,
+        "low": 1.85,
+        "board": 0.41
+      },
+      {
+        "face": "wall_k3_south|3.14",
+        "rowGap": 0.34,
+        "low": 1.85,
+        "board": 0.31
+      },
+      {
+        "face": "wall_k4_east|-1.57",
+        "rowGap": null,
+        "low": 2.55,
+        "board": 0.71
+      },
+      {
+        "face": "wall_k4_west_hcm|1.57",
+        "rowGap": null,
+        "low": 2.55,
+        "board": 0.71
+      },
+      {
+        "face": "wall_k6_west|1.57",
+        "rowGap": 0.34,
+        "low": 1.85,
+        "board": 0.31
+      },
+      {
+        "face": "wall_k6_east_hcm|-1.57",
+        "rowGap": 0.34,
+        "low": 1.85,
+        "board": 0.31
+      }
+    ],
+    "boardOverlap": 0,
+    "boardOverlapDetails": [],
+    "layout": [
+      {
+        "wallId": "wall_k3_north",
+        "items": 20,
+        "columns": 10,
+        "scale": 1,
+        "usable": 28.4,
+        "gap": 1.1501333333333332,
+        "rangeMin": -14.2,
+        "rangeMax": 14.2,
+        "zone": "khu3"
+      },
+      {
+        "wallId": "wall_k3_far",
+        "items": 32,
+        "columns": 16,
+        "scale": 1,
+        "usable": 45.55,
+        "gap": 1.0835799999999993,
+        "rangeMin": -23.2,
+        "rangeMax": 22.349999999999998,
+        "zone": "khu3"
+      },
+      {
+        "wallId": "partition_k3",
+        "items": 16,
+        "columns": 8,
+        "scale": 1,
+        "usable": 21.6,
+        "gap": 0.7450714285714289,
+        "rangeMin": -10.8,
+        "rangeMax": 10.8,
+        "zone": "khu3"
+      },
+      {
+        "wallId": "wall_k3_south",
+        "items": 10,
+        "columns": 5,
+        "scale": 1,
+        "usable": 12.089999999999996,
+        "gap": 0.8945499999999988,
+        "rangeMin": -5.349999999999997,
+        "rangeMax": 6.74,
+        "zone": "khu3"
+      },
+      {
+        "wallId": "wall_k4_east",
+        "zone": "khu4",
+        "items": 12,
+        "columns": 12,
+        "scale": 1,
+        "usable": 41.00000000000001,
+        "gap": 1.1971818181818181,
+        "rangeMin": -20.8,
+        "rangeMax": 20.200000000000006
+      },
+      {
+        "wallId": "wall_k4_west_hcm",
+        "zone": "khu4",
+        "items": 11,
+        "columns": 11,
+        "scale": 1,
+        "usable": 37.6,
+        "gap": 0.6045999999999996,
+        "rangeMin": -18.8,
+        "rangeMax": 18.8
+      },
+      {
+        "wallId": "wall_k6_west",
+        "items": 32,
+        "columns": 16,
+        "scale": 1,
+        "usable": 41.00000000000001,
+        "gap": 0.7958666666666668,
+        "rangeMin": -20.200000000000006,
+        "rangeMax": 20.8,
+        "zone": "khu6"
+      },
+      {
+        "wallId": "wall_k6_east_hcm",
+        "items": 30,
+        "columns": 15,
+        "scale": 1,
+        "usable": 37.6,
+        "gap": 0.8332357142857142,
+        "rangeMin": -18.8,
+        "rangeMax": 18.8,
+        "zone": "khu6"
+      }
+    ]
+  },
+  "console_errors": []
+}

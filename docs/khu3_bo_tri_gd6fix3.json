@@ -7,7 +7,7 @@
    "rotY": "0",
    "bang_tieu_de": "THÁNG 7/2025 – THÁNG 2/2026 · NHỮNG NGÀY ĐẦU THÀNH LẬP",
    "dong_phu": "Ổn định tổ chức · Đại hội Đoàn · Đón Xuân Bính Ngọ 2026",
-   "so_anh": 20,
+   "so_anh": 22,
    "thu_tu_anh": [
     {
      "id": "pcvt_001_2025-07-23",
@@ -33,6 +33,16 @@
      "id": "pcvt_017_2025-09-04",
      "ngay": "2025-09-04",
      "tieu_de": "Lãnh đạo EVNHCMC rà soát danh mục dự án ĐTXD 2025 – 2026"
+    },
+    {
+     "id": "pcvt_101_2025-09-08",
+     "ngay": "2025-09-08",
+     "tieu_de": "Đoàn Ban Kỹ thuật An toàn EVN kiểm tra công tác PCCC và an toàn điện trong nhân dân"
+    },
+    {
+     "id": "pcvt_102_2025-09-08",
+     "ngay": "2025-09-08",
+     "tieu_de": "Đoàn Ban Kỹ thuật An toàn EVN kiểm tra công tác PCCC và an toàn điện trong nhân dân"
     },
     {
      "id": "doan_tn_008_2025-10-06",
@@ -284,98 +294,6 @@
      "id": "pcvt_106_2026-07-19",
      "ngay": "2026-07-19",
      "tieu_de": "Tri ân khách hàng: cài app liền tay – nhận ngay quà tặng"
-    }
-   ]
-  },
-  {
-   "tuong": "partition_k3_east",
-   "rotY": "PI/2",
-   "bang_tieu_de": "NHỮNG DẤU ẤN NĂM ĐẦU THÀNH LẬP",
-   "dong_phu": "Lãnh đạo EVNHCMC, EVN làm việc với Công ty · Đối thoại người lao động · Đảng bộ quán triệt Nghị quyết · Điện lực Đặc khu Côn Đảo · Sơ kết 6 tháng",
-   "so_anh": 16,
-   "ghi_chu": "Mặt Đông vách mốc son (x = 35,3, nhìn về tường xa). Mỗi CỘT là 1 sự kiện: ảnh trên + ảnh dưới cùng sự kiện. Thay cho 7 ảnh 1 hàng trong milestone-wall.js (eastEvents).",
-   "thu_tu_anh": [
-    {
-     "id": "pcvt_009_2025-08-13",
-     "ngay": "2025-08-13",
-     "tieu_de": "Đoàn công tác EVNHCMC kiểm tra các công trình đầu tư xây dựng"
-    },
-    {
-     "id": "pcvt_010_2025-08-13",
-     "ngay": "2025-08-13",
-     "tieu_de": "Đoàn công tác EVNHCMC kiểm tra các công trình đầu tư xây dựng"
-    },
-    {
-     "id": "pcvt_012_2025-08-27",
-     "ngay": "2025-08-27",
-     "tieu_de": "Chủ tịch HĐTV EVNHCMC Phạm Quốc Bảo làm việc với Công ty"
-    },
-    {
-     "id": "pcvt_013_2025-08-27",
-     "ngay": "2025-08-27",
-     "tieu_de": "Chủ tịch HĐTV EVNHCMC Phạm Quốc Bảo làm việc với Công ty"
-    },
-    {
-     "id": "pcvt_014_2025-08-29",
-     "ngay": "2025-08-29",
-     "tieu_de": "Hội nghị đối thoại người lao động"
-    },
-    {
-     "id": "pcvt_016_2025-08-29",
-     "ngay": "2025-08-29",
-     "tieu_de": "Hội nghị đối thoại người lao động"
-    },
-    {
-     "id": "pcvt_101_2025-09-08",
-     "ngay": "2025-09-08",
-     "tieu_de": "Đoàn Ban Kỹ thuật An toàn EVN kiểm tra công tác PCCC và an toàn điện trong nhân dân"
-    },
-    {
-     "id": "pcvt_102_2025-09-08",
-     "ngay": "2025-09-08",
-     "tieu_de": "Đoàn Ban Kỹ thuật An toàn EVN kiểm tra công tác PCCC và an toàn điện trong nhân dân"
-    },
-    {
-     "id": "dang_bo_001_2026-02-06",
-     "ngay": "2026-02-06",
-     "tieu_de": "Đảng bộ Công ty nghiêm túc học tập, quán triệt Nghị quyết",
-     "anh_noi_bat_tu": "khu4 / dang_bo"
-    },
-    {
-     "id": "dang_bo_005_2026-02-06",
-     "ngay": "2026-02-06",
-     "tieu_de": "Đảng bộ Công ty nghiêm túc học tập, quán triệt Nghị quyết",
-     "anh_noi_bat_tu": "khu4 / dang_bo"
-    },
-    {
-     "id": "pcvt_049_2026-04-03",
-     "ngay": "2026-04-03",
-     "tieu_de": "Tổng Giám đốc EVNHCMC làm việc với PC Vũng Tàu và PC Đất Đỏ"
-    },
-    {
-     "id": "pcvt_050_2026-04-03",
-     "ngay": "2026-04-03",
-     "tieu_de": "Tổng Giám đốc EVNHCMC làm việc với PC Vũng Tàu và PC Đất Đỏ"
-    },
-    {
-     "id": "pcvt_075_2026-07-08",
-     "ngay": "2026-07-08",
-     "tieu_de": "Điện lực Đặc khu Côn Đảo – dấu mốc mới, khởi đầu chặng đường phát triển"
-    },
-    {
-     "id": "pcvt_077_2026-07-08",
-     "ngay": "2026-07-08",
-     "tieu_de": "Điện lực Đặc khu Côn Đảo – dấu mốc mới, khởi đầu chặng đường phát triển"
-    },
-    {
-     "id": "pcvt_080_2026-07-16",
-     "ngay": "2026-07-16",
-     "tieu_de": "Hội nghị sơ kết 6 tháng đầu năm"
-    },
-    {
-     "id": "pcvt_081_2026-07-16",
-     "ngay": "2026-07-16",
-     "tieu_de": "Hội nghị sơ kết 6 tháng đầu năm"
     }
    ]
   },

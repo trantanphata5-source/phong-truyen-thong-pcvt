@@ -639,6 +639,7 @@ export class ExhibitBuilder {
     const K3_WALLS = {
       wall_k3_north:      { id: 'wall_k3_north', rotY: 0 },
       wall_k3_far:        { id: 'wall_k3_far',   rotY: -Math.PI / 2 },
+      partition_k3_east:  { id: 'partition_k3', rotY: Math.PI / 2 },
       wall_k3_south:      { id: 'wall_k3_south', rotY: Math.PI },
       wall_k3_south_half: { id: 'wall_k3_south', rotY: Math.PI },
     };
@@ -793,6 +794,9 @@ export class ExhibitBuilder {
       { face: fk('wall_k3_far', -Math.PI / 2), zone: 'khu3', colors: COLORS.khu3, logo: 'assets/logo.png',
         ...k3t(fk('wall_k3_far', -Math.PI / 2), { title: '', sub: '' }),
         slogan: 'LƯỚI ĐIỆN THÔNG MINH – DỊCH VỤ KHÁCH HÀNG HIỆN ĐẠI' },
+      { face: fk('partition_k3', Math.PI / 2), zone: 'khu3', colors: COLORS.khu3, logo: 'assets/logo.png',
+        ...k3t(fk('partition_k3', Math.PI / 2), { title: '', sub: '' }),
+        boardH: 0.90, boardY: 6.20 },
       { face: fk('wall_k3_south', Math.PI), zone: 'khu3', colors: COLORS.khu3, logo: 'assets/logo.png',
         ...k3t(fk('wall_k3_south', Math.PI), { title: '', sub: '' }),
         slogan: 'ĐOÀN KẾT – ĐỔI MỚI – HIỆU QUẢ' },
@@ -825,10 +829,10 @@ export class ExhibitBuilder {
       const blockLen = face.maxU - face.minU;
       const blockCenter = (face.maxU + face.minU) / 2;
       const isPart = !!cfg.partition;
-      const boardH = isPart ? this.PARTITION_BOARD_H : this.WALL_BOARD_H;
-      const boardY = isPart ? this.PARTITION_BOARD_Y : ((cfg.zone === 'khu3' || cfg.zone === 'khu6') ? this.K3_BOARD_Y : this.WALL_BOARD_Y);
+      const boardH = cfg.boardH !== undefined ? cfg.boardH : (isPart ? this.PARTITION_BOARD_H : this.WALL_BOARD_H);
+      const boardY = cfg.boardY !== undefined ? cfg.boardY : (isPart ? this.PARTITION_BOARD_Y : ((cfg.zone === 'khu3' || cfg.zone === 'khu6') ? this.K3_BOARD_Y : this.WALL_BOARD_Y));
       const maxW = isPart ? 10 : 14;
-      const boardW = Math.min(maxW, Math.max(8, 0.45 * blockLen));
+      const boardW = cfg.boardW !== undefined ? cfg.boardW : Math.min(maxW, Math.max(8, 0.45 * blockLen));
 
       const nx = Math.sin(wc.rotY), nz = Math.cos(wc.rotY);
       const tx = Math.cos(wc.rotY), tz = -Math.sin(wc.rotY);

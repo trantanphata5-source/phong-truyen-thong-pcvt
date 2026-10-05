@@ -189,51 +189,6 @@ export class MilestoneWallBuilder {
 
     group.add(westGroup);
 
-    // =========================================================================
-    // 2. MẶT ĐÔNG — 7 SỰ KIỆN TRỌNG ĐẠI (x = 35 + 0.3 = 35.3, hướng Đông nx = +1)
-    // 1 tầng ở y = 2.6m, chiều cao khung 1.3m, lề mỗi đầu 1.2m
-    // =========================================================================
-    const eastGroup = new THREE.Group();
-    eastGroup.name = 'MilestoneWall_East';
-    const xEast = 35.0 + 0.3 + 0.05; // 35.35
-    const rotYEast = Math.PI / 2;
-
-    const eastEvents = [
-      'pcvt_009_2025-08-13',     // 13/08/2025: Đoàn công tác Tổng công ty Điện lực TP.HCM
-      'pcvt_012_2025-08-27',     // 27/08/2025: Đoàn công tác do ông Phạm Quốc Bảo dẫn đầu
-      'pcvt_014_2025-08-29',     // 29/08/2025: Hội nghị đối thoại người lao động
-      'dang_bo_001_2026-02-06',  // 06/02/2026: Đảng bộ học tập, quán triệt Nghị quyết
-      'pcvt_049_2026-04-03',     // 02/04/2026: Đoàn công tác Tổng công ty làm việc tại Vũng Tàu
-      'pcvt_080_2026-07-16',     // 16/07/2026: Hội nghị sơ kết 6 tháng đầu năm
-      'pcvt_075_2026-07-08'      // 08/07/2026: Điện lực Đặc khu Côn Đảo – dấu mốc mới
-    ];
-
-    const wallLength = 24.0;
-    const endMargin = 1.2;
-    const usableLength = wallLength - 2 * endMargin; // 21.6m
-    const nEast = eastEvents.length;
-    const gapEast = usableLength / (nEast + 1);
-
-    eastEvents.forEach((id, idx) => {
-      const it = itemsById.get(id);
-      if (!it) return;
-
-      const zPos = -wallLength / 2 + endMargin + (idx + 1) * gapEast;
-      const ar = it.aspect_ratio || 1.4;
-      const h = 1.3;
-      const w = h * ar;
-
-      const exhibit = this.exhibitBuilder.createFramedExhibit(
-        it,
-        { w, h, frameType: 'gold_honor', legacyPlaque: true },
-        rotYEast
-      );
-      exhibit.position.set(xEast, 2.6, zPos);
-      eastGroup.add(exhibit);
-      if (onExhibitDone) onExhibitDone();
-    });
-
-    group.add(eastGroup);
   }
 
   addHeaderBanner(parent, x, y, z, rotY, text) {
