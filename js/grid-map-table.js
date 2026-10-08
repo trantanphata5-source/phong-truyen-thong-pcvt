@@ -183,6 +183,10 @@ export class GridMapTable {
       tex.minFilter = THREE.LinearMipmapLinearFilter;
       tex.anisotropy = maxAnis;
       tex.needsUpdate = true;
+      if (this.boardMesh && this.boardMesh.material) {
+        this.boardMesh.material.map = tex;
+        this.boardMesh.material.needsUpdate = true;
+      }
     });
     this.tex2048.colorSpace = THREE.SRGBColorSpace;
     this.tex2048.generateMipmaps = true;
