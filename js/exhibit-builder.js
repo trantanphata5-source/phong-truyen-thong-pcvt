@@ -116,12 +116,44 @@ export class ExhibitBuilder {
     });
   }
 
-  getOrLoadTexture(path) {
-    if (!path) return null;
-    if (this.loadedTextures.has(path)) return this.loadedTextures.get(path);
-    const tex = this.textureLoader.load(path);
-    tex.colorSpace = THREE.SRGBColorSpace;
-    this.loadedTextures.set(path, tex);
+  getOrLoadTexture(path, fallbackPath = null, onLoaded = null) {
+    if (!path && !fallbackPath) return null;
+    const primaryPath = path || fallbackPath;
+    if (this.loadedTextures.has(primaryPath)) {
+      const cached = this.loadedTextures.get(primaryPath);
+      if (onLoaded && cached.image && (cached.image.complete || cached.image.width > 0)) {
+        onLoaded(cached);
+      }
+      return cached;
+    }
+
+    const loadTexture = (url, isFallback = false, attempt = 1) => {
+      const tex = this.textureLoader.load(
+        url,
+        (loadedTex) => {
+          loadedTex.colorSpace = THREE.SRGBColorSpace;
+          loadedTex.needsUpdate = true;
+          if (onLoaded) onLoaded(loadedTex);
+        },
+        undefined,
+        (err) => {
+          console.warn(`[TextureLoader] Error loading ${url} (attempt ${attempt}):`, err);
+          if (attempt < 3 && !isFallback) {
+            setTimeout(() => {
+              loadTexture(url, false, attempt + 1);
+            }, 1000 * attempt);
+          } else if (fallbackPath && fallbackPath !== url && !isFallback) {
+            console.warn(`[TextureLoader] Falling back to thumbnail for ${url} -> ${fallbackPath}`);
+            loadTexture(fallbackPath, true, 1);
+          }
+        }
+      );
+      tex.colorSpace = THREE.SRGBColorSpace;
+      return tex;
+    };
+
+    const tex = loadTexture(primaryPath);
+    this.loadedTextures.set(primaryPath, tex);
     return tex;
   }
 
@@ -1215,12 +1247,18 @@ export class ExhibitBuilder {
     group.add(frameMesh);
 
     // 2. Mesh 2: Ảnh
-    const texture = this.getOrLoadTexture(item.wall_path);
+    let picMesh = null;
+    const texture = this.getOrLoadTexture(item.wall_path, item.thumb_path, (loadedTex) => {
+      if (picMesh && picMesh.material) {
+        picMesh.material.map = loadedTex;
+        picMesh.material.needsUpdate = true;
+      }
+    });
     const picMat = new THREE.MeshStandardMaterial({
       map: texture, roughness: 0.4, metalness: 0.05,
       polygonOffset: true, polygonOffsetFactor: -1, polygonOffsetUnits: -1
     });
-    const picMesh = new THREE.Mesh(new THREE.PlaneGeometry(w - 0.04, h - 0.04), picMat);
+    picMesh = new THREE.Mesh(new THREE.PlaneGeometry(w - 0.04, h - 0.04), picMat);
     picMesh.position.z = depth / 2 + 0.006;
     group.add(picMesh);
 

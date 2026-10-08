@@ -177,13 +177,33 @@ export class GridMapTable {
     const texLoader = new THREE.TextureLoader();
     const maxAnis = window.app?.renderer?.capabilities?.getMaxAnisotropy?.() || 16;
 
-    this.tex2048 = texLoader.load('assets/grid/pcvt_map_2048.webp');
+    this.tex2048 = texLoader.load('assets/grid/pcvt_map_2048.webp', (tex) => {
+      tex.colorSpace = THREE.SRGBColorSpace;
+      tex.generateMipmaps = true;
+      tex.minFilter = THREE.LinearMipmapLinearFilter;
+      tex.anisotropy = maxAnis;
+      tex.needsUpdate = true;
+    });
     this.tex2048.colorSpace = THREE.SRGBColorSpace;
     this.tex2048.generateMipmaps = true;
     this.tex2048.minFilter = THREE.LinearMipmapLinearFilter;
     this.tex2048.anisotropy = maxAnis;
 
-    this.tex4096 = texLoader.load('assets/grid/pcvt_map_4096.webp');
+    this.tex4096 = texLoader.load(
+      'assets/grid/pcvt_map_4096.webp',
+      (tex) => {
+        tex.colorSpace = THREE.SRGBColorSpace;
+        tex.generateMipmaps = true;
+        tex.minFilter = THREE.LinearMipmapLinearFilter;
+        tex.anisotropy = maxAnis;
+        tex.needsUpdate = true;
+      },
+      undefined,
+      (err) => {
+        console.warn('[GridMapTable] Failed to load 4096 map texture, fallback to 2048', err);
+        this.tex4096 = this.tex2048;
+      }
+    );
     this.tex4096.colorSpace = THREE.SRGBColorSpace;
     this.tex4096.generateMipmaps = true;
     this.tex4096.minFilter = THREE.LinearMipmapLinearFilter;
@@ -217,9 +237,10 @@ export class GridMapTable {
   // Chuyển đổi giữa bản 2048 và 4096 ở ngưỡng 12m với hysteresis 1m (Mục B.1)
   updateTilesLOD(cameraPos) {
     if (!this.boardMesh || !cameraPos) return;
+    const maxTex = window.app?.renderer?.capabilities?.maxTextureSize || 4096;
     const dist = cameraPos.distanceTo(this.tableCenter);
 
-    if (dist < 11.5 && this._currentLOD !== '4096') {
+    if (dist < 11.5 && this._currentLOD !== '4096' && maxTex >= 4096 && this.tex4096) {
       this.boardMesh.material.map = this.tex4096;
       this.boardMesh.material.needsUpdate = true;
       this._currentLOD = '4096';
