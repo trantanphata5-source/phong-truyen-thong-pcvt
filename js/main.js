@@ -1,5 +1,5 @@
 import * as THREE from 'three';
-import { AudioService } from './audio-service.js?v=gd4-fix1';
+import { AudioService } from './audio-service.js?v=narrative-1';
 import { DataService } from './data-service.js?v=gd4-fix1';
 import { MuseumArchitect } from './museum-architect.js?v=gd4-fix1';
 import { ExhibitBuilder } from './exhibit-builder.js?v=gd4-fix1';
@@ -12,6 +12,52 @@ import { GridMapTable } from './grid-map-table.js?v=gd5';
 import { ZoneScreenSlideshow } from './zone-screens.js?v=gd5';
 
 window.THREE = THREE;
+
+/**
+ * Cấu hình Audio Thuyết minh theo khu vực & điểm nhấn
+ */
+export const NARRATION_CONFIG = {
+  welcome: {
+    id: 'welcome',
+    src: 'assets/audio/intro_welcome.mp3',
+    title: 'Sảnh Trung Tâm · Lời mở đầu'
+  },
+  cabinets: {
+    id: 'cabinets',
+    src: 'assets/audio/intro_cabinets.mp3',
+    title: 'Tủ Ảnh Lưu Niệm & Kỷ Vật'
+  },
+  khu1: {
+    id: 'khu1',
+    src: 'assets/audio/intro_khu1.mp3',
+    title: 'Khu 1 · Ký ức & Tranh tặng'
+  },
+  khu2: {
+    id: 'khu2',
+    src: 'assets/audio/intro_khu2.mp3',
+    title: 'Khu 2 · Bằng khen & Cờ lưu niệm'
+  },
+  khu3: {
+    id: 'khu3',
+    src: 'assets/audio/intro_khu3.mp3',
+    title: 'Khu 3 · Hiện tại & Vận hành'
+  },
+  khu4: {
+    id: 'khu4',
+    src: 'assets/audio/intro_khu4.mp3',
+    title: 'Khu 4 · Đảng bộ Công ty'
+  },
+  khu5: {
+    id: 'khu5',
+    src: 'assets/audio/intro_khu5-HCM.mp3?v=20261008',
+    title: 'Khu 5 · Không gian Văn hóa Hồ Chí Minh'
+  },
+  khu6: {
+    id: 'khu6',
+    src: 'assets/audio/intro_khu6.mp3',
+    title: 'Khu 6 · Công đoàn & Đoàn Thanh niên'
+  }
+};
 
 /**
  * Main Application Orchestrator (Artsteps Standard)
@@ -28,6 +74,14 @@ class HeritageApp {
     this.currentZone = 'lobby';
     this.debugOverlay = null;
     this._lastZoneCheckTime = 0;
+
+    // Zone Audio Narration state
+    this.activeNarrationZone = null;
+    this._lastDetectedArea = null;
+    this._areaChangeStartTime = 0;
+    this.hasEnteredMuseum = false;
+    this.narrationToast = null;
+    this.narrationName = null;
 
     // 1. Scene, Camera, Renderer
     this.scene = new THREE.Scene();
@@ -239,6 +293,18 @@ class HeritageApp {
       this.uiController.buildTourCarousel(this.dataService.items);
       this.uiController.renderCatalogList(this.dataService.items);
       this.updateExhibitVisibility(this.dataService.items);
+
+      // Bind Narration HUD Controls
+      this.narrationToast = document.getElementById('narration-toast');
+      this.narrationName = document.getElementById('narration-name');
+      const btnNarrationStop = document.getElementById('btn-narration-stop');
+      if (btnNarrationStop) {
+        btnNarrationStop.addEventListener('click', (e) => {
+          e.stopPropagation();
+          this.audioService?.stopNarration(true);
+          this.hideNarrationToast();
+        });
+      }
 
       // Event Listeners
       window.addEventListener('resize', () => this.onWindowResize());
@@ -681,6 +747,7 @@ class HeritageApp {
   openAlbum(albumId = 'souvenir') {
     if (!this.albumViewer) return;
     this.uiController.hideExhibitCard();
+    this.playZoneNarration('cabinets');
     // 1. Open album modal immediately for snappy responsiveness
     this.albumViewer.openAlbum(albumId);
     // 2. Concurrently glide camera to stand in front of that cabinet
@@ -1343,6 +1410,97 @@ class HeritageApp {
     document.body.appendChild(this.debugOverlay);
   }
 
+  playZoneNarration(zoneId, force = false) {
+    const cfg = NARRATION_CONFIG[zoneId];
+    if (!cfg || !this.audioService) return;
+
+    if (!force && this.activeNarrationZone === zoneId && this.audioService.isNarrationPlaying) {
+      return;
+    }
+
+    this.activeNarrationZone = zoneId;
+
+    this.audioService.playNarration(zoneId, cfg.src, {
+      title: cfg.title,
+      onStart: () => {
+        this.showNarrationToast(cfg.title);
+      },
+      onEnded: () => {
+        this.hideNarrationToast();
+      }
+    });
+
+    this.showNarrationToast(cfg.title);
+  }
+
+  showNarrationToast(title) {
+    if (!this.narrationToast) this.narrationToast = document.getElementById('narration-toast');
+    if (!this.narrationName) this.narrationName = document.getElementById('narration-name');
+    if (this.narrationName) this.narrationName.textContent = title;
+    if (this.narrationToast) {
+      this.narrationToast.classList.remove('hidden');
+      if (window.lucide && typeof lucide.createIcons === 'function') {
+        lucide.createIcons();
+      }
+    }
+  }
+
+  hideNarrationToast() {
+    if (!this.narrationToast) this.narrationToast = document.getElementById('narration-toast');
+    if (this.narrationToast) {
+      this.narrationToast.classList.add('hidden');
+    }
+  }
+
+  checkNarrationArea(camPos) {
+    // 1. Khu vực 2 tủ ảnh lưu niệm (Cabinet 1: -4.6, -6.8; Cabinet 2: 4.6, -6.8)
+    const distCab1 = Math.hypot(camPos.x - (-4.6), camPos.z - (-6.8));
+    const distCab2 = Math.hypot(camPos.x - 4.6, camPos.z - (-6.8));
+    if (distCab1 < 3.8 || distCab2 < 3.8 || (Math.abs(camPos.x) <= 6.5 && camPos.z >= -9.5 && camPos.z <= -4.2)) {
+      return 'cabinets';
+    }
+
+    // 2. Khu vực theo 6 khu trưng bày
+    return this.getZoneAt(camPos.x, camPos.z);
+  }
+
+  updateZoneNarration() {
+    if (!this.isReady || !this.hasEnteredMuseum || !this.audioService) return;
+
+    // Không chuyển vùng thuyết minh khi camera đang lướt (glide/teleport) qua các tọa độ trung gian
+    if (this.controlsManager?.isGliding) return;
+
+    const camPos = this.camera.position;
+    const detectedArea = this.checkNarrationArea(camPos);
+
+    // Debounce zone change (phải ở trong khu vực mới ít nhất 350ms)
+    if (detectedArea !== this._lastDetectedArea) {
+      this._lastDetectedArea = detectedArea;
+      this._areaChangeStartTime = performance.now();
+      return;
+    }
+
+    if (performance.now() - (this._areaChangeStartTime || 0) < 350) {
+      return;
+    }
+
+    // Khu vực mới được xác nhận
+    if (detectedArea !== this.activeNarrationZone) {
+      if (['cabinets', 'khu1', 'khu2', 'khu3', 'khu4', 'khu5', 'khu6'].includes(detectedArea)) {
+        this.activeNarrationZone = detectedArea;
+        this.playZoneNarration(detectedArea);
+      } else if (detectedArea === 'lobby' || detectedArea === 'hallway') {
+        // Rời khỏi khu triển lãm ra hành lang/sảnh:
+        // Dừng thuyết minh khu vừa rời để khôi phục nhạc nền thư thái
+        if (this.activeNarrationZone && this.activeNarrationZone !== 'welcome') {
+          this.audioService.stopNarration(true);
+          this.hideNarrationToast();
+        }
+        this.activeNarrationZone = detectedArea;
+      }
+    }
+  }
+
   getZoneAt(x, z) {
     if (z >= 38) {
       if (x > 22) return 'khu4';
@@ -1588,6 +1746,7 @@ class HeritageApp {
 
     // GĐ5-fix2: Frustum + Distance < 45m zone culling and Zone screens slideshow
     this.updateZoneCulling();
+    this.updateZoneNarration();
     if (this.slideshowKhu4) this.slideshowKhu4.update(delta);
     if (this.slideshowKhu6) this.slideshowKhu6.update(delta);
 

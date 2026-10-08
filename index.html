@@ -167,13 +167,32 @@
   <div class="pills-bar collapsed" id="pills-bar">
     <nav class="hall-pills">
       <button class="pill-btn active" data-hall="all">Toàn cảnh</button>
-      <button class="pill-btn" data-hall="khu1">Khu 1: Ký ức &amp; Tranh tặng</button>
-      <button class="pill-btn" data-hall="khu2">Khu 2: Bằng khen &amp; Cờ</button>
+      <button class="pill-btn" data-hall="khu1">Khu 1: Ký ức</button>
+      <button class="pill-btn" data-hall="khu2">Khu 2: Vinh quang</button>
       <button class="pill-btn" data-hall="khu3">Khu 3: Hiện tại</button>
-      <button class="pill-btn pill-btn-cyan" id="btn-nav-saban" title="Sa bàn lưới điện 3D"><i data-lucide="zap"></i> Sa bàn Lưới điện</button>
-      <button class="pill-btn pill-btn-red" id="btn-nav-hcm" data-hall="hcm" title="Không gian Văn hóa Hồ Chí Minh"><i data-lucide="star"></i> Văn Hóa HCM</button>
-      <button class="pill-btn pill-btn-gold" id="btn-nav-albums" title="Tủ Album Kỷ Niệm"><i data-lucide="book-open"></i> Album (4 cuốn)</button>
+      <button class="pill-btn pill-btn-red" data-hall="khu4">Khu 4: Đảng bộ</button>
+      <button class="pill-btn pill-btn-red" id="btn-nav-hcm" data-hall="hcm" title="Không gian Văn hóa Hồ Chí Minh"><i data-lucide="star"></i> Khu 5: Văn Hóa HCM</button>
+      <button class="pill-btn pill-btn-blue" data-hall="khu6">Khu 6: CĐ &amp; ĐTN</button>
+      <button class="pill-btn pill-btn-cyan" id="btn-nav-saban" title="Sa bàn lưới điện 3D"><i data-lucide="zap"></i> Sa bàn</button>
+      <button class="pill-btn pill-btn-gold" id="btn-nav-albums" title="Tủ Album Kỷ Niệm"><i data-lucide="book-open"></i> 2 Tủ Album</button>
     </nav>
+  </div>
+
+  <!-- Floating Narration Indicator (Voice Guide & Ducking HUD) -->
+  <div class="narration-toast hidden" id="narration-toast">
+    <div class="narration-pulse" id="narration-pulse">
+      <span class="wave-bar"></span>
+      <span class="wave-bar"></span>
+      <span class="wave-bar"></span>
+      <span class="wave-bar"></span>
+    </div>
+    <div class="narration-details">
+      <div class="narration-tag"><i data-lucide="volume-2" class="tag-icon"></i> THUYẾT MINH KHU VỰC</div>
+      <div class="narration-name" id="narration-name">Sảnh Trung Tâm · Lời mở đầu</div>
+    </div>
+    <button id="btn-narration-stop" class="narration-stop-btn" title="Dừng phát thuyết minh">
+      <i data-lucide="square"></i>
+    </button>
   </div>
   <!-- Minimap (Artsteps Floating Widget) -->
   <div class="minimap-card" id="minimap-card">
@@ -625,6 +644,6 @@
   </div>
 
   <!-- App Entry -->
-  <script type="module" src="js/main.js?v=gd5"></script>
+  <script type="module" src="js/main.js?v=audio-narrative-1"></script>
 </body>
 </html>

@@ -13,14 +13,22 @@ export class AudioService {
     // Background Music
     this.bgm = null;
     this.bgmVolume = 0.3; // 30% volume - gentle, elegant background atmosphere
+    this.bgmDuckedVolume = 0.08; // 8% volume - ducked during voice narration
     this.fadeTimer = null;
     this.wasPlayingBeforeHidden = false;
+
+    // Narration Audio
+    this.narrationAudio = null;
+    this.currentNarrationId = null;
+    this.currentNarrationTitle = '';
+    this.isNarrationPlaying = false;
+    this.wasNarrationPlayingBeforeHidden = false;
 
     // Page-flip AudioBuffer (loaded once from file)
     this.pageFlipBuffer = null;
     this._pageFlipLoadAttempted = false;
 
-    // Visibility change listener to pause music when tab is hidden
+    // Visibility change listener to pause music & narration when tab is hidden
     if (typeof document !== 'undefined') {
       document.addEventListener('visibilitychange', () => {
         if (document.hidden) {
@@ -28,10 +36,18 @@ export class AudioService {
             this.wasPlayingBeforeHidden = true;
             this.bgm.pause();
           }
+          if (this.narrationAudio && !this.narrationAudio.paused) {
+            this.wasNarrationPlayingBeforeHidden = true;
+            this.narrationAudio.pause();
+          }
         } else {
           if (this.enabled && this.wasPlayingBeforeHidden) {
             this.wasPlayingBeforeHidden = false;
             this.bgm?.play().catch(() => {});
+          }
+          if (this.enabled && this.wasNarrationPlayingBeforeHidden) {
+            this.wasNarrationPlayingBeforeHidden = false;
+            this.narrationAudio?.play().catch(() => {});
           }
         }
       });
@@ -81,7 +97,7 @@ export class AudioService {
     try {
       this.bgm = new Audio('assets/audio/hitslab-art-gallery-exhibition-museum-music-272222.mp3');
       this.bgm.loop = true;
-      this.bgm.volume = this.enabled ? this.bgmVolume : 0;
+      this.bgm.volume = this.enabled ? (this.isNarrationPlaying ? this.bgmDuckedVolume : this.bgmVolume) : 0;
       this.bgm.preload = 'auto';
 
       if (this.enabled) {
@@ -120,6 +136,13 @@ export class AudioService {
     if (!this.bgm) return;
     if (this.fadeTimer) clearInterval(this.fadeTimer);
 
+    // If audio is disabled, keep BGM at 0 volume
+    if (!this.enabled) {
+      this.bgm.volume = 0;
+      if (onComplete) onComplete();
+      return;
+    }
+
     const startVol = this.bgm.volume;
     const startTime = performance.now();
     const durationMs = durationSec * 1000;
@@ -138,14 +161,106 @@ export class AudioService {
   }
 
   /**
+   * Play zone / area narration audio
+   * Duck BGM to bgmDuckedVolume (0.08) while narration plays.
+   * Restore BGM to bgmVolume (0.30) when narration ends or stops.
+   * @param {string} id - Identifier of the zone/narration ('welcome', 'cabinets', 'khu1'..'khu6')
+   * @param {string} audioSrc - Relative URL to mp3
+   * @param {Object} options - { title, onStart, onEnded, onError }
+   */
+  playNarration(id, audioSrc, options = {}) {
+    if (!audioSrc) return;
+
+    // If identical narration is currently actively playing, do not restart
+    if (this.currentNarrationId === id && this.narrationAudio && !this.narrationAudio.paused && !this.narrationAudio.ended) {
+      return;
+    }
+
+    // Stop current narration without restoring BGM immediately since new narration will duck it
+    this.stopNarration(false);
+
+    this.currentNarrationId = id;
+    this.currentNarrationTitle = options.title || id;
+
+    try {
+      const audio = new Audio(audioSrc);
+      audio.preload = 'auto';
+      audio.volume = this.enabled ? 1.0 : 0;
+      this.narrationAudio = audio;
+
+      audio.addEventListener('play', () => {
+        this.isNarrationPlaying = true;
+        // Duck BGM smoothly when narration starts
+        if (this.enabled && this.bgm) {
+          this.fadeBgm(this.bgmDuckedVolume, 0.35);
+        }
+        if (options.onStart) options.onStart();
+      });
+
+      audio.addEventListener('ended', () => {
+        this.isNarrationPlaying = false;
+        this.currentNarrationId = null;
+        // Restore BGM smoothly to normal volume
+        if (this.enabled && this.bgm) {
+          this.fadeBgm(this.bgmVolume, 0.6);
+        }
+        if (options.onEnded) options.onEnded();
+      });
+
+      audio.addEventListener('error', (err) => {
+        console.warn(`Narration audio error for [${id}] (${audioSrc}):`, err);
+        this.isNarrationPlaying = false;
+        this.currentNarrationId = null;
+        if (this.enabled && this.bgm) {
+          this.fadeBgm(this.bgmVolume, 0.4);
+        }
+        if (options.onError) options.onError(err);
+      });
+
+      if (this.enabled) {
+        const p = audio.play();
+        if (p && typeof p.catch === 'function') {
+          p.catch(e => {
+            console.warn(`Narration autoplay prevented for [${id}]:`, e);
+          });
+        }
+      }
+    } catch (e) {
+      console.warn('Failed to initialize narration audio:', e);
+    }
+  }
+
+  /**
+   * Stop current narration and optionally restore BGM volume
+   */
+  stopNarration(restoreBgm = true) {
+    if (this.narrationAudio) {
+      try {
+        this.narrationAudio.pause();
+        this.narrationAudio.currentTime = 0;
+      } catch (e) {}
+      this.narrationAudio = null;
+    }
+    const wasPlaying = this.isNarrationPlaying;
+    this.isNarrationPlaying = false;
+    this.currentNarrationId = null;
+    this.currentNarrationTitle = '';
+
+    if (restoreBgm && wasPlaying && this.enabled && this.bgm) {
+      this.fadeBgm(this.bgmVolume, 0.5);
+    }
+  }
+
+  /**
    * Duck BGM volume by 30% for 0.4s then restore
    */
   _duckBgm() {
     if (!this.bgm || !this.enabled) return;
-    const duckedVol = this.bgmVolume * 0.7;
+    const baseVol = this.isNarrationPlaying ? this.bgmDuckedVolume : this.bgmVolume;
+    const duckedVol = baseVol * 0.7;
     this.fadeBgm(duckedVol, 0.1, () => {
       setTimeout(() => {
-        this.fadeBgm(this.bgmVolume, 0.3);
+        this.fadeBgm(baseVol, 0.3);
       }, 300);
     });
   }
@@ -164,12 +279,22 @@ export class AudioService {
     if (this.bgm) {
       if (this.enabled) {
         this.bgm.play().then(() => {
-          this.fadeBgm(this.bgmVolume, 0.4);
+          const targetVol = this.isNarrationPlaying ? this.bgmDuckedVolume : this.bgmVolume;
+          this.fadeBgm(targetVol, 0.4);
         }).catch(() => {});
       } else {
         this.fadeBgm(0, 0.3, () => {
           this.bgm.pause();
         });
+      }
+    }
+
+    if (this.narrationAudio) {
+      if (this.enabled) {
+        this.narrationAudio.volume = 1.0;
+        this.narrationAudio.play().catch(() => {});
+      } else {
+        this.narrationAudio.pause();
       }
     }
 

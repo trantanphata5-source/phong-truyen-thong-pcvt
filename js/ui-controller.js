@@ -122,12 +122,15 @@ export class UIController {
       document.body.classList.remove('loading-active');
       this.audioService.init();
       this.audioService.playClickSound();
+      this.app.hasEnteredMuseum = true;
 
       // Show welcome guide overlay after a short delay for smooth transition
       setTimeout(() => {
         if (this.dom.welcomeGuide) {
           this.dom.welcomeGuide.classList.remove('hidden');
           lucide.createIcons();
+        } else {
+          this.app?.playZoneNarration('welcome', true);
         }
       }, 700);
     });
@@ -138,6 +141,8 @@ export class UIController {
         this.dom.welcomeGuide.classList.add('hidden');
       }
       this.audioService.playClickSound();
+      this.app.hasEnteredMuseum = true;
+      this.app?.playZoneNarration('welcome', true);
     });
 
     // Pills Bar Toggle (collapsible secondary nav row)
@@ -157,6 +162,16 @@ export class UIController {
         const hallId = pill.dataset.hall;
         this.controlsManager.teleportToHall(hallId);
         this.audioService.playClickSound();
+
+        // Trigger zone narration
+        if (hallId === 'all' || hallId === 'lobby') {
+          this.app?.playZoneNarration('welcome', true);
+        } else if (hallId === 'hcm') {
+          this.app?.playZoneNarration('khu5', true);
+        } else if (['khu1', 'khu2', 'khu3', 'khu4', 'khu6'].includes(hallId)) {
+          this.app?.playZoneNarration(hallId, true);
+        }
+
         // Auto-collapse after navigation
         pillsBar?.classList.add('collapsed');
         btnPillsToggle?.classList.remove('active');
@@ -851,6 +866,15 @@ export class UIController {
           this.controlsManager?.teleportToHall(zoneId);
           this.audioService?.playClickSound();
           this.dom.pillBtns?.forEach(p => p.classList.toggle('active', p.dataset.hall === zoneId));
+
+          // Trigger zone narration
+          if (zoneId === 'lobby' || zoneId === 'all') {
+            this.app?.playZoneNarration('welcome', true);
+          } else if (zoneId === 'hcm' || zoneId === 'khu5') {
+            this.app?.playZoneNarration('khu5', true);
+          } else if (['khu1', 'khu2', 'khu3', 'khu4', 'khu6'].includes(zoneId)) {
+            this.app?.playZoneNarration(zoneId, true);
+          }
         }
       });
     });

@@ -344,7 +344,7 @@ export class ControlsManager {
           if (t0 > t1) { hit = false; break; }
         }
       }
-      if (hit && (best === null || t0 < best)) best = t0;
+      if (hit && t0 > 0.001 && (best === null || t0 < best)) best = t0;
     }
     return best;
   }
@@ -362,7 +362,15 @@ export class ControlsManager {
     if (this.segmentClear(ax, az, bx, bz)) return [];
     const nodes = [];
     for (const key of Object.keys(HALL_TARGETS)) nodes.push({ x: HALL_TARGETS[key].x, z: HALL_TARGETS[key].z, key });
-    nodes.push({ x: -36, z: 31.5, key: 'hall_w' }, { x: 36, z: 31.5, key: 'hall_e' }, { x: 0, z: 31.5, key: 'hall_c' });
+    nodes.push(
+      { x: -36, z: 31.5, key: 'hall_w' },
+      { x: 36, z: 31.5, key: 'hall_e' },
+      { x: 0, z: 31.5, key: 'hall_c' },
+      { x: 26, z: 6.5, key: 'khu3_north' },
+      { x: 26, z: -6.5, key: 'khu3_south' },
+      { x: 32, z: 0, key: 'khu3_mid' },
+      { x: 42, z: 0, key: 'khu3_east' }
+    );
     const n = nodes.length;
     const dist = new Array(n).fill(Infinity);
     const prev = new Array(n).fill(-1);

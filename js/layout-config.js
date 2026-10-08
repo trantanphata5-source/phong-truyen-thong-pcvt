@@ -264,7 +264,7 @@ export const HALL_TARGETS = {
   all:   { x:  0,    z: 26, lookX:  0,   lookZ:  0, lookY: 2.5 },
   khu1:  { x: -28,   z:  0, lookX: -49,  lookZ:  0, lookY: 3.0 },
   khu2:  { x:  0,    z: -30, lookX:  0,  lookZ: -55, lookY: 3.5 },
-  khu3:  { x:  28,   z:  0, lookX:  49,  lookZ:  0, lookY: 3.0 },
+  khu3:  { x:  20.5, z:  0, lookX:  49,  lookZ:  0, lookY: 2.85 },
   khu4:  { x:  36,   z: 55, lookX:  49,  lookZ: 60, lookY: 3.0 },
   khu5:  { x:  0,    z: 50, lookX:  0,   lookZ: 65, lookY: 4.0 },
   khu6:  { x: -36,   z: 55, lookX: -49,  lookZ: 60, lookY: 3.0 },
