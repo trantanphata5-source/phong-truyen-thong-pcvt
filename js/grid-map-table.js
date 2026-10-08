@@ -189,6 +189,7 @@ export class GridMapTable {
     this.tex2048.minFilter = THREE.LinearMipmapLinearFilter;
     this.tex2048.anisotropy = maxAnis;
 
+    this._tex4096Loaded = false;
     this.tex4096 = texLoader.load(
       'assets/grid/pcvt_map_4096.webp',
       (tex) => {
@@ -197,11 +198,17 @@ export class GridMapTable {
         tex.minFilter = THREE.LinearMipmapLinearFilter;
         tex.anisotropy = maxAnis;
         tex.needsUpdate = true;
+        this._tex4096Loaded = true;
+        if (this._currentLOD === '4096' && this.boardMesh) {
+          this.boardMesh.material.map = this.tex4096;
+          this.boardMesh.material.needsUpdate = true;
+        }
       },
       undefined,
       (err) => {
         console.warn('[GridMapTable] Failed to load 4096 map texture, fallback to 2048', err);
         this.tex4096 = this.tex2048;
+        this._tex4096Loaded = true;
       }
     );
     this.tex4096.colorSpace = THREE.SRGBColorSpace;
@@ -240,10 +247,12 @@ export class GridMapTable {
     const maxTex = window.app?.renderer?.capabilities?.maxTextureSize || 4096;
     const dist = cameraPos.distanceTo(this.tableCenter);
 
-    if (dist < 11.5 && this._currentLOD !== '4096' && maxTex >= 4096 && this.tex4096) {
-      this.boardMesh.material.map = this.tex4096;
-      this.boardMesh.material.needsUpdate = true;
+    if (dist < 11.5 && this._currentLOD !== '4096') {
       this._currentLOD = '4096';
+      if (this._tex4096Loaded && this.tex4096 && maxTex >= 4096) {
+        this.boardMesh.material.map = this.tex4096;
+        this.boardMesh.material.needsUpdate = true;
+      }
     } else if (dist > 12.5 && this._currentLOD !== '2048') {
       this.boardMesh.material.map = this.tex2048;
       this.boardMesh.material.needsUpdate = true;

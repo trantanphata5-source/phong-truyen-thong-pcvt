@@ -1248,19 +1248,24 @@ export class ExhibitBuilder {
 
     // 2. Mesh 2: Ảnh
     let picMesh = null;
-    const texture = this.getOrLoadTexture(item.wall_path, item.thumb_path, (loadedTex) => {
-      if (picMesh && picMesh.material) {
-        picMesh.material.map = loadedTex;
-        picMesh.material.needsUpdate = true;
-      }
-    });
+    // Dùng thumb_path làm texture tức thì (nhẹ, nhanh) để không bao giờ bị ô đen lúc chờ mạng
+    const initialTex = item.thumb_path ? this.getOrLoadTexture(item.thumb_path) : null;
     const picMat = new THREE.MeshStandardMaterial({
-      map: texture, roughness: 0.4, metalness: 0.05,
+      map: initialTex, roughness: 0.4, metalness: 0.05,
+      color: 0xffffff,
       polygonOffset: true, polygonOffsetFactor: -1, polygonOffsetUnits: -1
     });
     picMesh = new THREE.Mesh(new THREE.PlaneGeometry(w - 0.04, h - 0.04), picMat);
     picMesh.position.z = depth / 2 + 0.006;
     group.add(picMesh);
+
+    // Tải bản nét cao wall_path (có tự động retry và fallback); khi tải xong tự nâng cấp độ nét
+    this.getOrLoadTexture(item.wall_path, item.thumb_path, (loadedTex) => {
+      if (picMesh && picMesh.material) {
+        picMesh.material.map = loadedTex;
+        picMesh.material.needsUpdate = true;
+      }
+    });
 
     // 3. Mesh 3: Biển tên
     const big = this.usesBigPlaque(item, zone) && !size.legacyPlaque;
