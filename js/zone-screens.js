@@ -133,7 +133,10 @@ export class ZoneScreenSlideshow {
       plane.material.needsUpdate = true;
       plane.visible = true;
       plane.updateMatrix();
+      plane.matrixWorldAutoUpdate = true;
       plane.updateMatrixWorld(true);
+      if (plane.parent) plane.matrixWorld.multiplyMatrices(plane.parent.matrixWorld, plane.matrix);
+      window.app?.requestRender?.(2);
     });
   }
 
