@@ -104,14 +104,13 @@ export class MuseumArchitect {
     });
 
     // 6. Vitrine Museum Glass
-    this.matGlass = new THREE.MeshPhysicalMaterial({
+    // PERF-2: bỏ `transmission` (buộc vẽ lại toàn bộ vật đục vào render target mỗi khung = gấp đôi lệnh vẽ)
+    this.matGlass = new THREE.MeshStandardMaterial({
       color: 0xffffff,
       transparent: true,
-      opacity: 0.25,
+      opacity: 0.14,
       roughness: 0.05,
-      transmission: 0.9,
-      ior: 1.5,
-      thickness: 0.05
+      metalness: 0.1
     });
 
     // 7. Ceiling Material (Bright Museum Architectural White)
@@ -136,14 +135,12 @@ export class MuseumArchitect {
     });
 
     // 10. Showcase Glass (Crystal Clear, depthWrite: false to eliminate flicker)
-    this.matGlassShowcase = new THREE.MeshPhysicalMaterial({
+    this.matGlassShowcase = new THREE.MeshStandardMaterial({
       color: 0xffffff,
       transparent: true,
-      opacity: 0.20,
+      opacity: 0.12,
       roughness: 0.04,
-      transmission: 0.92,
-      ior: 1.5,
-      thickness: 0.03,
+      metalness: 0.1,
       depthWrite: false
     });
 

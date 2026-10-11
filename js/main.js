@@ -1,4 +1,4 @@
-import * as THREE from 'three';
+﻿import * as THREE from 'three';
 import { AudioService } from './audio-service.js?v=narrative-1';
 import { DataService } from './data-service.js?v=gd4-fix1';
 import { MuseumArchitect } from './museum-architect.js?v=gd4-fix1';
@@ -11,6 +11,8 @@ import { HCMTimelineBuilder } from './hcm-timeline-builder.js?v=gd4-fix1';
 import { GridMapTable } from './grid-map-table.js?v=gd5';
 import { ZoneScreenSlideshow } from './zone-screens.js?v=gd5';
 import { TextureStreamer } from './texture-streamer.js';
+import { instanceExhibitFrames, setExhibitFrameVisible, mergeStatic, countMeshes, measureZoneVisibility } from './perf-batching.js';
+import { ZONES, HALLWAY, ZONE_VISIBILITY } from './layout-config.js';
 
 window.THREE = THREE;
 
@@ -294,6 +296,8 @@ class HeritageApp {
 
       // PERF-1 B3: ảnh, biển tên, bảng chữ -> MeshBasicMaterial (không tính sáng, đúng màu gốc)
       this.convertDisplayMaterials();
+      // PERF-2 C2/C3: khung ảnh -> InstancedMesh, gộp kiến trúc tĩnh (trước khi khóa ma trận)
+      this.applyBatching();
       // PERF-1 B2: vật tĩnh không tính lại ma trận mỗi khung
       this.freezeStaticGroups();
       // PERF-3 D1/D2: ảnh wall và biển tên theo khoảng cách
@@ -385,7 +389,7 @@ class HeritageApp {
       if (urlParams.get('bench') === '1' && !navigator.webdriver) {
         setTimeout(async () => {
           const m = await import('./perf-bench.js');
-          const res = await m.runBench(this, { label: 'PERF-3' });
+          const res = await m.runBench(this, { label: 'PERF-2' });
           console.log('[BENCH] JSON:', JSON.stringify(res));
         }, 4000);
       }
@@ -445,6 +449,104 @@ class HeritageApp {
     });
     // Vật liệu ảnh dựng sau (nâng cấp thumb -> wall) vẫn dùng chung material đã đổi
     console.log(`[PERF-1] Đổi ${converted} vật liệu ảnh/chữ sang MeshBasicMaterial`);
+  }
+
+  /**
+   * PERF-2 C2 + C3: khung ảnh -> InstancedMesh; gộp kiến trúc tĩnh và khung/viền HCM.
+   * Ảnh hiện vật, biển tên, màn hình, totem, tủ album, sa bàn, mặt canvas: giữ riêng.
+   */
+  applyBatching() {
+    const urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.get('batch') === '0') return;
+    const t0 = performance.now();
+    const arch = this.architect;
+    const archRoot = arch?.museumGroup || this.scene.getObjectByName('MuseumArchitecture');
+    const before = { arch: countMeshes(archRoot), hcm: countMeshes(this.hcmExhibitBuilder?.group) + countMeshes(this.hcmTimelineBuilder?.group) };
+
+    // C2
+    if (this.exhibitBuilder) this.frameIndex = instanceExhibitFrames(this.exhibitBuilder).frameIndex;
+
+    // Lưới phải giữ riêng (tương tác / đổi trạng thái lúc chạy / được tham chiếu trực tiếp)
+    const keep = new Set([
+      arch?.floorMesh, arch?.floorMarker, arch?.hcmScreenMesh,
+      arch?.screenKhu4Mesh, arch?.screenKhu6Mesh,
+      ...(arch?.albumMeshes || []),
+      ...(this.gridMapTable?.interactiveObjects || [])
+    ].filter(Boolean));
+    const streamed = new Set([
+      ...(this.exhibitBuilder?.streamItems || []), ...(this.hcmExhibitBuilder?.streamItems || []),
+      ...(this.hcmTimelineBuilder?.streamItems || [])
+    ].map(it => it.mesh));
+    const keepTree = (o) => keep.has(o) || /^(AlbumCabinet|Totem|Zone4And6_Screens_Group|GridMap|LED_|HCM_CentralScreen)/.test(o.name || '');
+    const skip = (o) => {
+      if (keep.has(o) || streamed.has(o)) return true;
+      const ud = o.userData || {};
+      if (ud.isTextPlane || ud.isBoard || ud.isZoneScreen || ud.isHCMScreen || ud.isExhibit || ud.item) return true;
+      const m = o.material;
+      if (m.map && (m.map.isCanvasTexture || m.map.isDataTexture)) return true; // mặt có canvas riêng
+      return false;
+    };
+    const isOccluder = (o, box) => {
+      const m = o.material;
+      if (!m || m.visible === false || (m.transparent && m.opacity < 0.3)) return false;
+      return isFinite(box.max.y) && box.max.y >= 1.5 && box.min.y <= 7.0;
+    };
+    // C3
+    if (archRoot) mergeStatic(archRoot, { skip, skipTree: keepTree, isOccluder, label: 'arch', cell: 60 });
+    // HCM: chỉ gộp khung/viền (không có texture); ảnh, kính, biển tên giữ trong nhóm để rê/bấm đúng
+    const hcmSkip = (o) => skip(o) || !!o.material.map;
+    if (this.hcmExhibitBuilder?.group) mergeStatic(this.hcmExhibitBuilder.group, { skip: hcmSkip, isOccluder, label: 'hcm', cell: 12 });
+    if (this.hcmTimelineBuilder?.group) mergeStatic(this.hcmTimelineBuilder.group, { skip: hcmSkip, isOccluder, label: 'timeline', cell: 12 });
+
+    // Kiểm tra: không lưới nào của TextureStreamer bị gộp
+    let lost = 0;
+    for (const m of streamed) { let p = m; while (p && p !== this.scene) p = p.parent; if (!p) lost++; }
+    if (lost) console.error(`[PERF-2] ${lost} lưới ảnh/biển tên bị tách khỏi cảnh!`);
+
+    this.buildOccluders();
+    const after = { arch: countMeshes(archRoot), hcm: countMeshes(this.hcmExhibitBuilder?.group) + countMeshes(this.hcmTimelineBuilder?.group) };
+    console.log(`[PERF-2] MuseumArchitecture ${before.arch} -> ${after.arch} lưới; HCM ${before.hcm} -> ${after.hcm} lưới (${Math.round(performance.now() - t0)} ms)`);
+    this.perf2Stats = { before, after };
+
+    window.__measureZoneVisibility = () => this.measureZoneVisibility();
+  }
+
+  /** PERF-2 C4: vùng lấy mẫu camera cho từng khu (theo getZoneAt) */
+  getZoneSampleBounds() {
+    return {
+      lobby: { ...ZONES.lobby.bounds, maxZ: 25 },
+      khu1: ZONES.khu1.bounds, khu2: ZONES.khu2.bounds, khu3: ZONES.khu3.bounds,
+      hallway: HALLWAY.bounds,
+      khu4: ZONES.khu4.bounds, khu5: ZONES.khu5.bounds, khu6: ZONES.khu6.bounds
+    };
+  }
+
+  getCullTargets() {
+    const t = {};
+    for (const [k, g] of Object.entries(this.exhibitBuilder?.zoneGroups || {})) t[`exhibits_${k}`] = g;
+    if (this.hcmExhibitBuilder?.group) t.hcmExhibits = this.hcmExhibitBuilder.group;
+    if (this.hcmTimelineBuilder?.group) t.hcmTimeline = this.hcmTimelineBuilder.group;
+    return t;
+  }
+
+  /** Đo bằng tia (chạy tay: window.__measureZoneVisibility()) -> chép kết quả vào ZONE_VISIBILITY */
+  measureZoneVisibility() {
+    const targets = this.getCullTargets();
+    const vis = {};
+    for (const [k, g] of Object.entries(targets)) { vis[k] = g.visible; g.visible = true; }
+    const res = measureZoneVisibility(this, this.getZoneSampleBounds(), targets);
+    for (const [k, g] of Object.entries(targets)) g.visible = vis[k];
+    return res;
+  }
+
+  /** PERF-2 C4: ẩn nhóm hiện vật / HCM mà khu hiện tại chắc chắn không nhìn thấy (kiến trúc + màn LED luôn hiện) */
+  applyZoneVisibility(zone) {
+    const row = (this._zoneCullOff ? null : ZONE_VISIBILITY?.[zone]) || {};
+    for (const [k, g] of Object.entries(this.getCullTargets())) {
+      const v = row[k] !== false;
+      if (g.visible !== v) g.visible = v;
+    }
+    this.requestRender?.(2);
   }
 
   /** PERF-1 B2: updateMatrixWorld 1 lần rồi khóa ma trận các nhóm tĩnh */
@@ -728,6 +830,8 @@ class HeritageApp {
     this.scene.traverse(o => {
       if (!o.isMesh || o.userData?.isExhibit) return;
       if (o === this.architect.floorMesh || o === this.architect.floorMarker) return;
+      // PERF-2: lưới gộp giữ đúng lớp vật cản như trước khi gộp; khung instanced thuộc hiện vật
+      if (o.userData?.perfBatched && (o.isInstancedMesh || o.userData.perfOccluder === false)) return;
       const m = Array.isArray(o.material) ? o.material[0] : o.material;
       if (!m || m.visible === false || (m.transparent && m.opacity < 0.3)) return;
       if (inExhibit(o)) return;
@@ -933,8 +1037,11 @@ class HeritageApp {
       const parentGroup = mesh.parent;
       if (parentGroup) {
         parentGroup.visible = isVisible;
+        // PERF-2 C2: khung nằm trong InstancedMesh -> ẩn bằng scale 0
+        setExhibitFrameVisible(this.frameIndex, parentGroup, isVisible);
       }
     });
+    this.requestRender?.(2);
   }
 
   /**
@@ -1730,18 +1837,14 @@ class HeritageApp {
   }
 
   updateZoneCulling() {
-    // Mục A (GĐ5-fix3): Bỏ hoàn toàn culling khoảng cách và culling cấp nhóm.
-    // Three.js tự quản lý frustumCulled cho từng mesh con.
-    if (this._cullableGroups) {
-      for (let i = 0; i < this._cullableGroups.length; i++) {
-        this._cullableGroups[i].group.visible = true;
-      }
-    }
-
-    // Giữ phần bật/tắt trình chiếu khu 4 và khu 6 theo khu camera đang đứng:
+    // PERF-2 C4: bỏ vòng đặt visible=true mỗi khung; khi camera sang khu khác -> áp ZONE_VISIBILITY
     const camPos = this.camera.position;
     const currentZone = this.getZoneAt(camPos.x, camPos.z);
     this.currentZone = currentZone;
+    if (currentZone !== this._cullZone) {
+      this._cullZone = currentZone;
+      this.applyZoneVisibility(currentZone);
+    }
     if (this.slideshowKhu4) this.slideshowKhu4.setActive(currentZone === 'khu4');
     if (this.slideshowKhu6) this.slideshowKhu6.setActive(currentZone === 'khu6');
   }

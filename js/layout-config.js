@@ -319,3 +319,20 @@ export const FLOORS = {
 // 12. ZONE VISIBILITY (Bảng VISIBLE_ZONES đã được xóa theo Mục A.1 GĐ5-fix2, thay bằng Frustum + Distance culling)
 
 
+
+// ============================================================================
+// PERF-2 C4: KHU NAO NHIN THAY NHOM NAO (do bang tia - window.__measureZoneVisibility())
+// false = moi tia tu khu camera toi nhom deu trung tuong -> an nhom (chi nhom hien vat / HCM)
+// ============================================================================
+export const ZONE_VISIBILITY = {
+  // Đo ngày 2026-10-12: lưới 7×7×2 điểm trong khu camera × tối đa 100 điểm của nhóm; true = có ít nhất 1 tia không trúng tường
+  lobby:   { exhibits_khu1: true,  exhibits_khu2: true, exhibits_khu3: true, exhibits_khu4: true,  exhibits_khu6: true,  hcmExhibits: true,  hcmTimeline: true },
+  khu1:    { exhibits_khu1: true,  exhibits_khu2: true, exhibits_khu3: true, exhibits_khu4: true,  exhibits_khu6: true,  hcmExhibits: true,  hcmTimeline: true },
+  khu2:    { exhibits_khu1: true,  exhibits_khu2: true, exhibits_khu3: true, exhibits_khu4: true,  exhibits_khu6: true,  hcmExhibits: true,  hcmTimeline: true },
+  khu3:    { exhibits_khu1: true,  exhibits_khu2: true, exhibits_khu3: true, exhibits_khu4: true,  exhibits_khu6: true,  hcmExhibits: true,  hcmTimeline: true },
+  hallway: { exhibits_khu1: true,  exhibits_khu2: true, exhibits_khu3: true, exhibits_khu4: true,  exhibits_khu6: true,  hcmExhibits: true,  hcmTimeline: true },
+  khu4:    { exhibits_khu1: true,  exhibits_khu2: true, exhibits_khu3: true, exhibits_khu4: true,  exhibits_khu6: false, hcmExhibits: false, hcmTimeline: false },
+  khu5:    { exhibits_khu1: true,  exhibits_khu2: true, exhibits_khu3: true, exhibits_khu4: false, exhibits_khu6: false, hcmExhibits: true,  hcmTimeline: true },
+  khu6:    { exhibits_khu1: true,  exhibits_khu2: true, exhibits_khu3: true, exhibits_khu4: false, exhibits_khu6: true,  hcmExhibits: false, hcmTimeline: false },
+};
+

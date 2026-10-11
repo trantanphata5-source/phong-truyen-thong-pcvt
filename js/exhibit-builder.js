@@ -1247,6 +1247,7 @@ export class ExhibitBuilder {
     const frameH = h + 0.12;
     const frameMesh = new THREE.Mesh(new THREE.BoxGeometry(frameW, frameH, depth), frameMat);
     frameMesh.castShadow = true;
+    frameMesh.userData.isExhibitFrame = true; // PERF-2 C2: gộp thành InstancedMesh theo khu
     group.add(frameMesh);
 
     // 2. Mesh 2: Ảnh

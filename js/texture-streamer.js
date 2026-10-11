@@ -17,6 +17,7 @@ import * as THREE from 'three';
 
 const WALL_NEAR = 14, WALL_FAR = 18, WALL_FREE = 30, WALL_MAX = 96;
 const PLAQUE_NEAR = 25, PLAQUE_FREE = 35;
+const LABEL_SHOW = 20, LABEL_HIDE = 22; // PERF-2 C1
 const MAX_INFLIGHT = 4;          // số ảnh `wall` tải song song
 const UPLOAD_BIG_PER_FRAME = 2;  // ảnh lớn đưa lên GPU mỗi khung
 const UPLOAD_PX_BUDGET = 2.2e6;  // tổng điểm ảnh tối đa đưa lên GPU mỗi khung
@@ -71,7 +72,12 @@ export class TextureStreamer {
     this.camera = app.camera;
     this.photos = [];
     this.plaques = [];
-    for (const it of items || []) (it.kind === 'plaque' ? this.plaques : this.photos).push(it);
+    this.labels = []; // PERF-2 C1: biển tên HCM (canvas có sẵn) – chỉ ẩn/hiện theo khoảng cách
+    for (const it of items || []) {
+      if (it.kind === 'plaque') this.plaques.push(it);
+      else if (it.kind === 'label') this.labels.push(it);
+      else this.photos.push(it);
+    }
 
     this.useBitmap = typeof createImageBitmap === 'function';
     if (!this.useBitmap) this.textureLoader = new THREE.TextureLoader();
@@ -98,7 +104,7 @@ export class TextureStreamer {
   }
 
   computeCenters() {
-    const all = this.photos.concat(this.plaques);
+    const all = this.photos.concat(this.plaques, this.labels);
     for (const it of all) {
       it.center = new THREE.Vector3();
       it.mesh.updateWorldMatrix(true, false);
@@ -169,12 +175,20 @@ export class TextureStreamer {
     for (const q of this.plaques) {
       const d = q.center.distanceTo(cp);
       q.dist = d;
+      // PERF-2 C1: hiện < 20 m, ẩn > 22 m (vùng đệm chống nhấp nháy)
+      const vis = q.mesh.visible ? d <= LABEL_HIDE : d < LABEL_SHOW;
+      if (vis !== q.mesh.visible) { q.mesh.visible = vis; changed = true; }
       if (q.tex) {
         if (d > PLAQUE_FREE) { this.freePlaque(q); changed = true; }
       } else if (d < PLAQUE_NEAR) {
         q.inView = this._frustum.containsPoint(q.center);
         plaqueWants.push(q);
       }
+    }
+    for (const l of this.labels) {
+      const d = l.center.distanceTo(cp);
+      const vis = l.mesh.visible ? d <= LABEL_HIDE : d < LABEL_SHOW;
+      if (vis !== l.mesh.visible) { l.mesh.visible = vis; changed = true; }
     }
     plaqueWants.sort((a, b) => (a.inView === b.inView ? a.dist - b.dist : (a.inView ? -1 : 1)));
     this.plaqueQueue = plaqueWants;

@@ -332,6 +332,7 @@ export class HCMExhibitBuilder {
     );
     plaqueMesh.position.set(0, -(fh / 2 + 0.30), 0.076);
     group.add(plaqueMesh);
+    this.streamItems.push({ kind: 'label', mesh: plaqueMesh }); // PERF-2 C1: ẩn khi xa > 22 m
 
     // Store metadata for raycasting & lightbox inspection
     group.userData = {

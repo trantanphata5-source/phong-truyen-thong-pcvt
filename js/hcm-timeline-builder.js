@@ -297,6 +297,7 @@ export class HCMTimelineBuilder {
     );
     plaqueMesh.position.set(0, -(photoH / 2 + 0.20), 0.04);
     group.add(plaqueMesh);
+    this.streamItems.push({ kind: 'label', mesh: plaqueMesh }); // PERF-2 C1: ẩn khi xa > 22 m
 
     // Per-exhibit PointLight removed for performance — shared track lights illuminate the wall
 
