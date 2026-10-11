@@ -1,4 +1,5 @@
 import * as THREE from 'three';
+import { streamThumbTexture } from './texture-streamer.js';
 
 /**
  * HCM Timeline Builder
@@ -15,6 +16,7 @@ export class HCMTimelineBuilder {
     this.scene = scene;
     this.textureLoader = new THREE.TextureLoader();
     this.loadedTextures = new Map();
+    this.streamItems = []; // PERF-3
     this.timelineMeshes = [];
     this.timelineMap = new Map();
     this.timelineData = null;
@@ -202,7 +204,9 @@ export class HCMTimelineBuilder {
 
     // 3. Photo texture
     if (evt.img) {
-      const texture = this.getOrLoadTexture(evt.img);
+      // PERF-3 D1: thumb tự tạo, ảnh gốc tải khi camera < 14 m
+      const texture = streamThumbTexture(evt.img);
+      texture.anisotropy = (window.__ANISO_CAP || 8);
       if (texture) {
         const photoMat = new THREE.MeshStandardMaterial({
           map: texture,
@@ -216,6 +220,7 @@ export class HCMTimelineBuilder {
         const photoMesh = new THREE.Mesh(photoGeo, photoMat);
         photoMesh.position.z = 0.04;
         group.add(photoMesh);
+        this.streamItems.push({ kind: 'photo', mesh: photoMesh, thumbTex: texture, wallPath: evt.img, showing: 'thumb' });
       }
     }
 

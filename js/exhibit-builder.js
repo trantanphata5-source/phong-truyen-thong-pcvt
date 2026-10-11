@@ -1,5 +1,6 @@
 import * as THREE from 'three';
 import { FONT_FAMILY } from './fonts.js';
+import { placeholderTexture } from './texture-streamer.js';
 import { WALLS, PARTITIONS, WALL_THICKNESS, PARTITION_THICKNESS, ZONES, ALBUM_CABINETS, buildCollisionBoxes } from './layout-config.js';
 import { MilestoneWallBuilder } from './milestone-wall.js';
 
@@ -17,6 +18,8 @@ export class ExhibitBuilder {
     this.scene = scene;
     this.textureLoader = new THREE.TextureLoader();
     this.loadedTextures = new Map();
+    // PERF-3: danh sách ảnh/biển tên giao cho TextureStreamer (texture-streamer.js)
+    this.streamItems = [];
     this.exhibitMeshes = [];
     this.exhibitMap = new Map();
     this.mountedExhibits = [];
@@ -1259,13 +1262,18 @@ export class ExhibitBuilder {
     picMesh.position.z = depth / 2 + 0.006;
     group.add(picMesh);
 
-    // Tải bản nét cao wall_path (có tự động retry và fallback); khi tải xong tự nâng cấp độ nét
-    this.getOrLoadTexture(item.wall_path, item.thumb_path, (loadedTex) => {
-      if (picMesh && picMesh.material) {
-        picMesh.material.map = loadedTex;
-        picMesh.material.needsUpdate = true;
-      }
-    });
+    // PERF-3 D1: bản nét cao wall_path do TextureStreamer tải khi camera < 14 m
+    if (initialTex && item.wall_path) {
+      this.streamItems.push({ kind: 'photo', mesh: picMesh, thumbTex: initialTex, wallPath: item.wall_path, showing: 'thumb' });
+    } else {
+      // không có thumb: tải wall ngay như cũ (có retry và fallback)
+      this.getOrLoadTexture(item.wall_path, item.thumb_path, (loadedTex) => {
+        if (picMesh && picMesh.material) {
+          picMesh.material.map = loadedTex;
+          picMesh.material.needsUpdate = true;
+        }
+      });
+    }
 
     // 3. Mesh 3: Biển tên
     const big = this.usesBigPlaque(item, zone) && !size.legacyPlaque;
@@ -1293,13 +1301,15 @@ export class ExhibitBuilder {
     const canvasH = 256;
     const pxPerM = canvasH / plaqueH;
     const canvasW = Math.round(canvasH * (plaqueW / plaqueH));
-    const canvas = document.createElement('canvas');
-    canvas.width = canvasW; canvas.height = canvasH;
-    const ctx = canvas.getContext('2d');
-
     let bg = '#ffffff', bar = '#1E40A0';
     if (zone === 'khu4') { bg = '#FFF7E6'; bar = '#B91C1C'; }
     else if (zone === 'khu6') { bg = '#ffffff'; bar = barColor || '#1D4ED8'; }
+
+    // PERF-3 D2: hàm vẽ giữ lại, canvas chỉ dựng khi camera < 25 m
+    const draw = () => {
+    const canvas = document.createElement('canvas');
+    canvas.width = canvasW; canvas.height = canvasH;
+    const ctx = canvas.getContext('2d');
     ctx.fillStyle = bg;
     ctx.fillRect(0, 0, canvasW, canvasH);
     ctx.fillStyle = bar;
@@ -1357,12 +1367,12 @@ export class ExhibitBuilder {
     ctx.fillStyle = '#475569';
     ctx.font = `${dateFs}px ${FONT_FAMILY}`;
     ctx.fillText(dateLine, cx, lines.length === 2 ? 216 : 190);
+    return canvas;
+    };
 
-    const tex = new THREE.CanvasTexture(canvas);
-    tex.colorSpace = THREE.SRGBColorSpace;
-    tex.anisotropy = (window.__ANISO_CAP || 8);
-    const mat = new THREE.MeshStandardMaterial({
-      map: tex, metalness: 0.0, roughness: 0.6,
+    const placeholder = placeholderTexture(bg);
+    const mat = new THREE.MeshBasicMaterial({
+      map: placeholder, toneMapped: false,
       polygonOffset: true, polygonOffsetFactor: -1, polygonOffsetUnits: -1
     });
     const mesh = new THREE.Mesh(new THREE.PlaneGeometry(plaqueW, plaqueH), mat);
@@ -1371,6 +1381,7 @@ export class ExhibitBuilder {
     mesh.name = `Plaque_${item.id}`;
     mesh.userData = { isTextPlane: true, isPlaque: true, planeW: plaqueW, planeH: plaqueH, canvasW, canvasH };
     group.add(mesh);
+    this.streamItems.push({ kind: 'plaque', mesh, draw, placeholder });
   }
 
   // ===========================================================================
@@ -1385,6 +1396,8 @@ export class ExhibitBuilder {
     const canvasH = 128;
     const canvasW = Math.round(canvasH * (plaqueW / plaqueH));
 
+    // PERF-3 D2: hàm vẽ giữ lại, canvas chỉ dựng khi camera < 25 m
+    const draw = () => {
     const canvas = document.createElement('canvas');
     canvas.width = canvasW;
     canvas.height = canvasH;
@@ -1485,12 +1498,12 @@ export class ExhibitBuilder {
       }
     }
 
-    const tex = new THREE.CanvasTexture(canvas);
-    tex.colorSpace = THREE.SRGBColorSpace;
-    const maxAnis = (window.__ANISO_CAP || 8);
-    tex.anisotropy = maxAnis;
-    const mat = new THREE.MeshStandardMaterial({
-      map: tex, metalness: isKhu3 ? 0.2 : 0.7, roughness: 0.3,
+    return canvas;
+    };
+
+    const placeholder = placeholderTexture(isKhu3 ? '#ffffff' : (isFlag ? '#b91c1c' : '#b45309'));
+    const mat = new THREE.MeshBasicMaterial({
+      map: placeholder, toneMapped: false,
       polygonOffset: true, polygonOffsetFactor: -1, polygonOffsetUnits: -1
     });
     const mesh = new THREE.Mesh(new THREE.PlaneGeometry(plaqueW, plaqueH), mat);
@@ -1504,6 +1517,7 @@ export class ExhibitBuilder {
       canvasH: canvasH
     };
     group.add(mesh);
+    this.streamItems.push({ kind: 'plaque', mesh, draw, placeholder });
   }
 
   // ===========================================================================
@@ -1539,7 +1553,8 @@ export class ExhibitBuilder {
     scene.traverse(node => {
       if (node.isMesh && node.userData && node.userData.isTextPlane) {
         totalChecked++;
-        const canvas = node.material?.map?.image;
+        // PERF-3: biển tên chưa dựng dùng texture giữ chỗ 1×1 -> lấy kích thước canvas sẽ dựng
+        const canvas = node.material?.map?.isDataTexture ? null : node.material?.map?.image;
         const canvasW = canvas?.width || node.userData.canvasW;
         const canvasH = canvas?.height || node.userData.canvasH;
         const planeW = node.userData.planeW ?? node.geometry?.parameters?.width;

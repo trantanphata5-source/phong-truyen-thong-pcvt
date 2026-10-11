@@ -30,11 +30,14 @@ async def main():
         with open(path, 'w', encoding='utf-8') as f:
             json.dump(res, f, ensure_ascii=False, indent=2)
         print('GPU:', res['gpu'], '| khung:', res['khung_hinh'], '| pr:', res['pixel_ratio'], '| quality:', res['quality'])
-        print('| # | Điểm | Hướng | Lệnh vẽ | Tam giác | Khung đầu ms | TB ms | Max ms | Tex GPU | Ảnh ước tính MB |')
-        print('|---|---|---|---|---|---|---|---|---|---|')
+        print('| # | Điểm | Hướng | Lệnh vẽ | Tam giác | Khung đầu ms | TB ms | Max ms | Tex GPU | Ảnh ước tính MB | Wall giữ | Biển tên giữ |')
+        print('|---|---|---|---|---|---|---|---|---|---|---|---|')
         for r in res['diem']:
             print(f"| {r['diem']} | ({r['x']}; {r['z']}) | {r['huong']} | {r['draw_calls']} | {r['tam_giac']:,} | "
-                  f"{r['khung_dau_ms']} | {r['tb_ms']} | {r['max_ms']} | {r['texture_gpu']} | {r['bo_nho_anh_mb']} |")
+                  f"{r['khung_dau_ms']} | {r['tb_ms']} | {r['max_ms']} | {r['texture_gpu']} | {r['bo_nho_anh_mb']} | "
+                  f"{r.get('wall_dang_giu', '-')} | {r.get('bien_ten_dang_giu', '-')} |")
+        if res.get('vong_quanh'):
+            print('Đi một vòng:', json.dumps(res['vong_quanh'], ensure_ascii=False))
         if errors:
             print('PAGE ERRORS:', errors[:5])
         print('Saved', path)

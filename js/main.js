@@ -10,6 +10,7 @@ import { HCMExhibitBuilder } from './hcm-exhibit-builder.js?v=gd4-fix1';
 import { HCMTimelineBuilder } from './hcm-timeline-builder.js?v=gd4-fix1';
 import { GridMapTable } from './grid-map-table.js?v=gd5';
 import { ZoneScreenSlideshow } from './zone-screens.js?v=gd5';
+import { TextureStreamer } from './texture-streamer.js';
 
 window.THREE = THREE;
 
@@ -295,6 +296,12 @@ class HeritageApp {
       this.convertDisplayMaterials();
       // PERF-1 B2: vật tĩnh không tính lại ma trận mỗi khung
       this.freezeStaticGroups();
+      // PERF-3 D1/D2: ảnh wall và biển tên theo khoảng cách
+      this.textureStreamer = new TextureStreamer(this, [
+        ...(this.exhibitBuilder.streamItems || []),
+        ...(this.hcmExhibitBuilder?.streamItems || []),
+        ...(this.hcmTimelineBuilder?.streamItems || [])
+      ]);
       // PERF-1 B1: texture tải xong -> vẽ lại
       const lm = THREE.DefaultLoadingManager;
       const prevProgress = lm.onProgress;
@@ -305,6 +312,26 @@ class HeritageApp {
         await this.renderer.compileAsync(this.scene, this.camera);
       } catch (err) {
         console.warn('[PERF] compileAsync lỗi, bỏ qua:', err);
+      }
+      // PERF-3: khởi động chỉ có thumb + wall/biển tên gần điểm xuất phát
+      await this.textureStreamer.settle(4000);
+      // PERF-3: đưa sẵn texture tĩnh (bảng chữ, banner, màn hình) lên GPU khi màn chờ còn hiện
+      {
+        const seen = new Set();
+        let n = 0;
+        this.scene.traverse(o => {
+          if (!o.isMesh || !o.material) return;
+          for (const m of [].concat(o.material)) {
+            const t = m.map;
+            if (!t || seen.has(t) || !t.image) continue;
+            seen.add(t);
+            const img = t.image;
+            if ((img.complete === false) || !(img.width || img.naturalWidth)) continue;
+            this.renderer.initTexture(t);
+            n++;
+          }
+        });
+        console.log(`[PERF-3] Đưa sẵn ${n} texture lên GPU`);
       }
 
       this.uiController.updateLoadingProgress(100, 'Phòng truyền thống đã sẵn sàng!');
@@ -358,7 +385,7 @@ class HeritageApp {
       if (urlParams.get('bench') === '1' && !navigator.webdriver) {
         setTimeout(async () => {
           const m = await import('./perf-bench.js');
-          const res = await m.runBench(this, { label: 'PERF-1' });
+          const res = await m.runBench(this, { label: 'PERF-3' });
           console.log('[BENCH] JSON:', JSON.stringify(res));
         }, 4000);
       }
@@ -429,7 +456,12 @@ class HeritageApp {
       this.hcmTimelineBuilder?.group || this.scene.getObjectByName('HCMTimeline')
     ].filter(Boolean);
     // Vật có chuyển động giữ cập nhật tự động (và tổ tiên của nó)
-    const dynamic = [this.architect?.floorMarker].filter(Boolean);
+    // Lưu ý: three.js bỏ qua tính matrixWorld khi matrixWorldAutoUpdate=false (kể cả force=true)
+    const dynamic = [
+      this.architect?.floorMarker,
+      ...(this.slideshowKhu4?.photoPlanes || []),
+      ...(this.slideshowKhu6?.photoPlanes || [])
+    ].filter(Boolean);
     let frozen = 0;
     for (const root of new Set(roots)) {
       root.updateMatrixWorld(true);
@@ -1891,6 +1923,9 @@ class HeritageApp {
     }
     if (fxWantsRender) this.requestRender(1);
 
+    // PERF-3: tải/giải phóng ảnh và biển tên theo khoảng cách (tối đa 2 ảnh lớn lên GPU mỗi khung)
+    if (this.textureStreamer && this.textureStreamer.update()) this.requestRender(1);
+
     // PERF-1 B1.1: camera đổi vị trí/góc (> 1e-4) hoặc đang glide -> vẽ
     this.camera.updateMatrixWorld();
     const a = this.camera.matrixWorld.elements;
@@ -1926,20 +1961,21 @@ class HeritageApp {
         this._lastRenderCount = this._renderCount;
         this.frameCount = 0;
         this.lastFpsUpdate = now;
+        const calls = this.renderer.info.render.calls;
+        const triangles = this.renderer.info.render.triangles;
+        const geoms = this.renderer.info.memory.geometries;
+        const texs = this.renderer.info.memory.textures;
+        const idle = this.currentRenderFps === 0;
+        this.debugOverlay.innerHTML = `
+          <div style="font-weight: bold; color: #38bdf8; margin-bottom: 4px;">⚡ PCVT 3D HERITAGE DEBUG</div>
+          <div>FPS: <span style="font-weight: bold; color: ${this.currentFps >= 50 ? '#4ade80' : '#f87171'}">${this.currentFps || 60}</span></div>
+          <div>Draw calls: <span style="font-weight: bold; color: ${calls <= 800 ? '#4ade80' : '#f87171'}">${calls}</span></div>
+          <div>Triangles: ${triangles.toLocaleString()}</div>
+          <div>Geometries: ${geoms} | Textures: ${texs}</div>
+          <div>Khu hiện tại: <span style="color: #facc15;">${this.currentZone || 'lobby'}</span></div>
+          <div>Trạng thái: <span style="font-weight: bold; color: ${idle ? '#4ade80' : '#f97316'}">${idle ? 'Nghỉ' : 'Đang vẽ'}</span> (${this.currentRenderFps ?? 0} lần vẽ/s)</div>
+        `;
       }
-      const calls = this.renderer.info.render.calls;
-      const triangles = this.renderer.info.render.triangles;
-      const geoms = this.renderer.info.memory.geometries;
-      const texs = this.renderer.info.memory.textures;
-      this.debugOverlay.innerHTML = `
-        <div style="font-weight: bold; color: #38bdf8; margin-bottom: 4px;">⚡ PCVT 3D HERITAGE DEBUG</div>
-        <div>FPS: <span style="font-weight: bold; color: ${this.currentFps >= 50 ? '#4ade80' : '#f87171'}">${this.currentFps || 60}</span></div>
-        <div>Draw calls: <span style="font-weight: bold; color: ${calls <= 800 ? '#4ade80' : '#f87171'}">${calls}</span></div>
-        <div>Triangles: ${triangles.toLocaleString()}</div>
-        <div>Geometries: ${geoms} | Textures: ${texs}</div>
-        <div>Khu hiện tại: <span style="color: #facc15;">${this.currentZone || 'lobby'}</span></div>
-        <div>Trạng thái: <span style="font-weight: bold; color: ${this.isRenderingNow ? '#f97316' : '#4ade80'}">${this.isRenderingNow ? 'Đang vẽ' : 'Nghỉ'}</span> (${this.currentRenderFps ?? 0} lần vẽ/s)</div>
-      `;
     }
   }
 }

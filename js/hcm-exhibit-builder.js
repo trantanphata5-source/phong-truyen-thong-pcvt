@@ -1,4 +1,5 @@
 import * as THREE from 'three';
+import { streamThumbTexture } from './texture-streamer.js';
 
 /**
  * HCM Exhibit Builder
@@ -17,6 +18,7 @@ export class HCMExhibitBuilder {
     this.scene = scene;
     this.textureLoader = new THREE.TextureLoader();
     this.loadedTextures = new Map();
+    this.streamItems = []; // PERF-3
     this.hcmMeshes = [];
     this.hcmMap = new Map(); // id -> { mesh, data }
     this.hcmData = null;
@@ -215,7 +217,9 @@ export class HCMExhibitBuilder {
 
     // 3. Photo Plane with high quality texture
     if (imgUrl) {
-      const texture = this.getOrLoadTexture(imgUrl);
+      // PERF-3 D1: thumb tự tạo, ảnh gốc tải khi camera < 14 m
+      const texture = streamThumbTexture(imgUrl);
+      texture.anisotropy = (window.__ANISO_CAP || 8);
       const photoMat = new THREE.MeshStandardMaterial({
         map: texture,
         roughness: 0.4,
@@ -229,6 +233,7 @@ export class HCMExhibitBuilder {
       const photoMesh = new THREE.Mesh(photoGeo, photoMat);
       photoMesh.position.z = 0.076;
       group.add(photoMesh);
+      this.streamItems.push({ kind: 'photo', mesh: photoMesh, thumbTex: texture, wallPath: imgUrl, showing: 'thumb' });
     }
 
     // 4. Protective museum glass overlay
