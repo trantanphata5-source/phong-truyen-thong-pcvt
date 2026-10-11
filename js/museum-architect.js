@@ -818,7 +818,7 @@ export class MuseumArchitect {
     // 3D Texture & Material
     const texture = new THREE.CanvasTexture(canvas);
     texture.colorSpace = THREE.SRGBColorSpace;
-    texture.anisotropy = this.renderer?.capabilities?.getMaxAnisotropy?.() || 16;
+    texture.anisotropy = (window.__ANISO_CAP || 8);
     const mat = new THREE.MeshStandardMaterial({
       map: texture,
       roughness: 0.3,
@@ -1129,7 +1129,7 @@ export class MuseumArchitect {
 
       const texture = new THREE.CanvasTexture(canvas);
       texture.colorSpace = THREE.SRGBColorSpace;
-      texture.anisotropy = this.renderer?.capabilities?.getMaxAnisotropy?.() || 16;
+      texture.anisotropy = (window.__ANISO_CAP || 8);
       const mat = new THREE.MeshStandardMaterial({
         map: texture,
         roughness: 0.25,
@@ -2400,7 +2400,7 @@ export class MuseumArchitect {
     portraitTex.generateMipmaps = true;
     portraitTex.minFilter = THREE.LinearMipmapLinearFilter;
     portraitTex.magFilter = THREE.LinearFilter;
-    portraitTex.anisotropy = 16;
+    portraitTex.anisotropy = (window.__ANISO_CAP || 8);
     portraitTex.needsUpdate = true;
 
     // Display plane positioned safely at Z = 81.20 facing North (towards -Z)
@@ -2478,7 +2478,7 @@ export class MuseumArchitect {
 
     const tex = new THREE.CanvasTexture(canvas);
     tex.colorSpace = THREE.SRGBColorSpace;
-    tex.anisotropy = this.renderer?.capabilities?.getMaxAnisotropy?.() || 16;
+    tex.anisotropy = (window.__ANISO_CAP || 8);
     const signGeo = new THREE.PlaneGeometry(8, 2);
     const signMat = new THREE.MeshStandardMaterial({
       map: tex,
@@ -2830,7 +2830,7 @@ export class MuseumArchitect {
 
     const faceTex = new THREE.CanvasTexture(c);
     faceTex.colorSpace = THREE.SRGBColorSpace;
-    faceTex.anisotropy = this.renderer?.capabilities?.getMaxAnisotropy?.() || 16;
+    faceTex.anisotropy = (window.__ANISO_CAP || 8);
     const faceMat = new THREE.MeshBasicMaterial({ map: faceTex });
 
     if (!this._totemLogoImg) {
@@ -2936,7 +2936,7 @@ export class MuseumArchitect {
       tex.colorSpace = THREE.SRGBColorSpace;
       tex.generateMipmaps = true;
       tex.minFilter = THREE.LinearMipmapLinearFilter;
-      tex.anisotropy = this.renderer?.capabilities?.getMaxAnisotropy?.() || 16;
+      tex.anisotropy = (window.__ANISO_CAP || 8);
 
       const screenMat = new THREE.MeshBasicMaterial({
         map: tex,

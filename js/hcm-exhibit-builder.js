@@ -68,7 +68,7 @@ export class HCMExhibitBuilder {
         tex.generateMipmaps = true;
         tex.minFilter = THREE.LinearMipmapLinearFilter;
         tex.magFilter = THREE.LinearFilter;
-        tex.anisotropy = 16;
+        tex.anisotropy = (window.__ANISO_CAP || 8);
         tex.needsUpdate = true;
       },
       undefined,

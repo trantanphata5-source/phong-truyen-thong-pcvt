@@ -848,7 +848,7 @@ export class ExhibitBuilder {
         slogan: 'TUỔI TRẺ PCVT – XUNG KÍCH, SÁNG TẠO, TÌNH NGUYỆN' },
     ];
 
-    const maxAnis = window.app?.renderer?.capabilities?.getMaxAnisotropy?.() || 16;
+    const maxAnis = (window.__ANISO_CAP || 8);
     const measure = document.createElement('canvas').getContext('2d');
 
     for (const cfg of configs) {
@@ -1360,7 +1360,7 @@ export class ExhibitBuilder {
 
     const tex = new THREE.CanvasTexture(canvas);
     tex.colorSpace = THREE.SRGBColorSpace;
-    tex.anisotropy = window.app?.renderer?.capabilities?.getMaxAnisotropy?.() || 16;
+    tex.anisotropy = (window.__ANISO_CAP || 8);
     const mat = new THREE.MeshStandardMaterial({
       map: tex, metalness: 0.0, roughness: 0.6,
       polygonOffset: true, polygonOffsetFactor: -1, polygonOffsetUnits: -1
@@ -1487,7 +1487,7 @@ export class ExhibitBuilder {
 
     const tex = new THREE.CanvasTexture(canvas);
     tex.colorSpace = THREE.SRGBColorSpace;
-    const maxAnis = window.app?.renderer?.capabilities?.getMaxAnisotropy?.() || 16;
+    const maxAnis = (window.__ANISO_CAP || 8);
     tex.anisotropy = maxAnis;
     const mat = new THREE.MeshStandardMaterial({
       map: tex, metalness: isKhu3 ? 0.2 : 0.7, roughness: 0.3,

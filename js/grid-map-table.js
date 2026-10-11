@@ -175,7 +175,7 @@ export class GridMapTable {
   // ===========================================================================
   buildMapBoard() {
     const texLoader = new THREE.TextureLoader();
-    const maxAnis = window.app?.renderer?.capabilities?.getMaxAnisotropy?.() || 16;
+    const maxAnis = (window.__ANISO_CAP || 8);
 
     this.tex2048 = texLoader.load('assets/grid/pcvt_map_2048.webp', (tex) => {
       tex.colorSpace = THREE.SRGBColorSpace;

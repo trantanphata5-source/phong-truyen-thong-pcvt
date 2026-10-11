@@ -101,12 +101,28 @@ class HeritageApp {
     this.isMobile = /Android|iPhone|iPad|iPod|Opera Mini|IEMobile/i.test(navigator.userAgent)
                      || (window.innerWidth <= 900 && 'ontouchstart' in window);
 
+    // PERF-1: tham số ?quality=cao|canbang|muot (phân hạng tự động sẽ làm ở PERF-4)
+    const qParam = new URLSearchParams(window.location.search).get('quality');
+    this.quality = ['cao', 'canbang', 'muot'].includes(qParam) ? qParam : null;
+    // B4: anisotropy tối đa 8 (hạng Cân bằng/Mượt: 4)
+    window.__ANISO_CAP = (this.quality === 'canbang' || this.quality === 'muot') ? 4 : 8;
+    const useMSAA = this.quality === 'muot' ? false : !this.isMobile;
+
     this.renderer = new THREE.WebGLRenderer({
-      antialias: !this.isMobile, // Disable antialias on mobile for 2x FPS
+      antialias: useMSAA, // Disable antialias on mobile for 2x FPS
       powerPreference: 'high-performance'
     });
     this.renderer.setSize(window.innerWidth, window.innerHeight);
-    this.renderer.setPixelRatio(this.isMobile ? 1.0 : Math.min(window.devicePixelRatio, 1.5));
+    this.renderer.setPixelRatio(this.getTargetPixelRatio());
+
+    // PERF-1 B1: chỉ vẽ khi cần
+    this.needsRender = true;
+    this._renderFrames = 2;
+    this._lastCamMatrix = new THREE.Matrix4();
+    this._lastFxRender = 0;
+    this._fxAccum = 0;
+    this._renderCount = 0;
+    this.isRenderingNow = false;
     // ShadowMap disabled — indoor museum with wall-mounted exhibits has no visible shadows
     this.renderer.shadowMap.enabled = false;
     this.renderer.toneMapping = THREE.ACESFilmicToneMapping;
@@ -229,7 +245,8 @@ class HeritageApp {
           'khu4',
           this.architect.screenKhu4Canvas,
           this.architect.screenKhu4Tex,
-          k4Items
+          k4Items,
+          this.architect.screenKhu4Mesh
         );
 
         // Zone 6: alternate 25 Trade Union items and 25 Youth Union items
@@ -246,7 +263,8 @@ class HeritageApp {
           'khu6',
           this.architect.screenKhu6Canvas,
           this.architect.screenKhu6Tex,
-          k6Alternated
+          k6Alternated,
+          this.architect.screenKhu6Mesh
         );
       }
 
@@ -272,6 +290,22 @@ class HeritageApp {
       this.buildOccluders();
       this.assertNoBoardOverlap();
       this.updateZoneCulling();
+
+      // PERF-1 B3: ảnh, biển tên, bảng chữ -> MeshBasicMaterial (không tính sáng, đúng màu gốc)
+      this.convertDisplayMaterials();
+      // PERF-1 B2: vật tĩnh không tính lại ma trận mỗi khung
+      this.freezeStaticGroups();
+      // PERF-1 B1: texture tải xong -> vẽ lại
+      const lm = THREE.DefaultLoadingManager;
+      const prevProgress = lm.onProgress;
+      lm.onProgress = (...args) => { this.requestRender(2); if (prevProgress) prevProgress(...args); };
+      // PERF-1 B4: biên dịch shader trước khi ẩn màn hình chờ
+      try {
+        this.uiController.updateLoadingProgress(99, 'Đang chuẩn bị đồ họa...');
+        await this.renderer.compileAsync(this.scene, this.camera);
+      } catch (err) {
+        console.warn('[PERF] compileAsync lỗi, bỏ qua:', err);
+      }
 
       this.uiController.updateLoadingProgress(100, 'Phòng truyền thống đã sẵn sàng!');
 
@@ -307,6 +341,10 @@ class HeritageApp {
       }
 
       // Event Listeners
+      // PERF-1 B1: thao tác giao diện (popup, lọc, nút) có thể đổi cảnh 3D -> vẽ lại trong ~0,5 s
+      ['pointerdown', 'pointerup', 'click', 'keydown', 'keyup', 'wheel', 'touchstart', 'touchend'].forEach(ev => {
+        window.addEventListener(ev, () => this.requestRender(30), { passive: true, capture: true });
+      });
       window.addEventListener('resize', () => this.onWindowResize());
       this.renderer.domElement.addEventListener('mousemove', (e) => this.onMouseMove(e));
       this.renderer.domElement.addEventListener('click', (e) => this.onCanvasClick(e));
@@ -315,16 +353,105 @@ class HeritageApp {
       this.animate();
       this.isReady = true;
       console.log('Artsteps-standard 3D Heritage Room PCVT Ready!');
+
+      // PERF: ?bench=1 -> đo 9 điểm (mục E3)
+      if (urlParams.get('bench') === '1' && !navigator.webdriver) {
+        setTimeout(async () => {
+          const m = await import('./perf-bench.js');
+          const res = await m.runBench(this, { label: 'PERF-1' });
+          console.log('[BENCH] JSON:', JSON.stringify(res));
+        }, 4000);
+      }
     } catch (err) {
       console.error('Initialization error:', err);
     }
+  }
+
+  getTargetPixelRatio() {
+    if (this.isMobile) return 1.0;
+    if (this.quality === 'canbang' || this.quality === 'muot') return 1.0;
+    return Math.min(window.devicePixelRatio, 1.5);
+  }
+
+  /** PERF-1 B1: yêu cầu vẽ lại trong `frames` khung tới */
+  requestRender(frames = 1) {
+    this.needsRender = true;
+    if (frames > (this._renderFrames || 0)) this._renderFrames = frames;
+  }
+
+  /**
+   * PERF-1 B3: đổi vật liệu hiển thị ảnh/chữ (MeshStandardMaterial có map ảnh hoặc canvas)
+   * sang MeshBasicMaterial({ map, toneMapped: false }). Giữ Standard cho sàn (texture lặp).
+   */
+  convertDisplayMaterials() {
+    const cache = new Map();
+    const skip = new Set([this.architect?.matFloor].filter(Boolean));
+    let converted = 0;
+    const convert = (m) => {
+      if (!m || !m.isMeshStandardMaterial || !m.map || skip.has(m)) return m;
+      if (m.map.wrapS === THREE.RepeatWrapping || m.map.wrapT === THREE.RepeatWrapping) return m;
+      if (cache.has(m.uuid)) return cache.get(m.uuid);
+      const b = new THREE.MeshBasicMaterial({
+        map: m.map,
+        color: m.color ? m.color.clone() : 0xffffff,
+        toneMapped: false,
+        side: m.side,
+        transparent: m.transparent,
+        opacity: m.opacity,
+        alphaTest: m.alphaTest,
+        depthWrite: m.depthWrite,
+        depthTest: m.depthTest,
+        polygonOffset: m.polygonOffset,
+        polygonOffsetFactor: m.polygonOffsetFactor,
+        polygonOffsetUnits: m.polygonOffsetUnits
+      });
+      b.name = m.name;
+      b.userData = { ...m.userData, perfConvertedFrom: 'MeshStandardMaterial' };
+      cache.set(m.uuid, b);
+      converted++;
+      return b;
+    };
+    this.scene.traverse(o => {
+      if (!o.isMesh || o.isInstancedMesh || !o.material) return;
+      if (Array.isArray(o.material)) o.material = o.material.map(convert);
+      else o.material = convert(o.material);
+    });
+    // Vật liệu ảnh dựng sau (nâng cấp thumb -> wall) vẫn dùng chung material đã đổi
+    console.log(`[PERF-1] Đổi ${converted} vật liệu ảnh/chữ sang MeshBasicMaterial`);
+  }
+
+  /** PERF-1 B2: updateMatrixWorld 1 lần rồi khóa ma trận các nhóm tĩnh */
+  freezeStaticGroups() {
+    const roots = [
+      this.architect?.museumGroup || this.scene.getObjectByName('MuseumArchitecture'),
+      this.exhibitBuilder?.group || this.scene.getObjectByName('AllExhibits'),
+      this.hcmExhibitBuilder?.group || this.scene.getObjectByName('HCMExhibits'),
+      this.hcmTimelineBuilder?.group || this.scene.getObjectByName('HCMTimeline')
+    ].filter(Boolean);
+    // Vật có chuyển động giữ cập nhật tự động (và tổ tiên của nó)
+    const dynamic = [this.architect?.floorMarker].filter(Boolean);
+    let frozen = 0;
+    for (const root of new Set(roots)) {
+      root.updateMatrixWorld(true);
+      root.traverse(o => {
+        o.matrixAutoUpdate = false;
+        o.matrixWorldAutoUpdate = false;
+        frozen++;
+      });
+    }
+    for (const d of dynamic) {
+      d.traverse(o => { o.matrixAutoUpdate = true; o.matrixWorldAutoUpdate = true; });
+      for (let p = d.parent; p && p !== this.scene; p = p.parent) p.matrixWorldAutoUpdate = true;
+    }
+    console.log(`[PERF-1] Khóa ma trận ${frozen} đối tượng tĩnh trong ${roots.length} nhóm`);
   }
 
   onWindowResize() {
     this.camera.aspect = window.innerWidth / window.innerHeight;
     this.camera.updateProjectionMatrix();
     this.renderer.setSize(window.innerWidth, window.innerHeight);
-    this.renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.5));
+    this.renderer.setPixelRatio(this.getTargetPixelRatio());
+    this.requestRender(2);
   }
 
   onMouseMove(e) {
@@ -337,6 +464,7 @@ class HeritageApp {
       requestAnimationFrame(() => {
         this.checkRaycast();
         this._raycastPending = false;
+        this.requestRender(1); // PERF-1 B1: hover có thể đổi highlight
       });
     }
   }
@@ -1735,30 +1863,67 @@ class HeritageApp {
     const fovH = 2 * Math.atan(Math.tan(vFovRad / 2) * this.camera.aspect);
     this.uiController.updateMinimap(this.camera.position, this.controlsManager.currentYaw, fovH);
 
-    // GĐ5: Animate smart grid floor and power grid table
-    if (this.architect && this.architect.animate) {
-      this.architect.animate(delta, time);
-    }
+    // GD5: Animate power grid table (ghim, nhấp nháy, LOD bản đồ)
     if (this.gridMapTable && this.gridMapTable.animate) {
       this.gridMapTable.animate(delta, time, this.camera.position);
+      if (this.gridMapTable._pulses && this.gridMapTable._pulses.length > 0) this.requestRender(1);
     }
     this.updateGridHudProximity();
 
-    // GĐ5-fix2: Frustum + Distance < 45m zone culling and Zone screens slideshow
+    // GD5-fix2: Zone culling and Zone screens slideshow
     this.updateZoneCulling();
     this.updateZoneNarration();
-    if (this.slideshowKhu4) this.slideshowKhu4.update(delta);
-    if (this.slideshowKhu6) this.slideshowKhu6.update(delta);
 
-    // Render Scene
-    this.renderer.render(this.scene, this.camera);
+    // PERF-1 B1.2: hiệu ứng liên tục chỉ khi đang ở khu đó, giới hạn 30 fps
+    const now = performance.now();
+    let fxWantsRender = false;
+    this._fxAccum += delta;
+    if (now - this._lastFxRender >= 33) {
+      const fxDelta = this._fxAccum;
+      this._fxAccum = 0;
+      this._lastFxRender = now;
+      if (this.currentZone === 'khu3' && this.architect && this.architect.animate) {
+        this.architect.animate(fxDelta, time); // sàn chạy sáng khu 3
+        fxWantsRender = true;
+      }
+      if (this.slideshowKhu4 && this.slideshowKhu4.update(fxDelta)) fxWantsRender = true;
+      if (this.slideshowKhu6 && this.slideshowKhu6.update(fxDelta)) fxWantsRender = true;
+    }
+    if (fxWantsRender) this.requestRender(1);
+
+    // PERF-1 B1.1: camera đổi vị trí/góc (> 1e-4) hoặc đang glide -> vẽ
+    this.camera.updateMatrixWorld();
+    const a = this.camera.matrixWorld.elements;
+    const b = this._lastCamMatrix.elements;
+    let camMoved = false;
+    for (let i = 0; i < 16; i++) {
+      if (Math.abs(a[i] - b[i]) > 1e-4) { camMoved = true; break; }
+    }
+    if (camMoved) {
+      this._lastCamMatrix.copy(this.camera.matrixWorld);
+      this.requestRender(1);
+    }
+    if (this.controlsManager.isGliding) this.requestRender(1);
+
+    // PERF-1 B1.3: chỉ gọi render() khi cần; đứng yên -> 0 lần vẽ
+    this.isRenderingNow = false;
+    if (!this._benching && (this.needsRender || this._renderFrames > 0)) {
+      this.renderer.render(this.scene, this.camera);
+      this._renderCount++;
+      this.isRenderingNow = true;
+      this.needsRender = false;
+      if (this._renderFrames > 0) this._renderFrames--;
+    }
 
     // GĐ5: Debug Overlay (Mục E.4)
     if (this.debugOverlay) {
       this.frameCount = (this.frameCount || 0) + 1;
       const now = performance.now();
       if (!this.lastFpsUpdate || now - this.lastFpsUpdate >= 500) {
-        this.currentFps = Math.round((this.frameCount * 1000) / (now - (this.lastFpsUpdate || now)));
+        const span = now - (this.lastFpsUpdate || now);
+        this.currentFps = Math.round((this.frameCount * 1000) / span);
+        this.currentRenderFps = span > 0 ? Math.round(((this._renderCount - (this._lastRenderCount || 0)) * 1000) / span) : 0;
+        this._lastRenderCount = this._renderCount;
         this.frameCount = 0;
         this.lastFpsUpdate = now;
       }
@@ -1773,6 +1938,7 @@ class HeritageApp {
         <div>Triangles: ${triangles.toLocaleString()}</div>
         <div>Geometries: ${geoms} | Textures: ${texs}</div>
         <div>Khu hiện tại: <span style="color: #facc15;">${this.currentZone || 'lobby'}</span></div>
+        <div>Trạng thái: <span style="font-weight: bold; color: ${this.isRenderingNow ? '#f97316' : '#4ade80'}">${this.isRenderingNow ? 'Đang vẽ' : 'Nghỉ'}</span> (${this.currentRenderFps ?? 0} lần vẽ/s)</div>
       `;
     }
   }

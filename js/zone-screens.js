@@ -12,12 +12,13 @@ const FONT_FAMILY = '"Be Vietnam Pro", system-ui, sans-serif';
  * - Tối ưu draw calls & render loops
  */
 export class ZoneScreenSlideshow {
-  constructor(zoneId, canvas, texture, items = []) {
+  constructor(zoneId, canvas, texture, items = [], screenMesh = null) {
     this.zoneId = zoneId;
     this.canvas = canvas;
     this.ctx = canvas.getContext('2d');
     this.texture = texture;
     this.items = items;
+    this.screenMesh = screenMesh;
 
     this.currentIndex = 0;
     this.nextIndex = 0;
@@ -32,6 +33,12 @@ export class ZoneScreenSlideshow {
     this.currentImg = null;
     this.nextImg = null;
 
+    // PERF-1 B5: ảnh là 2 mặt phẳng chồng nhau (texture wall), canvas chỉ còn header/footer tĩnh
+    this.textureLoader = new THREE.TextureLoader();
+    this.texCache = new Map();
+    this.photoPlanes = null;
+    if (this.screenMesh) this.initPhotoPlanes();
+
     this.logos = {};
     this.logosLoaded = false;
     this.loadLogos();
@@ -41,11 +48,93 @@ export class ZoneScreenSlideshow {
         this.currentImg = img;
         this.draw(0);
       });
+      this.setPlanePhoto(0, this.items[0], 1);
       // Preload next image
       if (this.items.length > 1) {
         this.loadImage(this.items[1]);
       }
     }
+  }
+
+  /** PERF-1 B5: tạo 2 mặt phẳng ảnh nằm trên mặt màn hình (hệ toạ độ cục bộ của screenMesh) */
+  initPhotoPlanes() {
+    const ud = this.screenMesh.userData || {};
+    this.pxToM = (ud.planeW || 9.0) / 2048;
+    const geo = new THREE.PlaneGeometry(1, 1);
+    this.photoPlanes = [0, 1].map(i => {
+      const mat = new THREE.MeshBasicMaterial({
+        color: 0xffffff,
+        transparent: true,
+        opacity: i === 0 ? 1 : 0,
+        depthWrite: false,
+        toneMapped: false,
+        polygonOffset: true,
+        polygonOffsetFactor: -4 - i,
+        polygonOffsetUnits: -4 - i
+      });
+      const m = new THREE.Mesh(geo, mat);
+      m.name = `LED_Photo_${this.zoneId}_${i}`;
+      m.visible = false;
+      m.renderOrder = (this.screenMesh.renderOrder || 0) + 1 + i;
+      m.position.set(0, 0, 0.004 + i * 0.002);
+      m.raycast = () => {}; // bấm vẫn trúng màn hình gốc
+      this.screenMesh.add(m);
+      m.updateMatrix();
+      return m;
+    });
+    // Màn LED hiển thị đúng màu gốc (B3)
+    if (this.screenMesh.material) {
+      this.screenMesh.material.toneMapped = false;
+      this.screenMesh.material.needsUpdate = true;
+    }
+  }
+
+  getPhotoTexture(item, onReady) {
+    const src = item && (item.wall_path || item.full_path || item.thumb_path);
+    if (!src) return null;
+    if (this.texCache.has(src)) {
+      const t = this.texCache.get(src);
+      if (t.image && (t.image.naturalWidth || t.image.width)) onReady?.(t);
+      else (t.userData.waiters ||= []).push(onReady);
+      return t;
+    }
+    const tex = this.textureLoader.load(src, (t) => {
+      (t.userData.waiters || []).forEach(fn => fn?.(t));
+      t.userData.waiters = [];
+      window.app?.requestRender?.(2);
+    });
+    tex.colorSpace = THREE.SRGBColorSpace;
+    tex.anisotropy = window.__ANISO_CAP || 8;
+    tex.userData.waiters = [onReady];
+    this.texCache.set(src, tex);
+    // giữ tối đa 4 ảnh trong bộ nhớ GPU
+    while (this.texCache.size > 4) {
+      const [oldSrc, oldTex] = this.texCache.entries().next().value;
+      const inUse = this.photoPlanes?.some(p => p.material.map === oldTex);
+      if (inUse) { this.texCache.delete(oldSrc); this.texCache.set(oldSrc, oldTex); break; }
+      oldTex.dispose();
+      this.texCache.delete(oldSrc);
+    }
+    return tex;
+  }
+
+  /** Đặt ảnh cho mặt phẳng `idx`, co giãn đúng tỷ lệ trong vùng ảnh (1968 × 832 px, tâm y = 596 px) */
+  setPlanePhoto(idx, item, opacity) {
+    if (!this.photoPlanes || !item) return;
+    const plane = this.photoPlanes[idx];
+    plane.material.opacity = opacity;
+    this.getPhotoTexture(item, (t) => {
+      const iw = t.image.naturalWidth || t.image.width;
+      const ih = t.image.naturalHeight || t.image.height;
+      const scale = Math.min(1968 / iw, 832 / ih);
+      plane.scale.set(iw * scale * this.pxToM, ih * scale * this.pxToM, 1);
+      plane.position.y = (576 - 596) * this.pxToM;
+      plane.material.map = t;
+      plane.material.needsUpdate = true;
+      plane.visible = true;
+      plane.updateMatrix();
+      plane.updateMatrixWorld(true);
+    });
   }
 
   loadLogos() {
@@ -87,6 +176,11 @@ export class ZoneScreenSlideshow {
 
   loadImage(item, callback) {
     if (!item) return;
+    // PERF-1 B5: khi có mặt phẳng ảnh thì ảnh nạp qua texture, không cần Image riêng
+    if (this.photoPlanes) {
+      this.getPhotoTexture(item, (t) => callback?.(t.image));
+      return;
+    }
     const src = item.wall_path || item.full_path || item.thumb_path;
     if (!src) return;
 
@@ -119,8 +213,9 @@ export class ZoneScreenSlideshow {
     return this.items[this.currentIndex] || null;
   }
 
+  /** @returns {boolean} true nếu khung này cần vẽ lại (đang chuyển ảnh) */
   update(delta) {
-    if (!this.isActive || this.items.length <= 1) return;
+    if (!this.isActive || this.items.length <= 1) return false;
 
     this.timer += delta;
 
@@ -131,34 +226,61 @@ export class ZoneScreenSlideshow {
         this.nextIndex = (this.currentIndex + 1) % this.items.length;
         const nextItem = this.items[this.nextIndex];
 
-        // Ensure next image is loaded
-        const nextSrc = nextItem.wall_path || nextItem.full_path || nextItem.thumb_path;
-        if (this.imageCache.has(nextSrc)) {
-          this.nextImg = this.imageCache.get(nextSrc);
+        if (this.photoPlanes) {
+          // Ảnh kế tiếp lên mặt phẳng thứ 2 (opacity 0), mờ dần chỉ đổi opacity
+          this.setPlanePhoto(1, nextItem, 0);
         } else {
-          this.loadImage(nextItem, (img) => {
-            this.nextImg = img;
-          });
+          // Ensure next image is loaded
+          const nextSrc = nextItem.wall_path || nextItem.full_path || nextItem.thumb_path;
+          if (this.imageCache.has(nextSrc)) {
+            this.nextImg = this.imageCache.get(nextSrc);
+          } else {
+            this.loadImage(nextItem, (img) => {
+              this.nextImg = img;
+            });
+          }
         }
 
         // Preload image after next
         const peekIndex = (this.nextIndex + 1) % this.items.length;
         this.loadImage(this.items[peekIndex]);
+        return true;
       }
-    } else {
-      this.fadeTimer += delta;
-      const progress = Math.min(this.fadeTimer / this.fadeDuration, 1.0);
-      this.draw(progress);
+      return false;
+    }
 
+    this.fadeTimer += delta;
+    const progress = Math.min(this.fadeTimer / this.fadeDuration, 1.0);
+
+    if (this.photoPlanes) {
+      const [cur, nxt] = this.photoPlanes;
+      cur.material.opacity = 1.0 - progress;
+      nxt.material.opacity = progress;
       if (progress >= 1.0) {
         this.isFading = false;
         this.timer = 0;
         this.currentIndex = this.nextIndex;
-        this.currentImg = this.nextImg;
-        this.nextImg = null;
-        this.draw(0);
+        // đổi vai 2 mặt phẳng: mặt vừa hiện thành "hiện tại"
+        this.photoPlanes = [nxt, cur];
+        nxt.renderOrder = (this.screenMesh.renderOrder || 0) + 1;
+        cur.renderOrder = (this.screenMesh.renderOrder || 0) + 2;
+        cur.visible = false;
+        cur.material.opacity = 0;
+        this.draw(0); // header/footer theo ảnh mới (vẽ canvas 1 lần mỗi 6 giây)
       }
+      return true;
     }
+
+    this.draw(progress);
+    if (progress >= 1.0) {
+      this.isFading = false;
+      this.timer = 0;
+      this.currentIndex = this.nextIndex;
+      this.currentImg = this.nextImg;
+      this.nextImg = null;
+      this.draw(0);
+    }
+    return true;
   }
 
   draw(fadeProgress = 0) {
@@ -179,15 +301,18 @@ export class ZoneScreenSlideshow {
     ctx.fillStyle = '#050811';
     ctx.fillRect(0, photoY, w, photoH);
 
-    // Vẽ ảnh hiện tại
-    if (this.currentImg && this.currentImg.complete && this.currentImg.naturalWidth > 0) {
-      const alpha = this.isFading ? (1.0 - fadeProgress) : 1.0;
-      this.drawImageFitted(this.currentImg, photoY, photoH, alpha);
-    }
+    // PERF-1 B5: ảnh nằm trên mặt phẳng riêng, canvas chỉ vẽ nền + header/footer
+    if (!this.photoPlanes) {
+      // Vẽ ảnh hiện tại
+      if (this.currentImg && this.currentImg.complete && this.currentImg.naturalWidth > 0) {
+        const alpha = this.isFading ? (1.0 - fadeProgress) : 1.0;
+        this.drawImageFitted(this.currentImg, photoY, photoH, alpha);
+      }
 
-    // Vẽ ảnh kế tiếp khi đang fade transition
-    if (this.isFading && this.nextImg && this.nextImg.complete && this.nextImg.naturalWidth > 0) {
-      this.drawImageFitted(this.nextImg, photoY, photoH, fadeProgress);
+      // Vẽ ảnh kế tiếp khi đang fade transition
+      if (this.isFading && this.nextImg && this.nextImg.complete && this.nextImg.naturalWidth > 0) {
+        this.drawImageFitted(this.nextImg, photoY, photoH, fadeProgress);
+      }
     }
 
     // 3. Khung cố định: Header dải đầu (cao 160px)
@@ -198,6 +323,7 @@ export class ZoneScreenSlideshow {
 
     ctx.restore();
     this.texture.needsUpdate = true;
+    window.app?.requestRender?.(1);
   }
 
   drawImageFitted(img, areaY, areaH, alpha) {
