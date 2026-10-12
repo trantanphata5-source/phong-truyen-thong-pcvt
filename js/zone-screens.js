@@ -1,4 +1,5 @@
 import * as THREE from 'three';
+import { loadBitmap, placeholderTexture } from './texture-streamer.js';
 
 const FONT_FAMILY = '"Be Vietnam Pro", system-ui, sans-serif';
 
@@ -34,7 +35,7 @@ export class ZoneScreenSlideshow {
     this.nextImg = null;
 
     // PERF-1 B5: ảnh là 2 mặt phẳng chồng nhau (texture wall), canvas chỉ còn header/footer tĩnh
-    this.textureLoader = new THREE.TextureLoader();
+    // Fix giật: ảnh giải mã bằng loadBitmap (ngoài luồng chính) rồi initTexture ngay
     this.texCache = new Map();
     this.photoPlanes = null;
     if (this.screenMesh) this.initPhotoPlanes();
@@ -63,6 +64,8 @@ export class ZoneScreenSlideshow {
     const geo = new THREE.PlaneGeometry(1, 1);
     this.photoPlanes = [0, 1].map(i => {
       const mat = new THREE.MeshBasicMaterial({
+        // map giữ chỗ ngay từ đầu để compileAsync biên dịch đúng shader (có map)
+        map: placeholderTexture('#000'),
         color: 0xffffff,
         transparent: true,
         opacity: i === 0 ? 1 : 0,
@@ -74,7 +77,9 @@ export class ZoneScreenSlideshow {
       });
       const m = new THREE.Mesh(geo, mat);
       m.name = `LED_Photo_${this.zoneId}_${i}`;
-      m.visible = false;
+      // luôn visible (opacity 0 khi chưa dùng) để compileAsync/traverseVisible thấy và biên dịch trước
+      m.visible = true;
+      m.scale.set(1e-3, 1e-3, 1); // chưa có ảnh -> thu nhỏ (không che màn)
       m.renderOrder = (this.screenMesh.renderOrder || 0) + 1 + i;
       m.position.set(0, 0, 0.004 + i * 0.002);
       m.raycast = () => {}; // bấm vẫn trúng màn hình gốc
@@ -83,10 +88,62 @@ export class ZoneScreenSlideshow {
       return m;
     });
     // Màn LED hiển thị đúng màu gốc (B3)
+    this.initStrips(geo);
     if (this.screenMesh.material) {
       this.screenMesh.material.toneMapped = false;
       this.screenMesh.material.needsUpdate = true;
     }
+  }
+
+  /**
+   * Fix giật: header/footer đổi theo ảnh -> vẽ trên 2 dải canvas nhỏ phủ lên màn,
+   * không phải tải lại cả canvas 2048×1152 (~70 ms) mỗi lần chuyển ảnh.
+   */
+  initStrips(geo) {
+    const isMuot = window.__HERITAGE_QUALITY === 'muot';
+    const stripScale = isMuot ? 0.5 : 1.0;
+    const mk = (name, y0, hPx, order) => {
+      const c = document.createElement('canvas');
+      c.width = isMuot ? 1024 : 2048;
+      c.height = Math.round(hPx * stripScale);
+      const tex = new THREE.CanvasTexture(c);
+      tex.colorSpace = THREE.SRGBColorSpace;
+      tex.anisotropy = window.__ANISO_CAP || 8;
+      const mat = new THREE.MeshBasicMaterial({
+        map: tex, color: 0xffffff, transparent: true, opacity: 1, depthWrite: false, toneMapped: false,
+        polygonOffset: true, polygonOffsetFactor: -6, polygonOffsetUnits: -6
+      });
+      const m = new THREE.Mesh(geo, mat);
+      m.name = `LED_${name}_${this.zoneId}`;
+      m.scale.set(2048 * this.pxToM, hPx * this.pxToM, 1);
+      m.position.set(0, (576 - (y0 + hPx / 2)) * this.pxToM, 0.008);
+      m.renderOrder = (this.screenMesh.renderOrder || 0) + 3;
+      m.raycast = () => {};
+      this.screenMesh.add(m);
+      m.updateMatrix();
+      return { canvas: c, ctx: c.getContext('2d'), tex, mesh: m, y0 };
+    };
+    this.strips = [mk('Header', 0, 160), mk('Footer', 1032, 120)];
+  }
+
+  /** vẽ header/footer lên 2 dải (toạ độ giữ nguyên như canvas lớn nhờ translate) */
+  drawStrips() {
+    const mainCtx = this.ctx;
+    const isMuot = window.__HERITAGE_QUALITY === 'muot';
+    const scale = isMuot ? 0.5 : 1.0;
+    for (const s of this.strips) {
+      const ctx = s.ctx;
+      ctx.save();
+      ctx.clearRect(0, 0, s.canvas.width, s.canvas.height);
+      if (scale !== 1.0) ctx.scale(scale, scale);
+      ctx.translate(0, -s.y0);
+      this.ctx = ctx;
+      if (s.y0 === 0) this.drawHeader(); else this.drawFooter();
+      ctx.restore();
+      s.tex.needsUpdate = true;
+    }
+    this.ctx = mainCtx;
+    window.app?.requestRender?.(1);
   }
 
   getPhotoTexture(item, onReady) {
@@ -94,25 +151,37 @@ export class ZoneScreenSlideshow {
     if (!src) return null;
     if (this.texCache.has(src)) {
       const t = this.texCache.get(src);
-      if (t.image && (t.image.naturalWidth || t.image.width)) onReady?.(t);
-      else (t.userData.waiters ||= []).push(onReady);
+      if (t.userData.ready) onReady?.(t);
+      else if (onReady) t.userData.waiters.push(onReady);
       return t;
     }
-    const tex = this.textureLoader.load(src, (t) => {
-      (t.userData.waiters || []).forEach(fn => fn?.(t));
-      t.userData.waiters = [];
-      window.app?.requestRender?.(2);
-    });
+    const tex = new THREE.Texture();
     tex.colorSpace = THREE.SRGBColorSpace;
     tex.anisotropy = window.__ANISO_CAP || 8;
-    tex.userData.waiters = [onReady];
+    tex.flipY = false; // loadBitmap đã lật khi giải mã
+    tex.userData.ready = false;
+    tex.userData.waiters = onReady ? [onReady] : [];
+    loadBitmap(src).then((bmp) => {
+      if (tex.userData.disposed) { bmp.close?.(); return; }
+      tex.image = bmp;
+      tex.needsUpdate = true;
+      // đưa lên GPU ngay khi tải xong (không đợi tới lúc vẽ)
+      const r = window.app?.renderer;
+      if (r) r.initTexture(tex);
+      tex.userData.ready = true;
+      tex.userData.waiters.forEach(fn => fn?.(tex));
+      tex.userData.waiters = [];
+      window.app?.requestRender?.(2);
+    }).catch((err) => console.warn('[LED] lỗi tải ảnh', src, err));
     this.texCache.set(src, tex);
     // giữ tối đa 4 ảnh trong bộ nhớ GPU
     while (this.texCache.size > 4) {
       const [oldSrc, oldTex] = this.texCache.entries().next().value;
       const inUse = this.photoPlanes?.some(p => p.material.map === oldTex);
       if (inUse) { this.texCache.delete(oldSrc); this.texCache.set(oldSrc, oldTex); break; }
+      oldTex.userData.disposed = true;
       oldTex.dispose();
+      oldTex.image?.close?.();
       this.texCache.delete(oldSrc);
     }
     return tex;
@@ -124,13 +193,12 @@ export class ZoneScreenSlideshow {
     const plane = this.photoPlanes[idx];
     plane.material.opacity = opacity;
     this.getPhotoTexture(item, (t) => {
-      const iw = t.image.naturalWidth || t.image.width;
-      const ih = t.image.naturalHeight || t.image.height;
+      const iw = t.image.width;
+      const ih = t.image.height;
       const scale = Math.min(1968 / iw, 832 / ih);
       plane.scale.set(iw * scale * this.pxToM, ih * scale * this.pxToM, 1);
       plane.position.y = (576 - 596) * this.pxToM;
-      plane.material.map = t;
-      plane.material.needsUpdate = true;
+      plane.material.map = t; // đã có map giữ chỗ -> không đổi shader, không cần needsUpdate
       plane.visible = true;
       plane.updateMatrix();
       plane.matrixWorldAutoUpdate = true;
@@ -224,6 +292,12 @@ export class ZoneScreenSlideshow {
 
     if (!this.isFading) {
       if (this.timer >= this.slideDuration) {
+        // Hoãn chuyển ảnh nếu ảnh kế chưa tải + lên GPU
+        if (this.photoPlanes) {
+          const ni = (this.currentIndex + 1) % this.items.length;
+          const t = this.getPhotoTexture(this.items[ni]);
+          if (t && !t.userData.ready) return false;
+        }
         this.isFading = true;
         this.fadeTimer = 0;
         this.nextIndex = (this.currentIndex + 1) % this.items.length;
@@ -267,8 +341,7 @@ export class ZoneScreenSlideshow {
         this.photoPlanes = [nxt, cur];
         nxt.renderOrder = (this.screenMesh.renderOrder || 0) + 1;
         cur.renderOrder = (this.screenMesh.renderOrder || 0) + 2;
-        cur.visible = false;
-        cur.material.opacity = 0;
+        cur.material.opacity = 0; // vẫn visible (opacity 0) để không phát sinh shader/upload khi hiện lại
         this.draw(0); // header/footer theo ảnh mới (vẽ canvas 1 lần mỗi 6 giây)
       }
       return true;
@@ -287,6 +360,7 @@ export class ZoneScreenSlideshow {
   }
 
   draw(fadeProgress = 0) {
+    if (this.strips) { this.drawStrips(); if (this._baseDrawn) return; this._baseDrawn = true; }
     const ctx = this.ctx;
     const w = this.canvas.width;  // 2048
     const h = this.canvas.height; // 1152

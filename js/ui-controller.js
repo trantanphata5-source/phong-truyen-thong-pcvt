@@ -106,6 +106,15 @@ export class UIController {
       btnCloseHelp: document.getElementById('btn-close-help'),
       btnGuideOk: document.getElementById('btn-guide-ok'),
 
+      // Settings Modal (PERF-4)
+      btnSettingsToggle: document.getElementById('btn-settings-toggle'),
+      settingsModal: document.getElementById('settings-modal'),
+      btnCloseSettings: document.getElementById('btn-close-settings'),
+      selectQuality: document.getElementById('select-quality'),
+      settingsCurrentTier: document.getElementById('settings-current-tier'),
+      settingsGpuInfo: document.getElementById('settings-gpu-info'),
+      btnApplySettings: document.getElementById('btn-apply-settings'),
+
       // Welcome Guide Overlay
       welcomeGuide: document.getElementById('welcome-guide-overlay'),
       btnWelcomeStart: document.getElementById('btn-welcome-start')
@@ -330,6 +339,50 @@ export class UIController {
       this.audioService.playClickSound();
     });
 
+    // Settings Modal (PERF-4)
+    const updateSettingsInfo = () => {
+      const savedQuality = localStorage.getItem('heritage_quality') || 'auto';
+      if (this.dom.selectQuality) this.dom.selectQuality.value = savedQuality;
+      if (this.dom.settingsCurrentTier) {
+        const tierNames = {
+          'cao': 'Cao (High)',
+          'canbang': 'Cân bằng (Medium)',
+          'muot': 'Mượt (Performance / Low-memory)'
+        };
+        const cur = this.app.quality || 'canbang';
+        const src = this.app.qualitySource === 'localStorage' ? 'cài đặt người dùng' : (this.app.qualitySource === 'url' ? 'URL ?quality=' : 'tự động nhận diện GPU');
+        this.dom.settingsCurrentTier.textContent = `${tierNames[cur] || cur.toUpperCase()} (${src})`;
+      }
+      if (this.dom.settingsGpuInfo) {
+        this.dom.settingsGpuInfo.textContent = `GPU: ${this.app.detectedGpu || 'Không rõ'}`;
+      }
+    };
+
+    this.dom.btnSettingsToggle?.addEventListener('click', () => {
+      updateSettingsInfo();
+      this.dom.settingsModal?.classList.remove('hidden');
+      this.audioService.playClickSound();
+      if (window.lucide) lucide.createIcons();
+    });
+
+    this.dom.btnCloseSettings?.addEventListener('click', () => {
+      this.dom.settingsModal?.classList.add('hidden');
+    });
+
+    this.dom.btnApplySettings?.addEventListener('click', () => {
+      const selected = this.dom.selectQuality?.value || 'auto';
+      if (selected === 'auto') {
+        localStorage.removeItem('heritage_quality');
+      } else {
+        localStorage.setItem('heritage_quality', selected);
+      }
+      this.audioService.playClickSound();
+      // Remove query param ?quality= so user selection from modal takes effect upon reload
+      const url = new URL(window.location.href);
+      url.searchParams.delete('quality');
+      window.location.href = url.toString();
+    });
+
     // Tour Ribbon Toggle
     this.dom.btnToggleTourRibbon?.addEventListener('click', () => this.toggleTourRibbon());
     this.dom.btnTourMinimize?.addEventListener('click', () => this.toggleTourRibbon());
@@ -343,6 +396,7 @@ export class UIController {
         this.dom.catalogDrawer?.classList.add('hidden');
         this.dom.lightboxModal?.classList.add('hidden');
         this.dom.helpModal?.classList.add('hidden');
+        this.dom.settingsModal?.classList.add('hidden');
       } else if (e.key === 'h' || e.key === 'H') {
         this.toggleTourRibbon();
       }

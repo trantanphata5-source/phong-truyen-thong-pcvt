@@ -15,9 +15,13 @@
  */
 import * as THREE from 'three';
 
-const WALL_NEAR = 14, WALL_FAR = 18, WALL_FREE = 30, WALL_MAX = 96;
-const PLAQUE_NEAR = 25, PLAQUE_FREE = 35;
-const LABEL_SHOW = 20, LABEL_HIDE = 22; // PERF-2 C1
+// PERF-4: Ngưỡng mặc định (được ghi đè theo hạng máy trong TextureStreamer constructor)
+const DEFAULT_THRESHOLDS = {
+  cao:     { wallNear: 16, wallFar: 20, wallFree: 35, wallMax: 128, plaqueNear: 25, plaqueFree: 35, labelShow: 22, labelHide: 24, thumbPx: 384 },
+  canbang: { wallNear: 14, wallFar: 18, wallFree: 30, wallMax: 96,  plaqueNear: 20, plaqueFree: 30, labelShow: 20, labelHide: 22, thumbPx: 384 },
+  muot:    { wallNear: 10, wallFar: 14, wallFree: 20, wallMax: 48,  plaqueNear: 16, plaqueFree: 22, labelShow: 16, labelHide: 18, thumbPx: 320 }
+};
+
 const MAX_INFLIGHT = 4;          // số ảnh `wall` tải song song
 const UPLOAD_BIG_PER_FRAME = 2;  // ảnh lớn đưa lên GPU mỗi khung
 const UPLOAD_PX_BUDGET = 2.2e6;  // tổng điểm ảnh tối đa đưa lên GPU mỗi khung
@@ -57,7 +61,8 @@ export function streamThumbTexture(url) {
     new THREE.TextureLoader().load(url, (t) => { tex.image = t.image; tex.flipY = true; tex.needsUpdate = true; window.app?.requestRender?.(2); });
     return tex;
   }
-  loadBitmap(url, THUMB_PX).then((bmp) => {
+  const maxPx = window.__HERITAGE_QUALITY === 'muot' ? 320 : THUMB_PX;
+  loadBitmap(url, maxPx).then((bmp) => {
     tex.image = bmp;
     tex.needsUpdate = true;
     window.app?.requestRender?.(2);
@@ -82,6 +87,19 @@ export class TextureStreamer {
     this.useBitmap = typeof createImageBitmap === 'function';
     if (!this.useBitmap) this.textureLoader = new THREE.TextureLoader();
 
+    // PERF-4 E1: Áp dụng cấu hình khoảng cách và giới hạn bộ nhớ theo hạng
+    const qTier = app.quality || window.__HERITAGE_QUALITY || 'canbang';
+    const cfg = DEFAULT_THRESHOLDS[qTier] || DEFAULT_THRESHOLDS.canbang;
+    this.wallNear = cfg.wallNear;
+    this.wallFar = cfg.wallFar;
+    this.wallFree = cfg.wallFree;
+    this.wallMax = cfg.wallMax;
+    this.plaqueNear = cfg.plaqueNear;
+    this.plaqueFree = cfg.plaqueFree;
+    this.labelShow = cfg.labelShow;
+    this.labelHide = cfg.labelHide;
+    this.thumbPx = cfg.thumbPx;
+
     this.inflight = 0;
     this.loadQueue = [];     // photo chờ tải wall
     this.uploadQueue = [];   // { tex, done }
@@ -100,7 +118,7 @@ export class TextureStreamer {
     this.computeCenters();
     // Đưa trước toàn bộ thumb lên GPU (nhỏ) để không giật lần đầu nhìn thấy
     this.thumbPending = this.photos.map(p => p.thumbTex).filter(Boolean);
-    console.log(`[PERF-3] Quản lý ${this.photos.length} ảnh, ${this.plaques.length} biển tên`);
+    console.log(`[PERF-4] TextureStreamer: hạng ${qTier} (wallNear: ${this.wallNear}m, wallMax: ${this.wallMax}, plaqueNear: ${this.plaqueNear}m)`);
   }
 
   computeCenters() {
@@ -147,12 +165,12 @@ export class TextureStreamer {
       const d = p.center.distanceTo(cp);
       p.dist = d;
       p.inView = this._frustum.containsPoint(p.center);
-      if (d < WALL_NEAR) p.lastNear = performance.now();
+      if (d < this.wallNear) p.lastNear = performance.now();
       if (p.wallTex) {
-        if (p.wallReady && p.showing !== 'wall' && d < WALL_FAR) { this.setMap(p, p.wallTex); p.showing = 'wall'; changed = true; }
-        else if (p.showing === 'wall' && d > WALL_FAR) { this.setMap(p, p.thumbTex); p.showing = 'thumb'; changed = true; }
-        if (d > WALL_FREE) { this.freeWall(p); changed = true; }
-      } else if (d < WALL_NEAR && !p.loading && p.wallPath && !p.failed) {
+        if (p.wallReady && p.showing !== 'wall' && d < this.wallFar) { this.setMap(p, p.wallTex); p.showing = 'wall'; changed = true; }
+        else if (p.showing === 'wall' && d > this.wallFar) { this.setMap(p, p.thumbTex); p.showing = 'thumb'; changed = true; }
+        if (d > this.wallFree) { this.freeWall(p); changed = true; }
+      } else if (d < this.wallNear && !p.loading && p.wallPath && !p.failed) {
         wants.push(p);
       }
     }
@@ -160,12 +178,12 @@ export class TextureStreamer {
     wants.sort((a, b) => (a.inView === b.inView ? a.dist - b.dist : (a.inView ? -1 : 1)));
     this.loadQueue = wants;
 
-    // Giới hạn 96 wall (LRU theo lần cuối ở gần)
-    if (this.wallResident.size > WALL_MAX) {
+    // Giới hạn wall tối đa theo hạng máy (LRU theo lần cuối ở gần)
+    if (this.wallResident.size > this.wallMax) {
       const arr = [...this.wallResident].sort((a, b) => (a.lastNear || 0) - (b.lastNear || 0));
-      while (this.wallResident.size > WALL_MAX && arr.length) {
+      while (this.wallResident.size > this.wallMax && arr.length) {
         const p = arr.shift();
-        if (p.dist < WALL_NEAR) continue;
+        if (p.dist < this.wallNear) continue;
         this.freeWall(p); changed = true;
       }
     }
@@ -175,19 +193,19 @@ export class TextureStreamer {
     for (const q of this.plaques) {
       const d = q.center.distanceTo(cp);
       q.dist = d;
-      // PERF-2 C1: hiện < 20 m, ẩn > 22 m (vùng đệm chống nhấp nháy)
-      const vis = q.mesh.visible ? d <= LABEL_HIDE : d < LABEL_SHOW;
+      // Hiện < labelShow, ẩn > labelHide (vùng đệm chống nhấp nháy)
+      const vis = q.mesh.visible ? d <= this.labelHide : d < this.labelShow;
       if (vis !== q.mesh.visible) { q.mesh.visible = vis; changed = true; }
       if (q.tex) {
-        if (d > PLAQUE_FREE) { this.freePlaque(q); changed = true; }
-      } else if (d < PLAQUE_NEAR) {
+        if (d > this.plaqueFree) { this.freePlaque(q); changed = true; }
+      } else if (d < this.plaqueNear) {
         q.inView = this._frustum.containsPoint(q.center);
         plaqueWants.push(q);
       }
     }
     for (const l of this.labels) {
       const d = l.center.distanceTo(cp);
-      const vis = l.mesh.visible ? d <= LABEL_HIDE : d < LABEL_SHOW;
+      const vis = l.mesh.visible ? d <= this.labelHide : d < this.labelShow;
       if (vis !== l.mesh.visible) { l.mesh.visible = vis; changed = true; }
     }
     plaqueWants.sort((a, b) => (a.inView === b.inView ? a.dist - b.dist : (a.inView ? -1 : 1)));
@@ -214,7 +232,7 @@ export class TextureStreamer {
         p.loading = false;
         if (!tex) { p.failed = true; return; }
         // Đã đi xa trong lúc tải -> bỏ
-        if (p.dist > WALL_FREE) { this.disposeTex(tex); return; }
+        if (p.dist > this.wallFree) { this.disposeTex(tex); return; }
         tex.colorSpace = THREE.SRGBColorSpace;
         tex.anisotropy = this.maxAniso;
         tex.needsUpdate = true;
@@ -268,7 +286,7 @@ export class TextureStreamer {
     }
     // Gán wall cho ảnh vừa lên GPU nếu vẫn ở gần
     for (const p of this.wallResident) {
-      if (p.wallReady && p.showing !== 'wall' && p.dist < WALL_FAR) {
+      if (p.wallReady && p.showing !== 'wall' && p.dist < this.wallFar) {
         this.setMap(p, p.wallTex); p.showing = 'wall'; changed = true;
       }
     }
@@ -280,7 +298,7 @@ export class TextureStreamer {
     let built = 0;
     while (this.plaqueQueue.length && built < PLAQUE_BUILD_PER_FRAME) {
       const q = this.plaqueQueue.shift();
-      if (q.tex || q.dist > PLAQUE_NEAR) continue;
+      if (q.tex || q.dist > this.plaqueNear) continue;
       const canvas = q.draw();
       const tex = new THREE.CanvasTexture(canvas);
       tex.colorSpace = THREE.SRGBColorSpace;

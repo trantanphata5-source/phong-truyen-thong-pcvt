@@ -889,8 +889,9 @@ export class ExhibitBuilder {
       back.position.z = 0.015;
       group.add(back);
 
-      // Canvas đúng tỷ lệ bảng
-      const canvasW = 4096;
+      // PERF-4: Mượt dùng canvas 2048 (tiết kiệm ~80 MB bộ nhớ ảnh), các hạng khác 4096
+      const isMuot = (window.__HERITAGE_QUALITY === 'muot');
+      const canvasW = isMuot ? 2048 : 4096;
       const canvasH = Math.round(canvasW * boardH / boardW);
       const canvas = document.createElement('canvas');
       canvas.width = canvasW;
@@ -1012,7 +1013,10 @@ export class ExhibitBuilder {
           textM = per100 * fontM;
         }
         const wantW = textM + 2 * padM;
-        const sPxPerM = Math.min(400, 4096 / wantW);
+        const isMuotSlogan = (window.__HERITAGE_QUALITY === 'muot');
+        const sPxMax = isMuotSlogan ? 200 : 400;
+        const sCanvasLimit = isMuotSlogan ? 2048 : 4096;
+        const sPxPerM = Math.min(sPxMax, sCanvasLimit / wantW);
         const sCanvasW = Math.round(wantW * sPxPerM);
         const sCanvasH = Math.round(planeH * sPxPerM);
         const sPlaneW = sCanvasW / sPxPerM;

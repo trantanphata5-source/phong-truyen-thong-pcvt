@@ -75,18 +75,21 @@ export class MuseumArchitect {
       envMapIntensity: 0.9
     });
 
+    // PERF-4 E1: Vật liệu tường, trần, vách nhám (roughness >= 0.6, metalness <= 0.1) dùng Lambert cho Cân bằng & Mượt
+    const qTier = this.app?.quality || window.__HERITAGE_QUALITY || 'canbang';
+    const isLambert = qTier === 'canbang' || qTier === 'muot';
+    const MatRough = isLambert ? THREE.MeshLambertMaterial : THREE.MeshStandardMaterial;
+
     // 2. Wall Material (Modern Luxury Gallery Alabaster White)
-    this.matWall = new THREE.MeshStandardMaterial({
+    this.matWall = new MatRough({
       color: 0xf8fafc,
-      roughness: 0.85,
-      metalness: 0.02
+      ...(isLambert ? {} : { roughness: 0.85, metalness: 0.02 })
     });
 
     // 3. Partition Gallery Wall Material (Pristine Exhibition White)
-    this.matPartition = new THREE.MeshStandardMaterial({
+    this.matPartition = new MatRough({
       color: 0xffffff,
-      roughness: 0.8,
-      metalness: 0.02
+      ...(isLambert ? {} : { roughness: 0.8, metalness: 0.02 })
     });
 
     // 4. Gold Architectural Moldings & Trim
@@ -114,10 +117,9 @@ export class MuseumArchitect {
     });
 
     // 7. Ceiling Material (Bright Museum Architectural White)
-    this.matCeiling = new THREE.MeshStandardMaterial({
+    this.matCeiling = new MatRough({
       color: 0xf1f5f9,
-      roughness: 0.90,
-      metalness: 0.02
+      ...(isLambert ? {} : { roughness: 0.90, metalness: 0.02 })
     });
 
     // 8. Luxury Showcase Gold & Champagne Brass (Matching Reference Photo)
@@ -145,10 +147,9 @@ export class MuseumArchitect {
     });
 
     // 11. GĐ5: Khu 3 Tông sáng hiện đại (#F4F7FB walls, chân tường #1E40A0, phào 3cm #38BDF8, sàn #DCE3EC)
-    this.matWallKhu3 = new THREE.MeshStandardMaterial({
+    this.matWallKhu3 = new MatRough({
       color: 0xF4F7FB,
-      roughness: 0.60,
-      metalness: 0.05
+      ...(isLambert ? {} : { roughness: 0.60, metalness: 0.05 })
     });
 
     this.matBaseboardKhu3 = new THREE.MeshStandardMaterial({
@@ -710,13 +711,16 @@ export class MuseumArchitect {
 
     const cfg = THEMES[theme] || THEMES.sanh;
 
-    // Strict 1:1 canvas-to-plane aspect ratio
-    const canvasH = 512;
-    const canvasW = Math.round(canvasH * (w / h));
+    // PERF-4: Mượt dùng chiều cao canvas 256 (tiết kiệm ~64 MB), các hạng khác 512
+    const isMuotBanner = (this.app?.quality === 'muot') || (window.__HERITAGE_QUALITY === 'muot');
+    const scaleBanner = isMuotBanner ? 0.5 : 1.0;
+    const canvasH = Math.round(512 * scaleBanner);
+    const canvasW = Math.round(512 * (w / h) * scaleBanner);
     const canvas = document.createElement('canvas');
     canvas.width = canvasW;
     canvas.height = canvasH;
     const ctx = canvas.getContext('2d');
+    if (scaleBanner !== 1.0) ctx.scale(scaleBanner, scaleBanner);
 
     // 1. Background
     if (cfg.isDual) {
@@ -1679,19 +1683,23 @@ export class MuseumArchitect {
     northLight.position.set(0, 7.8, -37);
     parent.add(northLight);
 
-    // 6. Hall Accent Spotlights
-    const createHallSpot = (color, x, y, z, tx, ty, tz) => {
+    // 6. Hall Accent Spotlights (PERF-4: quản lý theo khu cho hạng Mượt)
+    this.accentSpotlights = [];
+    const createHallSpot = (color, x, y, z, tx, ty, tz, zone = 'hallway') => {
       const spot = new THREE.SpotLight(color, 3.0, 35, Math.PI / 4, 0.5);
       spot.position.set(x, y, z);
       spot.target.position.set(tx, ty, tz);
+      spot.userData.zone = zone;
+      spot.userData.origIntensity = 3.0;
       parent.add(spot);
       parent.add(spot.target);
+      this.accentSpotlights.push(spot);
     };
 
     // West Hall
-    createHallSpot(0xdcfce7, -32, 7.5, 0, -49, 3.0, 0);
-    createHallSpot(0xdcfce7, -35, 7.5, -12, -35, 3.0, 0);
-    createHallSpot(0xdcfce7, -35, 7.5, 12, -35, 3.0, 0);
+    createHallSpot(0xdcfce7, -32, 7.5, 0, -49, 3.0, 0, 'khu1');
+    createHallSpot(0xdcfce7, -35, 7.5, -12, -35, 3.0, 0, 'khu1');
+    createHallSpot(0xdcfce7, -35, 7.5, 12, -35, 3.0, 0, 'khu1');
 
     // East Hall (Khu 3: Smart Grid — giảm cường độ xuống 1.8 theo Mục F.3)
     const createK3Spot = (color, x, y, z, tx, ty, tz) => {
@@ -1699,8 +1707,11 @@ export class MuseumArchitect {
       spot.position.set(x, y, z);
       spot.target.position.set(tx, ty, tz);
       spot.castShadow = false;
+      spot.userData.zone = 'khu3';
+      spot.userData.origIntensity = 1.8;
       parent.add(spot);
       parent.add(spot.target);
+      this.accentSpotlights.push(spot);
     };
     createK3Spot(0xe0f2fe, 32, 7.5, 0, 49, 3.0, 0);
     createK3Spot(0xe0f2fe, 35, 7.5, -12, 35, 3.0, 0);
@@ -1711,22 +1722,39 @@ export class MuseumArchitect {
     tableSpot.position.set(26, 7.5, 0);
     tableSpot.target.position.set(26, 0.95, 0);
     tableSpot.castShadow = false;
+    tableSpot.userData.zone = 'khu3';
+    tableSpot.userData.origIntensity = 2.0;
     parent.add(tableSpot);
     parent.add(tableSpot.target);
+    this.accentSpotlights.push(tableSpot);
 
     // Khu 4 (Đảng bộ) — warm red accent
     const k4Light = new THREE.PointLight(0xfffaed, 3.0, 35);
     k4Light.position.set(36, 7.5, 60);
     parent.add(k4Light);
-    createHallSpot(0xfee2e2, 36, 7.5, 50, 36, 3.0, 55);
-    createHallSpot(0xfee2e2, 36, 7.5, 70, 36, 3.0, 65);
+    createHallSpot(0xfee2e2, 36, 7.5, 50, 36, 3.0, 55, 'khu4');
+    createHallSpot(0xfee2e2, 36, 7.5, 70, 36, 3.0, 65, 'khu4');
 
     // Khu 6 (CĐ + ĐTN) — cool blue accent
     const k6Light = new THREE.PointLight(0xfffaed, 3.0, 35);
     k6Light.position.set(-36, 7.5, 60);
     parent.add(k6Light);
-    createHallSpot(0xdcfce7, -36, 7.5, 50, -36, 3.0, 55);
-    createHallSpot(0xdcfce7, -36, 7.5, 70, -36, 3.0, 65);
+    createHallSpot(0xdcfce7, -36, 7.5, 50, -36, 3.0, 55, 'khu6');
+    createHallSpot(0xdcfce7, -36, 7.5, 70, -36, 3.0, 65, 'khu6');
+  }
+
+  /** PERF-4 E1: Hạng Mượt chỉ giữ đèn của khu đang đứng; các khu khác intensity = 0 (không đổi số đèn) */
+  updateSpotlightsForZone(currentZone) {
+    if (!this.accentSpotlights) return;
+    const isMuot = (this.app?.quality === 'muot') || (window.__HERITAGE_QUALITY === 'muot');
+    for (const spot of this.accentSpotlights) {
+      if (spot.userData.origIntensity === undefined) spot.userData.origIntensity = spot.intensity;
+      if (!isMuot || !currentZone || currentZone === 'lobby' || currentZone === 'hallway' || spot.userData.zone === currentZone) {
+        spot.intensity = spot.userData.origIntensity;
+      } else {
+        spot.intensity = 0;
+      }
+    }
   }
 
   /**
@@ -2262,11 +2290,14 @@ export class MuseumArchitect {
     innerFrame.rotation.y = Math.PI;
     portraitGroup.add(innerFrame);
 
-    // 3. Ultra-high definition ceremonial canvas screen (2048x1200)
+    // 3. Ultra-high definition ceremonial canvas screen (2048x1200 / 1024x600 for Mượt)
+    const isMuotHCM = (this.app?.quality === 'muot') || (window.__HERITAGE_QUALITY === 'muot');
+    const scaleHCM = isMuotHCM ? 0.5 : 1.0;
     const portraitCanvas = document.createElement('canvas');
-    portraitCanvas.width = 2048;
-    portraitCanvas.height = 1200;
+    portraitCanvas.width = Math.round(2048 * scaleHCM);
+    portraitCanvas.height = Math.round(1200 * scaleHCM);
     const pctx = portraitCanvas.getContext('2d');
+    if (scaleHCM !== 1.0) pctx.scale(scaleHCM, scaleHCM);
 
     // Rich ceremonial background gradient
     const bgGrad = pctx.createLinearGradient(0, 0, 0, 1200);
@@ -2739,17 +2770,21 @@ export class MuseumArchitect {
     // Canvas hiển thị thông tin nền trắng, viền xanh EVN (tỷ lệ 1:1 với tấm phẳng w-0.04 x h-0.1 = 1.06 x 2.30)
     const totemPlaneW = w - 0.04;
     const totemPlaneH = h - 0.1;
-    const cW = 800;
-    const cH = Math.round(cW * (totemPlaneH / totemPlaneW)); // ≈ 1736
+    const isMuotTotem = (this.app?.quality === 'muot') || (window.__HERITAGE_QUALITY === 'muot');
+    const scaleTotem = isMuotTotem ? 0.5 : 1.0;
+    const cW = Math.round(800 * scaleTotem);
+    const cH = Math.round(cW * (totemPlaneH / totemPlaneW)); // ≈ 1736 (hoặc 868 ở Mượt)
     const c = document.createElement('canvas');
     c.width = cW;
     c.height = cH;
     const ctx = c.getContext('2d');
 
     const renderContent = (logoImg = null) => {
+      ctx.save();
+      if (scaleTotem !== 1.0) ctx.scale(scaleTotem, scaleTotem);
       // Nền trắng tinh khiết
       ctx.fillStyle = '#ffffff';
-      ctx.fillRect(0, 0, cW, cH);
+      ctx.fillRect(0, 0, 800, cH / scaleTotem);
 
       // Khung viền xanh EVN
       ctx.strokeStyle = '#1e40a0';
@@ -2820,8 +2855,9 @@ export class MuseumArchitect {
       // Footer
       ctx.fillStyle = '#475569';
       ctx.font = '600 22px "Be Vietnam Pro", sans-serif';
-      ctx.fillText('CHUYỂN ĐỔI SỐ • LƯỚI ĐIỆN THÔNG MINH', cW / 2, cH - 120);
+      ctx.fillText('CHUYỂN ĐỔI SỐ • LƯỚI ĐIỆN THÔNG MINH', 400, (cH / scaleTotem) - 120);
 
+      ctx.restore();
       faceTex.needsUpdate = true;
     };
 
@@ -2923,10 +2959,11 @@ export class MuseumArchitect {
       bezelMesh.position.y = screenY;
       unit.add(bezelMesh);
 
-      // 3. Canvas hiển thị (2048 x 1152)
+      // 3. Canvas hiển thị (2048 x 1152, hoặc 1024 x 576 ở hạng Mượt)
+      const isMuotLED = (this.app?.quality === 'muot') || (window.__HERITAGE_QUALITY === 'muot');
       const canvas = document.createElement('canvas');
-      canvas.width = 2048;
-      canvas.height = 1152;
+      canvas.width = isMuotLED ? 1024 : 2048;
+      canvas.height = isMuotLED ? 576 : 1152;
       const ctx = canvas.getContext('2d');
 
       const tex = new THREE.CanvasTexture(canvas);

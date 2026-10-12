@@ -157,6 +157,9 @@
       <button id="btn-help-toggle" class="header-icon-btn" title="Hướng dẫn điều khiển">
         <i data-lucide="help-circle"></i>
       </button>
+      <button id="btn-settings-toggle" class="header-icon-btn" title="Cài đặt chất lượng hiển thị">
+        <i data-lucide="settings"></i>
+      </button>
       <button id="btn-fullscreen" class="header-icon-btn" title="Toàn màn hình">
         <i data-lucide="maximize" id="icon-fullscreen"></i>
       </button>
@@ -640,6 +643,39 @@
         </div>
       </div>
       <button id="btn-guide-ok" class="btn-guide-ok">BẮT ĐẦU KHÁM PHÁ</button>
+    </div>
+  </div>
+
+  <!-- PERF-4: Quality Settings Modal -->
+  <div class="settings-modal hidden" id="settings-modal">
+    <div class="settings-card">
+      <div class="settings-header">
+        <h3><i data-lucide="sliders"></i> CÀI ĐẶT ĐỒ HỌA</h3>
+        <button id="btn-close-settings" class="btn-tiny" title="Đóng"><i data-lucide="x"></i></button>
+      </div>
+      <div class="settings-content">
+        <div class="settings-field">
+          <label for="select-quality">Chất lượng hiển thị:</label>
+          <select id="select-quality" class="settings-select">
+            <option value="auto">Tự động (theo cấu hình máy)</option>
+            <option value="cao">Cao (GPU rời / Apple M, Anisotropy 8x)</option>
+            <option value="canbang">Cân bằng (Khử răng cưa, Anisotropy 4x)</option>
+            <option value="muot">Mượt (GPU tích hợp / Máy yếu, siêu nhẹ)</option>
+          </select>
+        </div>
+        <div class="settings-info-box" id="settings-info-box">
+          <div>Hạng đang áp dụng: <b id="settings-current-tier" style="color: #38bdf8;">--</b></div>
+          <div style="font-size: 12px; color: #94a3b8; margin-top: 4px;" id="settings-gpu-info">GPU: --</div>
+        </div>
+        <div class="settings-tips">
+          <p>• Hạng <b>Cao</b>: Khử răng cưa MSAA, độ nét tối đa.</p>
+          <p>• Hạng <b>Cân bằng</b>: Cân đối giữa chi tiết đồ họa và độ mượt.</p>
+          <p>• Hạng <b>Mượt</b>: Bộ nhớ ảnh ≤ 400 MB, vật liệu nhẹ, siêu mượt.</p>
+        </div>
+      </div>
+      <div class="settings-footer">
+        <button id="btn-apply-settings" class="btn-settings-apply">Áp dụng & Tải lại</button>
+      </div>
     </div>
   </div>
 

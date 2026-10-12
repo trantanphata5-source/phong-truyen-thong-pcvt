@@ -1,4 +1,4 @@
-﻿import * as THREE from 'three';
+import * as THREE from 'three';
 import { AudioService } from './audio-service.js?v=narrative-1';
 import { DataService } from './data-service.js?v=gd4-fix1';
 import { MuseumArchitect } from './museum-architect.js?v=gd4-fix1';
@@ -104,15 +104,21 @@ class HeritageApp {
     this.isMobile = /Android|iPhone|iPad|iPod|Opera Mini|IEMobile/i.test(navigator.userAgent)
                      || (window.innerWidth <= 900 && 'ontouchstart' in window);
 
-    // PERF-1: tham số ?quality=cao|canbang|muot (phân hạng tự động sẽ làm ở PERF-4)
-    const qParam = new URLSearchParams(window.location.search).get('quality');
-    this.quality = ['cao', 'canbang', 'muot'].includes(qParam) ? qParam : null;
+    // PERF-4 E1: Phân hạng máy khi mở trang (URL param > localStorage > tự đọc GPU)
+    const detected = detectQualityTier();
+    this.quality = detected.tier;
+    this.qualitySource = detected.source;
+    this.detectedGpu = detected.gpu || 'Không rõ';
+    window.__HERITAGE_QUALITY = this.quality;
+    console.log(`[PERF-4] Hạng máy: ${this.quality.toUpperCase()} (nguồn: ${this.qualitySource}, GPU: ${this.detectedGpu})`);
+
     // B4: anisotropy tối đa 8 (hạng Cân bằng/Mượt: 4)
-    window.__ANISO_CAP = (this.quality === 'canbang' || this.quality === 'muot') ? 4 : 8;
+    window.__ANISO_CAP = (this.quality === 'cao') ? 8 : 4;
+    // E1: Khử răng cưa MSAA bật cho Cao & Cân bằng, tắt cho Mượt
     const useMSAA = this.quality === 'muot' ? false : !this.isMobile;
 
     this.renderer = new THREE.WebGLRenderer({
-      antialias: useMSAA, // Disable antialias on mobile for 2x FPS
+      antialias: useMSAA,
       powerPreference: 'high-performance'
     });
     this.renderer.setSize(window.innerWidth, window.innerHeight);
@@ -389,7 +395,7 @@ class HeritageApp {
       if (urlParams.get('bench') === '1' && !navigator.webdriver) {
         setTimeout(async () => {
           const m = await import('./perf-bench.js');
-          const res = await m.runBench(this, { label: 'PERF-2' });
+          const res = await m.runBench(this, { label: 'PERF-4' });
           console.log('[BENCH] JSON:', JSON.stringify(res));
         }, 4000);
       }
@@ -400,8 +406,57 @@ class HeritageApp {
 
   getTargetPixelRatio() {
     if (this.isMobile) return 1.0;
-    if (this.quality === 'canbang' || this.quality === 'muot') return 1.0;
-    return Math.min(window.devicePixelRatio, 1.5);
+    if (this.quality === 'cao') return Math.min(window.devicePixelRatio, 1.5);
+    return 1.0; // canbang và muot khi dừng xem
+  }
+
+  /**
+   * PERF-4 E2: Độ phân giải động khi di chuyển:
+   * - Hạng Mượt: đo thời gian khung trung bình trong 1s; nếu > 33ms thì giảm 0.1 (min 0.75), nếu < 20ms tăng lại (max 1.0)
+   * - Khi camera dừng 250ms: vẽ lại 1 khung ở pixelRatio 1.5 (supersample) để ảnh tĩnh luôn mịn
+   */
+  updateDynamicResolution(delta) {
+    if (this.quality !== 'muot') return;
+
+    const cm = this.controlsManager;
+    const isMoving = cm && (cm.isGliding || cm.dragMoved || cm.isRotating);
+
+    if (isMoving) {
+      this._lastMoveTime = performance.now();
+      this._supersampled = false;
+
+      this._dynFrameTimes = this._dynFrameTimes || [];
+      this._dynFrameTimes.push(delta * 1000);
+      if (this._dynFrameTimes.length > 30) this._dynFrameTimes.shift();
+
+      this._dynTimer = (this._dynTimer || 0) + delta;
+      if (this._dynTimer >= 0.5) {
+        this._dynTimer = 0;
+        const avg = this._dynFrameTimes.reduce((a, b) => a + b, 0) / this._dynFrameTimes.length;
+        let pr = this.renderer.getPixelRatio();
+        if (avg > 33 && pr > 0.75) {
+          pr = Math.max(0.75, +(pr - 0.1).toFixed(2));
+          this.renderer.setPixelRatio(pr);
+        } else if (avg < 20 && pr < 1.0) {
+          pr = Math.min(1.0, +(pr + 0.05).toFixed(2));
+          this.renderer.setPixelRatio(pr);
+        }
+      }
+    } else {
+      const now = performance.now();
+      const stoppedFor = now - (this._lastMoveTime || now);
+      if (stoppedFor >= 250 && !this._supersampled) {
+        this._supersampled = true;
+        // Supersample 1 khung ở 1.5 khi dừng yên
+        this.renderer.setPixelRatio(1.5);
+        this.requestRender(1);
+        setTimeout(() => {
+          if (!cm?.isGliding && !cm?.dragMoved && this._supersampled) {
+            this.renderer.setPixelRatio(1.0);
+          }
+        }, 100);
+      }
+    }
   }
 
   /** PERF-1 B1: yêu cầu vẽ lại trong `frames` khung tới */
@@ -2008,6 +2063,12 @@ class HeritageApp {
     // GD5-fix2: Zone culling and Zone screens slideshow
     this.updateZoneCulling();
     this.updateZoneNarration();
+    // PERF-4 E1: Cập nhật đèn rọi theo khu cho hạng Mượt
+    if (this.architect && this.architect.updateSpotlightsForZone) {
+      this.architect.updateSpotlightsForZone(this.currentZone);
+    }
+    // PERF-4 E2: Độ phân giải động khi di chuyển
+    this.updateDynamicResolution(delta);
 
     // PERF-1 B1.2: hiệu ứng liên tục chỉ khi đang ở khu đó, giới hạn 30 fps
     const now = performance.now();
@@ -2087,3 +2148,41 @@ class HeritageApp {
 window.addEventListener('DOMContentLoaded', () => {
   window.app = new HeritageApp();
 });
+
+/**
+ * PERF-4 E1: Phân hạng máy khi mở trang:
+ * 1. URL param: ?quality=cao|canbang|muot
+ * 2. Người dùng tự chọn: localStorage.getItem('heritage_quality')
+ * 3. Tự động đọc GPU: WEBGL_debug_renderer_info
+ */
+export function detectQualityTier() {
+  const urlParam = new URLSearchParams(window.location.search).get('quality');
+  if (['cao', 'canbang', 'muot'].includes(urlParam)) {
+    return { tier: urlParam, source: 'url' };
+  }
+  const saved = localStorage.getItem('heritage_quality');
+  if (['cao', 'canbang', 'muot'].includes(saved)) {
+    return { tier: saved, source: 'user' };
+  }
+  try {
+    const c = document.createElement('canvas');
+    const gl = c.getContext('webgl') || c.getContext('experimental-webgl');
+    if (gl) {
+      const ext = gl.getExtension('WEBGL_debug_renderer_info');
+      const ren = (ext ? gl.getParameter(ext.UNMASKED_RENDERER_WEBGL) : '') || '';
+      const renLower = ren.toLowerCase();
+      // Card tích hợp / máy yếu -> Mượt
+      const isWeak = ['intel', 'uhd', 'iris', 'radeon(tm) graphics', 'vega', 'mali', 'adreno', 'powervr', 'swiftshader', 'microsoft basic']
+        .some(k => renLower.includes(k));
+      if (isWeak) return { tier: 'muot', source: 'auto', gpu: ren };
+      // Card rời hoặc Apple Silicon -> Cao
+      const isStrong = ['nvidia', 'geforce', 'gtx', 'rtx', 'quadro', 'radeon rx', 'apple m', 'apple gpu']
+        .some(k => renLower.includes(k));
+      if (isStrong) return { tier: 'cao', source: 'auto', gpu: ren };
+      return { tier: 'canbang', source: 'auto', gpu: ren };
+    }
+  } catch (e) {
+    console.warn('[PERF-4] Lỗi đọc GPU:', e);
+  }
+  return { tier: 'canbang', source: 'auto' };
+}
