@@ -194,30 +194,36 @@ export class GridMapTable {
     this.tex2048.anisotropy = maxAnis;
 
     this._tex4096Loaded = false;
-    this.tex4096 = texLoader.load(
-      'assets/grid/pcvt_map_4096.webp',
-      (tex) => {
-        tex.colorSpace = THREE.SRGBColorSpace;
-        tex.generateMipmaps = true;
-        tex.minFilter = THREE.LinearMipmapLinearFilter;
-        tex.anisotropy = maxAnis;
-        tex.needsUpdate = true;
-        this._tex4096Loaded = true;
-        if (this._currentLOD === '4096' && this.boardMesh) {
-          this.boardMesh.material.map = this.tex4096;
-          this.boardMesh.material.needsUpdate = true;
+    const isMuot = (window.__HERITAGE_QUALITY === 'muot');
+    if (!isMuot) {
+      this.tex4096 = texLoader.load(
+        'assets/grid/pcvt_map_4096.webp',
+        (tex) => {
+          tex.colorSpace = THREE.SRGBColorSpace;
+          tex.generateMipmaps = true;
+          tex.minFilter = THREE.LinearMipmapLinearFilter;
+          tex.anisotropy = maxAnis;
+          tex.needsUpdate = true;
+          this._tex4096Loaded = true;
+          if (this._currentLOD === '4096' && this.boardMesh) {
+            this.boardMesh.material.map = this.tex4096;
+            this.boardMesh.material.needsUpdate = true;
+          }
+        },
+        undefined,
+        (err) => {
+          console.warn('[GridMapTable] Failed to load 4096 map texture, fallback to 2048', err);
+          this.tex4096 = this.tex2048;
+          this._tex4096Loaded = true;
         }
-      },
-      undefined,
-      (err) => {
-        console.warn('[GridMapTable] Failed to load 4096 map texture, fallback to 2048', err);
-        this.tex4096 = this.tex2048;
-        this._tex4096Loaded = true;
-      }
-    );
-    this.tex4096.colorSpace = THREE.SRGBColorSpace;
-    this.tex4096.generateMipmaps = true;
-    this.tex4096.minFilter = THREE.LinearMipmapLinearFilter;
+      );
+      this.tex4096.colorSpace = THREE.SRGBColorSpace;
+      this.tex4096.generateMipmaps = true;
+      this.tex4096.minFilter = THREE.LinearMipmapLinearFilter;
+    } else {
+      this.tex4096 = this.tex2048;
+      this._tex4096Loaded = true;
+    }
     this.tex4096.anisotropy = maxAnis;
 
     // Mặt bản đồ: chỉ còn 1 tấm PlaneGeometry(mapW, mapD) ở y = 0.02 (Mục B.1)

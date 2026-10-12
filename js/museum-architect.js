@@ -23,10 +23,14 @@ export class MuseumArchitect {
 
   initMaterials() {
     // 1. Procedural Polished Marble Floor Texture
+    const qTier = this.app?.quality || window.__HERITAGE_QUALITY || 'canbang';
+    const isMuot = qTier === 'muot';
     const floorCanvas = document.createElement('canvas');
-    floorCanvas.width = 1024;
-    floorCanvas.height = 1024;
+    const floorSize = isMuot ? 512 : 1024;
+    floorCanvas.width = floorSize;
+    floorCanvas.height = floorSize;
     const ctx = floorCanvas.getContext('2d');
+    if (isMuot) ctx.scale(0.5, 0.5);
     
     // Deep dark navy-charcoal marble
     ctx.fillStyle = '#0c1220';
@@ -76,7 +80,6 @@ export class MuseumArchitect {
     });
 
     // PERF-4 E1: Vật liệu tường, trần, vách nhám (roughness >= 0.6, metalness <= 0.1) dùng Lambert cho Cân bằng & Mượt
-    const qTier = this.app?.quality || window.__HERITAGE_QUALITY || 'canbang';
     const isLambert = qTier === 'canbang' || qTier === 'muot';
     const MatRough = isLambert ? THREE.MeshLambertMaterial : THREE.MeshStandardMaterial;
 
@@ -387,15 +390,19 @@ export class MuseumArchitect {
     rotundaGroup.add(daisTrim);
 
     // 2. Official EVNHCMC & PC Vũng Tàu Crest Seal in Floor
+    const isMuotSeal = ((this.app?.quality || window.__HERITAGE_QUALITY) === 'muot');
     const sealCanvas = document.createElement('canvas');
-    sealCanvas.width = 1024;
-    sealCanvas.height = 1024;
+    const sealSize = isMuotSeal ? 512 : 1024;
+    sealCanvas.width = sealSize;
+    sealCanvas.height = sealSize;
     const sctx = sealCanvas.getContext('2d');
 
     const sealTexture = new THREE.CanvasTexture(sealCanvas);
 
     const renderSeal = (logoImg = null) => {
-      sctx.clearRect(0, 0, 1024, 1024);
+      sctx.clearRect(0, 0, sealSize, sealSize);
+      sctx.save();
+      if (isMuotSeal) sctx.scale(0.5, 0.5);
 
       // GĐ4: Blue radial gradient background disc (#2D55C8 → #1E40A0 → #172F7A)
       const bgGrad = sctx.createRadialGradient(512, 512, 30, 512, 512, 490);
@@ -524,6 +531,7 @@ export class MuseumArchitect {
       sctx.font = '800 24px "Be Vietnam Pro", sans-serif';
       drawBottomArcText('1985 - 2025 • 40 NĂM PHÁT TRIỂN', 368, Math.PI, 7);
 
+      sctx.restore();
       sealTexture.needsUpdate = true;
     };
 
@@ -2019,10 +2027,12 @@ export class MuseumArchitect {
   }
 
   createAlbumCoverCanvas(type, title, org, sub, c1, c2, gold) {
+    const isMuot = ((this.app?.quality || window.__HERITAGE_QUALITY) === 'muot');
     const canvas = document.createElement('canvas');
-    canvas.width = 1024;
-    canvas.height = 768;
+    canvas.width = isMuot ? 512 : 1024;
+    canvas.height = isMuot ? 384 : 768;
     const ctx = canvas.getContext('2d');
+    if (isMuot) ctx.scale(0.5, 0.5);
 
     // Leather gradient background
     const grad = ctx.createRadialGradient(512, 384, 80, 512, 384, 600);
@@ -2472,10 +2482,12 @@ export class MuseumArchitect {
   }
 
   buildHCMEntranceSign(parent) {
+    const isMuot = ((this.app?.quality || window.__HERITAGE_QUALITY) === 'muot');
     const canvas = document.createElement('canvas');
-    canvas.width = 2048;
-    canvas.height = 512;
+    canvas.width = isMuot ? 1024 : 2048;
+    canvas.height = isMuot ? 256 : 512;
     const ctx = canvas.getContext('2d');
+    if (isMuot) ctx.scale(0.5, 0.5);
 
     // Dark background
     ctx.fillStyle = '#1a0505';
@@ -2549,10 +2561,12 @@ export class MuseumArchitect {
     ];
 
     periods.forEach(p => {
+      const isMuot = ((this.app?.quality || window.__HERITAGE_QUALITY) === 'muot');
       const canvas = document.createElement('canvas');
-      canvas.width = 1024;
-      canvas.height = 512;
+      canvas.width = isMuot ? 512 : 1024;
+      canvas.height = isMuot ? 256 : 512;
       const ctx = canvas.getContext('2d');
+      if (isMuot) ctx.scale(0.5, 0.5);
 
       // Dark background
       ctx.fillStyle = '#0a0f1d';

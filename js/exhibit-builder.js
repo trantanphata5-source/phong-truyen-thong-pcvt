@@ -1,6 +1,6 @@
 import * as THREE from 'three';
 import { FONT_FAMILY } from './fonts.js';
-import { placeholderTexture } from './texture-streamer.js';
+import { placeholderTexture, streamThumbTexture } from './texture-streamer.js';
 import { WALLS, PARTITIONS, WALL_THICKNESS, PARTITION_THICKNESS, ZONES, ALBUM_CABINETS, buildCollisionBoxes } from './layout-config.js';
 import { MilestoneWallBuilder } from './milestone-wall.js';
 
@@ -889,9 +889,9 @@ export class ExhibitBuilder {
       back.position.z = 0.015;
       group.add(back);
 
-      // PERF-4: Mượt dùng canvas 2048 (tiết kiệm ~80 MB bộ nhớ ảnh), các hạng khác 4096
+      // PERF-4: Mượt dùng canvas 1024 (tiết kiệm ~110 MB bộ nhớ ảnh), các hạng khác 4096
       const isMuot = (window.__HERITAGE_QUALITY === 'muot');
-      const canvasW = isMuot ? 2048 : 4096;
+      const canvasW = isMuot ? 1024 : 4096;
       const canvasH = Math.round(canvasW * boardH / boardW);
       const canvas = document.createElement('canvas');
       canvas.width = canvasW;
@@ -1014,8 +1014,8 @@ export class ExhibitBuilder {
         }
         const wantW = textM + 2 * padM;
         const isMuotSlogan = (window.__HERITAGE_QUALITY === 'muot');
-        const sPxMax = isMuotSlogan ? 200 : 400;
-        const sCanvasLimit = isMuotSlogan ? 2048 : 4096;
+        const sPxMax = isMuotSlogan ? 150 : 400;
+        const sCanvasLimit = isMuotSlogan ? 1024 : 4096;
         const sPxPerM = Math.min(sPxMax, sCanvasLimit / wantW);
         const sCanvasW = Math.round(wantW * sPxPerM);
         const sCanvasH = Math.round(planeH * sPxPerM);
@@ -1256,8 +1256,12 @@ export class ExhibitBuilder {
 
     // 2. Mesh 2: Ảnh
     let picMesh = null;
-    // Dùng thumb_path làm texture tức thì (nhẹ, nhanh) để không bao giờ bị ô đen lúc chờ mạng
-    const initialTex = item.thumb_path ? this.getOrLoadTexture(item.thumb_path) : null;
+    // Dùng streamThumbTexture làm texture tức thì (nhẹ, giải mã ngoài luồng, chuẩn kích thước)
+    const initialTex = item.thumb_path ? (this.loadedTextures.get(item.thumb_path) || (() => {
+      const t = streamThumbTexture(item.thumb_path);
+      this.loadedTextures.set(item.thumb_path, t);
+      return t;
+    })()) : null;
     const picMat = new THREE.MeshStandardMaterial({
       map: initialTex, roughness: 0.4, metalness: 0.05,
       color: 0xffffff,

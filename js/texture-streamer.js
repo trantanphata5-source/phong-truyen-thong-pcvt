@@ -17,9 +17,9 @@ import * as THREE from 'three';
 
 // PERF-4: Ngưỡng mặc định (được ghi đè theo hạng máy trong TextureStreamer constructor)
 const DEFAULT_THRESHOLDS = {
-  cao:     { wallNear: 16, wallFar: 20, wallFree: 35, wallMax: 128, plaqueNear: 25, plaqueFree: 35, labelShow: 22, labelHide: 24, thumbPx: 384 },
-  canbang: { wallNear: 14, wallFar: 18, wallFree: 30, wallMax: 96,  plaqueNear: 20, plaqueFree: 30, labelShow: 20, labelHide: 22, thumbPx: 384 },
-  muot:    { wallNear: 10, wallFar: 14, wallFree: 20, wallMax: 48,  plaqueNear: 16, plaqueFree: 22, labelShow: 16, labelHide: 18, thumbPx: 320 }
+  cao:     { wallNear: 16, wallFar: 20, wallFree: 35, wallMax: 128, plaqueNear: 25, plaqueFree: 35, labelShow: 22, labelHide: 24, thumbPx: 384, wallMaxPx: 2048 },
+  canbang: { wallNear: 14, wallFar: 18, wallFree: 30, wallMax: 96,  plaqueNear: 20, plaqueFree: 30, labelShow: 20, labelHide: 22, thumbPx: 320, wallMaxPx: 1536 },
+  muot:    { wallNear: 10, wallFar: 14, wallFree: 18, wallMax: 48,  plaqueNear: 16, plaqueFree: 22, labelShow: 16, labelHide: 18, thumbPx: 256, wallMaxPx: 1024 }
 };
 
 const MAX_INFLIGHT = 4;          // số ảnh `wall` tải song song
@@ -31,7 +31,11 @@ const WALL_MAX_PX = 2048;        // ảnh gốc rộng hơn sẽ thu nhỏ khi g
 const THUMB_PX = 384;            // thumb tự tạo cho ảnh không có sẵn bản nhỏ
 
 /** Tải ảnh -> ImageBitmap (giải mã ngoài luồng chính, lật Y), thu nhỏ nếu rộng/cao hơn maxPx */
-export async function loadBitmap(url, maxPx = WALL_MAX_PX) {
+export async function loadBitmap(url, maxPx = null) {
+  if (!maxPx) {
+    const qTier = window.__HERITAGE_QUALITY || 'canbang';
+    maxPx = qTier === 'muot' ? 1024 : (qTier === 'canbang' ? 1536 : WALL_MAX_PX);
+  }
   const res = await fetch(url);
   if (!res.ok) throw new Error(`HTTP ${res.status}`);
   const blob = await res.blob();
@@ -61,7 +65,8 @@ export function streamThumbTexture(url) {
     new THREE.TextureLoader().load(url, (t) => { tex.image = t.image; tex.flipY = true; tex.needsUpdate = true; window.app?.requestRender?.(2); });
     return tex;
   }
-  const maxPx = window.__HERITAGE_QUALITY === 'muot' ? 320 : THUMB_PX;
+  const qTier = window.__HERITAGE_QUALITY || 'canbang';
+  const maxPx = qTier === 'muot' ? 256 : (qTier === 'canbang' ? 320 : THUMB_PX);
   loadBitmap(url, maxPx).then((bmp) => {
     tex.image = bmp;
     tex.needsUpdate = true;
@@ -99,6 +104,7 @@ export class TextureStreamer {
     this.labelShow = cfg.labelShow;
     this.labelHide = cfg.labelHide;
     this.thumbPx = cfg.thumbPx;
+    this.wallMaxPx = cfg.wallMaxPx;
 
     this.inflight = 0;
     this.loadQueue = [];     // photo chờ tải wall
