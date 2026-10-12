@@ -1,5 +1,5 @@
 import * as THREE from 'three';
-import { streamThumbTexture } from './texture-streamer.js';
+import { streamThumbTexture } from './texture-streamer.js?v=perf4b';
 
 /**
  * HCM Exhibit Builder

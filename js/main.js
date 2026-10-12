@@ -1,18 +1,18 @@
 import * as THREE from 'three';
-import { AudioService } from './audio-service.js?v=narrative-1';
-import { DataService } from './data-service.js?v=gd4-fix1';
-import { MuseumArchitect } from './museum-architect.js?v=gd4-fix1';
-import { ExhibitBuilder } from './exhibit-builder.js?v=gd4-fix1';
-import { ControlsManager } from './controls-manager.js?v=gd4-fix1';
-import { UIController } from './ui-controller.js?v=gd4-fix1';
-import { AlbumViewer } from './album-viewer.js?v=gd4-fix1';
-import { HCMExhibitBuilder } from './hcm-exhibit-builder.js?v=gd4-fix1';
-import { HCMTimelineBuilder } from './hcm-timeline-builder.js?v=gd4-fix1';
-import { GridMapTable } from './grid-map-table.js?v=gd5';
-import { ZoneScreenSlideshow } from './zone-screens.js?v=gd5';
-import { TextureStreamer } from './texture-streamer.js';
-import { instanceExhibitFrames, setExhibitFrameVisible, mergeStatic, countMeshes, measureZoneVisibility } from './perf-batching.js';
-import { ZONES, HALLWAY, ZONE_VISIBILITY } from './layout-config.js';
+import { AudioService } from './audio-service.js?v=perf4b';
+import { DataService } from './data-service.js?v=perf4b';
+import { MuseumArchitect } from './museum-architect.js?v=perf4b';
+import { ExhibitBuilder } from './exhibit-builder.js?v=perf4b';
+import { ControlsManager } from './controls-manager.js?v=perf4b';
+import { UIController } from './ui-controller.js?v=perf4b';
+import { AlbumViewer } from './album-viewer.js?v=perf4b';
+import { HCMExhibitBuilder } from './hcm-exhibit-builder.js?v=perf4b';
+import { HCMTimelineBuilder } from './hcm-timeline-builder.js?v=perf4b';
+import { GridMapTable } from './grid-map-table.js?v=perf4b';
+import { ZoneScreenSlideshow } from './zone-screens.js?v=perf4b';
+import { TextureStreamer } from './texture-streamer.js?v=perf4b';
+import { instanceExhibitFrames, setExhibitFrameVisible, mergeStatic, countMeshes, measureZoneVisibility } from './perf-batching.js?v=perf4b';
+import { ZONES, HALLWAY, ZONE_VISIBILITY } from './layout-config.js?v=perf4b';
 
 window.THREE = THREE;
 
@@ -77,6 +77,8 @@ class HeritageApp {
     this.currentZone = 'lobby';
     this.debugOverlay = null;
     this._lastZoneCheckTime = 0;
+    this._hasLoggedAnimateError = false;
+    this._hasLoggedRenderError = false;
 
     // Zone Audio Narration state
     this.activeNarrationZone = null;
@@ -396,7 +398,7 @@ class HeritageApp {
       // PERF: ?bench=1 -> đo 9 điểm (mục E3)
       if (urlParams.get('bench') === '1' && !navigator.webdriver) {
         setTimeout(async () => {
-          const m = await import('./perf-bench.js');
+          const m = await import('./perf-bench.js?v=perf4b');
           const res = await m.runBench(this, { label: 'PERF-4' });
           console.log('[BENCH] JSON:', JSON.stringify(res));
         }, 4000);
@@ -2181,74 +2183,88 @@ class HeritageApp {
     const delta = Math.min(this.clock.getDelta(), 0.1);
     const time = this.clock.getElapsedTime();
 
-    // Update Controls
-    this.controlsManager.update(delta);
+    try {
+      // Update Controls
+      this.controlsManager.update(delta);
 
-    // Update Minimap (GĐ6: pass camPos, yaw, and fovH)
-    const vFovRad = (this.camera.fov * Math.PI) / 180;
-    const fovH = 2 * Math.atan(Math.tan(vFovRad / 2) * this.camera.aspect);
-    this.uiController.updateMinimap(this.camera.position, this.controlsManager.currentYaw, fovH);
+      // Update Minimap (GĐ6: pass camPos, yaw, and fovH)
+      const vFovRad = (this.camera.fov * Math.PI) / 180;
+      const fovH = 2 * Math.atan(Math.tan(vFovRad / 2) * this.camera.aspect);
+      this.uiController.updateMinimap(this.camera.position, this.controlsManager.currentYaw, fovH);
 
-    // GD5: Animate power grid table (ghim, nhấp nháy, LOD bản đồ)
-    if (this.gridMapTable && this.gridMapTable.animate) {
-      this.gridMapTable.animate(delta, time, this.camera.position);
-      if (this.gridMapTable._pulses && this.gridMapTable._pulses.length > 0) this.requestRender(1);
-    }
-    this.updateGridHudProximity();
-
-    // GD5-fix2: Zone culling and Zone screens slideshow
-    this.updateZoneCulling();
-    this.updateZoneNarration();
-    // PERF-4 E1: Cập nhật đèn rọi theo khu cho hạng Mượt
-    if (this.architect && this.architect.updateSpotlightsForZone) {
-      this.architect.updateSpotlightsForZone(this.currentZone);
-    }
-    // PERF-4 E2: Độ phân giải động khi di chuyển
-    this.updateDynamicResolution(delta);
-    this.checkAutoDowngrade(delta);
-
-    // PERF-1 B1.2: hiệu ứng liên tục chỉ khi đang ở khu đó, giới hạn 30 fps
-    const now = performance.now();
-    let fxWantsRender = false;
-    this._fxAccum += delta;
-    if (now - this._lastFxRender >= 33) {
-      const fxDelta = this._fxAccum;
-      this._fxAccum = 0;
-      this._lastFxRender = now;
-      if (this.currentZone === 'khu3' && this.architect && this.architect.animate) {
-        this.architect.animate(fxDelta, time); // sàn chạy sáng khu 3
-        fxWantsRender = true;
+      // GD5: Animate power grid table (ghim, nhấp nháy, LOD bản đồ)
+      if (this.gridMapTable && this.gridMapTable.animate) {
+        this.gridMapTable.animate(delta, time, this.camera.position);
+        if (this.gridMapTable._pulses && this.gridMapTable._pulses.length > 0) this.requestRender(1);
       }
-      if (this.slideshowKhu4 && this.slideshowKhu4.update(fxDelta)) fxWantsRender = true;
-      if (this.slideshowKhu6 && this.slideshowKhu6.update(fxDelta)) fxWantsRender = true;
-    }
-    if (fxWantsRender) this.requestRender(1);
+      this.updateGridHudProximity();
 
-    // PERF-3: tải/giải phóng ảnh và biển tên theo khoảng cách (tối đa 2 ảnh lớn lên GPU mỗi khung)
-    if (this.textureStreamer && this.textureStreamer.update()) this.requestRender(1);
+      // GD5-fix2: Zone culling and Zone screens slideshow
+      this.updateZoneCulling();
+      this.updateZoneNarration();
+      // PERF-4 E1: Cập nhật đèn rọi theo khu cho hạng Mượt
+      if (this.architect && this.architect.updateSpotlightsForZone) {
+        this.architect.updateSpotlightsForZone(this.currentZone);
+      }
+      // PERF-4 E2: Độ phân giải động khi di chuyển
+      this.updateDynamicResolution(delta);
+      this.checkAutoDowngrade(delta);
 
-    // PERF-1 B1.1: camera đổi vị trí/góc (> 1e-4) hoặc đang glide -> vẽ
-    this.camera.updateMatrixWorld();
-    const a = this.camera.matrixWorld.elements;
-    const b = this._lastCamMatrix.elements;
-    let camMoved = false;
-    for (let i = 0; i < 16; i++) {
-      if (Math.abs(a[i] - b[i]) > 1e-4) { camMoved = true; break; }
+      // PERF-1 B1.2: hiệu ứng liên tục chỉ khi đang ở khu đó, giới hạn 30 fps
+      const now = performance.now();
+      let fxWantsRender = false;
+      this._fxAccum += delta;
+      if (now - this._lastFxRender >= 33) {
+        const fxDelta = this._fxAccum;
+        this._fxAccum = 0;
+        this._lastFxRender = now;
+        if (this.currentZone === 'khu3' && this.architect && this.architect.animate) {
+          this.architect.animate(fxDelta, time); // sàn chạy sáng khu 3
+          fxWantsRender = true;
+        }
+        if (this.slideshowKhu4 && this.slideshowKhu4.update(fxDelta)) fxWantsRender = true;
+        if (this.slideshowKhu6 && this.slideshowKhu6.update(fxDelta)) fxWantsRender = true;
+      }
+      if (fxWantsRender) this.requestRender(1);
+
+      // PERF-3: tải/giải phóng ảnh và biển tên theo khoảng cách (tối đa 2 ảnh lớn lên GPU mỗi khung)
+      if (this.textureStreamer && this.textureStreamer.update()) this.requestRender(1);
+
+      // PERF-1 B1.1: camera đổi vị trí/góc (> 1e-4) hoặc đang glide -> vẽ
+      this.camera.updateMatrixWorld();
+      const a = this.camera.matrixWorld.elements;
+      const b = this._lastCamMatrix.elements;
+      let camMoved = false;
+      for (let i = 0; i < 16; i++) {
+        if (Math.abs(a[i] - b[i]) > 1e-4) { camMoved = true; break; }
+      }
+      if (camMoved) {
+        this._lastCamMatrix.copy(this.camera.matrixWorld);
+        this.requestRender(1);
+      }
+      if (this.controlsManager.isGliding) this.requestRender(1);
+    } catch (err) {
+      if (!this._hasLoggedAnimateError) {
+        console.error('[HeritageApp] Lỗi trong animate update:', err);
+        this._hasLoggedAnimateError = true;
+      }
     }
-    if (camMoved) {
-      this._lastCamMatrix.copy(this.camera.matrixWorld);
-      this.requestRender(1);
-    }
-    if (this.controlsManager.isGliding) this.requestRender(1);
 
     // PERF-1 B1.3: chỉ gọi render() khi cần; đứng yên -> 0 lần vẽ
     this.isRenderingNow = false;
     if (!this._benching && (this.needsRender || this._renderFrames > 0)) {
-      this.renderer.render(this.scene, this.camera);
-      this._renderCount++;
-      this.isRenderingNow = true;
-      this.needsRender = false;
-      if (this._renderFrames > 0) this._renderFrames--;
+      try {
+        this.renderer.render(this.scene, this.camera);
+        this._renderCount++;
+        this.isRenderingNow = true;
+        this.needsRender = false;
+        if (this._renderFrames > 0) this._renderFrames--;
+      } catch (renderErr) {
+        if (!this._hasLoggedRenderError) {
+          console.error('[HeritageApp] Lỗi renderer.render:', renderErr);
+          this._hasLoggedRenderError = true;
+        }
+      }
     }
 
     // GĐ5: Debug Overlay (Mục E.4)

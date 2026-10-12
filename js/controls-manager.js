@@ -1,5 +1,5 @@
 import * as THREE from 'three';
-import { EYE_HEIGHT, buildCollisionBoxes, WALKABLE_REGIONS, HALL_TARGETS, ALBUM_CABINETS } from './layout-config.js';
+import { EYE_HEIGHT, buildCollisionBoxes, WALKABLE_REGIONS, HALL_TARGETS, ALBUM_CABINETS } from './layout-config.js?v=perf4b';
 
 /**
  * Controls Manager (Artsteps Standard)

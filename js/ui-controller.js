@@ -5,14 +5,14 @@ import {
   ALBUM_CABINETS,
   GRID_TABLE,
   HALL_TARGETS
-} from './layout-config.js';
+} from './layout-config.js?v=perf4b';
 import {
   renderNarrativeHTML,
   formatDateVN,
   displayTitle,
   escapeHTML,
   NARRATIVE_SOURCE_LABEL
-} from './narrative.js';
+} from './narrative.js?v=perf4b';
 
 /**
  * UI Controller (Artsteps Standard)
@@ -487,9 +487,10 @@ export class UIController {
         card.className = `tour-thumb-card ${flatIdx === 0 ? 'active' : ''}`;
         card.dataset.index = currentIdx;
         card.dataset.id = item.id;
+        const yearDisplay = (item.year && item.year !== 0 && item.year !== '0') ? item.year : '—';
         card.innerHTML = `
           <img src="${item.thumb_path || item.wall_path}" alt="${escapeHTML(displayTitle(item))}" loading="lazy" />
-          <span class="tour-thumb-badge">${item.year}</span>
+          <span class="tour-thumb-badge">${yearDisplay}</span>
         `;
 
         card.addEventListener('click', () => {
@@ -585,7 +586,8 @@ export class UIController {
       const parts = item.date.split('-');
       this.dom.cardYearTag.textContent = parts.length === 3 ? `${parts[2]}/${parts[1]}/${parts[0]}` : item.date;
     } else {
-      this.dom.cardYearTag.textContent = `Năm ${item.year}`;
+      const yearDisplay = (item.year && item.year !== 0 && item.year !== '0') ? `Năm ${item.year}` : '—';
+      this.dom.cardYearTag.textContent = yearDisplay;
     }
 
     // Với ảnh: thay dòng "ĐƠN VỊ TRAO TẶNG" bằng "SỰ KIỆN", hiện caption và ngày đầy đủ.
@@ -603,13 +605,15 @@ export class UIController {
         CD_EVN: '🚩', CD_EVNSPC: '🚩', LDLD_BRVT: '🚩'
       };
       this.dom.cardOrgIcon.textContent = icons[item.org_code] || '🎖';
-      this.dom.cardDescription.textContent = item.caption || `${item.item_type || 'Hiện vật'} năm ${item.year}`;
+      const yearStr = (item.year && item.year !== 0 && item.year !== '0') ? ` năm ${item.year}` : '';
+      this.dom.cardDescription.textContent = item.caption || `${item.item_type || 'Hiện vật'}${yearStr}`;
       if (cohortTitleEl) {
         cohortTitleEl.innerHTML = '<i data-lucide="layers"></i> CÙNG NĂM & CÙNG BỘ';
       }
     } else {
       if (orgSubEl) orgSubEl.textContent = 'SỰ KIỆN';
-      const dateDisplay = item.date ? formatDateVN(item.date) : `${item.year}`;
+      const yearDisplay = (item.year && item.year !== 0 && item.year !== '0') ? `${item.year}` : '—';
+      const dateDisplay = item.date ? formatDateVN(item.date) : yearDisplay;
       const evTitle = displayTitle(item);
       this.dom.cardOrgName.textContent = evTitle ? `${dateDisplay} • ${evTitle}` : `Sự kiện ngày ${dateDisplay}`;
       this.dom.cardOrgIcon.textContent = '📸';
@@ -705,9 +709,10 @@ export class UIController {
     this.dom.lightboxImg.src = item.full_path || item.wall_path || item.thumb_path;
     const sourceLabel = { bang_khen: 'Bằng khen', co: 'Cờ thi đua', anh_tu_lieu: 'Ảnh tư liệu', tranh_tang: 'Tranh tặng', pcvt: 'PCVT', dang_bo: 'Đảng bộ', cong_doan: 'Công đoàn', doan_tn: 'Đoàn TN' };
     const orgDisplay = item.org_name || item.org_code || '';
+    const yearDisplay = (item.year && item.year !== 0 && item.year !== '0') ? `Năm ${item.year}` : '—';
     this.dom.lightboxCaption.innerHTML = `
       <div style="font-family: var(--font-sans); font-size: 16px; font-weight: 700; color: #facc15; margin-bottom: 4px; letter-spacing: 0.2px;">${escapeHTML(displayTitle(item) || item.new_name || '')}</div>
-      <div style="font-family: var(--font-sans); font-size: 13px; font-weight: 500; color: #cbd5e1;">${sourceLabel[item.source] || item.source} • Năm ${item.year} • ${orgDisplay}</div>
+      <div style="font-family: var(--font-sans); font-size: 13px; font-weight: 500; color: #cbd5e1;">${sourceLabel[item.source] || item.source} • ${yearDisplay} • ${orgDisplay}</div>
     `;
     this.dom.lightboxModal.classList.remove('hidden');
     this.audioService.playClickSound();
@@ -732,11 +737,12 @@ export class UIController {
     items.slice(0, 60).forEach((item, idx) => {
       const el = document.createElement('div');
       el.className = 'catalog-item';
+      const yearDisplay = (item.year && item.year !== 0 && item.year !== '0') ? item.year : '—';
       el.innerHTML = `
         <img class="catalog-thumb" src="${item.thumb_path || item.wall_path}" alt="${escapeHTML(displayTitle(item))}" loading="lazy" />
         <div class="catalog-info">
           <span class="catalog-item-title">${escapeHTML(displayTitle(item) || item.new_name || '')}</span>
-          <span class="catalog-item-meta">${item.year} • ${item.org_name || item.org_code || ''} • ${item.source}</span>
+          <span class="catalog-item-meta">${yearDisplay} • ${item.org_name || item.org_code || ''} • ${item.source}</span>
         </div>
       `;
       el.addEventListener('click', () => {

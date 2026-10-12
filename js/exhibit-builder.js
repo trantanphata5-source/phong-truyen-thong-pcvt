@@ -1,8 +1,8 @@
 import * as THREE from 'three';
-import { FONT_FAMILY } from './fonts.js';
-import { placeholderTexture, streamThumbTexture } from './texture-streamer.js';
-import { WALLS, PARTITIONS, WALL_THICKNESS, PARTITION_THICKNESS, ZONES, ALBUM_CABINETS, buildCollisionBoxes } from './layout-config.js';
-import { MilestoneWallBuilder } from './milestone-wall.js';
+import { FONT_FAMILY } from './fonts.js?v=perf4b';
+import { placeholderTexture, streamThumbTexture } from './texture-streamer.js?v=perf4b';
+import { WALLS, PARTITIONS, WALL_THICKNESS, PARTITION_THICKNESS, ZONES, ALBUM_CABINETS, buildCollisionBoxes } from './layout-config.js?v=perf4b';
+import { MilestoneWallBuilder } from './milestone-wall.js?v=perf4b';
 
 /**
  * Exhibit Builder v4 (GĐ3-fix2)

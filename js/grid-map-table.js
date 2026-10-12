@@ -1,5 +1,5 @@
 import * as THREE from 'three';
-import { GRID_TABLE } from './layout-config.js';
+import { GRID_TABLE } from './layout-config.js?v=perf4b';
 
 /**
  * GridMapTable v2 (GĐ5-fix4)

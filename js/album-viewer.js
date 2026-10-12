@@ -8,7 +8,7 @@
  * - Realistic dual-page flip with real page-flip.mp3 sound
  * - Individual photo zoom lightbox
  */
-import { renderNarrativeHTML, formatDateVN, escapeHTML, NARRATIVE_SOURCE_LABEL } from './narrative.js';
+import { renderNarrativeHTML, formatDateVN, escapeHTML, NARRATIVE_SOURCE_LABEL } from './narrative.js?v=perf4b';
 
 export class AlbumViewer {
   constructor(app) {

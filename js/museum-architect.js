@@ -1,5 +1,5 @@
 import * as THREE from 'three';
-import { WALLS, PARTITIONS, WALL_HEIGHT, PARTITION_HEIGHT, FLOORS, ALBUM_CABINETS } from './layout-config.js';
+import { WALLS, PARTITIONS, WALL_HEIGHT, PARTITION_HEIGHT, FLOORS, ALBUM_CABINETS } from './layout-config.js?v=perf4b';
 
 /**
  * Museum Architect (Artsteps Standard)

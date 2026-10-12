@@ -1,5 +1,5 @@
 import * as THREE from 'three';
-import { loadBitmap, placeholderTexture } from './texture-streamer.js';
+import { loadBitmap, placeholderTexture } from './texture-streamer.js?v=perf4b';
 
 const FONT_FAMILY = '"Be Vietnam Pro", system-ui, sans-serif';
 
