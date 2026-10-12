@@ -722,8 +722,10 @@ export class MuseumArchitect {
     // PERF-4: Mượt dùng chiều cao canvas 256 (tiết kiệm ~64 MB), các hạng khác 512
     const isMuotBanner = (this.app?.quality === 'muot') || (window.__HERITAGE_QUALITY === 'muot');
     const scaleBanner = isMuotBanner ? 0.5 : 1.0;
-    const canvasH = Math.round(512 * scaleBanner);
-    const canvasW = Math.round(512 * (w / h) * scaleBanner);
+    const DH = 512;
+    const DW = Math.round(512 * (w / h));
+    const canvasH = Math.round(DH * scaleBanner);
+    const canvasW = Math.round(DW * scaleBanner);
     const canvas = document.createElement('canvas');
     canvas.width = canvasW;
     canvas.height = canvasH;
@@ -732,43 +734,43 @@ export class MuseumArchitect {
 
     // 1. Background
     if (cfg.isDual) {
-      const grad = ctx.createLinearGradient(0, 0, canvasW, 0);
+      const grad = ctx.createLinearGradient(0, 0, DW, 0);
       grad.addColorStop(0, '#1d4ed8');
       grad.addColorStop(0.48, '#1e40af');
       grad.addColorStop(0.52, '#0369a1');
       grad.addColorStop(1, '#0284c7');
       ctx.fillStyle = grad;
-      ctx.fillRect(0, 0, canvasW, canvasH);
+      ctx.fillRect(0, 0, DW, DH);
     } else if (cfg.bgGrad) {
-      const grad = ctx.createLinearGradient(0, 0, canvasW, 0);
+      const grad = ctx.createLinearGradient(0, 0, DW, 0);
       grad.addColorStop(0, cfg.bgGrad[0]);
       grad.addColorStop(0.5, cfg.bgGrad[1]);
       grad.addColorStop(1, cfg.bgGrad[0]);
       ctx.fillStyle = grad;
-      ctx.fillRect(0, 0, canvasW, canvasH);
+      ctx.fillRect(0, 0, DW, DH);
     } else {
       ctx.fillStyle = cfg.bgColor;
-      ctx.fillRect(0, 0, canvasW, canvasH);
+      ctx.fillRect(0, 0, DW, DH);
     }
 
     // 2. Borders
     ctx.strokeStyle = cfg.borderColor;
     ctx.lineWidth = 14;
-    ctx.strokeRect(18, 18, canvasW - 36, canvasH - 36);
+    ctx.strokeRect(18, 18, DW - 36, DH - 36);
 
     ctx.strokeStyle = cfg.innerBorder;
     ctx.lineWidth = 4;
-    ctx.strokeRect(34, 34, canvasW - 68, canvasH - 68);
+    ctx.strokeRect(34, 34, DW - 68, DH - 68);
 
     // 3. Badge (Huy hiệu tròn ghi số khu) — GĐ6-fix1 D3: cao 72 px, chữ 34 px, nằm trong dải 12–26% canvasH
-    const maxTextW = canvasW - 160;
+    const maxTextW = DW - 160;
     if (badge) {
       const badgeH = 72;
       ctx.font = `800 34px "Be Vietnam Pro", sans-serif`;
       ctx.letterSpacing = '0.04em';
-      const badgeW = Math.min(canvasW - 200, Math.max(200, ctx.measureText(badge).width + 80));
-      const badgeX = canvasW / 2 - badgeW / 2;
-      const badgeY = Math.round(canvasH * 0.19 - badgeH / 2);
+      const badgeW = Math.min(DW - 200, Math.max(200, ctx.measureText(badge).width + 80));
+      const badgeX = DW / 2 - badgeW / 2;
+      const badgeY = Math.round(DH * 0.19 - badgeH / 2);
       ctx.fillStyle = cfg.badgeBg;
       ctx.beginPath();
       ctx.roundRect(badgeX, badgeY, badgeW, badgeH, badgeH / 2);
@@ -781,13 +783,13 @@ export class MuseumArchitect {
       ctx.fillStyle = cfg.badgeText;
       ctx.textAlign = 'center';
       ctx.textBaseline = 'middle';
-      ctx.fillText(badge, canvasW / 2, badgeY + badgeH / 2 + 1);
+      ctx.fillText(badge, DW / 2, badgeY + badgeH / 2 + 1);
     }
 
     // 4. Main Title — GĐ6-fix1 D3: titleSize = canvasH × 0,22, thu tối thiểu canvasH × 0,14, tâm ~50%
-    const titleY = Math.round(canvasH * 0.50);
-    const titleMin = Math.round(canvasH * 0.14);
-    let titleSize = Math.round(canvasH * 0.22);
+    const titleY = Math.round(DH * 0.50);
+    const titleMin = Math.round(DH * 0.14);
+    let titleSize = Math.round(DH * 0.22);
     ctx.font = `800 ${titleSize}px "Be Vietnam Pro", sans-serif`;
     ctx.letterSpacing = '0.06em';
     while (ctx.measureText(title).width > maxTextW && titleSize > titleMin) {
@@ -797,21 +799,21 @@ export class MuseumArchitect {
     ctx.fillStyle = cfg.titleColor;
     ctx.textAlign = 'center';
     ctx.textBaseline = 'middle';
-    ctx.fillText(title, canvasW / 2, titleY);
+    ctx.fillText(title, DW / 2, titleY);
 
     // Divider line (giữa tiêu đề và dòng phụ)
-    const divY = Math.round(canvasH * 0.645);
+    const divY = Math.round(DH * 0.645);
     ctx.strokeStyle = cfg.borderColor;
     ctx.lineWidth = 3;
     ctx.beginPath();
-    ctx.moveTo(canvasW / 2 - Math.min(420, canvasW * 0.25), divY);
-    ctx.lineTo(canvasW / 2 + Math.min(420, canvasW * 0.25), divY);
+    ctx.moveTo(DW / 2 - Math.min(420, DW * 0.25), divY);
+    ctx.lineTo(DW / 2 + Math.min(420, DW * 0.25), divY);
     ctx.stroke();
 
     // 5. Subtitle — GĐ6-fix1 D3: subSize = canvasH × 0,12, tối thiểu canvasH × 0,08, tâm ~78%
-    const subY = Math.round(canvasH * 0.78);
-    const subMin = Math.round(canvasH * 0.08);
-    let subSize = Math.round(canvasH * 0.12);
+    const subY = Math.round(DH * 0.78);
+    const subMin = Math.round(DH * 0.08);
+    let subSize = Math.round(DH * 0.12);
     ctx.font = `500 ${subSize}px "Be Vietnam Pro", sans-serif`;
     ctx.letterSpacing = '0.02em';
     while (ctx.measureText(subtitle).width > maxTextW && subSize > subMin) {
@@ -821,7 +823,7 @@ export class MuseumArchitect {
     ctx.fillStyle = cfg.subColor;
     ctx.textAlign = 'center';
     ctx.textBaseline = 'middle';
-    ctx.fillText(subtitle, canvasW / 2, subY);
+    ctx.fillText(subtitle, DW / 2, subY);
     ctx.letterSpacing = '0px';
 
     // 3D Texture & Material
@@ -2786,8 +2788,10 @@ export class MuseumArchitect {
     const totemPlaneH = h - 0.1;
     const isMuotTotem = (this.app?.quality === 'muot') || (window.__HERITAGE_QUALITY === 'muot');
     const scaleTotem = isMuotTotem ? 0.5 : 1.0;
-    const cW = Math.round(800 * scaleTotem);
-    const cH = Math.round(cW * (totemPlaneH / totemPlaneW)); // ≈ 1736 (hoặc 868 ở Mượt)
+    const DW = 800;
+    const DH = Math.round(DW * (totemPlaneH / totemPlaneW)); // ≈ 1736
+    const cW = Math.round(DW * scaleTotem);
+    const cH = Math.round(DH * scaleTotem);
     const c = document.createElement('canvas');
     c.width = cW;
     c.height = cH;
@@ -2798,40 +2802,40 @@ export class MuseumArchitect {
       if (scaleTotem !== 1.0) ctx.scale(scaleTotem, scaleTotem);
       // Nền trắng tinh khiết
       ctx.fillStyle = '#ffffff';
-      ctx.fillRect(0, 0, 800, cH / scaleTotem);
+      ctx.fillRect(0, 0, DW, DH);
 
       // Khung viền xanh EVN
       ctx.strokeStyle = '#1e40a0';
       ctx.lineWidth = 6;
-      ctx.strokeRect(24, 24, cW - 48, cH - 48);
+      ctx.strokeRect(24, 24, DW - 48, DH - 48);
 
       ctx.strokeStyle = 'rgba(56, 189, 248, 0.4)';
       ctx.lineWidth = 2;
-      ctx.strokeRect(36, 36, cW - 72, cH - 72);
+      ctx.strokeRect(36, 36, DW - 72, DH - 72);
 
       // Header EVNHCMC
       ctx.fillStyle = '#1e40a0';
       ctx.font = '700 28px "Be Vietnam Pro", sans-serif';
       ctx.textAlign = 'center';
-      ctx.fillText('EVNHCMC • PC VŨNG TÀU', cW / 2, 160);
+      ctx.fillText('EVNHCMC • PC VŨNG TÀU', DW / 2, 160);
 
       ctx.fillStyle = '#64748b';
       ctx.font = '500 20px "Be Vietnam Pro", sans-serif';
       ctx.letterSpacing = '2px';
-      ctx.fillText(sub, cW / 2, 205);
+      ctx.fillText(sub, DW / 2, 205);
 
       // Đường kẻ phân cách
       ctx.strokeStyle = '#1e40a0';
       ctx.lineWidth = 3;
       ctx.beginPath();
       ctx.moveTo(100, 250);
-      ctx.lineTo(cW - 100, 250);
+      ctx.lineTo(DW - 100, 250);
       ctx.stroke();
 
       // Logo EVNHCMC ở phần đầu trụ (rộng khoảng 0.35m, giữ đúng tỷ lệ gốc, nền trắng) (Mục E.3)
       const logoW = 255;
       const logoH = 200;
-      const logoX = cW / 2 - logoW / 2;
+      const logoX = DW / 2 - logoW / 2;
       const logoY = 360;
 
       // Nền trắng tinh khiết cho logo
@@ -2845,7 +2849,7 @@ export class MuseumArchitect {
       // Tiêu đề trụ
       ctx.fillStyle = '#1e40a0';
       ctx.font = '900 46px "Be Vietnam Pro", sans-serif';
-      ctx.fillText(title, cW / 2, 800);
+      ctx.fillText(title, DW / 2, 800);
 
       // Khẩu hiệu chính thức
       ctx.fillStyle = '#0f172a';
@@ -2857,19 +2861,19 @@ export class MuseumArchitect {
         const testLine = line + words[n] + ' ';
         const metrics = ctx.measureText(testLine);
         if (metrics.width > 640 && n > 0) {
-          ctx.fillText(line.trim(), cW / 2, y);
+          ctx.fillText(line.trim(), DW / 2, y);
           line = words[n] + ' ';
           y += 55;
         } else {
           line = testLine;
         }
       }
-      ctx.fillText(line.trim(), cW / 2, y);
+      ctx.fillText(line.trim(), DW / 2, y);
 
       // Footer
       ctx.fillStyle = '#475569';
       ctx.font = '600 22px "Be Vietnam Pro", sans-serif';
-      ctx.fillText('CHUYỂN ĐỔI SỐ • LƯỚI ĐIỆN THÔNG MINH', 400, (cH / scaleTotem) - 120);
+      ctx.fillText('CHUYỂN ĐỔI SỐ • LƯỚI ĐIỆN THÔNG MINH', DW / 2, DH - 120);
 
       ctx.restore();
       faceTex.needsUpdate = true;

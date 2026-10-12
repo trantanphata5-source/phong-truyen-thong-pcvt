@@ -296,8 +296,10 @@ class HeritageApp {
       window.assertAllInsideBoard = () => this.gridMapTable.assertAllInsideBoard();
       window.assertFramesOnWall = () => this.exhibitBuilder.assertFramesOnWall();
       window.assertNoBoardOverlap = () => this.assertNoBoardOverlap();
+      window.assertCanvasFilled = () => this.assertCanvasFilled();
       this.buildOccluders();
       this.assertNoBoardOverlap();
+      this.assertCanvasFilled();
       this.updateZoneCulling();
 
       // PERF-1 B3: ảnh, biển tên, bảng chữ -> MeshBasicMaterial (không tính sáng, đúng màu gốc)
@@ -411,19 +413,21 @@ class HeritageApp {
   }
 
   /**
-   * PERF-4 E2: Độ phân giải động khi di chuyển:
-   * - Hạng Mượt: đo thời gian khung trung bình trong 1s; nếu > 33ms thì giảm 0.1 (min 0.75), nếu < 20ms tăng lại (max 1.0)
-   * - Khi camera dừng 250ms: vẽ lại 1 khung ở pixelRatio 1.5 (supersample) để ảnh tĩnh luôn mịn
+   * PERF-4 E2 & B3: Độ phân giải động khi di chuyển:
+   * - Hạng Mượt: đo thời gian khung trung bình trong 0.5s; nếu > 33ms thì giảm 0.1 (min 0.75), nếu < 20ms tăng lại (max 1.0)
+   * - B3: Bỏ bước supersample 1.5 lúc dừng.
+   * - Khi dừng >= 250ms: nếu pixelRatio < 1.0 thì đặt lại 1.0.
+   * - Sau mọi lần gọi setPixelRatio() đều gọi requestRender(2).
    */
   updateDynamicResolution(delta) {
     if (this.quality !== 'muot') return;
 
     const cm = this.controlsManager;
-    const isMoving = cm && (cm.isGliding || cm.dragMoved || cm.isRotating);
+    const isMoving = cm ? cm.isMoving() : false;
 
     if (isMoving) {
       this._lastMoveTime = performance.now();
-      this._supersampled = false;
+      this._hasResetPrOnStop = false;
 
       this._dynFrameTimes = this._dynFrameTimes || [];
       this._dynFrameTimes.push(delta * 1000);
@@ -437,26 +441,89 @@ class HeritageApp {
         if (avg > 33 && pr > 0.75) {
           pr = Math.max(0.75, +(pr - 0.1).toFixed(2));
           this.renderer.setPixelRatio(pr);
+          this.requestRender(2);
         } else if (avg < 20 && pr < 1.0) {
           pr = Math.min(1.0, +(pr + 0.05).toFixed(2));
           this.renderer.setPixelRatio(pr);
+          this.requestRender(2);
         }
       }
     } else {
       const now = performance.now();
       const stoppedFor = now - (this._lastMoveTime || now);
-      if (stoppedFor >= 250 && !this._supersampled) {
-        this._supersampled = true;
-        // Supersample 1 khung ở 1.5 khi dừng yên
-        this.renderer.setPixelRatio(1.5);
-        this.requestRender(1);
-        setTimeout(() => {
-          if (!cm?.isGliding && !cm?.dragMoved && this._supersampled) {
-            this.renderer.setPixelRatio(1.0);
-          }
-        }, 100);
+      if (stoppedFor >= 250 && !this._hasResetPrOnStop) {
+        this._hasResetPrOnStop = true;
+        if (this.renderer.getPixelRatio() < 1.0) {
+          this.renderer.setPixelRatio(1.0);
+          this.requestRender(2);
+        }
       }
     }
+  }
+
+  /**
+   * PERF-4 B1: Tự hạ hạng khi chạy (chỉ áp dụng khi nguồn là 'auto'):
+   * - Trong 10 giây đầu có di chuyển, nếu thời gian khung trung bình > 28 ms kéo dài 2 giây thì lưu heritage_quality_auto thấp hơn 1 hạng
+   * - Hạ ngay pixelRatio và anisotropy
+   * - Hiện thông báo nhỏ "Đã chuyển sang chế độ … cho mượt hơn"
+   */
+  checkAutoDowngrade(delta) {
+    if (this._autoDowngraded || this.qualitySource !== 'auto' || this.quality === 'muot') return;
+
+    const cm = this.controlsManager;
+    const isMoving = cm ? cm.isMoving() : false;
+    if (!isMoving) {
+      this._slowWindow = [];
+      return;
+    }
+
+    this._movedTimeTotal = (this._movedTimeTotal || 0) + delta;
+    if (this._movedTimeTotal > 10.0) return;
+
+    const now = performance.now();
+    this._slowWindow = this._slowWindow || [];
+    this._slowWindow.push({ t: now, dt: delta * 1000 });
+
+    while (this._slowWindow.length > 0 && (now - this._slowWindow[0].t) > 2000) {
+      this._slowWindow.shift();
+    }
+
+    if (this._slowWindow.length >= 10 && (now - this._slowWindow[0].t) >= 1900) {
+      const avgDt = this._slowWindow.reduce((sum, item) => sum + item.dt, 0) / this._slowWindow.length;
+      if (avgDt > 28.0) {
+        const prevTier = this.quality;
+        const newTier = (prevTier === 'cao') ? 'canbang' : 'muot';
+        this.quality = newTier;
+        window.__HERITAGE_QUALITY = newTier;
+        localStorage.setItem('heritage_quality_auto', newTier);
+        this._autoDowngraded = true;
+
+        const newPr = (newTier === 'muot') ? 1.0 : (newTier === 'canbang' ? 1.0 : Math.min(window.devicePixelRatio, 1.5));
+        this.renderer.setPixelRatio(newPr);
+        window.__ANISO_CAP = 4;
+        this.requestRender(2);
+
+        const tierName = newTier === 'canbang' ? 'Cân bằng' : 'Mượt';
+        this.showQualityToast(`Đã chuyển sang chế độ ${tierName} cho mượt hơn`);
+        console.warn(`[PERF-4] Tự động hạ hạng: ${prevTier} -> ${newTier} (avg: ${avgDt.toFixed(1)} ms trong 2s đầu di chuyển)`);
+      }
+    }
+  }
+
+  showQualityToast(msg) {
+    let toast = document.getElementById('heritage-quality-toast');
+    if (!toast) {
+      toast = document.createElement('div');
+      toast.id = 'heritage-quality-toast';
+      toast.style.cssText = 'position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:rgba(15,23,42,0.92);color:#38bdf8;border:1px solid rgba(56,189,248,0.6);padding:10px 22px;border-radius:24px;font-family:"Be Vietnam Pro",sans-serif;font-size:14px;font-weight:600;box-shadow:0 8px 24px rgba(0,0,0,0.6);z-index:9999;transition:opacity 0.4s ease;pointer-events:none;';
+      document.body.appendChild(toast);
+    }
+    toast.textContent = msg;
+    toast.style.opacity = '1';
+    clearTimeout(this._qualityToastTimeout);
+    this._qualityToastTimeout = setTimeout(() => {
+      if (toast) toast.style.opacity = '0';
+    }, 4000);
   }
 
   /** PERF-1 B1: yêu cầu vẽ lại trong `frames` khung tới */
@@ -978,6 +1045,75 @@ class HeritageApp {
     console.log(`=> KẾT QUẢ assertNoBoardOverlap: đã kiểm ${boards.length} bảng, ${errors.length} lỗi ${errors.length === 0 ? '✓ ĐẠT' : '✗'}\n`);
     this.boardOverlapErrors = errors;
     return errors.length;
+  }
+
+  /**
+   * PERF-4 A3: Kiểm tra canvas đã lấp đầy (0 lỗi mép phải / mép dưới bị đen/đồng màu)
+   */
+  assertCanvasFilled() {
+    console.log('\n=== KIỂM TRA CANVAS ĐẦY ĐỦ (assertCanvasFilled) ===');
+    const errors = [];
+    const checkedMeshes = new Set();
+    let totalChecked = 0;
+
+    const isRegionUniform = (ctx, rx, ry, rw, rh) => {
+      try {
+        const img = ctx.getImageData(rx, ry, rw, rh).data;
+        const r0 = img[0], g0 = img[1], b0 = img[2], a0 = img[3];
+        for (let i = 4; i < img.length; i += 4) {
+          if (img[i] !== r0 || img[i + 1] !== g0 || img[i + 2] !== b0 || img[i + 3] !== a0) {
+            return false;
+          }
+        }
+        return true;
+      } catch (err) {
+        return false;
+      }
+    };
+
+    this.scene.traverse((obj) => {
+      if (!obj.isMesh || checkedMeshes.has(obj)) return;
+      const mat = obj.material;
+      if (!mat) return;
+      const tex = mat.map;
+      if (!tex || (!tex.isCanvasTexture && !(tex.image instanceof HTMLCanvasElement))) return;
+
+      const canvas = tex.image;
+      if (!canvas || !canvas.width || !canvas.height) return;
+      checkedMeshes.add(obj);
+
+      const name = obj.name || 'UnnamedMesh';
+      if (name.startsWith('WallSlogan_')) return;
+      if (name.startsWith('Plaque_') && !name.includes('Souvenir') && !name.includes('Art')) return;
+
+      totalChecked++;
+      const ctx = canvas.getContext('2d');
+      if (!ctx) return;
+
+      const w = canvas.width;
+      const h = canvas.height;
+      const rightW = Math.max(1, Math.round(w * 0.15));
+      const rightX = w - rightW;
+      const bottomH = Math.max(1, Math.round(h * 0.15));
+      const bottomY = h - bottomH;
+
+      const rightUniform = isRegionUniform(ctx, rightX, 0, rightW, h);
+      // Với LED_Footer: ở hạng Cao mép dưới là đệm nền đồng màu (#0f172a), chỉ mép phải có số trang [1/n]
+      const checkBottom = !name.startsWith('LED_Footer_');
+      const bottomUniform = checkBottom ? isRegionUniform(ctx, 0, bottomY, w, bottomH) : false;
+
+      if (rightUniform || bottomUniform) {
+        const side = rightUniform && bottomUniform ? 'mép phải và mép dưới' : (rightUniform ? 'mép phải' : 'mép dưới');
+        errors.push(`${name} (canvas ${w}×${h}): ${side} toàn một màu, chưa lấp đầy canvas!`);
+      }
+    });
+
+    if (errors.length > 0) {
+      errors.forEach(e => console.error(`[assertCanvasFilled] ✗ ${e}`));
+    }
+    console.log(`=> KẾT QUẢ assertCanvasFilled: đã kiểm ${totalChecked} canvas textures, ${errors.length} lỗi ${errors.length === 0 ? '✓ ĐẠT' : '✗'}\n`);
+    this.canvasFilledErrors = errors;
+    return errors;
   }
 
   onCanvasClick(e) {
@@ -2069,6 +2205,7 @@ class HeritageApp {
     }
     // PERF-4 E2: Độ phân giải động khi di chuyển
     this.updateDynamicResolution(delta);
+    this.checkAutoDowngrade(delta);
 
     // PERF-1 B1.2: hiệu ứng liên tục chỉ khi đang ở khu đó, giới hạn 30 fps
     const now = performance.now();
@@ -2164,6 +2301,10 @@ export function detectQualityTier() {
   if (['cao', 'canbang', 'muot'].includes(saved)) {
     return { tier: saved, source: 'user' };
   }
+  const autoSaved = localStorage.getItem('heritage_quality_auto');
+  if (['cao', 'canbang', 'muot'].includes(autoSaved)) {
+    return { tier: autoSaved, source: 'auto' };
+  }
   try {
     const c = document.createElement('canvas');
     const gl = c.getContext('webgl') || c.getContext('experimental-webgl');
@@ -2175,6 +2316,11 @@ export function detectQualityTier() {
       const isWeak = ['intel', 'uhd', 'iris', 'radeon(tm) graphics', 'vega', 'mali', 'adreno', 'powervr', 'swiftshader', 'microsoft basic']
         .some(k => renLower.includes(k));
       if (isWeak) return { tier: 'muot', source: 'auto', gpu: ren };
+
+      // GPU chứa MX, GT hoặc Quadro loại thấp -> canbang, không xếp cao
+      const isLowDiscrete = /\b(mx\d+|mx\b|gt\s*\d+|gt\b|quadro(?!\s+rtx))/i.test(ren);
+      if (isLowDiscrete) return { tier: 'canbang', source: 'auto', gpu: ren };
+
       // Card rời hoặc Apple Silicon -> Cao
       const isStrong = ['nvidia', 'geforce', 'gtx', 'rtx', 'quadro', 'radeon rx', 'apple m', 'apple gpu']
         .some(k => renLower.includes(k));

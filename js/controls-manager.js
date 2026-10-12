@@ -70,6 +70,11 @@ export class ControlsManager {
     this.initEventListeners();
   }
 
+  isMoving() {
+    const isKeyMoving = this.keys.forward || this.keys.backward || this.keys.left || this.keys.right;
+    return this.isGliding || this.isDragging || isKeyMoving;
+  }
+
   isPositionBlocked(x, z) {
     const r = this.playerRadius;
     // 1. Check against solid wall bounding boxes
@@ -167,6 +172,7 @@ export class ControlsManager {
     // Mouse Up
     window.addEventListener('mouseup', () => {
       this.isDragging = false;
+      setTimeout(() => { this.dragMoved = false; }, 50);
     });
 
     // Touch Support for Mobile / Tablet
@@ -202,6 +208,7 @@ export class ControlsManager {
 
     window.addEventListener('touchend', () => {
       this.isDragging = false;
+      setTimeout(() => { this.dragMoved = false; }, 50);
     });
 
     // Keyboard (Ignored when typing in search box)

@@ -43,6 +43,7 @@ export class ZoneScreenSlideshow {
     this.logos = {};
     this.logosLoaded = false;
     this.loadLogos();
+    this.draw(0);
 
     if (this.items.length > 0) {
       this.loadImage(this.items[0], (img) => {
@@ -362,10 +363,11 @@ export class ZoneScreenSlideshow {
   draw(fadeProgress = 0) {
     if (this.strips) { this.drawStrips(); if (this._baseDrawn) return; this._baseDrawn = true; }
     const ctx = this.ctx;
-    const w = this.canvas.width;  // 2048
-    const h = this.canvas.height; // 1152
+    const w = 2048;
+    const h = 1152;
 
     ctx.save();
+    ctx.scale(this.canvas.width / 2048, this.canvas.height / 1152);
     ctx.clearRect(0, 0, w, h);
 
     // 1. Background cho toàn bộ màn hình
